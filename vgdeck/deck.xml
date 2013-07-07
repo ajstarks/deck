@@ -11,7 +11,7 @@
 
   <slide>
     <text xp="20" yp="80" sp="3">Anatomy of a Deck</text>
-    <image xp="70" yp="30" width="320" height="240" name="sample320.png"/>
+    <image xp="70" yp="80" width="320" height="240" name="sample320.png"/>
     <list  xp="20" yp="70" sp="1.2" font="mono">
         <li>&lt;deck&gt;</li>
         <li>  &lt;canvas width="1024" height="768" /&gt;</li>

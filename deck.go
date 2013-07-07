@@ -58,7 +58,6 @@ type image struct {
 	Name   string  `xml:"name,attr"`
 }
 
-
 // Read reads the deck description file
 func Read(filename string, w, h int) (Deck, error) {
 	var d Deck
@@ -77,7 +76,6 @@ func Read(filename string, w, h int) (Deck, error) {
 	return d, err
 }
 
-
 // Dimen computes the coordinates and size of an object
 func Dimen(c canvas, xp, yp, sp float64) (x, y float64, s int) {
 	x = (xp / 100) * float64(c.Width)
@@ -86,13 +84,12 @@ func Dimen(c canvas, xp, yp, sp float64) (x, y float64, s int) {
 	return
 }
 
-
 // Pwidth computes the percent width based on canvas size
 func Pwidth(wp, cw, defval float64) float64 {
 	if wp == 0 {
 		return defval
 	}
-	return (wp/100)  * cw
+	return (wp / 100) * cw
 }
 
 // Search searches the deck for the specified text, returning the slide number if found
@@ -133,4 +130,3 @@ func Dump(d Deck) {
 		}
 	}
 }
-

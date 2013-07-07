@@ -4,12 +4,11 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"os"
-	"strings"
 	"github.com/ajstarks/deck"
 	"github.com/ajstarks/openvg"
+	"os"
+	"strings"
 )
-
 
 // dodeck sets up the graphics environment and kicks off the interaction
 func dodeck(filename string) {
@@ -18,7 +17,6 @@ func dodeck(filename string) {
 	interact(filename, w, h)
 	openvg.Finish()
 }
-
 
 // interact controls the display of the deck
 func interact(filename string, w, h int) {
@@ -36,7 +34,7 @@ func interact(filename string, w, h int) {
 	firstslide := 0
 	lastslide := len(d.Slide) - 1
 	n := firstslide
-	xray  := 1
+	xray := 1
 	// respond to keyboard commands, 'q' to exit
 	for cmd := byte('0'); cmd != 'q'; cmd = readcmd(r) {
 		switch cmd {
@@ -47,7 +45,7 @@ func interact(filename string, w, h int) {
 				fmt.Fprintf(os.Stderr, "%v\n", err)
 				return
 			}
-			openvg.Background(0,0,0)
+			openvg.Background(0, 0, 0)
 			showslide(d, n)
 
 		// save slide
@@ -80,11 +78,11 @@ func interact(filename string, w, h int) {
 			}
 			showslide(d, n)
 
-		// x-ray 
+		// x-ray
 		case 'x', 24: // x, Ctrl-X
 			xray++
 			showslide(d, n)
-			if xray % 2 == 0 {
+			if xray%2 == 0 {
 				showgrid(d, n)
 			}
 
@@ -111,8 +109,8 @@ func interact(filename string, w, h int) {
 func showgrid(d deck.Deck, n int) {
 	w := float64(d.Canvas.Width)
 	h := float64(d.Canvas.Height)
-	fs := w * 0.01 // labels are 1% of the width
-	pct := 10.0    // grid at 10% intervals
+	fs := w * (0.60 / 100) // labels are .6% of the width
+	pct := 10.0            // grid at 10% intervals
 	xpct := (pct / 100.0) * w
 	ypct := (pct / 100.0) * h
 
@@ -128,7 +126,7 @@ func showgrid(d deck.Deck, n int) {
 	}
 
 	// vertical gridlines
-	yl :=  pct
+	yl := pct
 	for y := ypct; y <= h; y += ypct {
 		openvg.Line(0, y, w, y)
 		openvg.Text(pct, y, fmt.Sprintf("%.0f%%", yl), "sans", int(fs))
@@ -237,7 +235,7 @@ func showslide(d deck.Deck, n int) {
 			t.Font = "mono"
 			tdepth := ((fs * linespacing) * float64(len(td))) + fs
 			openvg.FillColor("rgb(240,240,240)")
-			openvg.Rect(x-20, y-tdepth+(fs*linespacing), pwidth(t.Wp, cw, cw-x-20), tdepth)
+			openvg.Rect(x-20, y-tdepth+(fs*linespacing), deck.Pwidth(t.Wp, cw, cw-x-20), tdepth)
 		}
 		if t.Color != "" {
 			openvg.FillColor(t.Color)
@@ -245,7 +243,7 @@ func showslide(d deck.Deck, n int) {
 			openvg.FillColor(slide.Fg)
 		}
 		if t.Type == "block" {
-			textwrap(x, y, pwidth(t.Wp, cw, cw/2), t.Tdata, t.Font, fontsize, fs*linespacing, 0.3)
+			textwrap(x, y, deck.Pwidth(t.Wp, cw, cw/2), t.Tdata, t.Font, fontsize, fs*linespacing, 0.3)
 		} else {
 			// every text line
 			for _, txt := range td {
@@ -256,14 +254,6 @@ func showslide(d deck.Deck, n int) {
 	}
 	openvg.FillColor(slide.Fg)
 	openvg.End()
-}
-
-// pwidth computes the percent width based on canvas size
-func pwidth(wp, cw, defval float64) float64 {
-	if wp == 0 {
-		return defval 
-	}
-	return (wp/100)  * cw
 }
 
 // whitespace determines if a rune is whitespace
