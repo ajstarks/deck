@@ -16,7 +16,7 @@
         <li>&lt;deck&gt;</li>
         <li>  &lt;canvas width="1024" height="768" /&gt;</li>
         <li>  &lt;slide bg="black" fg="white"&gt;</li>
-        <li>      &lt;image xp="20" yp="30" width="256" height="256" name="picture.png" /&gt;</li>
+        <li>      &lt;image xp="50" yp="50" width="256" height="256" name="picture.png" /&gt;</li>
         <li>      &lt;text  xp="20" yp="80" sp="3"&gt;Deck uses these elements&lt;/text&gt;</li>
         <li>      &lt;list  xp="20" yp="70" sp="2" type="bullet"&gt;</li>
         <li>          &lt;li&gt;text&lt;/li&gt;</li>
@@ -99,7 +99,7 @@ func main() {
       <li>horizontal percentage</li>
       <li>vertical percentage</li>
       <li>font size percentage</li>
-      <li>"bullet", "block", "code"</li>
+      <li>"bullet", "number" (list), "block", "code" (text)</li>
       <li>"left", "middle", "end"</li>
       <li>SVG names ("maroon"), or RGB "rgb(127,0,0)"</li>
       <li>"sans", "serif", "mono"</li>
