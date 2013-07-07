@@ -4,6 +4,16 @@ Package deck provides an interface, via a standard markup language for making sc
 Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc.
 From a single markup language, clients may be interactive or produce standard formats such as HTML or PDF.
 
+## Elements ##
+
+* deck: enclosing element 
+* canvas: describe the dimensions of the drawing canvas, one per deck
+* slide: within a deck, any number of slides, specify the slide background and text colors.
+* within slides an number of:
+* text: plain, textblock, or code
+* list: plain, bullet, number
+* image: JPEG or PNG images
+
 ## Markup ##
 
 Here is a sample deck in XML:
@@ -11,6 +21,7 @@ Here is a sample deck in XML:
 	<deck>
 	   <canvas width="1024" height="768"/>
 	      <slide bg="maroon" fg="white">
+		<image xp="20" yp="30" width="256" height="256" name="picture.png"/>
 	         <text xp="20" yp="80" sp="3">Deck uses these elements</text>
 	         <list xp="20" yp="70" sp="1.5">
 	            <li>canvas<li>
@@ -23,16 +34,6 @@ Here is a sample deck in XML:
 	</deck>
 
 
-## Elements ##
-
-	deck: enclosing element 
-	canvas: describe the dimensions of the drawing canvas, one per deck
-	slide: within a deck, any number of slides, specify the slide background and text colors.
-	within slides an number of:
-	text: plain, textblock, or code
-	list: plain, bullet, number
-	image: JPEG or PNG images
-	
 The list and text elements have common attributes:
 
 	xp: horizontal percentage
