@@ -1,4 +1,4 @@
 deck
 ====
 
-Slide Decks
+A Go package for slide decks
