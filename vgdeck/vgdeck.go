@@ -36,7 +36,7 @@ func interact(filename string, w, h int) {
 	firstslide := 0
 	lastslide := len(d.Slide) - 1
 	n := firstslide
-
+	xray  := 1
 	// respond to keyboard commands, 'q' to exit
 	for cmd := byte('0'); cmd != 'q'; cmd = readcmd(r) {
 		switch cmd {
@@ -80,9 +80,13 @@ func interact(filename string, w, h int) {
 			}
 			showslide(d, n)
 
-		// grid
+		// x-ray 
 		case 'x', 24: // x, Ctrl-X
-			showgrid(d, n)
+			xray++
+			showslide(d, n)
+			if xray % 2 == 0 {
+				showgrid(d, n)
+			}
 
 		// search
 		case '/', 6: // slash, Ctrl-F
