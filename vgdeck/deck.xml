@@ -44,34 +44,43 @@
 
 
   <slide bg="white" fg="black">
-    <text xp="7" yp="80" sp="3">Text</text>
-    <text xp="40" yp="80" sp="3">List</text>
-    <text xp="70" yp="80" sp="3">Image</text>
 
-    <text xp="7" yp="70" sp="1.2" color="rgb(127,0,0)">Hello, World</text>
-    <text xp="7" yp="55" sp="1.2" wp="15" color="rgb(0,0,127)" type="block">
-      This is a block of text, word-wrapped to a specified width.  you can specify size, font and color
+    <text xp="5" yp="80" sp="3">Text</text>
+    <text xp="5" yp="70" sp="1.2" color="rgb(127,0,0)">Hello, World</text>
+    <text xp="5" yp="50" sp="1.2" wp="25" color="rgb(0,0,127)" font="serif" type="block">
+      This is a block of text, word-wrapped to a specified width. You can specify size, font and color
     </text>
 
-    <text xp="7" yp="30" sp="1.2" wp="33" type="code">package main
+    <text xp="5" yp="25" sp="1.2" wp="31" type="code">package main
 import "fmt"
 func main() {
     fmt.Println("Hello, World")
 }</text>
 
-    <list xp="40" yp="70" sp="1.2">
+    <text xp="45" yp="80" sp="3">List</text>
+    <list xp="45" yp="70" sp="1.2" font="serif" color="rgb(127,0,0)">
       <li>Item 1</li>
       <li>Item 2</li>
       <li>Item 3</li>
     </list>
 
-    <list xp="40" yp="55" sp="1.2" color="rgb(0,0,127)" type="bullet">
+    <list xp="45" yp="50" sp="1.2" color="rgb(0,0,127)" font="serif" type="bullet">
       <li>First item</li>
       <li>Second item</li>
+      <li>The third item</li>
       <li>and the last thing</li>
     </list>
 
-    <image xp="76" yp="60" width="256" height="256" name="sdeck256.png"/>
+    <list xp="45" yp="25" sp="1.2" font="serif" color="black" type="number">
+       <li>This</li>
+       <li>That</li>
+       <li>The other</li>
+       <li>One more</li>
+    </list>
+
+    <text xp="75" yp="80" sp="3">Image</text>
+    <image xp="82" yp="60" width="256" height="256" name="sdeck256.png"/>
+
   </slide>
 
   <slide>
@@ -86,7 +95,7 @@ func main() {
       <li>font</li>
     </list>
 
-    <list xp="30" yp="70" sp="1.5">
+    <list xp="30" yp="70" sp="1.5" font="serif">
       <li>horizontal percentage</li>
       <li>vertical percentage</li>
       <li>font size percentage</li>
@@ -123,7 +132,7 @@ func main() {
       <li>q</li>
     </list>
 
-    <list xp="20" yp="20" sp="1.2">
+    <list xp="20" yp="20" sp="1.2" font="serif">
       <li>All commands are a single keystroke, acted on immediately</li>
       <li>(only the search command waits until you hit [Return]  after entering your search text)</li>
       <li>To cycle through the deck, repeatedly tap [Return] key</li>

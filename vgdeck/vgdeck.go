@@ -46,6 +46,7 @@ func interact(filename string, w, h int) {
 				return
 			}
 			openvg.Background(0, 0, 0)
+			xray = 1
 			showslide(d, n)
 
 		// save slide
@@ -200,7 +201,7 @@ func showslide(d deck.Deck, n int) {
 		}
 		x, y, fontsize = deck.Dimen(d.Canvas, l.Xp, l.Yp, l.Sp)
 		fs := float64(fontsize)
-		if l.Type == "bullet" {
+		if l.Type == "bullet"  {
 			offset = 1.2 * fs
 		} else {
 			offset = 0
@@ -211,10 +212,13 @@ func showslide(d deck.Deck, n int) {
 			openvg.FillColor(slide.Fg)
 		}
 		// every list item
-		for _, li := range l.Li {
+		for ln, li := range l.Li {
 			if l.Type == "bullet" {
 				boffset := fs / 2
 				openvg.Circle(x, y+boffset, boffset)
+			}
+			if l.Type == "number" {
+				li = fmt.Sprintf("[%d] ", ln+1) + li
 			}
 			showtext(x+offset, y, li, l.Align, l.Font, fontsize)
 			y -= fs * blinespacing
