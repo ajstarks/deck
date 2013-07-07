@@ -1,13 +1,10 @@
-deck
-====
-
-A Go package for slide decks
+#deck: A Go package for slide decks
 
 Package deck provides an interface, via a standard markup language for making scalable percentage-based layout slide decks.
 Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc.
 From a single markup language, clients may be interactive or produce standard formats such as HTML or PDF.
 
-==Markup
+## Markup ##
 
 Here is a sample deck in XML:
 
@@ -26,7 +23,7 @@ Here is a sample deck in XML:
 	</deck>
 
 
-==Elements
+## Elements ##
 
 	deck: enclosing element 
 	canvas: describe the dimensions of the drawing canvas, one per deck
@@ -46,7 +43,7 @@ The list and text elements have common attributes:
 	color: SVG names ("maroon"), or RGB "rgb(127,0,0)"
 	font: "sans", "serif", "mono"
 	
-==Layout
+## Layout ##
 
 All layout in done in terms of percentages, using a coordinate system with the origin (0%, 0%)at the lower left.
 The x (horizontal) direction increases to the right, and the y (vertical) direction increasing to upwards.

@@ -41,7 +41,7 @@ The list and text elements have common attributes:
 	align: "left", "middle", "end"
 	color: SVG names ("maroon"), or RGB "rgb(127,0,0)"
 	font: "sans", "serif", "mono"
-	
+
 Layout
 
 All layout in done in terms of percentages, using a coordinate system with the origin (0%, 0%)at the lower left.
