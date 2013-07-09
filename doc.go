@@ -1,5 +1,5 @@
 /*
-Package deck provides an interface, via a standard markup language for making scalable percentage-based layout slide decks.
+Package deck provides an interface, via a standard markup language for making scalable, percentage-based layout slide decks.
 Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc.
 From a single markup language, clients may be interactive or produce standard formats such as HTML or PDF.
 
@@ -10,7 +10,9 @@ Here are the elements of a deck:
 	deck: enclosing element 
 	canvas: describe the dimensions of the drawing canvas, one per deck
 	slide: within a deck, any number of slides, specify the slide background and text colors.
-	within slides an number of:
+
+within slides an number of:
+
 	text: plain, textblock, or code
 	list: plain, bullet, number
 	image: JPEG or PNG images
@@ -46,15 +48,15 @@ The list and text elements have common attributes:
 
 Layout
 
-All layout in done in terms of percentages, using a coordinate system with the origin (0%, 0%)at the lower left.
+All layout in done in terms of percentages, using a coordinate system with the origin (0%, 0%) at the lower left.
 The x (horizontal) direction increases to the right, and the y (vertical) direction increasing to upwards.
-For example to place an element in the miidle of the canvas, specify xp="50" yp="50". To place an element
+For example to place an element in the middle of the canvas, specify xp="50" yp="50". To place an element
 one-third from the top, and one-third from the bottom: xp="66.6" yp="33.3".
 
 The size of text is also scaled to the width of the canvas. For example sp="3" is a typical size for slide headings.
 
 The content of the slides are automatically scaled based on the specified canvas size 
-(sane defaults are should be set the clients, if not specified)
+(sane defaults are should be set the clients, if dimensions are not specified).
 
 */
 package deck
