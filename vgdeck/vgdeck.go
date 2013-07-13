@@ -110,13 +110,13 @@ func interact(filename string, w, h int) {
 func showgrid(d deck.Deck, n int) {
 	w := float64(d.Canvas.Width)
 	h := float64(d.Canvas.Height)
-	fs := w * (0.60 / 100) // labels are .6% of the width
+	fs := (w / 100) // labels are 1% of the width
 	pct := 10.0            // grid at 10% intervals
 	xpct := (pct / 100.0) * w
 	ypct := (pct / 100.0) * h
 
 	openvg.StrokeColor("lightgray", 0.5)
-	openvg.StrokeWidth(2)
+	openvg.StrokeWidth(3)
 
 	// horizontal gridlines
 	xl := pct
@@ -215,7 +215,8 @@ func showslide(d deck.Deck, n int) {
 		for ln, li := range l.Li {
 			if l.Type == "bullet" {
 				boffset := fs / 2
-				openvg.Circle(x, y+boffset, boffset)
+				openvg.Rect(x, y+boffset/2, boffset, boffset)
+				//openvg.Circle(x, y+boffset, boffset)
 			}
 			if l.Type == "number" {
 				li = fmt.Sprintf("[%d] ", ln+1) + li
