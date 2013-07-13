@@ -11,42 +11,46 @@
 
 
   <slide>
-	  <text xp="20" yp="80" sp="3">Deck is:</text>
-	  <list xp="20" yp="70" sp="2" type="bullet">
-	  	<li>a Go package, allowing for different clients</li>
-		<li>Uses XML as the markup language</li>
-		<li>Locations and sizes are specified in  percentages</li>
-		<li>Make scalable slides, adapting to any screen size</li>
-		<li>Uses three main elements: text, list, and image</li>
-	  </list>
+     <text xp="20" yp="80" sp="3">Deck is:</text>
+     <list xp="20" yp="70" sp="2" type="bullet">
+  	<li>a Go package, allowing for different clients</li>
+	<li>Uses XML as the markup language</li>
+	<li>Locations and sizes are specified in  percentages</li>
+	<li>Make scalable slides, adapting to any screen size</li>
+	<li>Uses three main elements: text, list, and image</li>
+     </list>
   </slide>
 
 
   <slide>
-	  <text xp="20" yp="80" sp="3">Deck is:</text>
-	  <text  xp="20" yp="70" sp="2" wp="50" font="serif" type="block">
-		  a Go package enabling different clients
-		  to use the same input to make presentations on variety of media and formats.</text>
-	  <text xp="20" yp="40" sp="2" wp="50" font="serif" type="block">
-		  Using only three elements (text, list, image), all layout is done via percentages,
-		  resulting in scalable slides that adapt to any screen size or orientation.
-	</text>
+     <text xp="20" yp="80" sp="3">Deck is:</text>
+     <text  xp="20" yp="70" sp="2" wp="50" font="serif" type="block">
+	  a Go package enabling different clients
+	  to use the same input to make presentations on variety of media and formats.</text>
+     <text xp="20" yp="40" sp="2" wp="50" font="serif" type="block">
+	  Using only three elements (text, list, image), all layout is done via percentages,
+	  resulting in scalable slides that adapt to any screen size or orientation.
+   </text>
 </slide>
 
   <slide bg="rgb(127,127,127)" fg="white">
-	  <text xp="10" yp="10" sp="4">Elements and Markup</text>
+      <text xp="10" yp="10" sp="4">Elements and Markup</text>
   </slide>
+
   <slide bg="rgb(127,0,0)" fg="white">
-	  <text xp="50" yp="50" sp="5" font="mono" align="center">&lt;text . . .&gt;</text>
-	  <text xp="50" yp="30" sp="2" align="center">plain, block and code</text>
+      <text xp="50" yp="50" sp="5" font="mono" align="center">&lt;text . . .&gt;</text>
+      <text xp="50" yp="30" sp="2" align="center">plain, block and code</text>
   </slide>
+
   <slide bg="rgb(0,127,0)" fg="white">
-	  <text xp="50" yp="50" sp="5" font="mono" align="center">&lt;list . . .&gt;</text>
-	  <text xp="50" yp="30" sp="2" align="center">plain, bullet, number</text>
+      <text xp="50" yp="50" sp="5" font="mono" align="center">&lt;list . . .&gt;</text>
+      <text xp="50" yp="30" sp="2" align="center">plain, bullet, number</text>
   </slide>
+
   <slide bg="rgb(0,0,127)" fg="white">
-	  <text xp="50" yp="50" sp="5" font="mono" align="center">&lt;image . . .&gt;</text>
+      <text xp="50" yp="50" sp="5" font="mono" align="center">&lt;image . . .&gt;</text>
   </slide>
+
   <slide>
     <text xp="20" yp="80" sp="3">Anatomy of a Deck</text>
     <image xp="70" yp="30" width="320" height="240" name="sample320.png"/>
@@ -180,7 +184,7 @@ func main() {
   </slide>
 
   <slide>
-	  <image xp="50" yp="50" width="768" height="432" name="xray.png"/>
-	  <text xp="50" yp="20" sp="2" align="center">X-Ray mode shows the percent grid, and highlights images</text>
+      <image xp="50" yp="50" width="768" height="432" name="xray.png"/>
+      <text xp="50" yp="20" sp="2" align="center">X-Ray mode shows the percent grid, and highlights images</text>
   </slide>
 </deck>
