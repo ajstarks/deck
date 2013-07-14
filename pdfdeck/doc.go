@@ -4,7 +4,7 @@ The PDF is generated to stdout.
 
 Usage
 
-	$ go install github.com/ajstarks/deck/pdfdeck
+	$ go get github.com/ajstarks/deck/pdfdeck
 	$ pdfdeck deck.xml > deck.pdf
 */
 package main

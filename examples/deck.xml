@@ -153,8 +153,8 @@ func main() {
 
   <slide>
      <text xp="20" yp="80" sp="3">Installing and running clients</text>
-     <text xp="10" yp="60" sp="1.5" type="code">$ go install github.com/ajstarks/deck/vgdeck  # for the Raspberry Pi
-$ go install github.com/ajstarks/deck/pdfdeck # to make PDF decks
+     <text xp="10" yp="60" sp="1.5" type="code">$ go get github.com/ajstarks/deck/vgdeck  # for the Raspberry Pi
+$ go get github.com/ajstarks/deck/pdfdeck # to make PDF decks
 $ vgdeck deck.xml                             # interactive session
 $ pdfdeck deck.xml > deck.pdf                 # make a PDF deck</text>
   </slide>

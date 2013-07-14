@@ -66,7 +66,7 @@ Currently there are two clients: vgdeck and pdfdeck.
 vgdeck is a program for showing presentations on the Raspberry Pi, using the openvg library.
 To install:
 
-	go install github.com/ajstarks/deck/vgdeck
+	go get nstall github.com/ajstarks/deck/vgdeck
 
 To run vgdeck, specify one or more files (marked up in deck XML) on the command line, and each will be shown in turn.
 

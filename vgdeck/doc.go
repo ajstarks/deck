@@ -2,7 +2,7 @@
 vgdeck is a program for showing presentations on the Raspberry Pi, using the deck and openvg libraries.
 To install:
 
-	go install github.com/ajstarks/deck/vgdeck
+	go get github.com/ajstarks/deck/vgdeck
 
 To run vgdeck, specify one or more files (marked up in deck xml) on the command line, and each will be shown in turn.
 
