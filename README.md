@@ -10,7 +10,7 @@ From a single markup language, clients may be interactive or produce standard fo
 * canvas: describe the dimensions of the drawing canvas, one per deck
 * slide: within a deck, any number of slides, specify the slide background and text colors.
 
-within slides an number of:
+within slides any number of:
 * text: plain, textblock, or code
 * list: plain, bullet, number
 * image: JPEG or PNG images
@@ -21,7 +21,7 @@ Here is a sample deck in XML:
 
 	<deck>
 	   <canvas width="1024" height="768"/>
-	      <slide bg="maroon" fg="white">
+	   <slide bg="maroon" fg="white">
 		<image xp="20" yp="30" width="256" height="256" name="picture.png"/>
 	         <text xp="20" yp="80" sp="3">Deck uses these elements</text>
 	         <list xp="20" yp="70" sp="1.5">
@@ -31,7 +31,7 @@ Here is a sample deck in XML:
 	            <li>list</li>
 	            <li>image</li>
 	         </list>
-	      </slide>
+	   </slide>
 	</deck>
 
 
@@ -74,15 +74,15 @@ To run vgdeck, specify one or more files (marked up in deck XML) on the command 
 
 Here are the vgdeck commands:
 
-      Next slide: +, Ctrl-N, [Return]
-      Previous slide, -, Ctrl-P, [Backspace]
-      First slide: ^, Ctrl-A
-      Last slide: $, Ctrl-E
-      Reload: r, Ctrl-R
-      X-Ray: x, Ctrl-X
-      Search: /, Ctrl-F
-      Save: s, Ctrl-S
-      Quit: q
+*  Next slide: +, Ctrl-N, [Return]
+*  Previous slide, -, Ctrl-P, [Backspace]
+*  First slide: ^, Ctrl-A
+*  Last slide: $, Ctrl-E
+*  Reload: r, Ctrl-R
+*  X-Ray: x, Ctrl-X
+*  Search: /, Ctrl-F
+*  Save: s, Ctrl-S
+*  Quit: q
 
 All commands are a single keystroke, acted on immediately
 (only the search command waits until you hit [Return] after entering your search text)
