@@ -111,7 +111,7 @@ func showgrid(d deck.Deck, n int) {
 	w := float64(d.Canvas.Width)
 	h := float64(d.Canvas.Height)
 	fs := (w / 100) // labels are 1% of the width
-	pct := 10.0            // grid at 10% intervals
+	pct := 10.0     // grid at 10% intervals
 	xpct := (pct / 100.0) * w
 	ypct := (pct / 100.0) * h
 
@@ -201,7 +201,7 @@ func showslide(d deck.Deck, n int) {
 		}
 		x, y, fontsize = deck.Dimen(d.Canvas, l.Xp, l.Yp, l.Sp)
 		fs := float64(fontsize)
-		if l.Type == "bullet"  {
+		if l.Type == "bullet" {
 			offset = 1.2 * fs
 		} else {
 			offset = 0
