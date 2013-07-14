@@ -55,7 +55,7 @@ func dotext(c *pdf.Canvas, x, y, fs, tw pdf.Unit, tdata, font, color, align, tty
 	c.Push()
 	c.SetColor(red, green, blue)
 	if ttype == "block" {
-		textwrap(c, x, y, tw, fs, fs*1.4, tdata, font)
+		textwrap(c, x, y, tw, fs, fs*1.8, tdata, font)
 	} else {
 		ls := pdf.Unit(1.8) * fs
 		text := new(pdf.Text)
@@ -92,7 +92,7 @@ func dolist(c *pdf.Canvas, x, y, fs pdf.Unit, tdata []string, font, color, ltype
 		x += fs
 	}
 	c.Translate(x, y)
-	ls := pdf.Unit(1.8) * fs
+	ls := pdf.Unit(2.0) * fs
 	for i, t := range tdata {
 		if ltype == "number" {
 			t = fmt.Sprintf("[%d] ", i+1) + t
