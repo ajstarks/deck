@@ -44,6 +44,8 @@ The list and text elements have common attributes:
 	align: "left", "middle", "end"
 	color: SVG names ("maroon"), or RGB "rgb(127,0,0)"
 	font: "sans", "serif", "mono"
+
+See the example directory for example decks.
 	
 ## Layout ##
 
@@ -61,12 +63,12 @@ The content of the slides are automatically scaled based on the specified canvas
 
 Currently there are two clients: vgdeck and pdfdeck.
 
-vgdeck is a program for showing presentations on the Raspberry Pi, using the deck and openvg libraries.
+vgdeck is a program for showing presentations on the Raspberry Pi, using the openvg library.
 To install:
 
 	go install github.com/ajstarks/deck/vgdeck
 
-To run vgdeck, specify one or more files (marked up in deck xml) on the command line, and each will be shown in turn.
+To run vgdeck, specify one or more files (marked up in deck XML) on the command line, and each will be shown in turn.
 
 	$ vgdeck sales.xml program.xml architecture.xml
 
