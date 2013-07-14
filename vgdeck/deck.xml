@@ -2,7 +2,7 @@
   <canvas />
 
   <slide bg="white" fg="black">
-    <text  xp="50" yp="70" sp="5" align="center">Deck</text>
+    <text  xp="50" yp="80" sp="5" align="center">Deck</text>
     <image xp="50" yp="50" width="270" height="270" name="sdeck.png" />
     <text  xp="50" yp="20" sp="1.5" align="center">Anthony Starks</text>
     <text  xp="50" yp="15" sp="1" align="center" color="rgb(127,127,127)">@ajstarks</text>
@@ -13,11 +13,11 @@
   <slide>
      <text xp="20" yp="80" sp="3">Deck is:</text>
      <list xp="20" yp="70" sp="2" type="bullet">
-  	<li>a Go package, allowing for different clients</li>
-	<li>Uses XML as the markup language</li>
-	<li>Locations and sizes are specified in  percentages</li>
-	<li>Make scalable slides, adapting to any screen size</li>
-	<li>Uses three main elements: text, list, and image</li>
+        <li>a Go package, allowing for different clients</li>
+        <li>Uses XML as the markup language</li>
+        <li>Locations and sizes are specified in  percentages</li>
+        <li>Make scalable slides, adapting to any screen size</li>
+        <li>Uses three main elements: text, list, and image</li>
      </list>
   </slide>
 
@@ -26,7 +26,7 @@
      <text xp="20" yp="80" sp="3">Deck is:</text>
      <text  xp="20" yp="70" sp="2" wp="50" font="serif" type="block">
 	  a Go package enabling different clients
-	  to use the same input to make presentations on variety of media and formats.</text>
+	  to use the same input to make presentations on a variety of media and formats.</text>
      <text xp="20" yp="40" sp="2" wp="50" font="serif" type="block">
 	  Using only three elements (text, list, image), all layout is done via percentages,
 	  resulting in scalable slides that adapt to any screen size or orientation.
@@ -120,7 +120,7 @@ func main() {
     </list>
 
     <text xp="75" yp="80" sp="3">Image</text>
-    <image xp="82" yp="60" width="256" height="256" name="sdeck256.png"/>
+    <image xp="82" yp="50" width="256" height="256" name="sdeck256.png"/>
 
   </slide>
 
@@ -150,8 +150,17 @@ func main() {
   <slide bg="rgb(127,127,127)" fg="white">
 	  <text xp="10" yp="10" sp="4">Clients</text>
   </slide>
+
   <slide>
-    <text xp="20" yp="80" sp="3">Deck Commands</text>
+     <text xp="20" yp="80" sp="3">Installing and running clients</text>
+     <text xp="10" yp="60" sp="1.5" type="code">$ go install github.com/ajstarks/deck/vgdeck  # for the Raspberry Pi
+$ go install github.com/ajstarks/deck/pdfdeck # to make PDF decks
+$ vgdeck deck.xml                             # interactive session
+$ pdfdeck deck.xml > deck.pdf                 # make a PDF deck</text>
+  </slide>
+
+  <slide>
+    <text xp="20" yp="80" sp="3">vgdeck Commands</text>
     <list xp="50" yp="70" sp="1.5">
       <li>Next slide</li>
       <li>Previous slide</li>
@@ -185,6 +194,6 @@ func main() {
 
   <slide>
       <image xp="50" yp="50" width="768" height="432" name="xray.png"/>
-      <text xp="50" yp="20" sp="2" align="center">X-Ray mode shows the percent grid, and highlights images</text>
+      <text xp="50" yp="10" sp="2" align="center">X-Ray mode shows the percent grid, and highlights images</text>
   </slide>
 </deck>
