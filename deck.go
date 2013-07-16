@@ -77,10 +77,10 @@ func Read(filename string, w, h int) (Deck, error) {
 }
 
 // Dimen computes the coordinates and size of an object
-func Dimen(c canvas, xp, yp, sp float64) (x, y float64, s int) {
+func Dimen(c canvas, xp, yp, sp float64) (x, y, s float64) {
 	x = (xp / 100) * float64(c.Width)
 	y = (yp / 100) * float64(c.Height)
-	s = int((sp / 100) * float64(c.Width))
+	s = (sp / 100) * float64(c.Width)
 	return
 }
 

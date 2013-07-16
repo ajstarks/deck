@@ -152,7 +152,8 @@ func showgrid(d deck.Deck, n int) {
 }
 
 //showtext displays text
-func showtext(x, y float64, s, align, font string, fontsize int) {
+func showtext(x, y float64, s, align, font string, fs float64) {
+	fontsize := int(fs)
 	switch align {
 	case "center", "middle", "mid":
 		openvg.TextMid(x, y, s, font, fontsize)
@@ -182,8 +183,7 @@ func showslide(d deck.Deck, n int) {
 	openvg.Rect(0, 0, cw, ch)
 	openvg.FillColor(slide.Fg)
 
-	var x, y float64
-	var fontsize int
+	var x, y, fs float64
 
 	// every image in the slide
 	for _, im := range slide.Image {
@@ -199,8 +199,7 @@ func showslide(d deck.Deck, n int) {
 		if l.Font == "" {
 			l.Font = "sans"
 		}
-		x, y, fontsize = deck.Dimen(d.Canvas, l.Xp, l.Yp, l.Sp)
-		fs := float64(fontsize)
+		x, y, fs = deck.Dimen(d.Canvas, l.Xp, l.Yp, l.Sp)
 		if l.Type == "bullet" {
 			offset = 1.2 * fs
 		} else {
@@ -221,7 +220,7 @@ func showslide(d deck.Deck, n int) {
 			if l.Type == "number" {
 				li = fmt.Sprintf("[%d] ", ln+1) + li
 			}
-			showtext(x+offset, y, li, l.Align, l.Font, fontsize)
+			showtext(x+offset, y, li, l.Align, l.Font, fs)
 			y -= fs * blinespacing
 		}
 	}
@@ -233,8 +232,7 @@ func showslide(d deck.Deck, n int) {
 		if t.Font == "" {
 			t.Font = "sans"
 		}
-		x, y, fontsize = deck.Dimen(d.Canvas, t.Xp, t.Yp, t.Sp)
-		fs := float64(fontsize)
+		x, y, fs = deck.Dimen(d.Canvas, t.Xp, t.Yp, t.Sp)
 		td := strings.Split(t.Tdata, "\n")
 		if t.Type == "code" {
 			t.Font = "mono"
@@ -248,11 +246,11 @@ func showslide(d deck.Deck, n int) {
 			openvg.FillColor(slide.Fg)
 		}
 		if t.Type == "block" {
-			textwrap(x, y, deck.Pwidth(t.Wp, cw, cw/2), t.Tdata, t.Font, fontsize, fs*linespacing, 0.3)
+			textwrap(x, y, deck.Pwidth(t.Wp, cw, cw/2), t.Tdata, t.Font, fs, fs*linespacing, 0.3)
 		} else {
 			// every text line
 			for _, txt := range td {
-				showtext(x, y, txt, t.Align, t.Font, fontsize)
+				showtext(x, y, txt, t.Align, t.Font, fs)
 				y -= (fs * linespacing)
 			}
 		}
@@ -267,7 +265,8 @@ func whitespace(r rune) bool {
 }
 
 // textwrap draws text at location, wrapping at the specified width
-func textwrap(x, y, w float64, s string, font string, size int, leading, factor float64) {
+func textwrap(x, y, w float64, s string, font string, fs, leading, factor float64) {
+	size := int(fs)
 	wordspacing := openvg.TextWidth("m", font, size)
 	words := strings.FieldsFunc(s, whitespace)
 	xp := x
