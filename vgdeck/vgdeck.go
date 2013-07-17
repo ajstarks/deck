@@ -218,7 +218,7 @@ func showslide(d deck.Deck, n int) {
 				//openvg.Circle(x, y+boffset, boffset)
 			}
 			if l.Type == "number" {
-				li = fmt.Sprintf("[%d] ", ln+1) + li
+				li = fmt.Sprintf("%d. ", ln+1) + li
 			}
 			showtext(x+offset, y, li, l.Align, l.Font, fs)
 			y -= fs * blinespacing

@@ -11,23 +11,23 @@
 
 
   <slide>
-     <text xp="20" yp="80" sp="3">Deck is:</text>
+     <text xp="20" yp="80" sp="3">Deck is a:</text>
      <list xp="20" yp="70" sp="2" type="bullet">
-        <li>a Go package, allowing for different clients</li>
-        <li>Uses XML as the markup language</li>
-        <li>Locations and sizes are specified in  percentages</li>
-        <li>Make scalable slides, adapting to any screen size</li>
-        <li>Uses three main elements: text, list, and image</li>
+        <li>Go package, allowing for different clients,</li>
+        <li>Uses XML as the markup language,</li>
+        <li>Locations and sizes are specified in percentages,</li>
+        <li>Make scalable slides, adapting to any screen size,</li>
+        <li>Uses three main elements: text, list, and image.</li>
      </list>
   </slide>
 
 
   <slide>
      <text xp="20" yp="80" sp="3">Deck is:</text>
-     <text  xp="20" yp="70" sp="2" wp="50" font="serif" type="block">
+     <text  xp="20" yp="70" sp="2" wp="33" font="serif" type="block">
 	  a Go package enabling different clients
 	  to use the same input to make presentations on a variety of media and formats.</text>
-     <text xp="20" yp="40" sp="2" wp="50" font="serif" type="block">
+     <text xp="20" yp="40" sp="2" wp="33" font="serif" type="block">
 	  Using only three elements (text, list, image), all layout is done via percentages,
 	  resulting in scalable slides that adapt to any screen size or orientation.
    </text>
@@ -92,7 +92,7 @@
       This is a block of text, word-wrapped to a specified width. You can specify size, font and color
     </text>
 
-    <text xp="5" yp="25" sp="1.2" wp="31" type="code">package main
+    <text xp="5" yp="25" sp="1.2" wp="33" type="code">package main
 import "fmt"
 func main() {
     fmt.Println("Hello, World")
@@ -155,8 +155,8 @@ func main() {
      <text xp="20" yp="80" sp="3">Installing and running clients</text>
      <text xp="10" yp="60" sp="1.5" type="code">$ go get github.com/ajstarks/deck/vgdeck  # for the Raspberry Pi
 $ go get github.com/ajstarks/deck/pdfdeck # to make PDF decks
-$ vgdeck deck.xml                             # interactive session
-$ pdfdeck deck.xml > deck.pdf                 # make a PDF deck</text>
+$ vgdeck deck.xml                         # interactive session
+$ pdfdeck deck.xml > deck.pdf             # make a PDF deck</text>
   </slide>
 
   <slide>

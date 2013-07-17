@@ -95,7 +95,7 @@ func dolist(c *pdf.Canvas, x, y, fs pdf.Unit, tdata []string, font, color, ltype
 	ls := pdf.Unit(2.0) * fs
 	for i, t := range tdata {
 		if ltype == "number" {
-			t = fmt.Sprintf("[%d] ", i+1) + t
+			t = fmt.Sprintf("%d. ", i+1) + t
 		}
 		if ltype == "bullet" {
 			bullet(c, -fs, fs/8, fs, color)
