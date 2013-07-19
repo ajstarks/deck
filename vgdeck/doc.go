@@ -6,9 +6,10 @@ To install:
 
 To run vgdeck, specify one or more files (marked up in deck xml) on the command line, and each will be shown in turn.
 
-	$ vgdeck sales.xml program.xml architecture.xml
+	$ vgdeck -loop <pause> sales.xml program.xml architecture.xml
 
-Here are the vgdeck commands:
+The loop option pauses the specified duration between slides. If loop is not specified, then vgdeck enters
+an interactive mode using these commands:
 
       Next slide: +, Ctrl-N, [Return]
       Previous slide, -, Ctrl-P, [Backspace]

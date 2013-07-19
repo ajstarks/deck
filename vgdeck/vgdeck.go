@@ -3,18 +3,24 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"github.com/ajstarks/deck"
 	"github.com/ajstarks/openvg"
 	"os"
 	"strings"
+	"time"
 )
 
 // dodeck sets up the graphics environment and kicks off the interaction
-func dodeck(filename string) {
+func dodeck(filename string, pausetime time.Duration) {
 	w, h := openvg.Init()
 	openvg.Background(0, 0, 0)
-	interact(filename, w, h)
+	if pausetime == 0 {
+		interact(filename, w, h)
+	} else {
+		loop(filename, w, h, pausetime)
+	}
 	openvg.Finish()
 }
 
@@ -102,6 +108,32 @@ func interact(filename string, w, h int) {
 					n = ns
 				}
 			}
+		}
+	}
+}
+
+// loop through slides with a pause
+func loop(filename string, w, h int, n time.Duration) {
+	openvg.SaveTerm()
+	defer openvg.RestoreTerm()
+	var d deck.Deck
+	var err error
+	d, err = deck.Read(filename, w, h)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return
+	}
+	openvg.RawTerm()
+	r := bufio.NewReader(os.Stdin)
+	// respond to keyboard commands, 'q' to exit
+	for {
+		for i := 0; i < len(d.Slide); i++ {
+			cmd := readcmd(r)
+			if cmd == 'q' {
+				return
+			}
+			showslide(d, i)
+			time.Sleep(n)
 		}
 	}
 }
@@ -294,9 +326,9 @@ func readcmd(r *bufio.Reader) byte {
 
 // for every file, make a deck
 func main() {
-	if len(os.Args) > 1 {
-		for _, f := range os.Args[1:] {
-			dodeck(f)
-		}
+	var pause = flag.Duration("loop", 0, "loop, pausing the specified seconds between slides")
+	flag.Parse()
+	for _, f := range flag.Args() {
+		dodeck(f, *pause)
 	}
 }
