@@ -1,4 +1,4 @@
-// pdfdeck -- make PDF slide decks
+// pdfdeck: make PDF slide decks
 package main
 
 import (
@@ -13,6 +13,7 @@ import (
 	"github.com/ajstarks/deck"
 )
 
+// fontmap maps generic font names to specific implementation names
 var fontmap = map[string]string{
 	"sans": pdf.Helvetica, "sans-bold": pdf.HelveticaBold, "sans-italic": pdf.HelveticaOblique,
 	"serif": pdf.Times, "serif-bold": pdf.TimesBold, "serif-italic": pdf.TimesItalic,
@@ -38,11 +39,10 @@ func background(c *pdf.Canvas, w, h pdf.Unit, color string) {
 	c.Fill(path)
 }
 
-// dotext places text elements on the canvas
+// dotext places text elements on the canvas according to type
 func dotext(c *pdf.Canvas, x, y, fs, tw pdf.Unit, tdata, font, color, align, ttype string) {
 	td := strings.Split(tdata, "\n")
 	red, green, blue := colorlookup(color)
-
 	if ttype == "code" {
 		font = "mono"
 		c.Push()
@@ -51,31 +51,37 @@ func dotext(c *pdf.Canvas, x, y, fs, tw pdf.Unit, tdata, font, color, align, tty
 		background(c, tw, ch, "rgb(240,240,240)")
 		c.Pop()
 	}
-
 	c.Push()
 	c.SetColor(red, green, blue)
 	if ttype == "block" {
-		textwrap(c, x, y, tw, fs, fs*1.8, tdata, font)
+		textwrap(c, x, y, tw, fs, fs*1.4, tdata, font)
 	} else {
 		ls := pdf.Unit(1.8) * fs
-		text := new(pdf.Text)
-		text.SetFont(fontlookup(font), fs)
-		for i, t := range td {
-			text.Text(t)
-			if align == "center" {
-				x -= text.X() / 2
-			}
-			if align == "right" {
-				x -= text.X()
-			}
-			if i == 0 { // only need to set the initial position
-				c.Translate(x, y)
-			}
-			c.DrawText(text)
-			c.Translate(0, -ls) // subsequent postions are relative
+		for _, t := range td {
+			showtext(c, x, y, t, fs, font, align)
+			y -= ls
 		}
-		c.Pop()
 	}
+	c.Pop()
+}
+
+// showtext places fully attributed text at the specified location
+func showtext(c *pdf.Canvas, x, y pdf.Unit, s string, fs pdf.Unit, font, align string) {
+	var offset pdf.Unit = 0
+	text := new(pdf.Text)
+	c.Push()
+	text.SetFont(fontlookup(font), fs)
+	text.Text(s)
+	tw := text.X()
+	switch align {
+	case "center":
+		offset = -(tw / 2)
+	case "right":
+		offset = -tw
+	}
+	c.Translate(x+offset, y)
+	c.DrawText(text)
+	c.Pop()
 }
 
 // dolists places lists on the canvas
@@ -133,6 +139,7 @@ func whitespace(r rune) bool {
 	return r == ' ' || r == '\n' || r == '\t'
 }
 
+// fontlookup maps font aliases to implementation font names
 func fontlookup(s string) string {
 	font, ok := fontmap[s]
 	if ok {
@@ -146,7 +153,7 @@ func textwrap(c *pdf.Canvas, x, y, w, fs, leading pdf.Unit, s, font string) {
 	text := new(pdf.Text)
 	text.SetFont(fontlookup(font), fs)
 	words := strings.FieldsFunc(s, whitespace)
-	edge := x + w
+	edge := (x + w) * 0.75
 	c.Push()
 	c.Translate(x, y)
 	for _, s := range words {
@@ -175,9 +182,11 @@ func dcoord(xp, yp float64, w, h pdf.Unit) (x, y pdf.Unit) {
 }
 
 // dimen returns location and size based on canvas dimensions
-func dimen(xp, yp, sp float64, w, h pdf.Unit) (x, y, s pdf.Unit) {
-	x, y = dcoord(xp, yp, w, h)
-	s = pct(sp, w)
+func dimen(d deck.Deck, xp, yp, sp float64) (x, y, s pdf.Unit) {
+
+	c := d.Canvas
+	xf, yf, sf := deck.Dimen(c, xp, yp, sp)
+	x, y, s = pdf.Unit(xf), pdf.Unit(yf), pdf.Unit(sf)
 	return
 }
 
@@ -191,12 +200,13 @@ func doslides(doc *pdf.Document, filename string, w, h int) {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return
 	}
-	if d.Canvas.Height == 0 {
-		d.Canvas.Height = int(pdf.USLetterHeight)
-	}
 	if d.Canvas.Width == 0 {
-		d.Canvas.Width = int(pdf.USLetterWidth)
+		d.Canvas.Width = int(pdf.USLetterHeight) // landscape
 	}
+	if d.Canvas.Height == 0 {
+		d.Canvas.Height = int(pdf.USLetterWidth) // landscape
+	}
+
 	for i := 0; i < len(d.Slide); i++ {
 		pdfslide(doc, d, i)
 	}
@@ -236,7 +246,7 @@ func pdfslide(doc *pdf.Document, d deck.Deck, n int) {
 		if t.Font == "" {
 			t.Font = "sans"
 		}
-		x, y, fs = dimen(t.Xp, t.Yp, t.Sp, cw, ch)
+		x, y, fs = dimen(d, t.Xp, t.Yp, t.Sp)
 		if t.Wp == 0 {
 			tw = pct(90, cw)
 		} else {
@@ -249,7 +259,7 @@ func pdfslide(doc *pdf.Document, d deck.Deck, n int) {
 		if l.Color == "" {
 			l.Color = slide.Fg
 		}
-		x, y, fs = dimen(l.Xp, l.Yp, l.Sp, cw, ch)
+		x, y, fs = dimen(d, l.Xp, l.Yp, l.Sp)
 		dolist(canvas, x, y, fs, l.Li, l.Font, l.Color, l.Type)
 	}
 	canvas.Close()
@@ -258,7 +268,7 @@ func pdfslide(doc *pdf.Document, d deck.Deck, n int) {
 // dodeck kicks things off
 func dodeck(filename string) {
 	doc := pdf.New()
-	doslides(doc, filename, int(pdf.USLetterWidth), int(pdf.USLetterHeight))
+	doslides(doc, filename, int(pdf.USLetterHeight), int(pdf.USLetterWidth))
 	err := doc.Encode(os.Stdout)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
