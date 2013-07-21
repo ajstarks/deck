@@ -1,5 +1,5 @@
 <deck>
-  <canvas width="1920" height="1080"/>
+  <canvas/>
 
   <slide bg="white" fg="black">
     <text  xp="50" yp="80" sp="5" align="center">Deck</text>
@@ -37,9 +37,16 @@
       <text xp="10" yp="10" sp="4">Elements and Markup</text>
   </slide>
 
-  <slide bg="rgb(127,0,0)" fg="white">
-      <text xp="50" yp="50" sp="5" font="mono" align="center">&lt;text . . .&gt;</text>
-      <text xp="50" yp="30" sp="2" align="center">plain, block and code</text>
+  <slide>
+	  <text xp="20" yp="80" sp="3">Text Markup</text>
+	  <text xp="20" yp="70" sp="1.5" color="rgb(127,0,0)">Position</text>
+	  <text xp="20" yp="65" sp="1.5" color="rgb(127,0,0)">Block of text</text>
+	  <text xp="20" yp="60" sp="1.5" color="rgb(127,0,0)">Lines of code</text>
+	  <text xp="20" yp="55" sp="1.5" color="rgb(127,0,0)">Attributes</text>
+	  <text xp="40" yp="70" sp="1.5" font="mono" >&lt;text xp="..." yp="..." sp="..."&gt;</text>
+	  <text xp="40" yp="65" sp="1.5" font="mono" >&lt;text ... type="block"&gt;</text>
+	  <text xp="40" yp="60" sp="1.5" font="mono" >&lt;text ... type="code"&gt;</text>
+	  <text xp="40" yp="55" sp="1.5" font="mono" >&lt;text ... color="..." font="..." align="..."&gt;</text>
   </slide>
 
   <slide bg="rgb(0,127,0)" fg="white">

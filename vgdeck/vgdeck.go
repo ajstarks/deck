@@ -13,11 +13,11 @@ import (
 )
 
 // dodeck sets up the graphics environment and kicks off the interaction
-func dodeck(filename string, pausetime time.Duration) {
+func dodeck(filename string, pausetime time.Duration, gp float64) {
 	w, h := openvg.Init()
 	openvg.Background(0, 0, 0)
 	if pausetime == 0 {
-		interact(filename, w, h)
+		interact(filename, w, h, gp)
 	} else {
 		loop(filename, w, h, pausetime)
 	}
@@ -25,7 +25,7 @@ func dodeck(filename string, pausetime time.Duration) {
 }
 
 // interact controls the display of the deck
-func interact(filename string, w, h int) {
+func interact(filename string, w, h int, gp float64) {
 	openvg.SaveTerm()
 	defer openvg.RestoreTerm()
 	var d deck.Deck
@@ -70,7 +70,7 @@ func interact(filename string, w, h int) {
 			showslide(d, n)
 
 		// next slide
-		case '+', 'n', '\n', ' ', '\t', 14: // +,n,newline,space,tab,Crtl-N
+		case '+', 'n', '\n', ' ', '\t', 14, 27: // +,n,newline,space,tab,Crtl-N
 			n++
 			if n > lastslide {
 				n = firstslide
@@ -90,7 +90,7 @@ func interact(filename string, w, h int) {
 			xray++
 			showslide(d, n)
 			if xray%2 == 0 {
-				showgrid(d, n)
+				showgrid(d, n, gp)
 			}
 
 		// search
@@ -139,11 +139,10 @@ func loop(filename string, w, h int, n time.Duration) {
 }
 
 // showgrid xrays a slide
-func showgrid(d deck.Deck, n int) {
+func showgrid(d deck.Deck, n int, pct float64) {
 	w := float64(d.Canvas.Width)
 	h := float64(d.Canvas.Height)
 	fs := (w / 100) // labels are 1% of the width
-	pct := 10.0     // grid at 10% intervals
 	xpct := (pct / 100.0) * w
 	ypct := (pct / 100.0) * h
 
@@ -293,7 +292,7 @@ func showslide(d deck.Deck, n int) {
 
 // whitespace determines if a rune is whitespace
 func whitespace(r rune) bool {
-	return r == ' ' || r == '\n' || r == '\t'
+	return r == ' ' || r == '\n' || r == '\t' || r == '-'
 }
 
 // textwrap draws text at location, wrapping at the specified width
@@ -326,9 +325,10 @@ func readcmd(r *bufio.Reader) byte {
 
 // for every file, make a deck
 func main() {
-	var pause = flag.Duration("loop", 0, "loop, pausing the specified seconds between slides")
+	var pause = flag.Duration("loop", 0, "loop, pausing the specified duration between slides")
+	var gridpct = flag.Float64("g", 10, "Grid percentage")
 	flag.Parse()
 	for _, f := range flag.Args() {
-		dodeck(f, *pause)
+		dodeck(f, *pause, *gridpct)
 	}
 }

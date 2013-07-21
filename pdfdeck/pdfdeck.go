@@ -2,6 +2,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"image"
 	_ "image/jpeg"
@@ -18,6 +19,30 @@ var fontmap = map[string]string{
 	"sans": pdf.Helvetica, "sans-bold": pdf.HelveticaBold, "sans-italic": pdf.HelveticaOblique,
 	"serif": pdf.Times, "serif-bold": pdf.TimesBold, "serif-italic": pdf.TimesItalic,
 	"mono": pdf.Courier, "mono-bold": pdf.CourierBold, "mono-italic": pdf.CourierOblique,
+}
+
+// grid makes a grid using a percentage scale
+func grid(c *pdf.Canvas, w, h pdf.Unit, pct float64) {
+	p1 := pdf.Point{X: 0, Y: 0}
+	p2 := pdf.Point{X: 0, Y: h}
+	pw := w * (pdf.Unit(pct) / 100)
+	ph := h * (pdf.Unit(pct) / 100)
+	c.Push()
+	c.SetStrokeColor(0.9, 0.9, 0.9)
+	c.SetLineWidth(1)
+	for x := pdf.Unit(0.0); x <= w; x += pw {
+		p1.X = x
+		p2.X = x
+		c.DrawLine(p1, p2)
+	}
+	p1.X = 0
+	p2.X = w
+	for y := pdf.Unit(0.0); y <= h; y += ph {
+		p1.Y = y
+		p2.Y = y
+		c.DrawLine(p1, p2)
+	}
+	c.Pop()
 }
 
 // bullet draws a rectangular bullet
@@ -40,7 +65,9 @@ func background(c *pdf.Canvas, w, h pdf.Unit, color string) {
 }
 
 // dotext places text elements on the canvas according to type
-func dotext(c *pdf.Canvas, x, y, fs, tw pdf.Unit, tdata, font, color, align, ttype string) {
+func dotext(c *pdf.Canvas, cw, x, y, fs pdf.Unit, wp float64, tdata, font, color, align, ttype string) {
+	var tw pdf.Unit
+
 	td := strings.Split(tdata, "\n")
 	red, green, blue := colorlookup(color)
 	if ttype == "code" {
@@ -48,12 +75,14 @@ func dotext(c *pdf.Canvas, x, y, fs, tw pdf.Unit, tdata, font, color, align, tty
 		c.Push()
 		ch := pdf.Unit(len(td)) * (pdf.Unit(1.8) * fs)
 		c.Translate(x-fs, (y-ch)+fs)
+		tw = pdf.Unit(deck.Pwidth(wp, float64(cw), float64(cw-x-20)))
 		background(c, tw, ch, "rgb(240,240,240)")
 		c.Pop()
 	}
 	c.Push()
 	c.SetColor(red, green, blue)
 	if ttype == "block" {
+		tw = pdf.Unit(deck.Pwidth(wp, float64(cw), float64(cw/2)))
 		textwrap(c, x, y, tw, fs, fs*1.4, tdata, font)
 	} else {
 		ls := pdf.Unit(1.8) * fs
@@ -191,7 +220,7 @@ func dimen(d deck.Deck, xp, yp, sp float64) (x, y, s pdf.Unit) {
 }
 
 // doslides reads the deck file, making the PDF version
-func doslides(doc *pdf.Document, filename string, w, h int) {
+func doslides(doc *pdf.Document, filename string, w, h int, gp float64) {
 	var d deck.Deck
 	var err error
 
@@ -208,16 +237,16 @@ func doslides(doc *pdf.Document, filename string, w, h int) {
 	}
 
 	for i := 0; i < len(d.Slide); i++ {
-		pdfslide(doc, d, i)
+		pdfslide(doc, d, i, gp)
 	}
 }
 
 // pdfslide makes a slide, one slide per PDF page
-func pdfslide(doc *pdf.Document, d deck.Deck, n int) {
+func pdfslide(doc *pdf.Document, d deck.Deck, n int, gp float64) {
 	if n < 0 || n > len(d.Slide)-1 {
 		return
 	}
-	var x, y, fs, tw pdf.Unit
+	var x, y, fs pdf.Unit
 	var canvas *pdf.Canvas
 
 	cw := pdf.Unit(d.Canvas.Width)
@@ -233,6 +262,9 @@ func pdfslide(doc *pdf.Document, d deck.Deck, n int) {
 	if slide.Fg == "" {
 		slide.Fg = "black"
 	}
+	if gp > 0 {
+		grid(canvas, cw, ch, gp)
+	}
 	// for every image on the slide...
 	for _, im := range slide.Image {
 		x, y = dcoord(im.Xp, im.Yp, cw, ch)
@@ -247,12 +279,7 @@ func pdfslide(doc *pdf.Document, d deck.Deck, n int) {
 			t.Font = "sans"
 		}
 		x, y, fs = dimen(d, t.Xp, t.Yp, t.Sp)
-		if t.Wp == 0 {
-			tw = pct(50, cw)
-		} else {
-			tw = pct(t.Wp, cw)
-		}
-		dotext(canvas, x, y, fs, tw, t.Tdata, t.Font, t.Color, t.Align, t.Type)
+		dotext(canvas, cw, x, y, fs, t.Wp, t.Tdata, t.Font, t.Color, t.Align, t.Type)
 	}
 	// for every list element...
 	for _, l := range slide.List {
@@ -266,9 +293,9 @@ func pdfslide(doc *pdf.Document, d deck.Deck, n int) {
 }
 
 // dodeck kicks things off
-func dodeck(filename string) {
+func dodeck(filename string, gp float64) {
 	doc := pdf.New()
-	doslides(doc, filename, int(pdf.USLetterHeight), int(pdf.USLetterWidth))
+	doslides(doc, filename, int(pdf.USLetterHeight), int(pdf.USLetterWidth), gp)
 	err := doc.Encode(os.Stdout)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -278,9 +305,9 @@ func dodeck(filename string) {
 
 // for every file, make a deck
 func main() {
-	if len(os.Args) > 1 {
-		for _, f := range os.Args[1:] {
-			dodeck(f)
-		}
+	var gridpct = flag.Float64("g", 0, "place percentage grid on each slide")
+	flag.Parse()
+	for _, f := range flag.Args() {
+		dodeck(f, *gridpct)
 	}
 }
