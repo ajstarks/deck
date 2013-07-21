@@ -248,7 +248,7 @@ func pdfslide(doc *pdf.Document, d deck.Deck, n int) {
 		}
 		x, y, fs = dimen(d, t.Xp, t.Yp, t.Sp)
 		if t.Wp == 0 {
-			tw = pct(90, cw)
+			tw = pct(50, cw)
 		} else {
 			tw = pct(t.Wp, cw)
 		}
