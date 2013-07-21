@@ -1,4 +1,5 @@
 /*
+
 vgdeck is a program for showing presentations on the Raspberry Pi, using the deck and openvg libraries.
 To install:
 
@@ -6,8 +7,9 @@ To install:
 
 To run vgdeck, specify one or more files (marked up in deck xml) on the command line, and each will be shown in turn.
 
-	$ vgdeck -loop <pause> sales.xml program.xml architecture.xml
+	$ vgdeck -loop <pause> -g <percent> sales.xml program.xml architecture.xml
 
+The -g (grid) option specified te scale of the x-ray grid.
 The loop option pauses the specified duration between slides. If loop is not specified, then vgdeck enters
 an interactive mode using these commands:
 
@@ -24,5 +26,6 @@ an interactive mode using these commands:
 All commands are a single keystroke, acted on immediately
 (only the search command waits until you hit [Return] after entering your search text)
 To cycle through the deck, repeatedly tap [Return] key
+
 */
 package main
