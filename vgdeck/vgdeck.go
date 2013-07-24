@@ -13,11 +13,11 @@ import (
 )
 
 // dodeck sets up the graphics environment and kicks off the interaction
-func dodeck(filename string, pausetime time.Duration, gp float64) {
+func dodeck(filename string, pausetime time.Duration, slidenum int, gp float64) {
 	w, h := openvg.Init()
 	openvg.Background(0, 0, 0)
 	if pausetime == 0 {
-		interact(filename, w, h, gp)
+		interact(filename, w, h, slidenum, gp)
 	} else {
 		loop(filename, w, h, pausetime)
 	}
@@ -25,7 +25,7 @@ func dodeck(filename string, pausetime time.Duration, gp float64) {
 }
 
 // interact controls the display of the deck
-func interact(filename string, w, h int, gp float64) {
+func interact(filename string, w, h, slidenum int, gp float64) {
 	openvg.SaveTerm()
 	defer openvg.RestoreTerm()
 	var d deck.Deck
@@ -37,10 +37,16 @@ func interact(filename string, w, h int, gp float64) {
 	}
 	openvg.RawTerm()
 	r := bufio.NewReader(os.Stdin)
-	firstslide := 0
 	lastslide := len(d.Slide) - 1
-	n := firstslide
+	if slidenum > lastslide {
+		slidenum = lastslide
+	}
+	if slidenum < 0 {
+		slidenum = 0
+	}
+	n := slidenum
 	xray := 1
+	initial := 0
 	// respond to keyboard commands, 'q' to exit
 	for cmd := byte('0'); cmd != 'q'; cmd = readcmd(r) {
 		switch cmd {
@@ -61,7 +67,12 @@ func interact(filename string, w, h int, gp float64) {
 
 		// first slide
 		case '0', '1', 1, '^': // 0,1,Ctrl-A,^
-			n = firstslide
+			initial++
+			if initial == 1 {
+				n = slidenum
+			} else {
+				n = 0
+			}
 			showslide(d, n)
 
 		// last slide
@@ -73,14 +84,14 @@ func interact(filename string, w, h int, gp float64) {
 		case '+', 'n', '\n', ' ', '\t', 14, 27: // +,n,newline,space,tab,Crtl-N
 			n++
 			if n > lastslide {
-				n = firstslide
+				n = 0
 			}
 			showslide(d, n)
 
 		// previous slide
 		case '-', 'p', 8, 16, 127: // -,p,Backspace,Ctrl-P,Del
 			n--
-			if n < firstslide {
+			if n < 0 {
 				n = lastslide
 			}
 			showslide(d, n)
@@ -221,6 +232,27 @@ func showslide(d deck.Deck, n int) {
 		x = (im.Xp / 100) * cw
 		y = (im.Yp / 100) * ch
 		openvg.Image(x-float64(im.Width/2), y-float64(im.Height/2), im.Width, im.Height, im.Name)
+		if len(im.Caption) > 0 {
+			capfs := deck.Pwidth(im.Sp, cw, cw/100)
+			if im.Font == "" {
+				im.Font = "sans"
+			}
+			if im.Color == "" {
+				openvg.FillColor(slide.Fg)
+			} else {
+				openvg.FillColor(im.Color)
+			}
+			if im.Align == "" {
+				im.Align = "center"
+			}
+			switch im.Align {
+			case "left", "start":
+				x -= float64(im.Width / 2)
+			case "right", "end":
+				x += float64(im.Width / 2)
+			}
+			showtext(x, y-((float64(im.Height)/2)+(capfs*2.0)), im.Caption, im.Align, im.Font, capfs)
+		}
 	}
 
 	// every list in the slide
@@ -236,10 +268,10 @@ func showslide(d deck.Deck, n int) {
 		} else {
 			offset = 0
 		}
-		if l.Color != "" {
-			openvg.FillColor(l.Color)
-		} else {
+		if l.Color == "" {
 			openvg.FillColor(slide.Fg)
+		} else {
+			openvg.FillColor(l.Color)
 		}
 		// every list item
 		for ln, li := range l.Li {
@@ -271,10 +303,10 @@ func showslide(d deck.Deck, n int) {
 			openvg.FillColor("rgb(240,240,240)")
 			openvg.Rect(x-20, y-tdepth+(fs*linespacing), deck.Pwidth(t.Wp, cw, cw-x-20), tdepth)
 		}
-		if t.Color != "" {
-			openvg.FillColor(t.Color)
-		} else {
+		if t.Color == "" {
 			openvg.FillColor(slide.Fg)
+		} else {
+			openvg.FillColor(t.Color)
 		}
 		if t.Type == "block" {
 			textwrap(x, y, deck.Pwidth(t.Wp, cw, cw/2), t.Tdata, t.Font, fs, fs*linespacing, 0.3)
@@ -327,8 +359,9 @@ func readcmd(r *bufio.Reader) byte {
 func main() {
 	var pause = flag.Duration("loop", 0, "loop, pausing the specified duration between slides")
 	var gridpct = flag.Float64("g", 10, "Grid percentage")
+	var slidenum = flag.Int("slide", 0, "initial slide")
 	flag.Parse()
 	for _, f := range flag.Args() {
-		dodeck(f, *pause, *gridpct)
+		dodeck(f, *pause, *slidenum, *gridpct)
 	}
 }

@@ -7,8 +7,10 @@ To install:
 
 To run vgdeck, specify one or more files (marked up in deck xml) on the command line, and each will be shown in turn.
 
-	$ vgdeck -loop <pause> -g <percent> sales.xml program.xml architecture.xml
+	$ vgdeck -slide <number> -loop <pause> -g <percent> sales.xml program.xml architecture.xml
 
+The -slide option begins with the specified slide (slide numbers beyond the size of the deck will start at the end,
+negative slide number starts at the beginning).
 The -g (grid) option specified te scale of the x-ray grid.
 The loop option pauses the specified duration between slides. If loop is not specified, then vgdeck enters
 an interactive mode using these commands:

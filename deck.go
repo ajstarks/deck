@@ -51,11 +51,11 @@ type text struct {
 }
 
 type image struct {
-	Xp     float64 `xml:"xp,attr"`
-	Yp     float64 `xml:"yp,attr"`
+	CommonAttr
 	Width  int     `xml:"width,attr"`
 	Height int     `xml:"height,attr"`
 	Name   string  `xml:"name,attr"`
+	Caption string `xml:"caption,attr"`
 }
 
 // Read reads the deck description file
