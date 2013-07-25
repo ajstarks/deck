@@ -275,7 +275,6 @@ func showslide(d deck.Deck, n int) {
 		}
 		openvg.StrokeWidth(sw)
 		openvg.StrokeColor(line.Color)
-		fmt.Fprintf(os.Stderr, "x1=%.2f y1=%.2f x2=%.2f y2=%.2f\n", x1, y1, x2, y2)
 		openvg.Line(x1, y1, x2, y2)
 		openvg.StrokeWidth(0)
 	}
