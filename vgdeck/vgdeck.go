@@ -148,6 +148,10 @@ func loop(filename string, w, h int, n time.Duration) {
 		}
 	}
 }
+// pct computes percentages
+func pct(p float64, m float64) float64 {
+	return (p / 100.0) * m
+}
 
 // showgrid xrays a slide
 func showgrid(d deck.Deck, n int, pct float64) {
@@ -223,7 +227,6 @@ func showslide(d deck.Deck, n int) {
 	ch := float64(d.Canvas.Height)
 	openvg.FillColor(slide.Bg)
 	openvg.Rect(0, 0, cw, ch)
-	openvg.FillColor(slide.Fg)
 
 	var x, y, fs float64
 
@@ -255,6 +258,84 @@ func showslide(d deck.Deck, n int) {
 		}
 	}
 
+	// every graphic on the slide
+
+	const defaultColor = "rgb(127,127,127)"
+	// line
+	for _, line := range slide.Line {
+		if line.Color == "" {
+			line.Color = defaultColor
+		}
+		x1, y1, sw := deck.Dimen(d.Canvas, line.Xp1, line.Yp1, line.Sp)
+		x2, y2, _ := deck.Dimen(d.Canvas, line.Xp2, line.Yp2, 0)
+		openvg.StrokeColor(line.Color)
+		if sw == 0 {
+			sw = 2.0
+		}
+		openvg.StrokeWidth(sw)
+		openvg.StrokeColor(line.Color)
+		fmt.Fprintf(os.Stderr, "x1=%.2f y1=%.2f x2=%.2f y2=%.2f\n", x1, y1, x2, y2)
+		openvg.Line(x1, y1, x2, y2)
+		openvg.StrokeWidth(0)
+	}
+	// ellipse
+	for _, ellipse := range slide.Ellipse {
+		x, y, _ = deck.Dimen(d.Canvas, ellipse.Xp, ellipse.Yp, 0)
+		w := pct(ellipse.Wp, cw)
+		h := pct(ellipse.Hp, cw)
+		if ellipse.Color == "" {
+			ellipse.Color = defaultColor
+		}
+		openvg.FillColor(ellipse.Color)
+		openvg.Ellipse(x, y, w, h)
+	}
+	// rect
+	for _, rect := range slide.Rect {
+		x, y, _ = deck.Dimen(d.Canvas, rect.Xp, rect.Yp, 0)
+		w := pct(rect.Wp, cw)
+		h := pct(rect.Hp, cw)
+		if rect.Color == "" {
+			rect.Color = defaultColor
+		}
+		openvg.FillColor(rect.Color)
+		openvg.Rect(x, y, w, h)
+	}
+	// curve
+	for _, curve := range slide.Curve {
+		if curve.Color == "" {
+			curve.Color = defaultColor
+		}
+		x1, y1, sw := deck.Dimen(d.Canvas, curve.Xp1, curve.Yp1, curve.Sp)
+		x2, y2, _ := deck.Dimen(d.Canvas, curve.Xp2, curve.Yp2, 0)
+		x3, y3, _ := deck.Dimen(d.Canvas, curve.Xp3, curve.Yp3, 0)
+		openvg.StrokeColor(curve.Color)
+		openvg.FillColor(slide.Bg)
+		if sw == 0 {
+			sw = 1.0
+		}
+		openvg.StrokeWidth(sw)
+		openvg.Qbezier(x1, y1, x2, y2, x3, y3)
+		openvg.StrokeWidth(0)
+	}
+
+	// arc 
+	for _, arc := range slide.Arc {
+		if arc.Color == "" {
+			arc.Color = defaultColor
+		}
+		ax, ay, sw := deck.Dimen(d.Canvas, arc.Xp, arc.Yp, arc.Sp)
+		w := pct(arc.Wp, cw)
+		h := pct(arc.Hp, cw)
+		openvg.StrokeColor(arc.Color)
+		openvg.FillColor(slide.Bg)
+		if sw == 0 {
+			sw = 2.0
+		}
+		openvg.StrokeWidth(sw)
+		openvg.Arc(ax, ay, w, h, arc.A1, arc.A2)
+		openvg.StrokeWidth(0)
+	}
+	openvg.FillColor(slide.Fg)
 	// every list in the slide
 	var offset float64
 	const blinespacing = 2.0

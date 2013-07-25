@@ -21,11 +21,16 @@ type canvas struct {
 }
 
 type slide struct {
-	Bg    string  `xml:"bg,attr"`
-	Fg    string  `xml:"fg,attr"`
-	List  []list  `xml:"list"`
-	Text  []text  `xml:"text"`
-	Image []image `xml:"image"`
+	Bg      string    `xml:"bg,attr"`
+	Fg      string    `xml:"fg,attr"`
+	List    []List    `xml:"list"`
+	Text    []Text    `xml:"text"`
+	Image   []Image   `xml:"image"`
+	Ellipse []Ellipse `xml:"ellipse"`
+	Line    []Line    `xml:"line"`
+	Rect    []Rect    `xml:"rect"`
+	Curve   []Curve   `xml:"curve"`
+	Arc     []Arc     `xml:"arc"`
 }
 
 // CommonAttr are the common attributes for text and list
@@ -39,23 +44,63 @@ type CommonAttr struct {
 	Font  string  `xml:"font,attr"`
 }
 
-type list struct {
+// Dimension describes a graphics object with width and height
+type Dimension struct {
+	CommonAttr
+	Wp float64 `xml:"wp,attr"`
+	Hp float64 `xml:"hp,attr"`
+}
+type List struct {
 	CommonAttr
 	Li []string `xml:"li"`
 }
 
-type text struct {
+type Text struct {
 	CommonAttr
 	Wp    float64 `xml:"wp,attr"`
 	Tdata string  `xml:",chardata"`
 }
 
-type image struct {
+type Image struct {
 	CommonAttr
-	Width  int     `xml:"width,attr"`
-	Height int     `xml:"height,attr"`
-	Name   string  `xml:"name,attr"`
+	Width   int    `xml:"width,attr"`
+	Height  int    `xml:"height,attr"`
+	Name    string `xml:"name,attr"`
 	Caption string `xml:"caption,attr"`
+}
+
+type Ellipse struct {
+	Dimension
+}
+
+type Rect struct {
+	Dimension
+}
+
+type Line struct {
+	Xp1   float64 `xml:"xp1,attr"`
+	Yp1   float64 `xml:"yp1,attr"`
+	Xp2   float64 `xml:"xp2,attr"`
+	Yp2   float64 `xml:"yp2,attr"`
+	Sp    float64 `xml:"sp,attr"`
+	Color string  `xml:"color,attr"`
+}
+
+type Curve struct {
+	Xp1   float64 `xml:"xp1,attr"`
+	Yp1   float64 `xml:"yp1,attr"`
+	Xp2   float64 `xml:"xp2,attr"`
+	Yp2   float64 `xml:"yp2,attr"`
+	Xp3   float64 `xml:"xp3,attr"`
+	Yp3   float64 `xml:"yp3,attr"`
+	Sp    float64 `xml:"sp,attr"`
+	Color string  `xml:"color,attr"`
+}
+
+type Arc struct {
+	Dimension
+	A1 float64 `xml:"a1,attr"`
+	A2 float64 `xml:"a2,attr"`
 }
 
 // Read reads the deck description file
@@ -127,6 +172,21 @@ func Dump(d Deck) {
 		}
 		for m, im := range s.Image {
 			fmt.Printf("\tImage [%d] = %#v\n", m, im)
+		}
+		for l, line := range s.Line {
+			fmt.Printf("\tLine [%d] = %#v\n", l, line)
+		}
+		for  r, rect := range s.Rect {
+			fmt.Printf("\tRect [%d] = %#v\n", r, rect)
+		}
+		for a, arc := range s.Arc {
+			fmt.Printf("\tArc [%d] = %#v\n", a, arc)
+		}
+		for c, curve := range s.Curve {
+			fmt.Printf("\tCurve [%d] = %#v\n", c, curve)
+		}
+		for e, ellipse := range s.Ellipse {
+			fmt.Printf("\tEllipse [%d] = %#v\n", e, ellipse)
 		}
 	}
 }
