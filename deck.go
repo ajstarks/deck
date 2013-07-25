@@ -50,17 +50,21 @@ type Dimension struct {
 	Wp float64 `xml:"wp,attr"`
 	Hp float64 `xml:"hp,attr"`
 }
+
+// List describes the list element
 type List struct {
 	CommonAttr
 	Li []string `xml:"li"`
 }
 
+// Text describes the text element
 type Text struct {
 	CommonAttr
 	Wp    float64 `xml:"wp,attr"`
 	Tdata string  `xml:",chardata"`
 }
 
+// Image describes an image
 type Image struct {
 	CommonAttr
 	Width   int    `xml:"width,attr"`
@@ -69,14 +73,17 @@ type Image struct {
 	Caption string `xml:"caption,attr"`
 }
 
+// Ellipse describes a rectangle with x,y,w,h
 type Ellipse struct {
 	Dimension
 }
 
+// Rect describes a rectangle with x,y,w,h
 type Rect struct {
 	Dimension
 }
 
+// Line defines a straight line
 type Line struct {
 	Xp1   float64 `xml:"xp1,attr"`
 	Yp1   float64 `xml:"yp1,attr"`
@@ -86,6 +93,7 @@ type Line struct {
 	Color string  `xml:"color,attr"`
 }
 
+// Curve defines a quadratic Bezier curve
 type Curve struct {
 	Xp1   float64 `xml:"xp1,attr"`
 	Yp1   float64 `xml:"yp1,attr"`
@@ -97,6 +105,7 @@ type Curve struct {
 	Color string  `xml:"color,attr"`
 }
 
+// Arc defines an elliptical arc
 type Arc struct {
 	Dimension
 	A1 float64 `xml:"a1,attr"`
@@ -176,7 +185,7 @@ func Dump(d Deck) {
 		for l, line := range s.Line {
 			fmt.Printf("\tLine [%d] = %#v\n", l, line)
 		}
-		for  r, rect := range s.Rect {
+		for r, rect := range s.Rect {
 			fmt.Printf("\tRect [%d] = %#v\n", r, rect)
 		}
 		for a, arc := range s.Arc {

@@ -148,6 +148,7 @@ func loop(filename string, w, h int, n time.Duration) {
 		}
 	}
 }
+
 // pct computes percentages
 func pct(p float64, m float64) float64 {
 	return (p / 100.0) * m
@@ -318,7 +319,7 @@ func showslide(d deck.Deck, n int) {
 		openvg.StrokeWidth(0)
 	}
 
-	// arc 
+	// arc
 	for _, arc := range slide.Arc {
 		if arc.Color == "" {
 			arc.Color = defaultColor

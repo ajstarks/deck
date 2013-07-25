@@ -14,6 +14,11 @@ within slides any number of:
 * text: plain, textblock, or code
 * list: plain, bullet, number
 * image: JPEG or PNG images
+* line: straight line
+* rect: rectangle
+* ellipse: ellipse
+* curve: quadraticd Bezier curve
+* arc: elliptical arc
 
 ## Markup ##
 
@@ -24,12 +29,18 @@ Here is a sample deck in XML:
 	   <slide bg="maroon" fg="white">
 		<image xp="20" yp="30" width="256" height="256" name="picture.png"/>
 	         <text xp="20" yp="80" sp="3">Deck uses these elements</text>
+		 <line xp1="20" yp1="75" xp2="90" yp2="75" sp="0.3" color="rgb(127,127,127)"/>
 	         <list xp="20" yp="70" sp="1.5">
 	            <li>canvas<li>
 	            <li>slide</li>
 	            <li>text</li>
 	            <li>list</li>
 	            <li>image</li>
+                    <li>line</li>
+                    <li>rect</li>
+                    <li>ellipse</li>
+                    <li>curve</li>
+                    <li>arc</li>
 	         </list>
 	   </slide>
 	</deck>
@@ -55,6 +66,7 @@ For example, to place an element in the middle of the canvas, specify xp="50" yp
 one-third from the top, and one-third from the bottom: xp="66.6" yp="33.3".
 
 The size of text is also scaled to the width of the canvas. For example sp="3" is a typical size for slide headings.
+The dimensions of graphical elements (width, height, stroke width) are also scaled to the canvas width.
 
 The content of the slides are automatically scaled based on the specified canvas size 
 (sane defaults are should be set the clients, if dimensions not specified)
