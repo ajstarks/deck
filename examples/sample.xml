@@ -13,10 +13,10 @@
          <li>arc</li>
          <li>curve</li>
       </list>
-      <line    xp1="20" yp1="20" xp2="30" yp2="20"/>
-      <rect    xp="35"  yp="20" wp="4" hp="3" color="rgb(127,0,0)"/>
-      <ellipse xp="45"  yp="20" wp="4" hp="3" color="rgb(0,127,0)"/>
-      <arc     xp="55"  yp="20" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/>
-      <curve   xp1="60" yp1="20" xp2="75" yp2="40" xp3="70" yp3="20" />
+      <line    xp1="20" yp1="10" xp2="30" yp2="10"/>
+      <rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/>
+      <ellipse xp="45"  yp="10" wp="4" hp="3" color="rgb(0,127,0)"/>
+      <arc     xp="55"  yp="10" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/>
+      <curve   xp1="60" yp1="10" xp2="75" yp2="40" xp3="70" yp3="10" />
   </slide>
 </deck>
