@@ -228,7 +228,6 @@ func showslide(d deck.Deck, n int) {
 	ch := float64(d.Canvas.Height)
 	openvg.FillColor(slide.Bg)
 	openvg.Rect(0, 0, cw, ch)
-
 	var x, y, fs float64
 
 	// every image in the slide
@@ -262,14 +261,20 @@ func showslide(d deck.Deck, n int) {
 	// every graphic on the slide
 
 	const defaultColor = "rgb(127,127,127)"
+	var strokeopacity float64
 	// line
 	for _, line := range slide.Line {
 		if line.Color == "" {
 			line.Color = defaultColor
 		}
+		if line.Opacity == 0 {
+			strokeopacity = 1
+		} else {
+			strokeopacity = line.Opacity
+		}
 		x1, y1, sw := deck.Dimen(d.Canvas, line.Xp1, line.Yp1, line.Sp)
 		x2, y2, _ := deck.Dimen(d.Canvas, line.Xp2, line.Yp2, 0)
-		openvg.StrokeColor(line.Color)
+		openvg.StrokeColor(line.Color, strokeopacity)
 		if sw == 0 {
 			sw = 2.0
 		}
@@ -286,7 +291,10 @@ func showslide(d deck.Deck, n int) {
 		if ellipse.Color == "" {
 			ellipse.Color = defaultColor
 		}
-		openvg.FillColor(ellipse.Color)
+		if ellipse.Opacity == 0 {
+			ellipse.Opacity = 1
+		}
+		openvg.FillColor(ellipse.Color, ellipse.Opacity)
 		openvg.Ellipse(x, y, w, h)
 	}
 	// rect
@@ -297,19 +305,27 @@ func showslide(d deck.Deck, n int) {
 		if rect.Color == "" {
 			rect.Color = defaultColor
 		}
-		openvg.FillColor(rect.Color)
-		openvg.Rect(x, y, w, h)
+		if rect.Opacity == 0 {
+			rect.Opacity = 1
+		}
+		openvg.FillColor(rect.Color, rect.Opacity)
+		openvg.Rect(x-(w/2), y-(h/2), w, h)
 	}
 	// curve
 	for _, curve := range slide.Curve {
 		if curve.Color == "" {
 			curve.Color = defaultColor
 		}
+		if curve.Opacity != 0 {
+			strokeopacity = curve.Opacity
+		} else {
+			strokeopacity = 1.0
+		}
 		x1, y1, sw := deck.Dimen(d.Canvas, curve.Xp1, curve.Yp1, curve.Sp)
 		x2, y2, _ := deck.Dimen(d.Canvas, curve.Xp2, curve.Yp2, 0)
 		x3, y3, _ := deck.Dimen(d.Canvas, curve.Xp3, curve.Yp3, 0)
-		openvg.StrokeColor(curve.Color)
-		openvg.FillColor(slide.Bg)
+		openvg.StrokeColor(curve.Color, strokeopacity)
+		openvg.FillColor(slide.Bg, curve.Opacity)
 		if sw == 0 {
 			sw = 1.0
 		}
@@ -323,11 +339,16 @@ func showslide(d deck.Deck, n int) {
 		if arc.Color == "" {
 			arc.Color = defaultColor
 		}
+		if arc.Opacity != 0 {
+			strokeopacity = arc.Opacity
+		} else {
+			strokeopacity = 1.0
+		}
 		ax, ay, sw := deck.Dimen(d.Canvas, arc.Xp, arc.Yp, arc.Sp)
 		w := pct(arc.Wp, cw)
 		h := pct(arc.Hp, cw)
-		openvg.StrokeColor(arc.Color)
-		openvg.FillColor(slide.Bg)
+		openvg.StrokeColor(arc.Color, strokeopacity)
+		openvg.FillColor(slide.Bg, arc.Opacity)
 		if sw == 0 {
 			sw = 2.0
 		}
@@ -336,6 +357,7 @@ func showslide(d deck.Deck, n int) {
 		openvg.StrokeWidth(0)
 	}
 	openvg.FillColor(slide.Fg)
+	
 	// every list in the slide
 	var offset float64
 	const blinespacing = 2.0
@@ -359,7 +381,6 @@ func showslide(d deck.Deck, n int) {
 			if l.Type == "bullet" {
 				boffset := fs / 2
 				openvg.Rect(x, y+boffset/2, boffset, boffset)
-				//openvg.Circle(x, y+boffset, boffset)
 			}
 			if l.Type == "number" {
 				li = fmt.Sprintf("%d. ", ln+1) + li

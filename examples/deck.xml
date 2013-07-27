@@ -1,5 +1,4 @@
 <deck>
-  <canvas/>
 
   <slide bg="white" fg="black">
     <text  xp="50" yp="80" sp="5" align="center">Deck</text>
@@ -20,21 +19,43 @@
         <li>Uses three main elements: text, list, and image.</li>
      </list>
   </slide>
+  <slide>
+	<text xp="50" yp="90" sp="3" align="center">Two Columns</text>
+	<list xp="20" yp="80" sp="1">
+		<li>One</li>
+		<li>Two</li>
+		<li>Three</li>
+	</list>
+	<list xp="70" yp="80" sp="1">
+		<li>One</li>
+		<li>Two</li>
+		<li>Three</li>
+	</list>
+	<line xp1="50" yp1="85" xp2="50" yp2="20" sp="0.1" color="maroon" />
+  </slide>
+  <slide>
+    <rect xp="50" yp="50" wp="25" hp="25" color="rgb(240,240,240)"/>
+    <rect xp="48" yp="60" wp="16" hp="9" color="rgb(127,0,0)" />
+    <rect xp="52" yp="55" wp="16" hp="9" color="white"/>
+    <rect xp="50" yp="45" wp="16" hp="9" color="rgb(127,127,127)"/>
+   <text xp="50" yp="30" sp="2" align="center">Deck</text>
+  </slide>
 
   <slide>
-	  <text xp="20" yp="80" sp="3">Deck does graphics</text>
-	  <line xp1="20" yp1="78" xp2="90" yp2="78" sp="0.2"/>
-	  <curve xp1="20" yp1="40" xp2="70" yp2="60" xp3="70" yp3="30" sp="0.2" color="blue"/>
-	  <rect xp="10" yp="70" wp="3" hp="3" color="red"/>
-	  <ellipse xp="20" yp="50" wp="3" hp="3" color="green"/>
-	  <ellipse xp="70" yp="30" wp="1" hp="1" color="purple"/>
-	  <ellipse xp="10" yp="20" wp="1" hp="1" color="rgb(50,50,50)"/>
-	  <ellipse xp="20" yp="20" wp="2" hp="2" color="rgb(100,100,100)"/>
-	  <ellipse xp="30" yp="20" wp="3" hp="3" color="rgb(150,150,150)"/>
-	  <ellipse xp="40" yp="20" wp="4" hp="4" color="rgb(200,200,200)"/>
-	  <ellipse xp="50" yp="20" wp="5" hp="5" color="rgb(225,225,225)"/>
-	  <ellipse xp="60" yp="20" wp="6" hp="6" color="rgb(150,150,150)"/>
-	  <arc xp="80" yp="80" wp="10" hp="10" a1="0" a2="90" sp="0.2" color="blue"/>
+     <text xp="25" yp="80" sp="3">Deck does graphics</text>
+     <line xp1="5" yp1="75" xp2="20" yp2="70" sp="0.2"/>
+     <rect xp="10" yp="60" wp="15" hp="10" color="red"/>
+     <rect xp="15" yp="55" wp="10" hp="10" color="blue" opacity="0.3"/>
+     <ellipse xp="10" yp="35" wp="15" hp="10" color="green"/>
+     <ellipse xp="15" yp="30" wp="10" hp="10" color="blue" opacity="0.3"/>
+     <arc xp="10" yp="10" wp="10" hp="10" a1="0" a2="180" sp="0.2" color="blue"/>
+
+     <text xp="25" yp="70" sp="1.2" font="mono">&lt;line xp1="5" yp1="75" xp2="20" yp2="70" /&gt;</text>
+     <text xp="25" yp="60" sp="1.2" font="mono">&lt;rect xp="20" yp="60" wp="15" hp="10" color="red"/&gt;</text>
+     <text xp="25" yp="55" sp="1.2" font="mono">&lt;rect xp="25" yp="55" wp="10" hp="10" color="blue" opacity="0.3"/&gt;</text>
+     <text xp="25" yp="35" sp="1.2" font="mono">&lt;ellipse xp="20" yp="35" wp="15" hp="10" color="green"/&gt;</text>
+     <text xp="25" yp="30" sp="1.2" font="mono">&lt;ellipse xp="20" yp="30" wp="10" hp="10" color="blue" opacity="0.3"/&gt;</text>
+     <text xp="25" yp="10" sp="1.2" font="mono">&lt;arc xp="20" yp="10" wp="10" wp="10" a1="0" a2="180" color="blue"/&gt;</text>
   </slide>
 
   <slide>
@@ -155,6 +176,7 @@ func main() {
       <li>type</li>
       <li>align</li>
       <li>color</li>
+      <li>opacity</li>
       <li>font</li>
     </list>
 
@@ -165,6 +187,7 @@ func main() {
       <li>"bullet", "number" (list), "block", "code" (text)</li>
       <li>"left", "middle", "end"</li>
       <li>SVG names ("maroon"), or RGB "rgb(127,0,0)"</li>
+      <li>opacity (0-1, transparent - opaque)</li>
       <li>"sans", "serif", "mono"</li>
       </list>
   </slide>

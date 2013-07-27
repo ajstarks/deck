@@ -35,13 +35,14 @@ type slide struct {
 
 // CommonAttr are the common attributes for text and list
 type CommonAttr struct {
-	Xp    float64 `xml:"xp,attr"`
-	Yp    float64 `xml:"yp,attr"`
-	Sp    float64 `xml:"sp,attr"`
-	Type  string  `xml:"type,attr"`
-	Align string  `xml:"align,attr"`
-	Color string  `xml:"color,attr"`
-	Font  string  `xml:"font,attr"`
+	Xp      float64 `xml:"xp,attr"`
+	Yp      float64 `xml:"yp,attr"`
+	Sp      float64 `xml:"sp,attr"`
+	Type    string  `xml:"type,attr"`
+	Align   string  `xml:"align,attr"`
+	Color   string  `xml:"color,attr"`
+	Opacity float64 `xml:"opacity,attr"`
+	Font    string  `xml:"font,attr"`
 }
 
 // Dimension describes a graphics object with width and height
@@ -91,6 +92,7 @@ type Line struct {
 	Yp2   float64 `xml:"yp2,attr"`
 	Sp    float64 `xml:"sp,attr"`
 	Color string  `xml:"color,attr"`
+	Opacity float64 `xml:"opacity,attr"`
 }
 
 // Curve defines a quadratic Bezier curve
@@ -103,6 +105,7 @@ type Curve struct {
 	Yp3   float64 `xml:"yp3,attr"`
 	Sp    float64 `xml:"sp,attr"`
 	Color string  `xml:"color,attr"`
+	Opacity float64 `xml:"opacity,attr"`
 }
 
 // Arc defines an elliptical arc
@@ -110,6 +113,7 @@ type Arc struct {
 	Dimension
 	A1 float64 `xml:"a1,attr"`
 	A2 float64 `xml:"a2,attr"`
+	Opacity float64 `xml:"opacity,attr"`
 }
 
 // Read reads the deck description file
