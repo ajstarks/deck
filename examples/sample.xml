@@ -1,12 +1,22 @@
 <deck>
   <canvas width="1024" height="768" />
-  <slide bg="black" fg="white">
-      <image xp="50" yp="50" width="256" height="256" name="sdeck256.png" />
+  <slide bg="white" fg="black">
+      <image xp="50" yp="60" width="256" height="179" name="work.png" />
       <text  xp="20" yp="80" sp="3">Deck uses these elements</text>
       <list  xp="20" yp="70" sp="2" type="bullet">
-	      <li>text</li>
-	      <li>list</li>
-	      <li>image</li>
+         <li>text</li>
+         <li>list</li>
+         <li>image</li>
+         <li>line</li>
+         <li>rect</li>
+         <li>ellipse</li>
+         <li>arc</li>
+         <li>curve</li>
       </list>
+      <line    xp1="20" yp1="20" xp2="30" yp2="20"/>
+      <rect    xp="35"  yp="20" wp="4" hp="3" color="rgb(127,0,0)"/>
+      <ellipse xp="45"  yp="20" wp="4" hp="3" color="rgb(0,127,0)"/>
+      <arc     xp="55"  yp="20" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/>
+      <curve   xp1="60" yp1="20" xp2="75" yp2="40" xp3="70" yp3="20" />
   </slide>
 </deck>
