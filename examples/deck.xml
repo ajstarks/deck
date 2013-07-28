@@ -110,13 +110,15 @@
      <ellipse xp="10" yp="35" wp="15" hp="10" color="green"/>
      <ellipse xp="15" yp="30" wp="10" hp="10" color="blue" opacity="0.3"/>
      <arc xp="10" yp="10" wp="10" hp="10" a1="0" a2="180" sp="0.2" color="blue"/>
+     <curve xp1="5" yp1="10" xp2="15" yp2="20"  xp3="15" yp3="10" sp="0.3" color="green"/>
 
-     <text xp="25" yp="70" sp="1.2" font="mono">&lt;line xp1="5" yp1="75" xp2="20" yp2="70" sp="0.2"/&gt;</text>
-     <text xp="25" yp="60" sp="1.2" font="mono">&lt;rect xp="10" yp="60" wp="15" hp="10" color="red"/&gt;</text>
-     <text xp="25" yp="55" sp="1.2" font="mono">&lt;rect xp="15" yp="55" wp="10" hp="10" color="blue" opacity="0.3"/&gt;</text>
-     <text xp="25" yp="35" sp="1.2" font="mono">&lt;ellipse xp="10" yp="35" wp="15" hp="10" color="green"/&gt;</text>
-     <text xp="25" yp="30" sp="1.2" font="mono">&lt;ellipse xp="15" yp="30" wp="10" hp="10" color="blue" opacity="0.3"/&gt;</text>
-     <text xp="25" yp="10" sp="1.2" font="mono">&lt;arc xp="20" yp="10" wp="10" wp="10" a1="0" a2="180" sp="0.2" color="blue"/&gt;</text>
+     <text xp="25" yp="70" sp="1.1" font="mono">&lt;line xp1="5" yp1="75" xp2="20" yp2="70" sp="0.2"/&gt;</text>
+     <text xp="25" yp="60" sp="1.1" font="mono">&lt;rect xp="10" yp="60" wp="15" hp="10" color="red"/&gt;</text>
+     <text xp="25" yp="55" sp="1.1" font="mono">&lt;rect xp="15" yp="55" wp="10" hp="10" color="blue" opacity="0.3"/&gt;</text>
+     <text xp="25" yp="35" sp="1.1" font="mono">&lt;ellipse xp="10" yp="35" wp="15" hp="10" color="green"/&gt;</text>
+     <text xp="25" yp="30" sp="1.1" font="mono">&lt;ellipse xp="15" yp="30" wp="10" hp="10" color="blue" opacity="0.3"/&gt;</text>
+     <text xp="25" yp="15" sp="1.1" font="mono">&lt;curve xp1="5" yp1="10" xp2="15" yp2="20" xp3="15" yp3="10" sp="0.3" color="green"/&gt;</text>
+     <text xp="25" yp="10" sp="1.1" font="mono">&lt;arc xp="20" yp="10" wp="10" wp="10" a1="0" a2="180" sp="0.2" color="blue"/&gt;</text>
    </slide>
 
   <slide>
@@ -127,10 +129,10 @@
    <text xp="50" yp="30" sp="2" align="center">Deck</text>
   </slide>
   
-  <slide>
+  <slide bg="rgb(240,240,240)">
     <text xp="20" yp="80" sp="3">Anatomy of a Deck</text>
-    <image xp="80" yp="70" width="320" height="240" name="sample320.png"/>
-    <list  xp="20" yp="70" sp="0.8" font="mono">
+    <image xp="80" yp="45" width="320" height="240" name="sample320.png"/>
+    <list  xp="20" yp="70" sp="0.85" font="mono">
         <li>&lt;deck&gt;</li>
         <li>  &lt;canvas width="1024" height="768" /&gt;</li>
         <li>  &lt;slide bg="white" fg="black"&gt;</li>
@@ -150,11 +152,11 @@
         <li>      &lt;rect    xp="35"  yp="20" wp="4" hp="3" color="rgb(127,0,0)"/&gt;</li>
         <li>      &lt;ellipse xp="45"  yp="20" wp="4" hp="3" color="rgb(0,127,0)"/&gt;</li>
         <li>      &lt;arc     xp="55"  yp="20" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/&gt;</li>
-        <li>      &lt;curve   xp1="60" yp1="20" xp2="75" yp2="40" xp3="70" yp3="20" /&gt;</li>
+        <li>      &lt;curve   xp1="60" yp1="20" xp2="75" yp2="20" xp3="70" yp3="20" /&gt;</li>
         <li>  &lt;/slide&gt;</li>
         <li>&lt;/deck&gt;</li>
     </list>
-    <list xp="3" yp="70" sp="0.8" color="rgb(127,0,0)" >
+    <list xp="3" yp="70" sp="0.85" color="rgb(127,0,0)" >
         <li>Start the deck</li>
         <li>Set the canvas size</li>
         <li>Begin a slide</li>
@@ -169,12 +171,12 @@
         <li></li>
         <li></li>
         <li></li>
+        <li>End the list</li>
         <li>Draw a line</li>
         <li>Draw a rectangle</li>
         <li>Draw an ellipse</li>
         <li>Draw an arc</li>
         <li>Draw a quadratic bezier</li>
-        <li>End the list</li>
         <li>End the slide</li>
     <li>End of the deck</li>
     </list>
