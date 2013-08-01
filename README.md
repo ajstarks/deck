@@ -46,7 +46,6 @@ Here is a sample deck in XML:
 			<rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/>
       			<ellipse xp="45"  yp="10" wp="4" hp="3" color="rgb(0,127,0)"/>
      	 		<arc     xp="55"  yp="10" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/>
-			
 		</slide>
 	</deck>
 
