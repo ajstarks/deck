@@ -1,5 +1,7 @@
 #deck: A Go package for slide decks
 
+<a href="http://www.flickr.com/photos/ajstarks/9211658478/" title="mwd by ajstarks, on Flickr"><img src="http://farm8.staticflickr.com/7379/9211658478_08b10e89d1.jpg" width="500" height="281" alt="mwd"></a>
+
 Package deck provides an interface, via a standard markup language for making scalable, percentage-based layout slide decks.
 Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc.
 From a single markup language, clients may be interactive or produce standard formats such as HTML or PDF.
@@ -75,6 +77,8 @@ The dimensions of graphical elements (width, height, stroke width) are also scal
 The content of the slides are automatically scaled based on the specified canvas size 
 (sane defaults are should be set the clients, if dimensions not specified)
 
+<a href="http://www.flickr.com/photos/ajstarks/9409916329/" title="Deck's percentage based layout by ajstarks, on Flickr"><img src="http://farm4.staticflickr.com/3818/9409916329_6b8e134f16.jpg" width="500" height="281" alt="Deck's percentage based layout"></a>
+
 ## Clients ##
 
 Currently there are two clients: vgdeck and pdfdeck.
@@ -82,7 +86,7 @@ Currently there are two clients: vgdeck and pdfdeck.
 vgdeck is a program for showing presentations on the Raspberry Pi, using the openvg library.
 To install:
 
-	go get nstall github.com/ajstarks/deck/vgdeck
+	go get github.com/ajstarks/deck/vgdeck
 
 To run vgdeck, specify one or more files (marked up in deck XML) on the command line, and each will be shown in turn.
 
@@ -106,7 +110,7 @@ To cycle through the deck, repeatedly tap [Return] key
 
 For PDF decks, install pdfdeck:
 
-	go install github.com/ajstarks/deck/pdfdeck
+	go get github.com/ajstarks/deck/pdfdeck
 
 pdfdeck produces decks on standard output:
 
