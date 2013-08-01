@@ -15,73 +15,60 @@
         <li>Go package, allowing for different clients,</li>
         <li>Uses XML as the markup language,</li>
         <li>Locations and sizes are specified in percentages,</li>
-        <li>Make scalable slides, adapting to any screen size,</li>
+        <li>Make scalable slides, adapting to any size,</li>
         <li>Elements: text, list, image, line, rect, ellipse, arc, curve</li>
      </list>
   </slide>
   
   <slide>
      <text xp="20" yp="80" sp="3">Deck is:</text>
-     <text  xp="20" yp="70" sp="2" wp="33" font="serif" type="block">
+     <text  xp="20" yp="70" sp="2" wp="50" font="serif" type="block">
      a Go package enabling clients
      to use the same input to produce presentations on a variety of media and formats.</text>
-     <text xp="20" yp="40" sp="2" wp="33" font="serif" type="block">
-     Using these elements (text, list, image, line, rect, ellipse, arc, curve), 
-     all layout is done via percentages,
-     resulting in scalable slides that adapt to any screen size or orientation.
+     <text xp="20" yp="40" sp="2" wp="50" font="serif" type="block">
+     Deck uses these elements (text, list, image, line, rect, ellipse, arc, curve), 
+     where layout are object sizes are specified in percentages,
+     resulting in scalable slides that adapt to any size or orientation.
      </text>
   </slide>
-
-  <slide>
-     <text xp="20" yp="80" sp="3">Deck is:</text>
-     <rect xp="40" yp="60" wp="60" hp="18" color="black"/>
-     <text  xp="20" yp="70" sp="2" wp="33" font="serif" type="block" color="white">
-     a Go package enabling clients
-     to use the same input to produce presentations on a variety of media and formats.</text>
-     <text xp="20" yp="40" sp="2" wp="33" font="serif" type="block">
-     Using these elements (text, list, image, line, rect, ellipse, arc, curve), 
-     all layout is done via percentages,
-     resulting in scalable slides that adapt to any screen size or orientation.
-      </text>
-   </slide>
 
   <slide bg="rgb(127,127,127)" fg="white">
       <text xp="10" yp="10" sp="4">Elements and Markup</text>
   </slide>
-
+  
   <slide bg="rgb(127,0,0)" fg="white">
-      <text xp="50" yp="50" sp="5" font="mono" align="center">&lt;text&gt;. . .&lt;/text&gt;</text>
+      <text xp="50" yp="50" sp="5" font="mono" align="center">&lt;text&gt;...&lt;/text&gt;</text>
       <text xp="50" yp="30" sp="2" align="center">plain, block, code</text>
   </slide>
 
   <slide bg="rgb(0,127,0)" fg="white">
-      <text xp="50" yp="50" sp="5" font="mono" align="center">&lt;list . . .&gt;</text>
+      <text xp="50" yp="50" sp="5" font="mono" align="center">&lt;list ...&gt;</text>
       <text xp="50" yp="30" sp="2" align="center">plain, bullet, number</text>
   </slide>
 
   <slide>
       <image xp="50" yp="50" width="422" height="238" name="desert2.jpg"/>
-      <text xp="50" yp="10" sp="5" font="mono" align="center">&lt;image . . ./&gt;</text>
+      <text xp="50" yp="10" sp="5" font="mono" align="center">&lt;image .../&gt;</text>
   </slide>
   
   <slide>
      <rect xp="50" yp="50" wp="20" hp="20" color="rgb(127,0,0)"/>
-     <text xp="50" yp="10" sp="5" align="center">&lt;rect . . ./&gt;</text>
+     <text xp="50" yp="10" sp="5" align="center" font="mono">&lt;rect .../&gt;</text>
   </slide>
   
    <slide>
      <ellipse xp="50" yp="50" wp="20" hp="20" color="rgb(0,127,0)"/>
-     <text xp="50" yp="10" sp="5" align="center">&lt;ellipse . . ./&gt;</text>
+     <text xp="50" yp="10" sp="5" align="center" font="mono">&lt;ellipse .../&gt;</text>
    </slide>
   
    <slide>
      <line xp1="35" yp1="50" xp2="65" yp2="65" sp="0.5"/>
-     <text xp="50" yp="10" sp="5" align="center">&lt;line . . ./&gt;</text>
+     <text xp="50" yp="10" sp="5" align="center" font="mono">&lt;line .../&gt;</text>
    </slide>
   
    <slide>
      <arc xp="50" yp="50" wp="30" hp="30" a1="0" a2="180" sp="0.5"/>
-     <text xp="50" yp="10" sp="5" align="center">&lt;arc . . ./&gt;</text>
+     <text xp="50" yp="10" sp="5" align="center" font="mono">&lt;arc .../&gt;</text>
    </slide>
   
    
@@ -121,13 +108,25 @@
      <text xp="25" yp="10" sp="1.1" font="mono">&lt;arc xp="20" yp="10" wp="10" wp="10" a1="0" a2="180" sp="0.2" color="blue"/&gt;</text>
    </slide>
 
+  
   <slide>
-    <rect xp="50" yp="50" wp="25" hp="25" color="rgb(240,240,240)"/>
-    <rect xp="48" yp="60" wp="16" hp="9" color="rgb(127,0,0)" />
-    <rect xp="52" yp="55" wp="16" hp="9" color="white"/>
-    <rect xp="50" yp="45" wp="16" hp="9" color="rgb(127,127,127)"/>
-   <text xp="50" yp="30" sp="2" align="center">Deck</text>
+      <text xp="50" yp="10" sp="4" align="center">Percentage-based layout</text>
+      <text xp="25" yp="50" sp="3" color="rgb(127,0,0)">Hello</text>
+      <image xp="50" yp="50" width="422" height="238" name="desert2.jpg"/>
+      <ellipse xp="75" yp="50" wp="10" hp="10" color="rgb(127,0,0)" opacity="0.5"/>
+      <text xp="25" yp="30" sp="1.5"  align="center">25%, 50%</text>
+      <text xp="50" yp="30" sp="1.5"  align="center">50%, 50%</text>
+      <text xp="75" yp="30" sp="1.5"  align="center">75%, 50%</text>
+      
+      <line xp1="25" yp1="35" xp2="25" yp2="50" color="black"/>
+      <line xp1="50" yp1="35" xp2="50" yp2="50" color="black"/>
+      <line xp1="75" yp1="35" xp2="75" yp2="50" color="black"/>
+      
+      <ellipse xp="25" yp="50" wp="0.5" hp="0.5" color="black"/>
+      <ellipse xp="50" yp="50" wp="0.5" hp="0.5" color="black"/>
+      <ellipse xp="75" yp="50" wp="0.5" hp="0.5" color="black"/>
   </slide>
+
   
   <slide bg="rgb(240,240,240)">
     <text xp="20" yp="80" sp="3">Anatomy of a Deck</text>
