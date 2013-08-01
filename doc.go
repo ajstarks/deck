@@ -7,7 +7,7 @@ Elements
 
 Here are the elements of a deck:
 
-	deck: enclosing element 
+	deck: enclosing element
 	canvas: describe the dimensions of the drawing canvas, one per deck
 	slide: within a deck, any number of slides, specify the slide background and text colors.
 
@@ -20,7 +20,7 @@ within slides an number of:
 	rect: rectangle
 	ellipse: ellipse
 	curve: Quadratic Bezier curve
-	arc: arc
+	arc: elliptical arc
 
 Markup
 
@@ -31,7 +31,7 @@ Here is a sample deck in XML:
 	      <slide bg="maroon" fg="white">
 		 <image xp="20" yp="30" width="256" height="256" name="picture.png"/>
 	         <text xp="20" yp="80" sp="3">Deck uses these elements</text>
-		 <line xp1="20" yp1="75" xp2="90" yp2="75" color="rgb(127,0,0)"/>
+		 <line xp1="20" yp1="75" xp2="90" yp2="75" sp="0.3" color="rgb(127,0,0)"/>
 	         <list xp="20" yp="70" sp="1.5">
 	            <li>canvas<li>
 	            <li>slide</li>
@@ -43,6 +43,10 @@ Here is a sample deck in XML:
 	            <li>curve</li>
 	            <li>arc</li>
 	         </list>
+	          <line    xp1="20" yp1="10" xp2="30" yp2="10"/>
+                  <rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/>
+                  <ellipse xp="45"  yp="10" wp="4" hp="3" color="rgb(0,127,0)"/>
+                  <arc     xp="55"  yp="10" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/>
 	      </slide>
 	</deck>
 
@@ -53,6 +57,7 @@ The list, text, rect, and ellipse elements have common attributes:
 	sp: font size percentage
 	type: "bullet", "number" (list), "block", "code" (text)
 	align: "left", "middle", "end"
+	opacity: 0.0-1.0 (fully transparent - opaque)
 	color: SVG names ("maroon"), or RGB "rgb(127,0,0)"
 	font: "sans", "serif", "mono"
 
@@ -64,9 +69,9 @@ For example to place an element in the middle of the canvas, specify xp="50" yp=
 one-third from the top, and one-third from the bottom: xp="66.6" yp="33.3".
 
 The size of text is also scaled to the width of the canvas. For example sp="3" is a typical size for slide headings.
-The width and height of the rect and ellipse elements are also scaled to the canvas width.
+The sizes of graphical elements (width, height, stroke width) are also scaled to the canvas width.
 
-The content of the slides are automatically scaled based on the specified canvas size 
+The content of the slides are automatically scaled based on the specified canvas size
 (sane defaults are should be set by clients, if dimensions are not specified).
 
 */
