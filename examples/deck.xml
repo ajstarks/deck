@@ -1,5 +1,5 @@
 <deck>
-
+  <!-- <canvas width="1200" height="800"/>  -->
   <slide>
     <text  xp="50" yp="80" sp="5" align="center">Deck</text>
     <image xp="50" yp="50" width="270" height="270" name="sdeck.png" />
@@ -111,20 +111,20 @@
   
   <slide>
       <text xp="50" yp="10" sp="4" align="center">Percentage-based layout</text>
-      <text xp="25" yp="50" sp="3" color="rgb(127,0,0)">Hello</text>
+      <text xp="10" yp="50" sp="3" color="rgb(127,0,0)">Hello</text>
       <image xp="50" yp="50" width="422" height="238" name="desert2.jpg"/>
-      <ellipse xp="75" yp="50" wp="10" hp="10" color="rgb(127,0,0)" opacity="0.5"/>
-      <text xp="25" yp="30" sp="1.5"  align="center">25%, 50%</text>
+      <ellipse xp="90" yp="50" wp="10" hp="10" color="rgb(127,0,0)" opacity="0.5"/>
+      <text xp="10" yp="30" sp="1.5"  align="center">10%, 50%</text>
       <text xp="50" yp="30" sp="1.5"  align="center">50%, 50%</text>
-      <text xp="75" yp="30" sp="1.5"  align="center">75%, 50%</text>
+      <text xp="90" yp="30" sp="1.5"  align="center">90%, 50%</text>
       
-      <line xp1="25" yp1="35" xp2="25" yp2="50" color="black"/>
+      <line xp1="10" yp1="35" xp2="10" yp2="50" color="black"/>
       <line xp1="50" yp1="35" xp2="50" yp2="50" color="black"/>
-      <line xp1="75" yp1="35" xp2="75" yp2="50" color="black"/>
+      <line xp1="90" yp1="35" xp2="90" yp2="50" color="black"/>
       
-      <ellipse xp="25" yp="50" wp="0.5" hp="0.5" color="black"/>
+      <ellipse xp="10" yp="50" wp="0.5" hp="0.5" color="black"/>
       <ellipse xp="50" yp="50" wp="0.5" hp="0.5" color="black"/>
-      <ellipse xp="75" yp="50" wp="0.5" hp="0.5" color="black"/>
+      <ellipse xp="90" yp="50" wp="0.5" hp="0.5" color="black"/>
   </slide>
 
   
@@ -248,21 +248,21 @@ func main() {
 
   <slide>
    <text xp="50" yp="90" sp="3" align="center">Two Columns</text>
-   <rect xp="25" yp="50" wp="50" hp="60" opacity="0.3" color="green"/>
-   <rect xp="75" yp="50" wp="50" hp="60" opacity="0.3" color="blue"/>
-   <list xp="20" yp="80" sp="2" color="maroon">
+   <line xp1="50" yp1="85" xp2="50" yp2="10" sp="0.2" color="black" />
+   <image xp="25" yp="30" width="422" height="238" name="desert2.jpg" caption="Tree and Sky"/>
+   <image xp="75" yp="30" width="422" height="238" name="desert3.jpg" caption="Rocks"/>
+   <list xp="20" yp="80" sp="2">
       <li>One</li>
       <li>Two</li>
       <li>Three</li>
+      <li>Four</li>
    </list>
    <list xp="70" yp="80" sp="2">
-      <li>Four</li>
       <li>Five</li>
       <li>Six</li>
       <li>Seven</li>
       <li>Eight</li>
    </list>
-   <line xp1="50" yp1="85" xp2="50" yp2="20" sp="0.1" color="maroon" />
   </slide>
   
   <slide bg="rgb(127,127,127)" fg="white">

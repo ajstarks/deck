@@ -5,6 +5,9 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"image"
+	_ "image/jpeg"
+	_ "image/png"
 	"github.com/ajstarks/deck"
 	"github.com/ajstarks/openvg"
 	"os"
@@ -22,6 +25,25 @@ func dodeck(filename string, pausetime time.Duration, slidenum int, gp float64) 
 		loop(filename, w, h, pausetime)
 	}
 	openvg.Finish()
+}
+
+// loadimage loads all the images of the deck into a map for later display
+func loadimage(d deck.Deck, m map[string]image.Image) {
+	for _, s := range d.Slide {
+		for _, i := range s.Image {
+			f, err := os.Open(i.Name)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "%v\n", err)
+				continue
+			}
+			img, _, err := image.Decode(f)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "%v\n", err)
+				continue
+			}
+			m[i.Name] = img
+		}
+	}
 }
 
 // interact controls the display of the deck
@@ -47,6 +69,7 @@ func interact(filename string, w, h, slidenum int, gp float64) {
 	n := slidenum
 	xray := 1
 	initial := 0
+	imap := make(map[string]image.Image)
 	// respond to keyboard commands, 'q' to exit
 	for cmd := byte('0'); cmd != 'q'; cmd = readcmd(r) {
 		switch cmd {
@@ -57,9 +80,10 @@ func interact(filename string, w, h, slidenum int, gp float64) {
 				fmt.Fprintf(os.Stderr, "%v\n", err)
 				return
 			}
+			loadimage(d, imap)
 			openvg.Background(0, 0, 0)
 			xray = 1
-			showslide(d, n)
+			showslide(d, imap, n)
 
 		// save slide
 		case 's', 19: // s, Ctrl-S
@@ -69,16 +93,17 @@ func interact(filename string, w, h, slidenum int, gp float64) {
 		case '0', '1', 1, '^': // 0,1,Ctrl-A,^
 			initial++
 			if initial == 1 {
+				loadimage(d, imap)
 				n = slidenum
 			} else {
 				n = 0
 			}
-			showslide(d, n)
+			showslide(d, imap, n)
 
 		// last slide
 		case '*', 5, '$': // *, Crtl-E, $
 			n = lastslide
-			showslide(d, n)
+			showslide(d, imap, n)
 
 		// next slide
 		case '+', 'n', '\n', ' ', '\t', 14, 27: // +,n,newline,space,tab,Crtl-N
@@ -86,7 +111,7 @@ func interact(filename string, w, h, slidenum int, gp float64) {
 			if n > lastslide {
 				n = 0
 			}
-			showslide(d, n)
+			showslide(d, imap, n)
 
 		// previous slide
 		case '-', 'p', 8, 16, 127: // -,p,Backspace,Ctrl-P,Del
@@ -94,12 +119,12 @@ func interact(filename string, w, h, slidenum int, gp float64) {
 			if n < 0 {
 				n = lastslide
 			}
-			showslide(d, n)
+			showslide(d, imap, n)
 
 		// x-ray
 		case 'x', 24: // x, Ctrl-X
 			xray++
-			showslide(d, n)
+			showslide(d, imap, n)
 			if xray%2 == 0 {
 				showgrid(d, n, gp)
 			}
@@ -115,7 +140,7 @@ func interact(filename string, w, h, slidenum int, gp float64) {
 			if len(searchterm) > 2 {
 				ns := deck.Search(d, searchterm[0:len(searchterm)-1])
 				if ns >= 0 {
-					showslide(d, ns)
+					showslide(d, imap, ns)
 					n = ns
 				}
 			}
@@ -136,6 +161,8 @@ func loop(filename string, w, h int, n time.Duration) {
 	}
 	openvg.RawTerm()
 	r := bufio.NewReader(os.Stdin)
+	imap := make(map[string]image.Image)
+	loadimage(d, imap)
 	// respond to keyboard commands, 'q' to exit
 	for {
 		for i := 0; i < len(d.Slide); i++ {
@@ -143,7 +170,7 @@ func loop(filename string, w, h int, n time.Duration) {
 			if cmd == 'q' {
 				return
 			}
-			showslide(d, i)
+			showslide(d, imap, i)
 			time.Sleep(n)
 		}
 	}
@@ -225,7 +252,7 @@ func dimen(d deck.Deck, x, y, s float64) (xo, yo, so openvg.VGfloat) {
 }
 
 // showlide displays slides
-func showslide(d deck.Deck, n int) {
+func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 	if n < 0 || n > len(d.Slide)-1 {
 		return
 	}
@@ -247,7 +274,12 @@ func showslide(d deck.Deck, n int) {
 	for _, im := range slide.Image {
 		x = pct(im.Xp, cw)
 		y = pct(im.Yp, ch)
-		openvg.Image(x-openvg.VGfloat(im.Width/2), y-openvg.VGfloat(im.Height/2), im.Width, im.Height, im.Name)
+		midx := openvg.VGfloat(im.Width/2)
+		midy := openvg.VGfloat(im.Height/2)
+		img, ok := imap[im.Name]; if ok {
+			openvg.Img(x-midx, y-midy, img)
+		}
+		// openvg.Image(x-midx, y-midy, im.Width, im.Height, im.Name)
 		if len(im.Caption) > 0 {
 			capfs := pctwidth(im.Sp, cw, cw/100)
 			if im.Font == "" {
@@ -263,16 +295,15 @@ func showslide(d deck.Deck, n int) {
 			}
 			switch im.Align {
 			case "left", "start":
-				x -= openvg.VGfloat(im.Width / 2)
+				x -= midx 
 			case "right", "end":
-				x += openvg.VGfloat(im.Width / 2)
+				x += midx
 			}
-			showtext(x, y-((openvg.VGfloat(im.Height)/2)+(capfs*2.0)), im.Caption, im.Align, im.Font, capfs)
+			showtext(x, y-((midy)+(capfs*2.0)), im.Caption, im.Align, im.Font, capfs)
 		}
 	}
 
 	// every graphic on the slide
-
 	const defaultColor = "rgb(127,127,127)"
 	const defaultSw = 1.5
 	var strokeopacity float64 
