@@ -45,6 +45,68 @@ func grid(c *pdf.Canvas, w, h pdf.Unit, pct float64) {
 	c.Pop()
 }
 
+// line draws a line
+func doline(c *pdf.Canvas, xp1, yp1, xp2, yp2, sw pdf.Unit, color string) {
+	c.Push()
+	r, g, b := colorlookup(color)
+	c.SetLineWidth(sw)
+	c.SetStrokeColor(r, g, b)
+	path := new(pdf.Path)
+	path.Move(pdf.Point{xp1, yp1})
+	path.Line(pdf.Point{xp2, yp2})
+	c.Stroke(path)
+	c.Pop()
+}
+
+// docurve draws a bezier curve
+func docurve(c *pdf.Canvas, xp1, yp1, xp2, yp2, xp3, yp3, sw pdf.Unit, color string) {
+	c.Push()
+	r, g, b := colorlookup(color)
+	c.SetLineWidth(sw)
+	c.SetStrokeColor(r, g, b)
+	path := new(pdf.Path)
+
+	pt1 := pdf.Point{X: xp1, Y: yp1}
+	pt2 := pdf.Point{X: xp2, Y: yp2}
+	pt3 := pdf.Point{X: xp3, Y: yp3}
+	path.Move(pt1)
+	path.Curve(pt1, pt2, pt3)
+	c.Stroke(path)
+	c.Pop()
+}
+
+// dorect draws a rectangle
+func dorect(c *pdf.Canvas, x, y, w, h pdf.Unit, color string) {
+	c.Push()
+	path := new(pdf.Path)
+	center := pdf.Point{X: x, Y: y}
+	path.Move(center)
+	rect := pdf.Rectangle{Min: pdf.Point{X: x, Y: y}, Max: pdf.Point{X: x + w, Y: y + h}}
+	path.Rectangle(rect)
+	r, g, b := colorlookup(color)
+	c.SetColor(r, g, b)
+	c.Fill(path)
+	c.Pop()
+}
+
+// ellipse draws an ellipse using bezier curves
+func doellipse(c *pdf.Canvas, x, y, w, h, sw pdf.Unit, color string) {
+	const magic = pdf.Unit(0.551784)
+	xmagic := w * magic
+	ymagic := h * magic
+	c.Push()
+	path := new(pdf.Path)
+	path.Move(pdf.Point{X: -w, Y: 0})
+	docurve(c, -w, ymagic, -xmagic, h, 0, h, sw, color)
+	docurve(c, xmagic, h, w, ymagic, w, 0, sw, color)
+	docurve(c, w, -ymagic, xmagic, -h, 0, -h, sw, color)
+	docurve(c, -xmagic, -h, -w, -ymagic, -w, 0, sw, color)
+	r, g, b := colorlookup(color)
+	c.SetColor(r, g, b)
+	c.Fill(path)
+	c.Pop()
+}
+
 // bullet draws a rectangular bullet
 func bullet(c *pdf.Canvas, x, y, size pdf.Unit, color string) {
 	rs := size / 2
@@ -212,7 +274,6 @@ func dcoord(xp, yp float64, w, h pdf.Unit) (x, y pdf.Unit) {
 
 // dimen returns location and size based on canvas dimensions
 func dimen(d deck.Deck, xp, yp, sp float64) (x, y, s pdf.Unit) {
-
 	c := d.Canvas
 	xf, yf, sf := deck.Dimen(c, xp, yp, sp)
 	x, y, s = pdf.Unit(xf), pdf.Unit(yf), pdf.Unit(sf)
@@ -270,6 +331,60 @@ func pdfslide(doc *pdf.Document, d deck.Deck, n int, gp float64) {
 		x, y = dcoord(im.Xp, im.Yp, cw, ch)
 		doimage(canvas, x, y, im.Width, im.Height, im.Name)
 	}
+
+	// every graphic on the slide
+
+	const defaultColor = "rgb(127,127,127)"
+	// line
+	for _, line := range slide.Line {
+		if line.Color == "" {
+			line.Color = defaultColor
+		}
+		x1, y1, sw := deck.Dimen(d.Canvas, line.Xp1, line.Yp1, line.Sp)
+		x2, y2, _ := deck.Dimen(d.Canvas, line.Xp2, line.Yp2, 0)
+		if sw == 0 {
+			sw = 2.0
+		}
+		doline(canvas, pdf.Unit(x1), pdf.Unit(y1), pdf.Unit(x2), pdf.Unit(y2), pdf.Unit(sw), line.Color)
+	}
+	// ellipse
+	/**
+	for _, ellipse := range slide.Ellipse {
+		dx, dy, _ := deck.Dimen(d.Canvas, ellipse.Xp, ellipse.Yp, 0)
+		x, y = pdf.Unit(dx), pdf.Unit(dy)
+		w := pct(ellipse.Wp, cw)
+		h := pct(ellipse.Hp, cw)
+		if ellipse.Color == "" {
+			ellipse.Color = defaultColor
+		}
+		doellipse(canvas, x, y, w, h, 0, ellipse.Color)
+	}
+	**/
+	// rect
+	for _, rect := range slide.Rect {
+		dx, dy, _ := deck.Dimen(d.Canvas, rect.Xp, rect.Yp, 0)
+		x, y = pdf.Unit(dx), pdf.Unit(dy)
+		w := pct(rect.Wp, cw)
+		h := pct(rect.Hp, cw)
+		if rect.Color == "" {
+			rect.Color = defaultColor
+		}
+		dorect(canvas, x-(w/2), y-(h/2), w, h, rect.Color)
+	}
+	// curve
+	for _, curve := range slide.Curve {
+		if curve.Color == "" {
+			curve.Color = defaultColor
+		}
+		x1, y1, sw := deck.Dimen(d.Canvas, curve.Xp1, curve.Yp1, curve.Sp)
+		x2, y2, _ := deck.Dimen(d.Canvas, curve.Xp2, curve.Yp2, 0)
+		x3, y3, _ := deck.Dimen(d.Canvas, curve.Xp3, curve.Yp3, 0)
+		if sw == 0 {
+			sw = 1.0
+		}
+		docurve(canvas, pdf.Unit(x1), pdf.Unit(y1), pdf.Unit(x2), pdf.Unit(y2), pdf.Unit(x3), pdf.Unit(y3), pdf.Unit(sw), curve.Color)
+	}
+
 	// for every text element...
 	for _, t := range slide.Text {
 		if t.Color == "" {
