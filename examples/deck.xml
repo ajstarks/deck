@@ -1,5 +1,4 @@
 <deck>
-  <canvas width="1200" height="800"/>
   <slide>
     <text  xp="50" yp="80" sp="5" align="center">Deck</text>
     <image xp="50" yp="50" width="270" height="270" name="sdeck.png" />
