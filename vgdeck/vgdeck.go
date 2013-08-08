@@ -13,7 +13,7 @@ import (
 )
 
 // dodeck sets up the graphics environment and kicks off the interaction
-func dodeck(filename string, pausetime time.Duration, slidenum int, gp float64) {
+func dodeck(filename string, pausetime time.Duration, slidenum int, gp openvg.VGfloat) {
 	w, h := openvg.Init()
 	openvg.Background(0, 0, 0)
 	if pausetime == 0 {
@@ -25,7 +25,7 @@ func dodeck(filename string, pausetime time.Duration, slidenum int, gp float64) 
 }
 
 // interact controls the display of the deck
-func interact(filename string, w, h, slidenum int, gp float64) {
+func interact(filename string, w, h, slidenum int, gp openvg.VGfloat) {
 	openvg.SaveTerm()
 	defer openvg.RestoreTerm()
 	var d deck.Deck
@@ -150,35 +150,40 @@ func loop(filename string, w, h int, n time.Duration) {
 }
 
 // pct computes percentages
-func pct(p float64, m float64) float64 {
-	return (p / 100.0) * m
+func pct(p float64, m openvg.VGfloat) openvg.VGfloat {
+	return openvg.VGfloat((p / 100.0)) * m
 }
 
+func pctwidth(p float64, p1, p2 openvg.VGfloat) openvg.VGfloat {
+	pw := deck.Pwidth(p, float64(p1), float64(p2))
+	return openvg.VGfloat(pw)
+
+}
 // showgrid xrays a slide
-func showgrid(d deck.Deck, n int, pct float64) {
-	w := float64(d.Canvas.Width)
-	h := float64(d.Canvas.Height)
+func showgrid(d deck.Deck, n int, percent openvg.VGfloat) {
+	w := openvg.VGfloat(d.Canvas.Width)
+	h := openvg.VGfloat(d.Canvas.Height)
 	fs := (w / 100) // labels are 1% of the width
-	xpct := (pct / 100.0) * w
-	ypct := (pct / 100.0) * h
+	xpct := (percent / 100.0) * w
+	ypct := (percent / 100.0) * h
 
 	openvg.StrokeColor("lightgray", 0.5)
 	openvg.StrokeWidth(3)
 
 	// horizontal gridlines
-	xl := pct
+	xl := percent
 	for x := xpct; x <= w; x += xpct {
 		openvg.Line(x, 0, x, h)
-		openvg.Text(x, pct, fmt.Sprintf("%.0f%%", xl), "sans", int(fs))
-		xl += pct
+		openvg.Text(x, percent, fmt.Sprintf("%.0f%%", xl), "sans", int(fs))
+		xl += percent
 	}
 
 	// vertical gridlines
-	yl := pct
+	yl := percent
 	for y := ypct; y <= h; y += ypct {
 		openvg.Line(0, y, w, y)
-		openvg.Text(pct, y, fmt.Sprintf("%.0f%%", yl), "sans", int(fs))
-		yl += pct
+		openvg.Text(percent, y, fmt.Sprintf("%.0f%%", yl), "sans", int(fs))
+		yl += percent
 	}
 
 	// show boundary and location of images
@@ -186,10 +191,10 @@ func showgrid(d deck.Deck, n int, pct float64) {
 		return
 	}
 	for _, im := range d.Slide[n].Image {
-		x := (im.Xp / 100) * w
-		y := (im.Yp / 100) * h
-		iw := float64(im.Width)
-		ih := float64(im.Height)
+		x := pct(im.Xp, w)
+		y := pct(im.Yp, h)
+		iw := openvg.VGfloat(im.Width)
+		ih := openvg.VGfloat(im.Height)
 		openvg.FillRGB(127, 0, 0, 0.3)
 		openvg.Circle(x, y, fs)
 		openvg.FillRGB(255, 0, 0, 0.1)
@@ -199,7 +204,7 @@ func showgrid(d deck.Deck, n int, pct float64) {
 }
 
 //showtext displays text
-func showtext(x, y float64, s, align, font string, fs float64) {
+func showtext(x, y openvg.VGfloat, s, align, font string, fs openvg.VGfloat) {
 	fontsize := int(fs)
 	switch align {
 	case "center", "middle", "mid":
@@ -209,6 +214,13 @@ func showtext(x, y float64, s, align, font string, fs float64) {
 	default:
 		openvg.Text(x, y, s, font, fontsize)
 	}
+}
+
+// dimen returns device dimemsion from percentages
+func dimen(d deck.Deck, x, y, s float64) (xo, yo, so openvg.VGfloat) {
+	xf, yf, sf := deck.Dimen(d.Canvas, x, y, s)
+	xo, yo, so = openvg.VGfloat(xf), openvg.VGfloat(yf), openvg.VGfloat(sf)
+	return	
 }
 
 // showlide displays slides
@@ -224,19 +236,19 @@ func showslide(d deck.Deck, n int) {
 		slide.Fg = "black"
 	}
 	openvg.Start(d.Canvas.Width, d.Canvas.Height)
-	cw := float64(d.Canvas.Width)
-	ch := float64(d.Canvas.Height)
+	cw := openvg.VGfloat(d.Canvas.Width)
+	ch := openvg.VGfloat(d.Canvas.Height)
 	openvg.FillColor(slide.Bg)
 	openvg.Rect(0, 0, cw, ch)
-	var x, y, fs float64
+	var x, y, fs openvg.VGfloat
 
 	// every image in the slide
 	for _, im := range slide.Image {
-		x = (im.Xp / 100) * cw
-		y = (im.Yp / 100) * ch
-		openvg.Image(x-float64(im.Width/2), y-float64(im.Height/2), im.Width, im.Height, im.Name)
+		x = pct(im.Xp, cw)
+		y = pct(im.Yp, ch)
+		openvg.Image(x-openvg.VGfloat(im.Width/2), y-openvg.VGfloat(im.Height/2), im.Width, im.Height, im.Name)
 		if len(im.Caption) > 0 {
-			capfs := deck.Pwidth(im.Sp, cw, cw/100)
+			capfs := pctwidth(im.Sp, cw, cw/100)
 			if im.Font == "" {
 				im.Font = "sans"
 			}
@@ -250,18 +262,19 @@ func showslide(d deck.Deck, n int) {
 			}
 			switch im.Align {
 			case "left", "start":
-				x -= float64(im.Width / 2)
+				x -= openvg.VGfloat(im.Width / 2)
 			case "right", "end":
-				x += float64(im.Width / 2)
+				x += openvg.VGfloat(im.Width / 2)
 			}
-			showtext(x, y-((float64(im.Height)/2)+(capfs*2.0)), im.Caption, im.Align, im.Font, capfs)
+			showtext(x, y-((openvg.VGfloat(im.Height)/2)+(capfs*2.0)), im.Caption, im.Align, im.Font, capfs)
 		}
 	}
 
 	// every graphic on the slide
 
 	const defaultColor = "rgb(127,127,127)"
-	var strokeopacity float64
+	const defaultSw = 1.5
+	var strokeopacity float64 
 	// line
 	for _, line := range slide.Line {
 		if line.Color == "" {
@@ -272,20 +285,20 @@ func showslide(d deck.Deck, n int) {
 		} else {
 			strokeopacity = line.Opacity
 		}
-		x1, y1, sw := deck.Dimen(d.Canvas, line.Xp1, line.Yp1, line.Sp)
-		x2, y2, _ := deck.Dimen(d.Canvas, line.Xp2, line.Yp2, 0)
-		openvg.StrokeColor(line.Color, strokeopacity)
+		x1, y1, sw := dimen(d, line.Xp1, line.Yp1, line.Sp)
+		x2, y2, _ := dimen(d, line.Xp2, line.Yp2, 0)
+		openvg.StrokeColor(line.Color, openvg.VGfloat(strokeopacity))
 		if sw == 0 {
-			sw = 2.0
+			sw = defaultSw 
 		}
-		openvg.StrokeWidth(sw)
+		openvg.StrokeWidth(openvg.VGfloat(sw))
 		openvg.StrokeColor(line.Color)
 		openvg.Line(x1, y1, x2, y2)
 		openvg.StrokeWidth(0)
 	}
 	// ellipse
 	for _, ellipse := range slide.Ellipse {
-		x, y, _ = deck.Dimen(d.Canvas, ellipse.Xp, ellipse.Yp, 0)
+		x, y, _ = dimen(d, ellipse.Xp, ellipse.Yp, 0)
 		w := pct(ellipse.Wp, cw)
 		h := pct(ellipse.Hp, cw)
 		if ellipse.Color == "" {
@@ -294,12 +307,12 @@ func showslide(d deck.Deck, n int) {
 		if ellipse.Opacity == 0 {
 			ellipse.Opacity = 1
 		}
-		openvg.FillColor(ellipse.Color, ellipse.Opacity)
+		openvg.FillColor(ellipse.Color, openvg.VGfloat(ellipse.Opacity))
 		openvg.Ellipse(x, y, w, h)
 	}
 	// rect
 	for _, rect := range slide.Rect {
-		x, y, _ = deck.Dimen(d.Canvas, rect.Xp, rect.Yp, 0)
+		x, y, _ = dimen(d, rect.Xp, rect.Yp, 0)
 		w := pct(rect.Wp, cw)
 		h := pct(rect.Hp, cw)
 		if rect.Color == "" {
@@ -308,7 +321,7 @@ func showslide(d deck.Deck, n int) {
 		if rect.Opacity == 0 {
 			rect.Opacity = 1
 		}
-		openvg.FillColor(rect.Color, rect.Opacity)
+		openvg.FillColor(rect.Color, openvg.VGfloat(rect.Opacity))
 		openvg.Rect(x-(w/2), y-(h/2), w, h)
 	}
 	// curve
@@ -321,13 +334,13 @@ func showslide(d deck.Deck, n int) {
 		} else {
 			strokeopacity = 1.0
 		}
-		x1, y1, sw := deck.Dimen(d.Canvas, curve.Xp1, curve.Yp1, curve.Sp)
-		x2, y2, _ := deck.Dimen(d.Canvas, curve.Xp2, curve.Yp2, 0)
-		x3, y3, _ := deck.Dimen(d.Canvas, curve.Xp3, curve.Yp3, 0)
-		openvg.StrokeColor(curve.Color, strokeopacity)
-		openvg.FillColor(slide.Bg, curve.Opacity)
+		x1, y1, sw := dimen(d, curve.Xp1, curve.Yp1, curve.Sp)
+		x2, y2, _ := dimen(d, curve.Xp2, curve.Yp2, 0)
+		x3, y3, _ := dimen(d, curve.Xp3, curve.Yp3, 0)
+		openvg.StrokeColor(curve.Color, openvg.VGfloat(strokeopacity))
+		openvg.FillColor(slide.Bg, openvg.VGfloat(curve.Opacity))
 		if sw == 0 {
-			sw = 1.0
+			sw = defaultSw 
 		}
 		openvg.StrokeWidth(sw)
 		openvg.Qbezier(x1, y1, x2, y2, x3, y3)
@@ -344,37 +357,42 @@ func showslide(d deck.Deck, n int) {
 		} else {
 			strokeopacity = 1.0
 		}
-		ax, ay, sw := deck.Dimen(d.Canvas, arc.Xp, arc.Yp, arc.Sp)
+		ax, ay, sw := dimen(d, arc.Xp, arc.Yp, arc.Sp)
 		w := pct(arc.Wp, cw)
 		h := pct(arc.Hp, cw)
-		openvg.StrokeColor(arc.Color, strokeopacity)
-		openvg.FillColor(slide.Bg, arc.Opacity)
+		openvg.StrokeColor(arc.Color, openvg.VGfloat(strokeopacity))
+		openvg.FillColor(slide.Bg, openvg.VGfloat(arc.Opacity))
 		if sw == 0 {
-			sw = 2.0
+			sw =  defaultSw 
 		}
 		openvg.StrokeWidth(sw)
-		openvg.Arc(ax, ay, w, h, arc.A1, arc.A2)
+		openvg.Arc(ax, ay, w, h, openvg.VGfloat(arc.A1), openvg.VGfloat(arc.A2))
 		openvg.StrokeWidth(0)
 	}
 	openvg.FillColor(slide.Fg)
 	
 	// every list in the slide
-	var offset float64
+	var offset, textopacity openvg.VGfloat
 	const blinespacing = 2.0
 	for _, l := range slide.List {
 		if l.Font == "" {
 			l.Font = "sans"
 		}
-		x, y, fs = deck.Dimen(d.Canvas, l.Xp, l.Yp, l.Sp)
+		x, y, fs = dimen(d, l.Xp, l.Yp, l.Sp)
 		if l.Type == "bullet" {
 			offset = 1.2 * fs
 		} else {
 			offset = 0
 		}
+		if l.Opacity == 0 {
+			textopacity = 1
+		} else {
+			textopacity = openvg.VGfloat(l.Opacity)
+		}
 		if l.Color == "" {
 			openvg.FillColor(slide.Fg)
 		} else {
-			openvg.FillColor(l.Color)
+			openvg.FillColor(l.Color, textopacity)
 		}
 		// every list item
 		for ln, li := range l.Li {
@@ -393,25 +411,31 @@ func showslide(d deck.Deck, n int) {
 
 	// every text in the slide
 	const linespacing = 1.8
+	
 	for _, t := range slide.Text {
 		if t.Font == "" {
 			t.Font = "sans"
 		}
-		x, y, fs = deck.Dimen(d.Canvas, t.Xp, t.Yp, t.Sp)
+		if t.Opacity == 0 {
+			textopacity = 1
+		} else {
+			textopacity = openvg.VGfloat(t.Opacity)
+		}
+		x, y, fs = dimen(d, t.Xp, t.Yp, t.Sp)
 		td := strings.Split(t.Tdata, "\n")
 		if t.Type == "code" {
 			t.Font = "mono"
-			tdepth := ((fs * linespacing) * float64(len(td))) + fs
+			tdepth := ((fs * linespacing) * openvg.VGfloat(len(td))) + fs
 			openvg.FillColor("rgb(240,240,240)")
-			openvg.Rect(x-20, y-tdepth+(fs*linespacing), deck.Pwidth(t.Wp, cw, cw-x-20), tdepth)
+			openvg.Rect(x-20, y-tdepth+(fs*linespacing), pctwidth(t.Wp, cw, cw-x-20), tdepth)
 		}
 		if t.Color == "" {
-			openvg.FillColor(slide.Fg)
+			openvg.FillColor(slide.Fg, textopacity)
 		} else {
-			openvg.FillColor(t.Color)
+			openvg.FillColor(t.Color, textopacity)
 		}
 		if t.Type == "block" {
-			textwrap(x, y, deck.Pwidth(t.Wp, cw, cw/2), t.Tdata, t.Font, fs, fs*linespacing, 0.3)
+			textwrap(x, y, pctwidth(t.Wp, cw, cw/2), t.Tdata, t.Font, fs, fs*linespacing, 0.3)
 		} else {
 			// every text line
 			for _, txt := range td {
@@ -430,7 +454,7 @@ func whitespace(r rune) bool {
 }
 
 // textwrap draws text at location, wrapping at the specified width
-func textwrap(x, y, w float64, s string, font string, fs, leading, factor float64) {
+func textwrap(x, y, w openvg.VGfloat, s string, font string, fs, leading, factor openvg.VGfloat) {
 	size := int(fs)
 	wordspacing := openvg.TextWidth("m", font, size)
 	words := strings.FieldsFunc(s, whitespace)
@@ -464,6 +488,6 @@ func main() {
 	var slidenum = flag.Int("slide", 0, "initial slide")
 	flag.Parse()
 	for _, f := range flag.Args() {
-		dodeck(f, *pause, *slidenum, *gridpct)
+		dodeck(f, *pause, *slidenum, openvg.VGfloat(*gridpct))
 	}
 }
