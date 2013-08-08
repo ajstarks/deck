@@ -1,6 +1,6 @@
 <deck>
 
-  <slide bg="white" fg="black">
+  <slide>
     <text  xp="50" yp="80" sp="5" align="center">Deck</text>
     <image xp="50" yp="50" width="270" height="270" name="sdeck.png" />
     <text  xp="50" yp="20" sp="1.5" align="center">Anthony Starks</text>
@@ -182,7 +182,7 @@
   </slide>
 
 
-  <slide bg="white" fg="black">
+  <slide>
     <text xp="5" yp="80" sp="3">Text</text>
     <text xp="5" yp="70" sp="1.2" color="rgb(127,0,0)">Hello, World</text>
     <text xp="5" yp="50" sp="1.2" wp="25" color="rgb(0,0,127)" font="serif" type="block">

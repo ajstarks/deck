@@ -13,7 +13,7 @@ import (
 )
 
 // dodeck sets up the graphics environment and kicks off the interaction
-func dodeck(filename string, pausetime time.Duration, slidenum int, gp openvg.VGfloat) {
+func dodeck(filename string, pausetime time.Duration, slidenum int, gp float64) {
 	w, h := openvg.Init()
 	openvg.Background(0, 0, 0)
 	if pausetime == 0 {
@@ -25,7 +25,7 @@ func dodeck(filename string, pausetime time.Duration, slidenum int, gp openvg.VG
 }
 
 // interact controls the display of the deck
-func interact(filename string, w, h, slidenum int, gp openvg.VGfloat) {
+func interact(filename string, w, h, slidenum int, gp float64) {
 	openvg.SaveTerm()
 	defer openvg.RestoreTerm()
 	var d deck.Deck
@@ -160,9 +160,10 @@ func pctwidth(p float64, p1, p2 openvg.VGfloat) openvg.VGfloat {
 
 }
 // showgrid xrays a slide
-func showgrid(d deck.Deck, n int, percent openvg.VGfloat) {
+func showgrid(d deck.Deck, n int, p float64) {
 	w := openvg.VGfloat(d.Canvas.Width)
 	h := openvg.VGfloat(d.Canvas.Height)
+	percent := openvg.VGfloat(p)
 	fs := (w / 100) // labels are 1% of the width
 	xpct := (percent / 100.0) * w
 	ypct := (percent / 100.0) * h
@@ -488,6 +489,6 @@ func main() {
 	var slidenum = flag.Int("slide", 0, "initial slide")
 	flag.Parse()
 	for _, f := range flag.Args() {
-		dodeck(f, *pause, *slidenum, openvg.VGfloat(*gridpct))
+		dodeck(f, *pause, *slidenum, *gridpct)
 	}
 }
