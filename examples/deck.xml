@@ -73,7 +73,7 @@
    
    <slide>
      <curve xp1="30" yp1="50" xp2="80" yp2="80" xp3="70" yp3="50" sp="0.5"/>
-     <text xp="50" yp="10" sp="5" align="center">&lt;curve .../&gt;</text>
+     <text xp="50" yp="10" sp="5" font="mono" align="center">&lt;curve .../&gt;</text>
    </slide>
 
    <slide>
