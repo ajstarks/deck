@@ -1,32 +1,20 @@
 <deck>
   <slide>
     <text  xp="50" yp="80" sp="7" align="center">Deck</text>
-    <image xp="50" yp="50" width="270" height="270" name="sdeck.png" />
+    <image xp="50" yp="50" width="256" height="256" name="sdeck256.png" />
     <text  xp="50" yp="20" sp="2" align="center">Anthony J. Starks</text>
     <text  xp="50" yp="15" sp="1" align="center" color="rgb(127,127,127)">@ajstarks</text>
     <text  xp="50" yp="12" sp="1" align="center" color="rgb(127,127,127)">ajstarks@gmail.com</text>
   </slide>
  
-
-  <slide>
-     <text xp="20" yp="80" sp="3">Deck:</text>
-     <list xp="20" yp="70" sp="2" type="bullet">
-        <li>Go package, allowing for different clients,</li>
-        <li>Uses XML as the markup language,</li>
-        <li>Locations and sizes are specified in percentages,</li>
-        <li>Make scalable slides, adapting to any size,</li>
-        <li>Elements: text, list, image, line, rect, ellipse, arc, curve</li>
-     </list>
-  </slide>
-  
   <slide>
      <text xp="20" yp="80" sp="3">Deck is:</text>
      <text  xp="20" yp="70" sp="2" wp="50" font="serif" type="block">
      a Go package that enables clients to
      to use the same XML markup to produce presentations on a variety of media and formats.</text>
      <text xp="20" yp="40" sp="2" wp="50" font="serif" type="block">
-     Deck uses these elements (text, list, image, line, rect, ellipse, arc, curve), 
-     where layout are object sizes are specified in percentages,
+     Deck elements are: text, list, image, line, rect, ellipse, arc, curve, and, 
+     layout are object sizes are specified in percentages,
      resulting in scalable slides that adapt to any size or orientation.
      </text>
   </slide>
@@ -36,44 +24,71 @@
   </slide>
   
   <slide>
-      <text xp="50" yp="50" sp="5" font="mono" align="center">&lt;text&gt;...&lt;/text&gt;</text>
-      <text xp="50" yp="30" sp="4" align="center">plain, block, code</text>
+    <text xp="35" yp="80" sp="1.5" color="rgb(127,0,0)">Hello, World</text>
+    <text xp="35" yp="70" sp="1.5" wp="25" color="rgb(0,0,127)" font="serif" type="block">
+      This is a block of text, word-wrapped to a specified width. You can specify size, font, color, and opacity.
+    </text>
+
+    <text xp="35" yp="50" sp="1.5" wp="50" type="code">package main
+import "fmt"
+func main() {
+    fmt.Println("Hello, World")
+}</text>
+      <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;text&gt;...&lt;/text&gt;</text>
   </slide>
 
   <slide>
-      <text xp="50" yp="50" sp="5" font="mono" align="center">&lt;list ...&gt;</text>
-      <text xp="50" yp="30" sp="4" align="center">plain, bullet, number</text>
+    <list xp="20" yp="70" sp="1.5" font="serif" color="rgb(127,0,0)">
+      <li>Item 1</li>
+      <li>Item 2</li>
+      <li>Item 3</li>
+    </list>
+
+    <list xp="40" yp="70" sp="1.5" color="rgb(0,0,127)" font="serif" type="bullet">
+      <li>First item</li>
+      <li>Second item</li>
+      <li>The third item</li>
+      <li>and the last thing</li>
+    </list>
+
+    <list xp="70" yp="70" sp="1.5" font="serif" color="black" type="number">
+       <li>This</li>
+       <li>That</li>
+       <li>The other</li>
+       <li>One more</li>
+    </list>
+      <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;list&gt;...&lt;/list&gt;</text>
   </slide>
 
   <slide>
       <image xp="50" yp="50" width="422" height="238" name="desert2.jpg"/>
-      <text xp="50" yp="10" sp="5" font="mono" align="center">&lt;image .../&gt;</text>
+      <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;image .../&gt;</text>
   </slide>
   
   <slide>
      <rect xp="50" yp="50" wp="20" hp="20" color="rgb(127,0,0)"/>
-     <text xp="50" yp="10" sp="5" align="center" font="mono">&lt;rect .../&gt;</text>
+     <text xp="50" yp="10" sp="4" align="center" font="mono">&lt;rect .../&gt;</text>
   </slide>
   
    <slide>
      <ellipse xp="50" yp="50" wp="20" hp="20" color="rgb(0,127,0)"/>
-     <text xp="50" yp="10" sp="5" align="center" font="mono">&lt;ellipse .../&gt;</text>
+     <text xp="50" yp="10" sp="4" align="center" font="mono">&lt;ellipse .../&gt;</text>
    </slide>
   
    <slide>
      <line xp1="35" yp1="50" xp2="65" yp2="65" sp="0.5"/>
-     <text xp="50" yp="10" sp="5" align="center" font="mono">&lt;line .../&gt;</text>
+     <text xp="50" yp="10" sp="4" align="center" font="mono">&lt;line .../&gt;</text>
    </slide>
   
    <slide>
      <arc xp="50" yp="50" wp="30" hp="30" a1="0" a2="180" sp="0.5"/>
-     <text xp="50" yp="10" sp="5" align="center" font="mono">&lt;arc .../&gt;</text>
+     <text xp="50" yp="10" sp="4" align="center" font="mono">&lt;arc .../&gt;</text>
    </slide>
   
    
    <slide>
      <curve xp1="30" yp1="50" xp2="80" yp2="80" xp3="70" yp3="50" sp="0.5"/>
-     <text xp="50" yp="10" sp="5" font="mono" align="center">&lt;curve .../&gt;</text>
+     <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;curve .../&gt;</text>
    </slide>
 
 <slide bg="rgb(127,127,127)" fg="white">
@@ -145,45 +160,6 @@
      <text xp="20" yp="55" sp="1.5" font="mono" >&lt;text ... color="..." opacity="..." font="..." align="..."&gt;</text>
   </slide>
 
-   <slide>
-    <text xp="5" yp="80" sp="3">Text</text>
-    <text xp="5" yp="70" sp="1.2" color="rgb(127,0,0)">Hello, World</text>
-    <text xp="5" yp="50" sp="1.2" wp="25" color="rgb(0,0,127)" font="serif" type="block">
-      This is a block of text, word-wrapped to a specified width. You can specify size, font, color, and opacity.
-    </text>
-
-    <text xp="5" yp="25" sp="1.2" wp="33" type="code">package main
-import "fmt"
-func main() {
-    fmt.Println("Hello, World")
-}</text>
-
-    <text xp="45" yp="80" sp="3">List</text>
-    <list xp="45" yp="70" sp="1.2" font="serif" color="rgb(127,0,0)">
-      <li>Item 1</li>
-      <li>Item 2</li>
-      <li>Item 3</li>
-    </list>
-
-    <list xp="45" yp="50" sp="1.2" color="rgb(0,0,127)" font="serif" type="bullet">
-      <li>First item</li>
-      <li>Second item</li>
-      <li>The third item</li>
-      <li>and the last thing</li>
-    </list>
-
-    <list xp="45" yp="25" sp="1.2" font="serif" color="black" type="number">
-       <li>This</li>
-       <li>That</li>
-       <li>The other</li>
-       <li>One more</li>
-    </list>
-
-    <text xp="75" yp="80" sp="3">Image</text>
-    <image xp="82" yp="50" width="256" height="256" name="sdeck256.png"/>
-
-  </slide>
-
   <slide>
     <text xp="20" yp="80" sp="3">Common Attributes for text and list</text>
     <list xp="20" yp="70" sp="1.5" font="mono" color="rgb(127,0,0)">
@@ -230,8 +206,8 @@ func main() {
 
   <slide>
     <text xp="50" yp="50" sp="5" align="center" font="mono">Percent Grid</text>
-    <line xp1="0" yp1="0" xp2="0" yp2="100" sp="1" color="pink"/>
-    <line xp1="100" yp1="0" xp2="100" yp2="100" sp="1" color="pink"/>
+    <line xp1="0" yp1="0" xp2="0" yp2="100" sp="0.1" color="blue"/>
+    <line xp1="100" yp1="0" xp2="100" yp2="100" sp="0.1" color="blue"/>
     <line xp1="10" yp1="0" xp2="10" yp2="100" sp="0.1" color="lightblue"/>
     <text xp="10" yp="95" sp="2" color="gray" align="center">10</text>
     <line xp1="20" yp1="0" xp2="20" yp2="100" sp="0.1" color="lightblue"/>
@@ -250,8 +226,8 @@ func main() {
     <text xp="80" yp="95" sp="2" color="gray" align="center">80</text>
     <line xp1="90" yp1="0" xp2="90" yp2="100" sp="0.1" color="lightblue"/>
     <text xp="90" yp="95" sp="2" color="gray" align="center">90</text>
-    <line xp1="0" yp1="0" xp2="100" yp2="0" sp="1" color="pink"/>
-    <line xp1="0" yp1="100" xp2="100" yp2="100" sp="1" color="pink"/>
+    <line xp1="0" yp1="0" xp2="100" yp2="0" sp="0.1" color="blue"/>
+    <line xp1="0" yp1="100" xp2="100" yp2="100" sp="0.1" color="blue"/>
     <line xp1="0" yp1="10" xp2="100" yp2="10" sp="0.1" color="lightblue"/>
     <text xp="5" yp="10" sp="2" color="gray" align="center">10</text>
     <line xp1="0" yp1="20" xp2="100" yp2="20" sp="0.1" color="lightblue"/>
