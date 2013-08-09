@@ -24,12 +24,12 @@
   </slide>
   
   <slide>
-    <text xp="35" yp="80" sp="1.5" color="rgb(127,0,0)">Hello, World</text>
-    <text xp="35" yp="70" sp="1.5" wp="25" color="rgb(0,0,127)" font="serif" type="block">
+    <text xp="35" yp="80" sp="1.2" color="rgb(127,0,0)">Hello, World</text>
+    <text xp="35" yp="70" sp="1.2" wp="25" color="rgb(0,0,127)" font="serif" type="block">
       This is a block of text, word-wrapped to a specified width. You can specify size, font, color, and opacity.
     </text>
 
-    <text xp="35" yp="50" sp="1.5" wp="50" type="code">package main
+    <text xp="35" yp="50" sp="1.2" wp="50" type="code">package main
 import "fmt"
 func main() {
     fmt.Println("Hello, World")
