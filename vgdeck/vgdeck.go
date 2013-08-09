@@ -5,19 +5,25 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"github.com/ajstarks/deck"
+	"github.com/ajstarks/openvg"
 	"image"
 	_ "image/jpeg"
 	_ "image/png"
-	"github.com/ajstarks/deck"
-	"github.com/ajstarks/openvg"
 	"os"
 	"strings"
 	"time"
 )
 
 // dodeck sets up the graphics environment and kicks off the interaction
-func dodeck(filename string, pausetime time.Duration, slidenum int, gp float64) {
+func dodeck(filename string, pausetime time.Duration, slidenum, cw, ch int, gp float64) {
 	w, h := openvg.Init()
+	if cw > 0 {
+		w = cw
+	}
+	if ch > 0 {
+		h = ch
+	}
 	openvg.Background(0, 0, 0)
 	if pausetime == 0 {
 		interact(filename, w, h, slidenum, gp)
@@ -42,6 +48,7 @@ func loadimage(d deck.Deck, m map[string]image.Image) {
 				continue
 			}
 			m[i.Name] = img
+			f.Close()
 		}
 	}
 }
@@ -186,6 +193,7 @@ func pctwidth(p float64, p1, p2 openvg.VGfloat) openvg.VGfloat {
 	return openvg.VGfloat(pw)
 
 }
+
 // showgrid xrays a slide
 func showgrid(d deck.Deck, n int, p float64) {
 	w := openvg.VGfloat(d.Canvas.Width)
@@ -248,7 +256,7 @@ func showtext(x, y openvg.VGfloat, s, align, font string, fs openvg.VGfloat) {
 func dimen(d deck.Deck, x, y, s float64) (xo, yo, so openvg.VGfloat) {
 	xf, yf, sf := deck.Dimen(d.Canvas, x, y, s)
 	xo, yo, so = openvg.VGfloat(xf), openvg.VGfloat(yf), openvg.VGfloat(sf)
-	return	
+	return
 }
 
 // showlide displays slides
@@ -274,9 +282,10 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 	for _, im := range slide.Image {
 		x = pct(im.Xp, cw)
 		y = pct(im.Yp, ch)
-		midx := openvg.VGfloat(im.Width/2)
-		midy := openvg.VGfloat(im.Height/2)
-		img, ok := imap[im.Name]; if ok {
+		midx := openvg.VGfloat(im.Width / 2)
+		midy := openvg.VGfloat(im.Height / 2)
+		img, ok := imap[im.Name]
+		if ok {
 			openvg.Img(x-midx, y-midy, img)
 		}
 		// openvg.Image(x-midx, y-midy, im.Width, im.Height, im.Name)
@@ -295,7 +304,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 			}
 			switch im.Align {
 			case "left", "start":
-				x -= midx 
+				x -= midx
 			case "right", "end":
 				x += midx
 			}
@@ -306,7 +315,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 	// every graphic on the slide
 	const defaultColor = "rgb(127,127,127)"
 	const defaultSw = 1.5
-	var strokeopacity float64 
+	var strokeopacity float64
 	// line
 	for _, line := range slide.Line {
 		if line.Color == "" {
@@ -321,7 +330,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		x2, y2, _ := dimen(d, line.Xp2, line.Yp2, 0)
 		openvg.StrokeColor(line.Color, openvg.VGfloat(strokeopacity))
 		if sw == 0 {
-			sw = defaultSw 
+			sw = defaultSw
 		}
 		openvg.StrokeWidth(openvg.VGfloat(sw))
 		openvg.StrokeColor(line.Color)
@@ -372,7 +381,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		openvg.StrokeColor(curve.Color, openvg.VGfloat(strokeopacity))
 		openvg.FillColor(slide.Bg, openvg.VGfloat(curve.Opacity))
 		if sw == 0 {
-			sw = defaultSw 
+			sw = defaultSw
 		}
 		openvg.StrokeWidth(sw)
 		openvg.Qbezier(x1, y1, x2, y2, x3, y3)
@@ -395,14 +404,14 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		openvg.StrokeColor(arc.Color, openvg.VGfloat(strokeopacity))
 		openvg.FillColor(slide.Bg, openvg.VGfloat(arc.Opacity))
 		if sw == 0 {
-			sw =  defaultSw 
+			sw = defaultSw
 		}
 		openvg.StrokeWidth(sw)
 		openvg.Arc(ax, ay, w, h, openvg.VGfloat(arc.A1), openvg.VGfloat(arc.A2))
 		openvg.StrokeWidth(0)
 	}
 	openvg.FillColor(slide.Fg)
-	
+
 	// every list in the slide
 	var offset, textopacity openvg.VGfloat
 	const blinespacing = 2.0
@@ -443,7 +452,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 
 	// every text in the slide
 	const linespacing = 1.8
-	
+
 	for _, t := range slide.Text {
 		if t.Font == "" {
 			t.Font = "sans"
@@ -518,8 +527,10 @@ func main() {
 	var pause = flag.Duration("loop", 0, "loop, pausing the specified duration between slides")
 	var gridpct = flag.Float64("g", 10, "Grid percentage")
 	var slidenum = flag.Int("slide", 0, "initial slide")
+	var cw = flag.Int("w", 0, "canvas width")
+	var ch = flag.Int("h", 0, "canvas height")
 	flag.Parse()
 	for _, f := range flag.Args() {
-		dodeck(f, *pause, *slidenum, *gridpct)
+		dodeck(f, *pause, *slidenum, *cw, *ch, *gridpct)
 	}
 }
