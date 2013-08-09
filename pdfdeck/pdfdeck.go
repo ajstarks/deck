@@ -297,6 +297,13 @@ func doslides(doc *pdf.Document, filename string, w, h int, gp float64) {
 		d.Canvas.Height = int(pdf.USLetterWidth) // landscape
 	}
 
+	if w > 0 {
+		d.Canvas.Width = w
+	}
+	if h > 0 {
+		d.Canvas.Height = h
+	}
+
 	for i := 0; i < len(d.Slide); i++ {
 		pdfslide(doc, d, i, gp)
 	}
@@ -335,6 +342,19 @@ func pdfslide(doc *pdf.Document, d deck.Deck, n int, gp float64) {
 	// every graphic on the slide
 
 	const defaultColor = "rgb(127,127,127)"
+
+	// rect
+	for _, rect := range slide.Rect {
+		dx, dy, _ := deck.Dimen(d.Canvas, rect.Xp, rect.Yp, 0)
+		x, y = pdf.Unit(dx), pdf.Unit(dy)
+		w := pct(rect.Wp, cw)
+		h := pct(rect.Hp, cw)
+		if rect.Color == "" {
+			rect.Color = defaultColor
+		}
+		dorect(canvas, x-(w/2), y-(h/2), w, h, rect.Color)
+	}
+
 	// line
 	for _, line := range slide.Line {
 		if line.Color == "" {
@@ -360,17 +380,7 @@ func pdfslide(doc *pdf.Document, d deck.Deck, n int, gp float64) {
 		doellipse(canvas, x, y, w, h, 0, ellipse.Color)
 	}
 	**/
-	// rect
-	for _, rect := range slide.Rect {
-		dx, dy, _ := deck.Dimen(d.Canvas, rect.Xp, rect.Yp, 0)
-		x, y = pdf.Unit(dx), pdf.Unit(dy)
-		w := pct(rect.Wp, cw)
-		h := pct(rect.Hp, cw)
-		if rect.Color == "" {
-			rect.Color = defaultColor
-		}
-		dorect(canvas, x-(w/2), y-(h/2), w, h, rect.Color)
-	}
+
 	// curve
 	for _, curve := range slide.Curve {
 		if curve.Color == "" {
@@ -408,9 +418,9 @@ func pdfslide(doc *pdf.Document, d deck.Deck, n int, gp float64) {
 }
 
 // dodeck kicks things off
-func dodeck(filename string, gp float64) {
+func dodeck(filename string, w, h int, gp float64) {
 	doc := pdf.New()
-	doslides(doc, filename, int(pdf.USLetterHeight), int(pdf.USLetterWidth), gp)
+	doslides(doc, filename, w, h, gp)
 	err := doc.Encode(os.Stdout)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -421,8 +431,10 @@ func dodeck(filename string, gp float64) {
 // for every file, make a deck
 func main() {
 	var gridpct = flag.Float64("g", 0, "place percentage grid on each slide")
+	var cw = flag.Int("w", 0, "canvas width")
+	var ch = flag.Int("h", 0, "canvas height")
 	flag.Parse()
 	for _, f := range flag.Args() {
-		dodeck(f, *gridpct)
+		dodeck(f, *cw, *ch, *gridpct)
 	}
 }
