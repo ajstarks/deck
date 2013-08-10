@@ -6,7 +6,7 @@ The PDF is generated to stdout.
 Usage
 
 	$ go get github.com/ajstarks/deck/pdfdeck
-	$ pdfdeck deck.xml > deck.pdf
+	$ pdfdeck -g <percent> -f <fontdir> -mono <monofont> -sans <sansfont> -serif <serifont> deck.xml > deck.pdf
 
 the -g percent option draws a grid scaled to the specifed percentage on each slide
 the -f option specifies the location of the font directory
