@@ -15,19 +15,32 @@ import (
 // fontmap maps generic font names to specific implementation names
 var fontmap = map[string]string{}
 
+// page dimensions
 const USLetterHeight = 612
 const USLetterWidth = 792
 
-// grid makes a grid using a percentage scale
-func grid(doc *gofpdf.Fpdf, w, h float64, percent float64) {
+// grid makes a percentage scale
+func grid(doc *gofpdf.Fpdf, w, h float64, color string, percent float64) {
 	pw := w * (percent / 100)
 	ph := h * (percent / 100)
-	doc.SetLineWidth(1)
-	for x := 0.0; x <= w; x += pw {
+	doc.SetLineWidth(0.5)
+	r, g, b := colorlookup(color)
+	doc.SetDrawColor(r, g, b)
+	doc.SetTextColor(r, g, b)
+	fs := pct(1, w)
+	for x, pl := 0.0, 0.0; x <= w; x += pw {
 		doc.Line(x, 0, x, h)
+		if pl > 0 {
+			showtext(doc, x, h-fs, fmt.Sprintf("%.0f", pl), fs, "sans", "center")
+		}
+		pl += percent
 	}
-	for y := 0.0; y <= h; y += ph {
+	for y, pl := 0.0, 0.0; y <= h; y += ph {
 		doc.Line(0, y, w, y)
+		if pl < 100 {
+			showtext(doc, fs, y+(fs/3), fmt.Sprintf("%.0f", 100-pl), fs, "sans", "center")
+		}
+		pl += percent
 	}
 }
 
@@ -37,6 +50,14 @@ func doline(doc *gofpdf.Fpdf, xp1, yp1, xp2, yp2, sw float64, color string) {
 	doc.SetLineWidth(sw)
 	doc.SetDrawColor(r, g, b)
 	doc.Line(xp1, yp1, xp2, yp2)
+}
+
+// docurve draws a bezier curve
+func docurve(doc *gofpdf.Fpdf, xp1, yp1, xp2, yp2, xp3, yp3, sw float64, color string) {
+	r, g, b := colorlookup(color)
+	doc.SetLineWidth(sw)
+	doc.SetDrawColor(r, g, b)
+	//doc.Curve(xp1, yp1, xp2, yp2, xp3, yp3)
 }
 
 // dorect draws a rectangle
@@ -213,21 +234,63 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		slide.Fg = "black"
 	}
 	if gp > 0 {
-		grid(doc, cw, ch, gp)
+		grid(doc, cw, ch, slide.Fg, gp)
 	}
 	// for every image on the slide...
 	for _, im := range slide.Image {
 		x, y, _ = dimen(cw, ch, im.Xp, im.Yp, 0)
 		fw, fh := float64(im.Width), float64(im.Height)
-		doc.Image(im.Name, x-(fw/2), y-(fh/2), fw, fh, false, "", 0, "")
+		midx := fw / 2
+		midy := fh / 2
+		doc.Image(im.Name, x-midx, y-midy, fw, fh, false, "", 0, "")
 		if len(im.Caption) > 0 {
-			capsize := pct(2, cw)
-			showtext(doc, x, y+(fh/2)+(capsize*2), im.Caption, capsize, "sans", "center")
+			capsize := deck.Pwidth(im.Sp, cw, pct(2, cw))
+			if im.Font == "" {
+				im.Font = "sans"
+			}
+			if im.Color == "" {
+				im.Color = slide.Fg
+			}
+			if im.Align == "" {
+				im.Align = "center"
+			}
+			switch im.Align {
+			case "left", "start":
+				x -= midx
+			case "right", "end":
+				x += midx
+			}
+			capr, capg, capb := colorlookup(im.Color)
+			doc.SetTextColor(capr, capg, capb)
+			showtext(doc, x, y+(midy)+(capsize*2), im.Caption, capsize, im.Font, im.Align)
 		}
 	}
 
 	// every graphic on the slide
 	const defaultColor = "rgb(127,127,127)"
+	// rect
+	for _, rect := range slide.Rect {
+		x, y, _ := dimen(cw, ch, rect.Xp, rect.Yp, 0)
+		w := pct(rect.Wp, cw)
+		h := pct(rect.Hp, cw)
+		if rect.Color == "" {
+			rect.Color = defaultColor
+		}
+		dorect(doc, x-(w/2), y-(h/2), w, h, rect.Color)
+	}
+	// curve
+	for _, curve := range slide.Curve {
+		if curve.Color == "" {
+			curve.Color = defaultColor
+		}
+		x1, y1, sw := dimen(cw, ch, curve.Xp1, curve.Yp1, curve.Sp)
+		x2, y2, _ := dimen(cw, ch, curve.Xp2, curve.Yp2, 0)
+		x3, y3, _ := dimen(cw, ch, curve.Xp3, curve.Yp3, 0)
+		if sw == 0 {
+			sw = 2.0
+		}
+		docurve(doc, x1, y1, x2, y2, x3, y3, sw, curve.Color)
+	}
 	// line
 	for _, line := range slide.Line {
 		if line.Color == "" {
@@ -240,16 +303,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		}
 		doline(doc, x1, y1, x2, y2, sw, line.Color)
 	}
-	// rect
-	for _, rect := range slide.Rect {
-		x, y, _ := dimen(cw, ch, rect.Xp, rect.Yp, 0)
-		w := pct(rect.Wp, cw)
-		h := pct(rect.Hp, cw)
-		if rect.Color == "" {
-			rect.Color = defaultColor
-		}
-		dorect(doc, x-(w/2), y-(h/2), w, h, rect.Color)
-	}
+
 	// for every text element...
 	for _, t := range slide.Text {
 		if t.Color == "" {
