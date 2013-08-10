@@ -1,4 +1,4 @@
-// pdeck: make PDF slide decks
+// pdfdeck: make PDF slide decks
 package main
 
 import (
