@@ -5,7 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 
 	"code.google.com/p/gofpdf"
@@ -190,7 +190,7 @@ func doslides(doc *gofpdf.Fpdf, filename string, w, h int, gp float64) {
 	}
 	d, err = deck.Read(filename, w, h)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
+		fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
 		return
 	}
 
@@ -201,10 +201,6 @@ func doslides(doc *gofpdf.Fpdf, filename string, w, h int, gp float64) {
 		pdfslide(doc, d, i, gp)
 	}
 
-	err = doc.Output(os.Stdout)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-	}
 }
 
 // dimen returns canvas dimensions from percentages
@@ -326,24 +322,40 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 }
 
 // dodeck kicks things off
-func dodeck(filename, fontdir string, gp float64) {
+func dodeck(filename, outdir, fontdir string, gp float64) {
 	doc := gofpdf.New("L", "pt", "Letter", fontdir)
+	base := strings.Split(filepath.Base(filename), ".xml")
+	outfile := filepath.Join(outdir, base[0]+".pdf")
+	out, err := os.Create(outfile)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
+		return
+	}
+
 	doslides(doc, filename, USLetterWidth, USLetterHeight, gp)
+
+	err = doc.Output(out)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
+		return
+	}
 }
 
 // for every file, make a deck
 func main() {
-	var gridpct = flag.Float64("g", 0, "place percentage grid on each slide")
-	var fontdir = flag.String("f", path.Join(os.Getenv("GOPATH"), "src/code.google.com/p/gofpdf/font"), "font directory")
-	var sansfont = flag.String("sans", "helvetica", "sans font")
-	var serifont = flag.String("serif", "times", "serif font")
-	var monofont = flag.String("mono", "courier", "mono font")
+	var (
+		gridpct  = flag.Float64("g", 0, "place percentage grid on each slide")
+		fontdir  = flag.String("f", filepath.Join(os.Getenv("GOPATH"), "src/code.google.com/p/gofpdf/font"), "font directory")
+		sansfont = flag.String("sans", "helvetica", "sans font")
+		serifont = flag.String("serif", "times", "serif font")
+		monofont = flag.String("mono", "courier", "mono font")
+		outdir   = flag.String("outdir", ".", "output directory")
+	)
 	flag.Parse()
 	fontmap["sans"] = *sansfont
 	fontmap["serif"] = *serifont
 	fontmap["mono"] = *monofont
-
 	for _, f := range flag.Args() {
-		dodeck(f, *fontdir, *gridpct)
+		dodeck(f, *outdir, *fontdir, *gridpct)
 	}
 }

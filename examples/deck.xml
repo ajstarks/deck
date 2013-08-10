@@ -294,7 +294,7 @@ func main() {
      <text xp="10" yp="60" sp="1.5" type="code">$ go get github.com/ajstarks/deck/vgdeck  # for the Raspberry Pi
 $ go get github.com/ajstarks/deck/pdfdeck # to make PDF decks
 $ vgdeck deck.xml                         # interactive session
-$ pdfdeck deck.xml > deck.pdf             # make a PDF deck</text>
+$ pdfdeck deck.xml                        # make a PDF deck</text>
   </slide>
 
   <slide>
