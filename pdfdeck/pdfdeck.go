@@ -84,7 +84,7 @@ func dotext(doc *gofpdf.Fpdf, cw, x, y, fs float64, wp float64, tdata, font, col
 
 // showtext places fully attributed text at the specified location
 func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align string) {
-	var offset float64 = 0
+	offset := 0.0
 	doc.SetFont(fontlookup(font), "", fs)
 	tw := doc.GetStringWidth(s)
 	switch align {
@@ -186,6 +186,7 @@ func doslides(doc *gofpdf.Fpdf, filename string, w, h int, gp float64) {
 	}
 }
 
+// dimen returns canvas dimensions from percentages
 func dimen(w, h, xp, yp, sp float64) (float64, float64, float64) {
 	return pct(xp, w), pct(100-yp, h), pct(sp, w) * 1.2
 }
