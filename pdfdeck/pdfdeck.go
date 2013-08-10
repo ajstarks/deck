@@ -1,228 +1,123 @@
-// pdfdeck: make PDF slide decks
+// pdeck: make PDF slide decks
 package main
 
 import (
 	"flag"
 	"fmt"
-	"image"
-	_ "image/jpeg"
-	_ "image/png"
 	"os"
+	"path"
 	"strings"
 
-	"bitbucket.org/zombiezen/gopdf/pdf"
+	"code.google.com/p/gofpdf"
 	"github.com/ajstarks/deck"
 )
 
 // fontmap maps generic font names to specific implementation names
-var fontmap = map[string]string{
-	"sans": pdf.Helvetica, "sans-bold": pdf.HelveticaBold, "sans-italic": pdf.HelveticaOblique,
-	"serif": pdf.Times, "serif-bold": pdf.TimesBold, "serif-italic": pdf.TimesItalic,
-	"mono": pdf.Courier, "mono-bold": pdf.CourierBold, "mono-italic": pdf.CourierOblique,
-}
+var fontmap = map[string]string{}
+
+const USLetterHeight = 612
+const USLetterWidth = 792
 
 // grid makes a grid using a percentage scale
-func grid(c *pdf.Canvas, w, h pdf.Unit, pct float64) {
-	p1 := pdf.Point{X: 0, Y: 0}
-	p2 := pdf.Point{X: 0, Y: h}
-	pw := w * (pdf.Unit(pct) / 100)
-	ph := h * (pdf.Unit(pct) / 100)
-	c.Push()
-	c.SetStrokeColor(0.9, 0.9, 0.9)
-	c.SetLineWidth(1)
-	for x := pdf.Unit(0.0); x <= w; x += pw {
-		p1.X = x
-		p2.X = x
-		c.DrawLine(p1, p2)
+func grid(doc *gofpdf.Fpdf, w, h float64, percent float64) {
+	pw := w * (percent / 100)
+	ph := h * (percent / 100)
+	doc.SetLineWidth(1)
+	for x := 0.0; x <= w; x += pw {
+		doc.Line(x, 0, x, h)
 	}
-	p1.X = 0
-	p2.X = w
-	for y := pdf.Unit(0.0); y <= h; y += ph {
-		p1.Y = y
-		p2.Y = y
-		c.DrawLine(p1, p2)
+	for y := 0.0; y <= h; y += ph {
+		doc.Line(0, y, w, y)
 	}
-	c.Pop()
 }
 
-// line draws a line
-func doline(c *pdf.Canvas, xp1, yp1, xp2, yp2, sw pdf.Unit, color string) {
-	c.Push()
+// doline draws a line
+func doline(doc *gofpdf.Fpdf, xp1, yp1, xp2, yp2, sw float64, color string) {
 	r, g, b := colorlookup(color)
-	c.SetLineWidth(sw)
-	c.SetStrokeColor(r, g, b)
-	path := new(pdf.Path)
-	path.Move(pdf.Point{xp1, yp1})
-	path.Line(pdf.Point{xp2, yp2})
-	c.Stroke(path)
-	c.Pop()
-}
-
-// docurve draws a bezier curve
-func docurve(c *pdf.Canvas, xp1, yp1, xp2, yp2, xp3, yp3, sw pdf.Unit, color string) {
-	c.Push()
-	r, g, b := colorlookup(color)
-	c.SetLineWidth(sw)
-	c.SetStrokeColor(r, g, b)
-	path := new(pdf.Path)
-
-	pt1 := pdf.Point{X: xp1, Y: yp1}
-	pt2 := pdf.Point{X: xp2, Y: yp2}
-	pt3 := pdf.Point{X: xp3, Y: yp3}
-	path.Move(pt1)
-	path.Curve(pt1, pt2, pt3)
-	c.Stroke(path)
-	c.Pop()
+	doc.SetLineWidth(sw)
+	doc.SetDrawColor(r, g, b)
+	doc.Line(xp1, yp1, xp2, yp2)
 }
 
 // dorect draws a rectangle
-func dorect(c *pdf.Canvas, x, y, w, h pdf.Unit, color string) {
-	c.Push()
-	path := new(pdf.Path)
-	center := pdf.Point{X: x, Y: y}
-	path.Move(center)
-	rect := pdf.Rectangle{Min: pdf.Point{X: x, Y: y}, Max: pdf.Point{X: x + w, Y: y + h}}
-	path.Rectangle(rect)
+func dorect(doc *gofpdf.Fpdf, x, y, w, h float64, color string) {
 	r, g, b := colorlookup(color)
-	c.SetColor(r, g, b)
-	c.Fill(path)
-	c.Pop()
-}
-
-// ellipse draws an ellipse using bezier curves
-func doellipse(c *pdf.Canvas, x, y, w, h, sw pdf.Unit, color string) {
-	const magic = pdf.Unit(0.551784)
-	xmagic := w * magic
-	ymagic := h * magic
-	c.Push()
-	path := new(pdf.Path)
-	path.Move(pdf.Point{X: -w, Y: 0})
-	docurve(c, -w, ymagic, -xmagic, h, 0, h, sw, color)
-	docurve(c, xmagic, h, w, ymagic, w, 0, sw, color)
-	docurve(c, w, -ymagic, xmagic, -h, 0, -h, sw, color)
-	docurve(c, -xmagic, -h, -w, -ymagic, -w, 0, sw, color)
-	r, g, b := colorlookup(color)
-	c.SetColor(r, g, b)
-	c.Fill(path)
-	c.Pop()
+	doc.SetFillColor(r, g, b)
+	doc.Rect(x, y, w, h, "F")
 }
 
 // bullet draws a rectangular bullet
-func bullet(c *pdf.Canvas, x, y, size pdf.Unit, color string) {
+func bullet(doc *gofpdf.Fpdf, x, y, size float64, color string) {
 	rs := size / 2
-	path := new(pdf.Path)
-	rect := pdf.Rectangle{Min: pdf.Point{X: x, Y: y}, Max: pdf.Point{X: x + rs, Y: y + rs}}
-	path.Rectangle(rect)
-	c.Fill(path)
+	dorect(doc, x-size, y-rs, rs, rs, color)
 }
 
 // background places a colored rectangle
-func background(c *pdf.Canvas, w, h pdf.Unit, color string) {
-	path := new(pdf.Path)
-	rect := pdf.Rectangle{Min: pdf.Point{X: 0, Y: 0}, Max: pdf.Point{X: w, Y: h}}
-	path.Rectangle(rect)
-	r, g, b := colorlookup(color)
-	c.SetColor(r, g, b)
-	c.Fill(path)
+func background(doc *gofpdf.Fpdf, w, h float64, color string) {
+	dorect(doc, 0, 0, w, h, color)
 }
 
 // dotext places text elements on the canvas according to type
-func dotext(c *pdf.Canvas, cw, x, y, fs pdf.Unit, wp float64, tdata, font, color, align, ttype string) {
-	var tw pdf.Unit
+func dotext(doc *gofpdf.Fpdf, cw, x, y, fs float64, wp float64, tdata, font, color, align, ttype string) {
+	var tw float64
 
 	td := strings.Split(tdata, "\n")
 	red, green, blue := colorlookup(color)
+	doc.SetTextColor(red, green, blue)
 	if ttype == "code" {
 		font = "mono"
-		c.Push()
-		ch := pdf.Unit(len(td)) * (pdf.Unit(1.8) * fs)
-		c.Translate(x-fs, (y-ch)+fs)
-		tw = pdf.Unit(deck.Pwidth(wp, float64(cw), float64(cw-x-20)))
-		background(c, tw, ch, "rgb(240,240,240)")
-		c.Pop()
+		ch := float64(len(td)) * 1.8 * fs
+		tw = deck.Pwidth(wp, cw, cw-x-20)
+		dorect(doc, x-fs, y-fs, tw, ch, "rgb(240,240,240)")
 	}
-	c.Push()
-	c.SetColor(red, green, blue)
 	if ttype == "block" {
-		tw = pdf.Unit(deck.Pwidth(wp, float64(cw), float64(cw/2)))
-		textwrap(c, x, y, tw, fs, fs*1.4, tdata, font)
+		tw = deck.Pwidth(wp, cw, cw/2)
+		textwrap(doc, x, y, tw, fs, fs*1.4, tdata, font)
 	} else {
-		ls := pdf.Unit(1.8) * fs
+		ls := 1.8 * fs
 		for _, t := range td {
-			showtext(c, x, y, t, fs, font, align)
-			y -= ls
+			showtext(doc, x, y, t, fs, font, align)
+			y += ls
 		}
 	}
-	c.Pop()
 }
 
 // showtext places fully attributed text at the specified location
-func showtext(c *pdf.Canvas, x, y pdf.Unit, s string, fs pdf.Unit, font, align string) {
-	var offset pdf.Unit = 0
-	text := new(pdf.Text)
-	c.Push()
-	text.SetFont(fontlookup(font), fs)
-	text.Text(s)
-	tw := text.X()
+func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align string) {
+	var offset float64 = 0
+	doc.SetFont(fontlookup(font), "", fs)
+	tw := doc.GetStringWidth(s)
 	switch align {
 	case "center":
-		offset = -(tw / 2)
+		offset = (tw / 2)
 	case "right":
-		offset = -tw
+		offset = tw
 	}
-	c.Translate(x+offset, y)
-	c.DrawText(text)
-	c.Pop()
+	doc.Text(x-offset, y, s)
 }
 
 // dolists places lists on the canvas
-func dolist(c *pdf.Canvas, x, y, fs pdf.Unit, tdata []string, font, color, ltype string) {
-	c.Push()
-	text := new(pdf.Text)
+func dolist(doc *gofpdf.Fpdf, x, y, fs float64, tdata []string, font, color, ltype string) {
 	if font == "" {
 		font = "sans"
 	}
-	text.SetFont(fontlookup(font), fs)
+	doc.SetFont(fontlookup(font), "", fs)
 	red, green, blue := colorlookup(color)
-	c.SetColor(red, green, blue)
+	doc.SetTextColor(red, green, blue)
 	if ltype == "bullet" {
 		x += fs
 	}
-	c.Translate(x, y)
-	ls := pdf.Unit(2.0) * fs
+	ls := 2.0 * fs
 	for i, t := range tdata {
 		if ltype == "number" {
 			t = fmt.Sprintf("%d. ", i+1) + t
 		}
 		if ltype == "bullet" {
-			bullet(c, -fs, fs/8, fs, color)
+			bullet(doc, x, y, fs, color)
 		}
-		text.Text(t)
-		c.DrawText(text)
-		c.Translate(0, -ls)
+		doc.Text(x, y, t)
+		y += ls
 	}
-	c.Pop()
-}
-
-// doimage places images on the canvas
-func doimage(c *pdf.Canvas, x, y pdf.Unit, width, height int, name string) {
-	f, err := os.Open(name)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return
-	}
-	defer f.Close()
-	img, _, err := image.Decode(f)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return
-	}
-	iw, ih := pdf.Unit(width), pdf.Unit(height)
-	r := pdf.Rectangle{Min: pdf.Point{X: 0, Y: 0}, Max: pdf.Point{X: iw, Y: ih}}
-	c.Push()
-	c.Translate(x-(iw/2), y-(ih/2)) // center
-	c.DrawImage(img, r)
-	c.Pop()
 }
 
 // whitespace determines if a rune is whitespace
@@ -240,161 +135,120 @@ func fontlookup(s string) string {
 }
 
 // textwrap draws text at location, wrapping at the specified width
-func textwrap(c *pdf.Canvas, x, y, w, fs, leading pdf.Unit, s, font string) {
-	text := new(pdf.Text)
-	text.SetFont(fontlookup(font), fs)
+func textwrap(doc *gofpdf.Fpdf, x, y, w, fs, leading float64, s, font string) {
+	const factor = 0.3
+	doc.SetFont(fontlookup(font), "", fs)
+	wordspacing := doc.GetStringWidth("m")
 	words := strings.FieldsFunc(s, whitespace)
-	edge := (x + w) * 0.75
-	c.Push()
-	c.Translate(x, y)
+	xp := x
+	yp := y
+	edge := x + w
 	for _, s := range words {
-		text.Text(s + " ")
-		tx := text.X()
-		if tx > edge {
-			text.NextLine()
-			c.DrawText(text)
-			c.Translate(0, -leading)
+		tw := doc.GetStringWidth(s)
+		doc.Text(xp, yp, s)
+		xp += tw + (wordspacing * factor)
+		if xp > edge {
+			xp = x
+			yp += leading
 		}
 	}
-	c.DrawText(text)
-	c.Pop()
 }
 
 // pct converts percentages to canvas measures
-func pct(p float64, m pdf.Unit) pdf.Unit {
-	return pdf.Unit((p / 100.0) * float64(m))
-}
-
-// dcoord returns coordinates in canvas units
-func dcoord(xp, yp float64, w, h pdf.Unit) (x, y pdf.Unit) {
-	x = pct(xp, w)
-	y = pct(yp, h)
-	return
-}
-
-// dimen returns location and size based on canvas dimensions
-func dimen(d deck.Deck, xp, yp, sp float64) (x, y, s pdf.Unit) {
-	c := d.Canvas
-	xf, yf, sf := deck.Dimen(c, xp, yp, sp)
-	x, y, s = pdf.Unit(xf), pdf.Unit(yf), pdf.Unit(sf)
-	return
+func pct(p, m float64) float64 {
+	return (p / 100.0) * m
 }
 
 // doslides reads the deck file, making the PDF version
-func doslides(doc *pdf.Document, filename string, w, h int, gp float64) {
+func doslides(doc *gofpdf.Fpdf, filename string, w, h int, gp float64) {
 	var d deck.Deck
 	var err error
 
+	for _, v := range fontmap {
+		doc.AddFont(v, "", v+".json")
+	}
 	d, err = deck.Read(filename, w, h)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return
 	}
-	if d.Canvas.Width == 0 {
-		d.Canvas.Width = int(pdf.USLetterHeight) // landscape
-	}
-	if d.Canvas.Height == 0 {
-		d.Canvas.Height = int(pdf.USLetterWidth) // landscape
-	}
 
-	if w > 0 {
-		d.Canvas.Width = w
-	}
-	if h > 0 {
-		d.Canvas.Height = h
-	}
+	d.Canvas.Width = USLetterWidth
+	d.Canvas.Height = USLetterHeight
 
 	for i := 0; i < len(d.Slide); i++ {
 		pdfslide(doc, d, i, gp)
 	}
+
+	err = doc.Output(os.Stdout)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+	}
+}
+
+func dimen(w, h, xp, yp, sp float64) (float64, float64, float64) {
+	return pct(xp, w), pct(100-yp, h), pct(sp, w) * 1.2
 }
 
 // pdfslide makes a slide, one slide per PDF page
-func pdfslide(doc *pdf.Document, d deck.Deck, n int, gp float64) {
+func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 	if n < 0 || n > len(d.Slide)-1 {
 		return
 	}
-	var x, y, fs pdf.Unit
-	var canvas *pdf.Canvas
+	var x, y, fs float64
 
-	cw := pdf.Unit(d.Canvas.Width)
-	ch := pdf.Unit(d.Canvas.Height)
-	canvas = doc.NewPage(cw, ch)
+	doc.AddPage()
+	cw := float64(d.Canvas.Width)
+	ch := float64(d.Canvas.Height)
+
 	slide := d.Slide[n]
 
 	// set background, if specified
 	if len(slide.Bg) > 0 {
-		background(canvas, cw, ch, slide.Bg)
+		background(doc, cw, ch, slide.Bg)
 	}
 	// set the default foreground
 	if slide.Fg == "" {
 		slide.Fg = "black"
 	}
 	if gp > 0 {
-		grid(canvas, cw, ch, gp)
+		grid(doc, cw, ch, gp)
 	}
 	// for every image on the slide...
 	for _, im := range slide.Image {
-		x, y = dcoord(im.Xp, im.Yp, cw, ch)
-		doimage(canvas, x, y, im.Width, im.Height, im.Name)
+		x, y, _ = dimen(cw, ch, im.Xp, im.Yp, 0)
+		fw, fh := float64(im.Width), float64(im.Height)
+		doc.Image(im.Name, x-(fw/2), y-(fh/2), fw, fh, false, "", 0, "")
+		if len(im.Caption) > 0 {
+			capsize := pct(2, cw)
+			showtext(doc, x, y+(fh/2)+(capsize*2), im.Caption, capsize, "sans", "center")
+		}
 	}
 
 	// every graphic on the slide
-
 	const defaultColor = "rgb(127,127,127)"
-
-	// rect
-	for _, rect := range slide.Rect {
-		dx, dy, _ := deck.Dimen(d.Canvas, rect.Xp, rect.Yp, 0)
-		x, y = pdf.Unit(dx), pdf.Unit(dy)
-		w := pct(rect.Wp, cw)
-		h := pct(rect.Hp, cw)
-		if rect.Color == "" {
-			rect.Color = defaultColor
-		}
-		dorect(canvas, x-(w/2), y-(h/2), w, h, rect.Color)
-	}
-
 	// line
 	for _, line := range slide.Line {
 		if line.Color == "" {
 			line.Color = defaultColor
 		}
-		x1, y1, sw := deck.Dimen(d.Canvas, line.Xp1, line.Yp1, line.Sp)
-		x2, y2, _ := deck.Dimen(d.Canvas, line.Xp2, line.Yp2, 0)
+		x1, y1, sw := dimen(cw, ch, line.Xp1, line.Yp1, line.Sp)
+		x2, y2, _ := dimen(cw, ch, line.Xp2, line.Yp2, 0)
 		if sw == 0 {
 			sw = 2.0
 		}
-		doline(canvas, pdf.Unit(x1), pdf.Unit(y1), pdf.Unit(x2), pdf.Unit(y2), pdf.Unit(sw), line.Color)
+		doline(doc, x1, y1, x2, y2, sw, line.Color)
 	}
-	// ellipse
-	/**
-	for _, ellipse := range slide.Ellipse {
-		dx, dy, _ := deck.Dimen(d.Canvas, ellipse.Xp, ellipse.Yp, 0)
-		x, y = pdf.Unit(dx), pdf.Unit(dy)
-		w := pct(ellipse.Wp, cw)
-		h := pct(ellipse.Hp, cw)
-		if ellipse.Color == "" {
-			ellipse.Color = defaultColor
+	// rect
+	for _, rect := range slide.Rect {
+		x, y, _ := dimen(cw, ch, rect.Xp, rect.Yp, 0)
+		w := pct(rect.Wp, cw)
+		h := pct(rect.Hp, cw)
+		if rect.Color == "" {
+			rect.Color = defaultColor
 		}
-		doellipse(canvas, x, y, w, h, 0, ellipse.Color)
+		dorect(doc, x-(w/2), y-(h/2), w, h, rect.Color)
 	}
-	**/
-
-	// curve
-	for _, curve := range slide.Curve {
-		if curve.Color == "" {
-			curve.Color = defaultColor
-		}
-		x1, y1, sw := deck.Dimen(d.Canvas, curve.Xp1, curve.Yp1, curve.Sp)
-		x2, y2, _ := deck.Dimen(d.Canvas, curve.Xp2, curve.Yp2, 0)
-		x3, y3, _ := deck.Dimen(d.Canvas, curve.Xp3, curve.Yp3, 0)
-		if sw == 0 {
-			sw = 1.0
-		}
-		docurve(canvas, pdf.Unit(x1), pdf.Unit(y1), pdf.Unit(x2), pdf.Unit(y2), pdf.Unit(x3), pdf.Unit(y3), pdf.Unit(sw), curve.Color)
-	}
-
 	// for every text element...
 	for _, t := range slide.Text {
 		if t.Color == "" {
@@ -403,38 +257,38 @@ func pdfslide(doc *pdf.Document, d deck.Deck, n int, gp float64) {
 		if t.Font == "" {
 			t.Font = "sans"
 		}
-		x, y, fs = dimen(d, t.Xp, t.Yp, t.Sp)
-		dotext(canvas, cw, x, y, fs, t.Wp, t.Tdata, t.Font, t.Color, t.Align, t.Type)
+		x, y, fs = dimen(cw, ch, t.Xp, t.Yp, t.Sp)
+		dotext(doc, cw, x, y, fs, t.Wp, t.Tdata, t.Font, t.Color, t.Align, t.Type)
 	}
 	// for every list element...
 	for _, l := range slide.List {
 		if l.Color == "" {
 			l.Color = slide.Fg
 		}
-		x, y, fs = dimen(d, l.Xp, l.Yp, l.Sp)
-		dolist(canvas, x, y, fs, l.Li, l.Font, l.Color, l.Type)
+		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
+		dolist(doc, x, y, fs, l.Li, l.Font, l.Color, l.Type)
 	}
-	canvas.Close()
 }
 
 // dodeck kicks things off
-func dodeck(filename string, w, h int, gp float64) {
-	doc := pdf.New()
-	doslides(doc, filename, w, h, gp)
-	err := doc.Encode(os.Stdout)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
+func dodeck(filename, fontdir string, gp float64) {
+	doc := gofpdf.New("L", "pt", "Letter", fontdir)
+	doslides(doc, filename, USLetterWidth, USLetterHeight, gp)
 }
 
 // for every file, make a deck
 func main() {
 	var gridpct = flag.Float64("g", 0, "place percentage grid on each slide")
-	var cw = flag.Int("w", 0, "canvas width")
-	var ch = flag.Int("h", 0, "canvas height")
+	var fontdir = flag.String("f", path.Join(os.Getenv("GOPATH"), "src/code.google.com/p/gofpdf/font"), "font directory")
+	var sansfont = flag.String("sans", "helvetica", "sans font")
+	var serifont = flag.String("serif", "times", "serif font")
+	var monofont = flag.String("mono", "courier", "mono font")
 	flag.Parse()
+	fontmap["sans"] = *sansfont
+	fontmap["serif"] = *serifont
+	fontmap["mono"] = *monofont
+
 	for _, f := range flag.Args() {
-		dodeck(f, *cw, *ch, *gridpct)
+		dodeck(f, *fontdir, *gridpct)
 	}
 }

@@ -7,7 +7,7 @@ import (
 
 // RGB defines the red, green, blue triple that makes up colors.
 type RGB struct {
-	red, green, blue uint8
+	red, green, blue int
 }
 
 // colornames maps SVG color names to RGB triples.
@@ -161,22 +161,20 @@ var colornames = map[string]RGB{
 	"yellowgreen":          {154, 205, 50},
 }
 
-const maxbits = float32(255)
-
 // colorlookup returns a RGB triple corresponding to the named color or "rgb(r,g,b)" string.
 // On error, return black.
-func colorlookup(s string) (float32, float32, float32) {
-	var red, green, blue uint8
+func colorlookup(s string) (int, int, int) {
+	var red, green, blue int
 	color, ok := colornames[s]
 	if ok {
-		return float32(color.red) / maxbits, float32(color.green) / maxbits, float32(color.blue) / maxbits
+		return color.red, color.green, color.blue
 	}
 	if strings.HasPrefix(s, "rgb(") {
 		n, err := fmt.Sscanf(s[3:], "(%d,%d,%d)", &red, &green, &blue)
 		if n != 3 || err != nil {
 			return 0, 0, 0
 		}
-		return float32(red) / maxbits, float32(green) / maxbits, float32(blue) / maxbits
+		return red, green, blue
 	}
 	return 0, 0, 0
 }
