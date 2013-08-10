@@ -61,7 +61,7 @@ func main() {
   </slide>
 
   <slide>
-      <image xp="50" yp="50" width="422" height="238" name="desert2.jpg"/>
+      <image xp="50" yp="50" width="360" height="203" name="desert2.jpg"/>
       <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;image .../&gt;</text>
   </slide>
   
@@ -91,11 +91,11 @@ func main() {
      <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;curve .../&gt;</text>
    </slide>
 
-<slide bg="rgb(127,127,127)" fg="white">
+  <slide bg="rgb(127,127,127)" fg="white">
       <text xp="10" yp="10" sp="4">Markup and Layout</text>
   </slide>
 
-<slide>
+  <slide>
     <text xp="20" yp="80" sp="3">Anatomy of a Deck</text>
     <image xp="80" yp="45" width="320" height="240" name="sample320.png"/>
     <list  xp="20" yp="70" sp="0.85" font="mono">
@@ -251,7 +251,7 @@ func main() {
   <slide>
       <text xp="50" yp="10" sp="4" align="center">Percentage-based layout</text>
       <text xp="10" yp="50" sp="3" color="rgb(127,0,0)">Hello</text>
-      <image xp="50" yp="50" width="422" height="238" name="desert2.jpg"/>
+      <image xp="50" yp="50" width="360" height="203" name="desert2.jpg"/>
       <rect xp="90" yp="50" wp="10" hp="10" color="rgb(127,0,0)" opacity="0.5"/>
       <text xp="10" yp="80" sp="1.5"  align="center">10%, 50%</text>
       <text xp="50" yp="80" sp="1.5"  align="center">50%, 50%</text>
@@ -266,14 +266,11 @@ func main() {
       <ellipse xp="90" yp="50" wp="0.5" hp="0.5" color="black"/>
   </slide>
 
-
- 
-
   <slide>
    <text xp="50" yp="80" sp="3" align="center">Two Columns</text>
    <line xp1="50" yp1="70" xp2="50" yp2="10" sp="0.1" color="black" />
-   <image xp="25" yp="30" width="422" height="238" name="desert2.jpg" caption="Tree and Sky"/>
-   <image xp="75" yp="30" width="422" height="238" name="desert3.jpg" caption="Rocks"/>
+   <image xp="25" yp="30" width="360" height="203" name="desert2.jpg" caption="Tree and Sky"/>
+   <image xp="75" yp="30" width="360" height="203" name="desert3.jpg" caption="Rocks"/>
    <list xp="20" yp="70" sp="2">
       <li>One</li>
       <li>Two</li>
