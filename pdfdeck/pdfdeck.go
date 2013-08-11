@@ -52,12 +52,20 @@ func doline(doc *gofpdf.Fpdf, xp1, yp1, xp2, yp2, sw float64, color string) {
 	doc.Line(xp1, yp1, xp2, yp2)
 }
 
+// doarc draws a line
+func doarc(doc *gofpdf.Fpdf, x, y, w, h, a1, a2, sw float64, color string) {
+	r, g, b := colorlookup(color)
+	doc.SetLineWidth(sw)
+	doc.SetDrawColor(r, g, b)
+	doc.Arc(x, y, w, h, 0, a1, a2, "D")
+}
+
 // docurve draws a bezier curve
 func docurve(doc *gofpdf.Fpdf, xp1, yp1, xp2, yp2, xp3, yp3, sw float64, color string) {
 	r, g, b := colorlookup(color)
 	doc.SetLineWidth(sw)
 	doc.SetDrawColor(r, g, b)
-	//doc.Curve(xp1, yp1, xp2, yp2, xp3, yp3)
+	doc.Curve(xp1, yp1, xp2, yp2, xp3, yp3, "D")
 }
 
 // dorect draws a rectangle
@@ -65,6 +73,13 @@ func dorect(doc *gofpdf.Fpdf, x, y, w, h float64, color string) {
 	r, g, b := colorlookup(color)
 	doc.SetFillColor(r, g, b)
 	doc.Rect(x, y, w, h, "F")
+}
+
+// doellipse draws a rectangle
+func doellipse(doc *gofpdf.Fpdf, x, y, w, h float64, color string) {
+	r, g, b := colorlookup(color)
+	doc.SetFillColor(r, g, b)
+	doc.Ellipse(x, y, w, h, 0, "F")
 }
 
 // bullet draws a rectangular bullet
@@ -274,6 +289,16 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		}
 		dorect(doc, x-(w/2), y-(h/2), w, h, rect.Color)
 	}
+	// ellipse
+	for _, ellipse := range slide.Ellipse {
+		x, y, _ := dimen(cw, ch, ellipse.Xp, ellipse.Yp, 0)
+		w := pct(ellipse.Wp, cw)
+		h := pct(ellipse.Hp, cw)
+		if ellipse.Color == "" {
+			ellipse.Color = defaultColor
+		}
+		doellipse(doc, x, y, w/2, h/2, ellipse.Color)
+	}
 	// curve
 	for _, curve := range slide.Curve {
 		if curve.Color == "" {
@@ -286,6 +311,19 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 			sw = 2.0
 		}
 		docurve(doc, x1, y1, x2, y2, x3, y3, sw, curve.Color)
+	}
+	// arc
+	for _, arc := range slide.Arc {
+		if arc.Color == "" {
+			arc.Color = defaultColor
+		}
+		x, y, sw := dimen(cw, ch, arc.Xp, arc.Yp, arc.Sp)
+		w := pct(arc.Wp, cw)
+		h := pct(arc.Hp, cw)
+		if sw == 0 {
+			sw = 2.0
+		}
+		doarc(doc, x, y, w/2, h/2, arc.A1, arc.A2, sw, arc.Color)
 	}
 	// line
 	for _, line := range slide.Line {
@@ -339,6 +377,7 @@ func dodeck(filename, outdir, fontdir string, gp float64) {
 		fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
 		return
 	}
+	out.Close()
 }
 
 // for every file, make a deck
