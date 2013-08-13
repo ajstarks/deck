@@ -324,7 +324,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		if line.Opacity == 0 {
 			strokeopacity = 1
 		} else {
-			strokeopacity = line.Opacity
+			strokeopacity = line.Opacity/100.0
 		}
 		x1, y1, sw := dimen(d, line.Xp1, line.Yp1, line.Sp)
 		x2, y2, _ := dimen(d, line.Xp2, line.Yp2, 0)
@@ -347,6 +347,8 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		}
 		if ellipse.Opacity == 0 {
 			ellipse.Opacity = 1
+		} else {
+			ellipse.Opacity /= 100
 		}
 		openvg.FillColor(ellipse.Color, openvg.VGfloat(ellipse.Opacity))
 		openvg.Ellipse(x, y, w, h)
@@ -361,6 +363,8 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		}
 		if rect.Opacity == 0 {
 			rect.Opacity = 1
+		} else {
+			rect.Opacity /= 100
 		}
 		openvg.FillColor(rect.Color, openvg.VGfloat(rect.Opacity))
 		openvg.Rect(x-(w/2), y-(h/2), w, h)
@@ -370,10 +374,10 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		if curve.Color == "" {
 			curve.Color = defaultColor
 		}
-		if curve.Opacity != 0 {
-			strokeopacity = curve.Opacity
+		if curve.Opacity == 0 {
+			strokeopacity = 1 
 		} else {
-			strokeopacity = 1.0
+			strokeopacity = curve.Opacity/100.0
 		}
 		x1, y1, sw := dimen(d, curve.Xp1, curve.Yp1, curve.Sp)
 		x2, y2, _ := dimen(d, curve.Xp2, curve.Yp2, 0)
@@ -393,10 +397,10 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		if arc.Color == "" {
 			arc.Color = defaultColor
 		}
-		if arc.Opacity != 0 {
-			strokeopacity = arc.Opacity
+		if arc.Opacity == 0 {
+			strokeopacity = 1
 		} else {
-			strokeopacity = 1.0
+			strokeopacity = arc.Opacity/100.0
 		}
 		ax, ay, sw := dimen(d, arc.Xp, arc.Yp, arc.Sp)
 		w := pct(arc.Wp, cw)
@@ -428,7 +432,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		if l.Opacity == 0 {
 			textopacity = 1
 		} else {
-			textopacity = openvg.VGfloat(l.Opacity)
+			textopacity = openvg.VGfloat(l.Opacity/100)
 		}
 		if l.Color == "" {
 			openvg.FillColor(slide.Fg)
@@ -460,7 +464,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		if t.Opacity == 0 {
 			textopacity = 1
 		} else {
-			textopacity = openvg.VGfloat(t.Opacity)
+			textopacity = openvg.VGfloat(t.Opacity/100)
 		}
 		x, y, fs = dimen(d, t.Xp, t.Yp, t.Sp)
 		td := strings.Split(t.Tdata, "\n")
