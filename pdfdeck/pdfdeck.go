@@ -223,6 +223,17 @@ func dimen(w, h, xp, yp, sp float64) (float64, float64, float64) {
 	return pct(xp, w), pct(100-yp, h), pct(sp, w) * 1.2
 }
 
+// setopacity sets the alpha value:
+// 0 == don't set, default value (opaque)
+// [1..100] set opacity percent
+func setopacity(doc *gofpdf.Fpdf, v float64) {
+	if v >= 1 {
+		doc.SetAlpha(v/100, "Normal")
+	} else {
+		doc.SetAlpha(1, "Normal")
+	}
+}
+
 // pdfslide makes a slide, one slide per PDF page
 func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 	if n < 0 || n > len(d.Slide)-1 {
@@ -233,9 +244,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 	doc.AddPage()
 	cw := float64(d.Canvas.Width)
 	ch := float64(d.Canvas.Height)
-
 	slide := d.Slide[n]
-
 	// set background, if specified
 	if len(slide.Bg) > 0 {
 		background(doc, cw, ch, slide.Bg)
@@ -276,7 +285,6 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 			showtext(doc, x, y+(midy)+(capsize*2), im.Caption, capsize, im.Font, im.Align)
 		}
 	}
-
 	// every graphic on the slide
 	const defaultColor = "rgb(127,127,127)"
 	// rect
@@ -287,6 +295,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		if rect.Color == "" {
 			rect.Color = defaultColor
 		}
+		setopacity(doc, rect.Opacity)
 		dorect(doc, x-(w/2), y-(h/2), w, h, rect.Color)
 	}
 	// ellipse
@@ -297,6 +306,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		if ellipse.Color == "" {
 			ellipse.Color = defaultColor
 		}
+		setopacity(doc, ellipse.Opacity)
 		doellipse(doc, x, y, w/2, h/2, ellipse.Color)
 	}
 	// curve
@@ -304,6 +314,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		if curve.Color == "" {
 			curve.Color = defaultColor
 		}
+		setopacity(doc, curve.Opacity)
 		x1, y1, sw := dimen(cw, ch, curve.Xp1, curve.Yp1, curve.Sp)
 		x2, y2, _ := dimen(cw, ch, curve.Xp2, curve.Yp2, 0)
 		x3, y3, _ := dimen(cw, ch, curve.Xp3, curve.Yp3, 0)
@@ -317,6 +328,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		if arc.Color == "" {
 			arc.Color = defaultColor
 		}
+		setopacity(doc, arc.Opacity)
 		x, y, sw := dimen(cw, ch, arc.Xp, arc.Yp, arc.Sp)
 		w := pct(arc.Wp, cw)
 		h := pct(arc.Hp, cw)
@@ -330,6 +342,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		if line.Color == "" {
 			line.Color = defaultColor
 		}
+		setopacity(doc, line.Opacity)
 		x1, y1, sw := dimen(cw, ch, line.Xp1, line.Yp1, line.Sp)
 		x2, y2, _ := dimen(cw, ch, line.Xp2, line.Yp2, 0)
 		if sw == 0 {
@@ -346,6 +359,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		if t.Font == "" {
 			t.Font = "sans"
 		}
+		setopacity(doc, t.Opacity)
 		x, y, fs = dimen(cw, ch, t.Xp, t.Yp, t.Sp)
 		dotext(doc, cw, x, y, fs, t.Wp, t.Tdata, t.Font, t.Color, t.Align, t.Type)
 	}
@@ -354,6 +368,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		if l.Color == "" {
 			l.Color = slide.Fg
 		}
+		setopacity(doc, l.Opacity)
 		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
 		dolist(doc, x, y, fs, l.Li, l.Font, l.Color, l.Type)
 	}
