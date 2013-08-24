@@ -13,7 +13,10 @@ import (
 	"github.com/ajstarks/svgo"
 )
 
-const mm2pt = 2.83464 // mm to pt conversion
+const (
+	mm2pt   = 2.83464 // mm to pt conversion
+	namefmt = "%s-%03d.svg"
+)
 
 // PageDimen describes page dimensions
 // the unit field is used to convert to pt.
@@ -156,12 +159,13 @@ func doellipse(doc *svg.SVG, x, y, w, h int, color string, opacity float64) {
 func dotext(doc *svg.SVG, cw, x, y, fs int, wp float64, tdata, font, color string, opacity float64, align, ttype string) {
 	var tw int
 	const emsperpixel = 8
+	ls := fs + ((fs * 8) / 10)
 	td := strings.Split(tdata, "\n")
 	if ttype == "code" {
 		font = "mono"
-		ch := float64(len(td)) * 2.5 * float64(fs)
+		ch := len(td) * ls
 		tw = cw - 20
-		dorect(doc, x-fs, y-fs, tw, int(ch), "rgb(240,240,240)", opacity)
+		dorect(doc, x-fs, y-fs, tw, ch, "rgb(240,240,240)", opacity)
 	}
 	if ttype == "block" {
 		if wp == 0 {
@@ -169,9 +173,8 @@ func dotext(doc *svg.SVG, cw, x, y, fs int, wp float64, tdata, font, color strin
 		} else {
 			tw = int((float64(cw) * (wp / 100.0)) / emsperpixel)
 		}
-		textwrap(doc, x, y, tw, fs, fs*2, tdata, font, color, opacity)
+		textwrap(doc, x, y, tw, fs, ls, tdata, font, color, opacity)
 	} else {
-		ls := 2*fs + (fs / 2)
 		for _, t := range td {
 			showtext(doc, x, y, t, fs, font, color, align)
 			y += ls
@@ -206,7 +209,7 @@ func dolist(doc *svg.SVG, x, y, fs int, tdata []string, font, color string, opac
 	if ltype == "bullet" {
 		x += fs
 	}
-	ls := (2 * fs) + (fs / 2)
+	ls := fs * 2
 	for i, t := range tdata {
 		if ltype == "number" {
 			t = fmt.Sprintf("%d. ", i+1) + t
@@ -258,28 +261,28 @@ func doslides(outname, filename, title string, width, height int, gp float64) {
 		doc := svg.New(os.Stdout)
 		for i := 0; i < len(d.Slide); i++ {
 			doc.Start(width, height)
-			svgslide(doc, d, i, gp, title)
+			svgslide(doc, d, i, gp, outname, title)
 			doc.End()
 		}
 		return
 	}
 
 	for i := 0; i < len(d.Slide); i++ {
-		out, err := os.Create(fmt.Sprintf("%s-%03d.svg", outname, i))
+		out, err := os.Create(fmt.Sprintf(namefmt, outname, i))
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "svgdeck: %v\n", err)
 			continue
 		}
 		doc := svg.New(out)
 		doc.Start(width, height)
-		svgslide(doc, d, i, gp, title)
+		svgslide(doc, d, i, gp, outname, title)
 		doc.End()
 		out.Close()
 	}
 }
 
-// svgslide makes a slide, one slide per SVG page
-func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, title string) {
+// svgslide makes one slide per SVG page
+func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title string) {
 	if n < 0 || n > len(d.Slide)-1 {
 		return
 	}
@@ -289,6 +292,18 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, title string) {
 	ch := d.Canvas.Height
 	slide := d.Slide[n]
 
+	// insert navigation links:
+	// the full slide links to the next one in sequence,
+	// the last slide links to the first
+	if len(outname) > 0 {
+		var link int
+		if n < len(d.Slide)-1 {
+			link = n + 1
+		} else {
+			link = 0
+		}
+		doc.Link(fmt.Sprintf(namefmt, outname, link), fmt.Sprintf("Link to slide %03d", link))
+	}
 	// insert title, if specified
 	if len(title) > 0 {
 		doc.Title(fmt.Sprintf("%s: Slide %d", title, n))
@@ -402,6 +417,10 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, title string) {
 		}
 		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
 		dolist(doc, x, y, fs, l.Li, l.Font, l.Color, l.Opacity, l.Type)
+	}
+
+	if len(outname) > 0 {
+		doc.LinkEnd()
 	}
 }
 
