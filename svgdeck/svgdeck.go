@@ -1,18 +1,4 @@
 // svgdeck: make SVG slide decks
-//
-//	svgdeck [options] file.xml...
-//	options are:
-//	  -w=1200: page width
-//	  -h=800: page height
-//	  -outdir=".": output directory
-//	  -pagesize="": page size (Letter, A3, A4, A5)
-//	  -sans="Helvetica": sans font
-//	  -mono="Courier": mono font
-//	  -serif="Times-Roman": serif font
-//	  -stdout=false: output to standard output
-//	  -title="": document title
-//	  -grid=0: place percentage grid on each slide
-//
 package main
 
 import (
