@@ -12,12 +12,69 @@ import (
 	"github.com/ajstarks/deck"
 )
 
+const (
+	mm2pt       = 2.83464 // mm to pt conversion
+	linespacing = 1.4
+	listspacing = 1.8
+	fontfactor  = 1.2
+)
+
+// PageDimen describes page dimensions
+// the unit field is used to convert to pt.
+type PageDimen struct {
+	width, height, unit float64
+}
+
 // fontmap maps generic font names to specific implementation names
 var fontmap = map[string]string{}
 
-// page dimensions
-const USLetterHeight = 612
-const USLetterWidth = 792
+// pagemap defines page dimensions
+var pagemap = map[string]PageDimen{
+	"Letter": {612, 792, 1},
+	"Legal":  {612, 1008, 1},
+	"A3":     {297, 420, mm2pt},
+	"A4":     {210, 297, mm2pt},
+	"A5":     {148, 210, mm2pt},
+}
+
+// pct converts percentages to canvas measures
+func pct(p, m float64) float64 {
+	return (p / 100.0) * m
+}
+
+// dimen returns canvas dimensions from percentages
+func dimen(w, h, xp, yp, sp float64) (float64, float64, float64) {
+	return pct(xp, w), pct(100-yp, h), pct(sp, w) * fontfactor
+}
+
+// setopacity sets the alpha value:
+// 0 == default value (opaque)
+// -1 == fully transparent
+// > 0 set opacity percent
+func setopacity(doc *gofpdf.Fpdf, v float64) {
+	switch {
+	case v < 0:
+		doc.SetAlpha(0, "Normal")
+	case v > 0:
+		doc.SetAlpha(v/100, "Normal")
+	case v == 0:
+		doc.SetAlpha(1, "Normal")
+	}
+}
+
+// whitespace determines if a rune is whitespace
+func whitespace(r rune) bool {
+	return r == ' ' || r == '\n' || r == '\t'
+}
+
+// fontlookup maps font aliases to implementation font names
+func fontlookup(s string) string {
+	font, ok := fontmap[s]
+	if ok {
+		return font
+	}
+	return "sans"
+}
 
 // grid makes a percentage scale
 func grid(doc *gofpdf.Fpdf, w, h float64, color string, percent float64) {
@@ -42,6 +99,17 @@ func grid(doc *gofpdf.Fpdf, w, h float64, color string, percent float64) {
 		}
 		pl += percent
 	}
+}
+
+// bullet draws a rectangular bullet
+func bullet(doc *gofpdf.Fpdf, x, y, size float64, color string) {
+	rs := size / 2
+	dorect(doc, x-size, y-rs, rs, rs, color)
+}
+
+// background places a colored rectangle
+func background(doc *gofpdf.Fpdf, w, h float64, color string) {
+	dorect(doc, 0, 0, w, h, color)
 }
 
 // doline draws a line
@@ -82,17 +150,6 @@ func doellipse(doc *gofpdf.Fpdf, x, y, w, h float64, color string) {
 	doc.Ellipse(x, y, w, h, 0, "F")
 }
 
-// bullet draws a rectangular bullet
-func bullet(doc *gofpdf.Fpdf, x, y, size float64, color string) {
-	rs := size / 2
-	dorect(doc, x-size, y-rs, rs, rs, color)
-}
-
-// background places a colored rectangle
-func background(doc *gofpdf.Fpdf, w, h float64, color string) {
-	dorect(doc, 0, 0, w, h, color)
-}
-
 // dotext places text elements on the canvas according to type
 func dotext(doc *gofpdf.Fpdf, cw, x, y, fs float64, wp float64, tdata, font, color, align, ttype string) {
 	var tw float64
@@ -102,15 +159,15 @@ func dotext(doc *gofpdf.Fpdf, cw, x, y, fs float64, wp float64, tdata, font, col
 	doc.SetTextColor(red, green, blue)
 	if ttype == "code" {
 		font = "mono"
-		ch := float64(len(td)) * 1.8 * fs
+		ch := float64(len(td)) * listspacing * fs
 		tw = deck.Pwidth(wp, cw, cw-x-20)
 		dorect(doc, x-fs, y-fs, tw, ch, "rgb(240,240,240)")
 	}
 	if ttype == "block" {
 		tw = deck.Pwidth(wp, cw, cw/2)
-		textwrap(doc, x, y, tw, fs, fs*1.4, tdata, font)
+		textwrap(doc, x, y, tw, fs, fs*linespacing, tdata, font)
 	} else {
-		ls := 1.8 * fs
+		ls := listspacing * fs
 		for _, t := range td {
 			showtext(doc, x, y, t, fs, font, align)
 			y += ls
@@ -156,20 +213,6 @@ func dolist(doc *gofpdf.Fpdf, x, y, fs float64, tdata []string, font, color, lty
 	}
 }
 
-// whitespace determines if a rune is whitespace
-func whitespace(r rune) bool {
-	return r == ' ' || r == '\n' || r == '\t'
-}
-
-// fontlookup maps font aliases to implementation font names
-func fontlookup(s string) string {
-	font, ok := fontmap[s]
-	if ok {
-		return font
-	}
-	return "sans"
-}
-
 // textwrap draws text at location, wrapping at the specified width
 func textwrap(doc *gofpdf.Fpdf, x, y, w, fs, leading float64, s, font string) {
 	const factor = 0.3
@@ -190,13 +233,8 @@ func textwrap(doc *gofpdf.Fpdf, x, y, w, fs, leading float64, s, font string) {
 	}
 }
 
-// pct converts percentages to canvas measures
-func pct(p, m float64) float64 {
-	return (p / 100.0) * m
-}
-
 // doslides reads the deck file, making the PDF version
-func doslides(doc *gofpdf.Fpdf, filename string, w, h int, gp float64) {
+func doslides(doc *gofpdf.Fpdf, filename, author, title string, w, h int, gp float64) {
 	var d deck.Deck
 	var err error
 
@@ -209,28 +247,18 @@ func doslides(doc *gofpdf.Fpdf, filename string, w, h int, gp float64) {
 		return
 	}
 
-	d.Canvas.Width = USLetterWidth
-	d.Canvas.Height = USLetterHeight
-
+	// Lanscape mode switch w,h
+	d.Canvas.Width = h
+	d.Canvas.Height = w
+	doc.SetCreator("PDFDeck", true)
+	if len(title) > 0 {
+		doc.SetTitle(title, true)
+	}
+	if len(author) > 0 {
+		doc.SetAuthor(author, true)
+	}
 	for i := 0; i < len(d.Slide); i++ {
 		pdfslide(doc, d, i, gp)
-	}
-
-}
-
-// dimen returns canvas dimensions from percentages
-func dimen(w, h, xp, yp, sp float64) (float64, float64, float64) {
-	return pct(xp, w), pct(100-yp, h), pct(sp, w) * 1.2
-}
-
-// setopacity sets the alpha value:
-// 0 == don't set, default value (opaque)
-// [1..100] set opacity percent
-func setopacity(doc *gofpdf.Fpdf, v float64) {
-	if v >= 1 {
-		doc.SetAlpha(v/100, "Normal")
-	} else {
-		doc.SetAlpha(1, "Normal")
 	}
 }
 
@@ -374,42 +402,62 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 	}
 }
 
-// dodeck kicks things off
-func dodeck(filename, outdir, fontdir string, gp float64) {
-	doc := gofpdf.New("L", "pt", "Letter", fontdir)
-	base := strings.Split(filepath.Base(filename), ".xml")
-	outfile := filepath.Join(outdir, base[0]+".pdf")
-	out, err := os.Create(outfile)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
-		return
+// dodeck turns deck input files into PDFs
+// if the sflag is set, all output goes to the standard output file,
+// otherwise, PDFs are written the destination directory, to filenames based on the input name.
+func dodeck(files []string, sflag bool, pagesize, outdir, fontdir, author, title string, gp float64) {
+	p, ok := pagemap[pagesize]
+	if !ok {
+		p = pagemap["Letter"]
 	}
-
-	doslides(doc, filename, USLetterWidth, USLetterHeight, gp)
-
-	err = doc.Output(out)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
-		return
+	cw := int(p.width * p.unit)
+	ch := int(p.height * p.unit)
+	if sflag { // combined output to standard output
+		doc := gofpdf.New("L", "pt", pagesize, fontdir)
+		for _, filename := range files {
+			doslides(doc, filename, author, title, cw, ch, gp)
+		}
+		err := doc.Output(os.Stdout)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%v\n", err)
+		}
+	} else { // output to individual files
+		for _, filename := range files {
+			base := strings.Split(filepath.Base(filename), ".xml")
+			out, err := os.Create(filepath.Join(outdir, base[0]+".pdf"))
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
+				continue
+			}
+			doc := gofpdf.New("L", "pt", pagesize, fontdir)
+			doslides(doc, filename, author, title, cw, ch, gp)
+			err = doc.Output(out)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
+				continue
+			}
+			out.Close()
+		}
 	}
-	out.Close()
 }
 
 // for every file, make a deck
 func main() {
 	var (
-		gridpct  = flag.Float64("g", 0, "place percentage grid on each slide")
-		fontdir  = flag.String("f", filepath.Join(os.Getenv("GOPATH"), "src/code.google.com/p/gofpdf/font"), "font directory")
 		sansfont = flag.String("sans", "helvetica", "sans font")
 		serifont = flag.String("serif", "times", "serif font")
 		monofont = flag.String("mono", "courier", "mono font")
+		pagesize = flag.String("pagesize", "Letter", "pagesize (Letter, Legal, A3, A4, A5)")
+		fontdir  = flag.String("fontdir", filepath.Join(os.Getenv("GOPATH"), "src/code.google.com/p/gofpdf/font"), "directory for fonts")
 		outdir   = flag.String("outdir", ".", "output directory")
+		stdout   = flag.Bool("stdout", false, "output to standard output")
+		title    = flag.String("title", "", "document title")
+		author   = flag.String("author", "", "document author")
+		gridpct  = flag.Float64("grid", 0, "place percentage grid on each slide")
 	)
 	flag.Parse()
 	fontmap["sans"] = *sansfont
 	fontmap["serif"] = *serifont
 	fontmap["mono"] = *monofont
-	for _, f := range flag.Args() {
-		dodeck(f, *outdir, *fontdir, *gridpct)
-	}
+	dodeck(flag.Args(), *stdout, *pagesize, *outdir, *fontdir, *author, *title, *gridpct)
 }
