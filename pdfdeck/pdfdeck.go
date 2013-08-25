@@ -16,7 +16,7 @@ const (
 	mm2pt       = 2.83464 // mm to pt conversion
 	linespacing = 1.4
 	listspacing = 1.8
-	fontfactor  = 1.2
+	fontfactor  = 1.0
 )
 
 // PageDimen describes page dimensions
@@ -233,35 +233,6 @@ func textwrap(doc *gofpdf.Fpdf, x, y, w, fs, leading float64, s, font string) {
 	}
 }
 
-// doslides reads the deck file, making the PDF version
-func doslides(doc *gofpdf.Fpdf, filename, author, title string, w, h int, gp float64) {
-	var d deck.Deck
-	var err error
-
-	for _, v := range fontmap {
-		doc.AddFont(v, "", v+".json")
-	}
-	d, err = deck.Read(filename, w, h)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
-		return
-	}
-
-	// Lanscape mode switch w,h
-	d.Canvas.Width = h
-	d.Canvas.Height = w
-	doc.SetCreator("PDFDeck", true)
-	if len(title) > 0 {
-		doc.SetTitle(title, true)
-	}
-	if len(author) > 0 {
-		doc.SetAuthor(author, true)
-	}
-	for i := 0; i < len(d.Slide); i++ {
-		pdfslide(doc, d, i, gp)
-	}
-}
-
 // pdfslide makes a slide, one slide per PDF page
 func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 	if n < 0 || n > len(d.Slide)-1 {
@@ -402,18 +373,55 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 	}
 }
 
+// doslides reads the deck file, making the PDF version
+func doslides(doc *gofpdf.Fpdf, filename, author, title string, w, h int, gp float64) {
+	var d deck.Deck
+	var err error
+
+	for _, v := range fontmap {
+		doc.AddFont(v, "", v+".json")
+	}
+	d, err = deck.Read(filename, w, h)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
+		return
+	}
+	d.Canvas.Width = w
+	d.Canvas.Height = h
+	doc.SetCreator("pdfdeck", true)
+	if len(title) > 0 {
+		doc.SetTitle(title, true)
+	}
+	if len(author) > 0 {
+		doc.SetAuthor(author, true)
+	}
+	for i := 0; i < len(d.Slide); i++ {
+		pdfslide(doc, d, i, gp)
+	}
+}
+
 // dodeck turns deck input files into PDFs
 // if the sflag is set, all output goes to the standard output file,
 // otherwise, PDFs are written the destination directory, to filenames based on the input name.
-func dodeck(files []string, sflag bool, pagesize, outdir, fontdir, author, title string, gp float64) {
-	p, ok := pagemap[pagesize]
-	if !ok {
-		p = pagemap["Letter"]
+func dodeck(files []string, pageconfig *gofpdf.InitType, sflag bool, outdir, author, title string, gp float64) {
+	var cw, ch int
+	// if custom page dimensions are specified, they override standard page dimensions
+	if pageconfig.Size.Wd > 0 && pageconfig.Size.Ht > 0 {
+		cw = int(pageconfig.Size.Wd)
+		ch = int(pageconfig.Size.Ht)
+	} else {
+		p, ok := pagemap[pageconfig.SizeStr]
+		if !ok {
+			p = pagemap["Letter"]
+		}
+		cw = int(p.width * p.unit)
+		ch = int(p.height * p.unit)
 	}
-	cw := int(p.width * p.unit)
-	ch := int(p.height * p.unit)
+	if pageconfig.OrientationStr == "L" {
+		ch, cw = cw, ch
+	}
 	if sflag { // combined output to standard output
-		doc := gofpdf.New("L", "pt", pagesize, fontdir)
+		doc := gofpdf.NewCustom(pageconfig)
 		for _, filename := range files {
 			doslides(doc, filename, author, title, cw, ch, gp)
 		}
@@ -429,7 +437,7 @@ func dodeck(files []string, sflag bool, pagesize, outdir, fontdir, author, title
 				fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
 				continue
 			}
-			doc := gofpdf.New("L", "pt", pagesize, fontdir)
+			doc := gofpdf.NewCustom(pageconfig)
 			doslides(doc, filename, author, title, cw, ch, gp)
 			err = doc.Output(out)
 			if err != nil {
@@ -444,20 +452,29 @@ func dodeck(files []string, sflag bool, pagesize, outdir, fontdir, author, title
 // for every file, make a deck
 func main() {
 	var (
-		sansfont = flag.String("sans", "helvetica", "sans font")
-		serifont = flag.String("serif", "times", "serif font")
-		monofont = flag.String("mono", "courier", "mono font")
-		pagesize = flag.String("pagesize", "Letter", "pagesize (Letter, Legal, A3, A4, A5)")
-		fontdir  = flag.String("fontdir", filepath.Join(os.Getenv("GOPATH"), "src/code.google.com/p/gofpdf/font"), "directory for fonts")
-		outdir   = flag.String("outdir", ".", "output directory")
-		stdout   = flag.Bool("stdout", false, "output to standard output")
-		title    = flag.String("title", "", "document title")
-		author   = flag.String("author", "", "document author")
-		gridpct  = flag.Float64("grid", 0, "place percentage grid on each slide")
+		sansfont   = flag.String("sans", "helvetica", "sans font")
+		serifont   = flag.String("serif", "times", "serif font")
+		monofont   = flag.String("mono", "courier", "mono font")
+		pagesize   = flag.String("pagesize", "Letter", "pagesize (Letter, Legal, A3, A4, A5)")
+		pagewidth  = flag.Float64("pagewidth", 0, "page width (pt)")
+		pageheight = flag.Float64("pageheight", 0, "page height (pt)")
+		fontdir    = flag.String("fontdir", filepath.Join(os.Getenv("GOPATH"), "src/code.google.com/p/gofpdf/font"), "directory for fonts")
+		outdir     = flag.String("outdir", ".", "output directory")
+		stdout     = flag.Bool("stdout", false, "output to standard output")
+		title      = flag.String("title", "", "document title")
+		author     = flag.String("author", "", "document author")
+		gridpct    = flag.Float64("grid", 0, "draw a percentage grid on each slide")
 	)
 	flag.Parse()
+	pageconfig := &gofpdf.InitType{
+		UnitStr:        "pt",
+		OrientationStr: "L",
+		Size:           gofpdf.SizeType{Wd: *pageheight, Ht: *pagewidth},
+		SizeStr:        *pagesize,
+		FontDirStr:     *fontdir,
+	}
 	fontmap["sans"] = *sansfont
 	fontmap["serif"] = *serifont
 	fontmap["mono"] = *monofont
-	dodeck(flag.Args(), *stdout, *pagesize, *outdir, *fontdir, *author, *title, *gridpct)
+	dodeck(flag.Args(), pageconfig, *stdout, *outdir, *author, *title, *gridpct)
 }
