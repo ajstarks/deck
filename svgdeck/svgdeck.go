@@ -197,7 +197,7 @@ func textalign(s string) string {
 
 // showtext places fully attributed text at the specified location
 func showtext(doc *svg.SVG, x, y int, s string, fs int, font, color, align string) {
-	doc.Text(x, y, s, fmt.Sprintf("fill:%s;font-size:%dpt;font-family:%s;text-anchor:%s", color, fs, fontlookup(font), textalign(align)))
+	doc.Text(x, y, s, `xml:space="preserve"`, fmt.Sprintf("fill:%s;font-size:%dpt;font-family:%s;text-anchor:%s", color, fs, fontlookup(font), textalign(align)))
 }
 
 // dolists places lists on the canvas
@@ -217,7 +217,7 @@ func dolist(doc *svg.SVG, x, y, fs int, tdata []string, font, color string, opac
 		if ltype == "bullet" {
 			bullet(doc, x, y, fs, color)
 		}
-		doc.Text(x, y, t)
+		doc.Text(x, y, t, `xml:space="preserve"`)
 		y += ls
 	}
 	doc.Gend()
