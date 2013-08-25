@@ -77,14 +77,13 @@ The dimensions of graphical elements (width, height, stroke width) are also scal
 The content of the slides are automatically scaled based on the specified canvas size 
 (sane defaults are should be set the clients, if dimensions not specified)
 
-<a href="http://www.flickr.com/photos/ajstarks/9469642769/" title="deck's percent grid by ajstarks, on Flickr"><img src="http://farm8.staticflickr.com/7449/9469642769_c2dc83afac.jpg" width="500" height="281" alt="deck's percent grid"></a>
-
+<a href="http://www.flickr.com/photos/ajstarks/9592115613/" title="Deck Intro by ajstarks, on Flickr"><img src="http://farm8.staticflickr.com/7410/9592115613_5d23402703.jpg" width="500" height="281" alt="Deck Intro"></a>
 
 <a align="center" href="http://www.flickr.com/photos/ajstarks/9409916329/" title="Deck's percentage based layout by ajstarks, on Flickr"><img src="http://farm4.staticflickr.com/3818/9409916329_6b8e134f16.jpg" width="500" height="281" alt="Deck's percentage based layout"></a>
 
 ## Clients ##
 
-Currently there are two clients: vgdeck and pdfdeck.
+Currently there are three clients: vgdeck, pdfdeck and svgdeck.
 
 vgdeck is a program for showing presentations on the Raspberry Pi, using the openvg library.
 To install:
@@ -93,7 +92,7 @@ To install:
 
 To run vgdeck, specify one or more files (marked up in deck XML) on the command line, and each will be shown in turn.
 
-	$ vgdeck sales.xml program.xml architecture.xml
+	vgdeck sales.xml program.xml architecture.xml
 
 Here are the vgdeck commands:
 
@@ -115,7 +114,14 @@ For PDF decks, install pdfdeck:
 
 	go get github.com/ajstarks/deck/pdfdeck
 
-pdfdeck produces decks on standard output:
+pdfdeck produces decks in PDF corresponding to the input file:
 
-	pdfdeck deck.xml > deck.pdf
+	pdfdeck deck.xml
 
+produces deck.pdf
+
+svgdeck produces decks in SVG:
+
+	pdfdeck deck.xml
+
+produces one slide per SVG file, with each slide linked to the next.
