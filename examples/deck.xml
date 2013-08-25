@@ -381,14 +381,14 @@ func main() {
 
 
   <slide bg="rgb(232,233,232)" fg="rgb(50,50,50)">
-    <line xp1="10" yp1="90" xp2="90" yp2="90" color="rgb(50,50,50)" sp="0.1"/> 
-    <text xp="10" yp="85" sp="2.5">DECK: a package for presentations</text>
-    <list xp="10" yp="40" sp="2.5">
+    <line xp1="5" yp1="90" xp2="90" yp2="90" color="rgb(50,50,50)" sp="0.1"/> 
+    <text xp="5" yp="85" sp="2.5">DECK: a package for presentations</text>
+    <list xp="5" yp="40" sp="2.5">
       <li>Deck is a package written in Go</li>
       <li>That uses a singular markup language</li>
       <li>With elements for text, lists, code, and graphics</li>
       <li>All layout and sizes are expressed as percentages</li>
-        <li>Clients are interactive or create document formats like PDF</li>
+      <li>Clients are interactive or create formats like PDF or SVG</li>
     </list>
   </slide>
   
