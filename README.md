@@ -121,7 +121,11 @@ pdfdeck produces decks in PDF corresponding to the input file:
 
 produces deck.pdf
 
-svgdeck produces decks in SVG:
+For SVG decks, install svgdeck:
+
+	go get github.com/ajstarks/deck/svgdeck
+
+This command:
 
 	pdfdeck deck.xml
 
