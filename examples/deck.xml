@@ -12,7 +12,7 @@
      <text  xp="20" yp="80" sp="2" wp="50" type="block">
        a Go package that enables clients make presentations from a portable markup language. 
        Deck clients may be interactive or produce document formats such as PDF, HTML or SVG.</text>
-     <text xp="20" yp="60" sp="2" wp="50" type="block">
+     <text xp="20" yp="50" sp="2" wp="50" type="block">
        Deck elements are: text, list, image, line, rect, ellipse, arc, curve. 
        Element positions and sizes are only specified in percentages,
        resulting in scalable slides that adapt to any size or orientation.
@@ -25,7 +25,7 @@
     
   <slide>
     <text xp="30" yp="90" sp="2" color="rgb(127,0,0)">Hello, World</text>
-    <text xp="30" yp="80" sp="2" wp="25" color="rgb(0,0,127)" font="serif" type="block">
+    <text xp="30" yp="80" sp="2" wp="30" color="rgb(0,0,127)" font="serif" type="block">
         This is a block of text, word-wrapped to a specified width. You can specify size, font, color, and opacity.
     </text>
 
@@ -92,13 +92,9 @@ func main() {
    </slide>
     
    <slide>
-      <arc xp="50" yp="50" wp="30" hp="30" a1="90" a2="180" sp="0.5"/>
-      <line xp1="50" yp1="50" xp2="50" yp2="70" color="lightblue" sp="0.2"/>
-      <line xp1="35" yp1="45" xp2="65" yp2="45" color="lightblue" sp="0.2"/>
-      <text xp="50" yp="70" sp="2" align="center" color="rgb(127,0,0)">height</text>
-      <text xp="50" yp="45" sp="2" align="center" color="rgb(127,0,0)">width</text>
-      <text xp="50" yp="80" sp="2" align="center" color="rgb(127,0,0)">angle1</text>
-      <text xp="30" yp="50" sp="2" align="center" color="rgb(127,0,0)">angle2</text>
+      <arc xp="50" yp="50" wp="30" hp="30" a1="0" a2="90" sp="0.5"/>
+      <text xp="50" yp="70" sp="2" align="center" color="rgb(127,0,0)">angle2</text>
+      <text xp="65" yp="50" sp="2" align="center" color="rgb(127,0,0)">angle1</text>
       <text xp="50" yp="50" sp="2" align="center" color="rgb(127,0,0)">x, y</text>
       <text xp="50" yp="10" sp="4" align="center" font="mono">&lt;arc .../&gt;</text>
    </slide>
