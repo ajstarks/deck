@@ -418,6 +418,8 @@ func main() {
       <li>-serif [serif font]</li>
       <li>-sans [sans font]</li>
       <li>-pagesize [Letter, Legal, A3, A4, A5]</li>
+      <li>-pagewidth [page width (pt)]</li>
+      <li>-pageheight [page height (pt)]</li>
       <li>-stdout (output to standard out)</li>
       <li>-outdir [directory] directory for PDF output</li>
       <li>-fontdir [directory] directory containing font information</li>
@@ -434,8 +436,8 @@ func main() {
       <li>-serif [serif font]</li>
       <li>-sans [sans font]</li>
       <li>-pagesize [Letter, Legal, A3, A4, A5]</li>
-      <li>-w [pagewidth]</li>
-      <li>-h [pageheight]</li>
+      <li>-pagewidth [canvas width]</li>
+      <li>-pageheight [canvas height]</li>
       <li>-stdout (output to standard out)</li>
       <li>-outdir [directory] directory for PDF output</li>
       <li>-title [title text] set the document title</li>

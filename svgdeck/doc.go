@@ -23,6 +23,6 @@ the -pagesize option specifies the page dimensions (Letter, Legal, A3, A4, A5).
 
 the -stdout option specified that output goes to the standard output file.
 
-the -w and -h options specify the slide canvas width and height.
+the -pagewidth and -pageheight options specify the slide canvas width and height.
 */
 package main
