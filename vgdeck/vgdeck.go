@@ -255,7 +255,7 @@ func showtext(x, y openvg.VGfloat, s, align, font string, fs openvg.VGfloat) {
 // dimen returns device dimemsion from percentages
 func dimen(d deck.Deck, x, y, s float64) (xo, yo, so openvg.VGfloat) {
 	xf, yf, sf := deck.Dimen(d.Canvas, x, y, s)
-	xo, yo, so = openvg.VGfloat(xf), openvg.VGfloat(yf), openvg.VGfloat(sf)
+	xo, yo, so = openvg.VGfloat(xf), openvg.VGfloat(yf), openvg.VGfloat(sf) * 0.8
 	return
 }
 
