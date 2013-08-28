@@ -443,7 +443,8 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		for ln, li := range l.Li {
 			if l.Type == "bullet" {
 				boffset := fs / 2
-				openvg.Rect(x, y+boffset/2, boffset, boffset)
+				openvg.Ellipse(x, y+boffset, boffset, boffset)
+				//openvg.Rect(x, y+boffset/2, boffset, boffset)
 			}
 			if l.Type == "number" {
 				li = fmt.Sprintf("%d. ", ln+1) + li

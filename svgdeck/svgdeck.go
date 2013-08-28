@@ -117,10 +117,11 @@ func fontlookup(s string) string {
 	return "sans"
 }
 
-// bullet draws a rectangular bullet
+// bullet draws a bullet
 func bullet(doc *svg.SVG, x, y, size int, color string) {
 	rs := size / 2
-	dorect(doc, x-size, y-rs-(rs/2), rs, rs, color, 0)
+	doc.Circle(x-size, y-rs, rs/2, "fill:"+color)
+	// dorect(doc, x-size, y-rs-(rs/2), rs, rs, color, 0)
 }
 
 // background places a colored rectangle
@@ -207,7 +208,7 @@ func dolist(doc *svg.SVG, x, y, fs int, tdata []string, font, color string, opac
 	}
 	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%dpt", setop(opacity), color, fontlookup(font), fs))
 	if ltype == "bullet" {
-		x += fs
+		x += fs 
 	}
 	ls := fs * 2
 	for i, t := range tdata {

@@ -101,10 +101,13 @@ func grid(doc *gofpdf.Fpdf, w, h float64, color string, percent float64) {
 	}
 }
 
-// bullet draws a rectangular bullet
+// bullet draws a bullet
 func bullet(doc *gofpdf.Fpdf, x, y, size float64, color string) {
 	rs := size / 2
-	dorect(doc, x-size, y-rs, rs, rs, color)
+	r, g, b := colorlookup(color)
+	doc.SetFillColor(r, g, b)
+	doc.Circle(x-size*2, y-rs, rs, "F") 
+	//dorect(doc, x-size, y-rs, rs, rs, color)
 }
 
 // background places a colored rectangle
@@ -198,7 +201,7 @@ func dolist(doc *gofpdf.Fpdf, x, y, fs float64, tdata []string, font, color, lty
 	red, green, blue := colorlookup(color)
 	doc.SetTextColor(red, green, blue)
 	if ltype == "bullet" {
-		x += fs
+		x += fs * 1.2
 	}
 	ls := 2.0 * fs
 	for i, t := range tdata {
@@ -206,7 +209,7 @@ func dolist(doc *gofpdf.Fpdf, x, y, fs float64, tdata []string, font, color, lty
 			t = fmt.Sprintf("%d. ", i+1) + t
 		}
 		if ltype == "bullet" {
-			bullet(doc, x, y, fs, color)
+			bullet(doc, x, y, fs/2, color)
 		}
 		doc.Text(x, y, t)
 		y += ls
