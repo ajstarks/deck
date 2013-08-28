@@ -364,6 +364,17 @@ func main() {
     <text xp="20" yp="5" sp="1" align="begin" color="gray">Andrew Mackenzie-Ross, OBJECTIVE-C LESSONS FROM GO</text>
   </slide>
    
+  <slide bg="rgb(233,233,233)" fg="rgb(50,50,50)">
+    <text xp="5" yp="80" sp="3">The Go Programming Language</text>
+    <line xp1="5" yp1="90" xp2="90" yp2="90" color="rgb(50,50,50)" sp="0.1"/> 
+    <list xp="5" yp="50" sp="2" type="text"> 
+     <li>is a static typed, c lookalike, semicolon-less, self formatting,</li>
+     <li>package managed, object oriented ,easily paralellizable,</li>
+     <li>cluster fuck of genius with an unique class inheritance system.</li>
+    </list>
+     <text xp="5" yp="20" sp="2" color="maroon">It doesn't have one.</text>
+    <text xp="5" yp="5" sp="1" align="begin" color="gray">Andrew Mackenzie-Ross, OBJECTIVE-C LESSONS FROM GO</text>
+  </slide>
   <slide bg="white" fg="black">
      <text xp="20" yp="70" sp="2" wp="50" font="serif" type="block">
      A few months ago, I had a look at the brainchild of a few serious heavyweights working at Google.
@@ -382,7 +393,7 @@ func main() {
 
   <slide bg="rgb(232,233,232)" fg="rgb(50,50,50)">
     <line xp1="5" yp1="90" xp2="90" yp2="90" color="rgb(50,50,50)" sp="0.1"/> 
-    <text xp="5" yp="85" sp="2.5">DECK: a package for presentations</text>
+    <text xp="5" yp="85" sp="2.5" color="rgb(127,0,0)">DECK: a package for presentations</text>
     <list xp="5" yp="40" sp="2.5">
       <li>Deck is a package written in Go</li>
       <li>That uses a singular markup language</li>
