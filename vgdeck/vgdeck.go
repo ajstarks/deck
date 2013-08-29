@@ -340,8 +340,13 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 	// ellipse
 	for _, ellipse := range slide.Ellipse {
 		x, y, _ = dimen(d, ellipse.Xp, ellipse.Yp, 0)
-		w := pct(ellipse.Wp, cw)
-		h := pct(ellipse.Hp, w)
+		var w, h openvg.VGfloat
+		w = pct(ellipse.Wp, cw)
+		if ellipse.Hr == 0 { // if relative height not specified, base height on overall height
+			h = pct(ellipse.Hp, ch)
+		} else {
+			h = pct(ellipse.Hr, w)
+		}
 		if ellipse.Color == "" {
 			ellipse.Color = defaultColor
 		}
@@ -356,8 +361,13 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 	// rect
 	for _, rect := range slide.Rect {
 		x, y, _ = dimen(d, rect.Xp, rect.Yp, 0)
-		w := pct(rect.Wp, cw)
-		h := pct(rect.Hp, w) 
+		var w, h openvg.VGfloat
+		w = pct(rect.Wp, cw)
+		if rect.Hr == 0 { // if relative height not specified, base height on overall height 
+			h = pct(rect.Hp, ch) 
+		} else {
+			h = pct(rect.Hr, w)
+		}
 		if rect.Color == "" {
 			rect.Color = defaultColor
 		}

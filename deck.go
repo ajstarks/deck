@@ -50,6 +50,8 @@ type Dimension struct {
 	CommonAttr
 	Wp float64 `xml:"wp,attr"`
 	Hp float64 `xml:"hp,attr"`
+	Hr float64 `xml:"hr,attr"`
+        Hw float64 `xml:"hw,attr"`  
 }
 
 // List describes the list element
@@ -86,33 +88,33 @@ type Rect struct {
 
 // Line defines a straight line
 type Line struct {
-	Xp1   float64 `xml:"xp1,attr"`
-	Yp1   float64 `xml:"yp1,attr"`
-	Xp2   float64 `xml:"xp2,attr"`
-	Yp2   float64 `xml:"yp2,attr"`
-	Sp    float64 `xml:"sp,attr"`
-	Color string  `xml:"color,attr"`
+	Xp1     float64 `xml:"xp1,attr"`
+	Yp1     float64 `xml:"yp1,attr"`
+	Xp2     float64 `xml:"xp2,attr"`
+	Yp2     float64 `xml:"yp2,attr"`
+	Sp      float64 `xml:"sp,attr"`
+	Color   string  `xml:"color,attr"`
 	Opacity float64 `xml:"opacity,attr"`
 }
 
 // Curve defines a quadratic Bezier curve
 type Curve struct {
-	Xp1   float64 `xml:"xp1,attr"`
-	Yp1   float64 `xml:"yp1,attr"`
-	Xp2   float64 `xml:"xp2,attr"`
-	Yp2   float64 `xml:"yp2,attr"`
-	Xp3   float64 `xml:"xp3,attr"`
-	Yp3   float64 `xml:"yp3,attr"`
-	Sp    float64 `xml:"sp,attr"`
-	Color string  `xml:"color,attr"`
+	Xp1     float64 `xml:"xp1,attr"`
+	Yp1     float64 `xml:"yp1,attr"`
+	Xp2     float64 `xml:"xp2,attr"`
+	Yp2     float64 `xml:"yp2,attr"`
+	Xp3     float64 `xml:"xp3,attr"`
+	Yp3     float64 `xml:"yp3,attr"`
+	Sp      float64 `xml:"sp,attr"`
+	Color   string  `xml:"color,attr"`
 	Opacity float64 `xml:"opacity,attr"`
 }
 
 // Arc defines an elliptical arc
 type Arc struct {
 	Dimension
-	A1 float64 `xml:"a1,attr"`
-	A2 float64 `xml:"a2,attr"`
+	A1      float64 `xml:"a1,attr"`
+	A2      float64 `xml:"a2,attr"`
 	Opacity float64 `xml:"opacity,attr"`
 }
 
