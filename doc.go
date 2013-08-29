@@ -27,27 +27,27 @@ Markup
 Here is a sample deck in XML:
 
 	<deck>
-	   <canvas width="1024" height="768"/>
-	      <slide bg="maroon" fg="white">
-		 <image xp="20" yp="30" width="256" height="256" name="picture.png"/>
-	         <text xp="20" yp="80" sp="3">Deck uses these elements</text>
-		 <line xp1="20" yp1="75" xp2="90" yp2="75" sp="0.3" color="rgb(127,0,0)"/>
-	         <list xp="20" yp="70" sp="1.5">
-	            <li>canvas<li>
-	            <li>slide</li>
-	            <li>text</li>
-	            <li>list</li>
-	            <li>line</li>
-	            <li>rect</li>
-	            <li>ellipse</li>
-	            <li>curve</li>
-	            <li>arc</li>
-	         </list>
-	          <line    xp1="20" yp1="10" xp2="30" yp2="10"/>
-                  <rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/>
-                  <ellipse xp="45"  yp="10" wp="4" hp="3" color="rgb(0,127,0)"/>
-                  <arc     xp="55"  yp="10" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/>
-	      </slide>
+	     <canvas width="1024" height="768"/>
+	     <slide bg="maroon" fg="white">
+		<image xp="20" yp="30" width="256" height="256" name="picture.png"/>
+		<text xp="20" yp="80" sp="3">Deck uses these elements</text>
+		<line xp1="20" yp1="75" xp2="90" yp2="75" sp="0.3" color="rgb(127,0,0)"/>
+		<list xp="20" yp="70" sp="1.5">
+			<li>canvas<li>
+			<li>slide</li>
+			<li>text</li>
+			<li>list</li>
+			<li>line</li>
+			<li>rect</li>
+			<li>ellipse</li>
+			<li>curve</li>
+			<li>arc</li>
+		</list>
+		<line    xp1="20" yp1="10" xp2="30" yp2="10"/>
+		<rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/>
+		<ellipse xp="45"  yp="10" wp="4" hr="75" color="rgb(0,127,0)"/>
+		<arc     xp="55"  yp="10" wp="4" hr="75" a1="0" a2="180" color="rgb(0,0,127)"/>
+	     </slide>
 	</deck>
 
 The list, text, rect, and ellipse elements have common attributes:
