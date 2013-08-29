@@ -345,8 +345,13 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 	// rect
 	for _, rect := range slide.Rect {
 		x, y, _ := dimen(cw, ch, rect.Xp, rect.Yp, 0)
-		w := pct(rect.Wp, cw)
-		h := pct(rect.Hp, cw)
+		var w, h int
+		w = pct(rect.Wp, cw)
+		if rect.Hr == 0 {
+			h = pct(rect.Hp, ch)
+		} else {
+			h = pct(rect.Hr, w)
+		}
 		if rect.Color == "" {
 			rect.Color = defaultColor
 		}
@@ -355,8 +360,13 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 	// ellipse
 	for _, ellipse := range slide.Ellipse {
 		x, y, _ := dimen(cw, ch, ellipse.Xp, ellipse.Yp, 0)
-		w := pct(ellipse.Wp, cw)
-		h := pct(ellipse.Hp, cw)
+		var w, h int
+		w = pct(ellipse.Wp, cw)
+		if ellipse.Hr == 0 {
+			h = pct(ellipse.Hp, ch)
+		} else {
+			h = pct(ellipse.Hr, w)
+		}
 		if ellipse.Color == "" {
 			ellipse.Color = defaultColor
 		}
