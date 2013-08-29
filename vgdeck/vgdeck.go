@@ -341,7 +341,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 	for _, ellipse := range slide.Ellipse {
 		x, y, _ = dimen(d, ellipse.Xp, ellipse.Yp, 0)
 		w := pct(ellipse.Wp, cw)
-		h := pct(ellipse.Hp, cw)
+		h := pct(ellipse.Hp, w)
 		if ellipse.Color == "" {
 			ellipse.Color = defaultColor
 		}
@@ -357,7 +357,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 	for _, rect := range slide.Rect {
 		x, y, _ = dimen(d, rect.Xp, rect.Yp, 0)
 		w := pct(rect.Wp, cw)
-		h := pct(rect.Hp, cw)
+		h := pct(rect.Hp, w) 
 		if rect.Color == "" {
 			rect.Color = defaultColor
 		}

@@ -69,7 +69,7 @@ func main() {
   </slide>
     
   <slide>
-     <rect xp="50" yp="50" wp="20" hp="20" color="rgb(127,0,0)"/>
+     <rect xp="50" yp="50" wp="20" hp="100" color="rgb(127,0,0)"/>
      <text xp="50" yp="50" sp="2" align="center" color="white">x, y</text>
      <text xp="50" yp="25" sp="2" align="center" color="rgb(127,0,0)">width</text>
      <text xp="35" yp="50" sp="2" align="center" color="rgb(127,0,0)">height</text>
@@ -77,7 +77,7 @@ func main() {
   </slide>
     
    <slide>
-     <ellipse xp="50" yp="50" wp="20" hp="20" color="rgb(127,0,0)"/>
+     <ellipse xp="50" yp="50" wp="20" hp="100" color="rgb(127,0,0)"/>
      <text xp="50" yp="50" sp="2" align="center" color="white">x, y</text>
      <text xp="50" yp="25" sp="2" align="center" color="rgb(127,0,0)">width</text>
      <text xp="35" yp="50" sp="2" align="center" color="rgb(127,0,0)">height</text>
@@ -131,8 +131,8 @@ func main() {
         <li>         &lt;li&gt;curve&lt;/li&gt;</li>
         <li>      &lt;/list&gt;</li>
         <li>      &lt;line    xp1="20" yp1="10" xp2="30" yp2="10"/&gt;</li>
-        <li>      &lt;rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/&gt;</li>
-        <li>      &lt;ellipse xp="45"  yp="10" wp="4" hp="3" color="rgb(0,127,0)"/&gt;</li>
+        <li>      &lt;rect    xp="35"  yp="10" wp="4" hp="75" color="rgb(127,0,0)"/&gt;</li>
+        <li>      &lt;ellipse xp="45"  yp="10" wp="4" hp="75" color="rgb(0,127,0)"/&gt;</li>
         <li>      &lt;arc     xp="55"  yp="10" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/&gt;</li>
         <li>      &lt;curve   xp1="60" yp1="10" xp2="75" yp2="20" xp3="70" yp3="10" /&gt;</li>
         <li>  &lt;/slide&gt;</li>
@@ -178,8 +178,8 @@ func main() {
          <li>curve</li>
       </list>
       <line    xp1="20" yp1="10" xp2="30" yp2="10"/>
-      <rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/>
-      <ellipse xp="45"  yp="10" wp="4" hp="3" color="rgb(0,127,0)"/>
+      <rect    xp="35"  yp="10" wp="4" hp="75" color="rgb(127,0,0)"/>
+      <ellipse xp="45"  yp="10" wp="4" hp="75" color="rgb(0,127,0)"/>
       <arc     xp="55"  yp="10" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/>
       <curve   xp1="60" yp1="10" xp2="75" yp2="20" xp3="70" yp3="10" />
   </slide>
@@ -235,18 +235,18 @@ func main() {
   <slide>
      <text xp="25" yp="90" sp="3">Graphics Markup</text>
      <line xp1="5" yp1="75" xp2="20" yp2="70" sp="0.2"/>
-     <rect xp="10" yp="60" wp="15" hp="10" color="red"/>
-     <rect xp="15" yp="55" wp="10" hp="10" color="blue" opacity="30"/>
-     <ellipse xp="10" yp="35" wp="15" hp="10" color="green"/>
-     <ellipse xp="15" yp="30" wp="10" hp="10" color="blue" opacity="30"/>
+     <rect xp="10" yp="60" wp="15" hp="66.6" color="red"/>
+     <rect xp="15" yp="55" wp="10" hp="100" color="blue" opacity="30"/>
+     <ellipse xp="10" yp="35" wp="15" hp="66.66" color="green"/>
+     <ellipse xp="15" yp="30" wp="10" hp="100" color="blue" opacity="30"/>
      <arc xp="10" yp="10" wp="10" hp="10" a1="0" a2="180" sp="0.2" color="blue"/>
      <curve xp1="5" yp1="10" xp2="15" yp2="20"  xp3="15" yp3="10" sp="0.3" color="green"/>
 
      <text xp="25" yp="70" sp="1.1" font="mono">&lt;line xp1="5" yp1="75" xp2="20" yp2="70" sp="0.2"/&gt;</text>
-     <text xp="25" yp="60" sp="1.1" font="mono">&lt;rect xp="10" yp="60" wp="15" hp="10" color="red"/&gt;</text>
-     <text xp="25" yp="55" sp="1.1" font="mono">&lt;rect xp="15" yp="55" wp="10" hp="10" color="blue" opacity="30"/&gt;</text>
-     <text xp="25" yp="35" sp="1.1" font="mono">&lt;ellipse xp="10" yp="35" wp="15" hp="10" color="green"/&gt;</text>
-     <text xp="25" yp="30" sp="1.1" font="mono">&lt;ellipse xp="15" yp="30" wp="10" hp="10" color="blue" opacity="30"/&gt;</text>
+     <text xp="25" yp="60" sp="1.1" font="mono">&lt;rect xp="10" yp="60" wp="15" hp="66.6" color="red"/&gt;</text>
+     <text xp="25" yp="55" sp="1.1" font="mono">&lt;rect xp="15" yp="55" wp="10" hp="100" color="blue" opacity="30"/&gt;</text>
+     <text xp="25" yp="35" sp="1.1" font="mono">&lt;ellipse xp="10" yp="35" wp="15" hp="66.66" color="green"/&gt;</text>
+     <text xp="25" yp="30" sp="1.1" font="mono">&lt;ellipse xp="15" yp="30" wp="10" hp="100" color="blue" opacity="30"/&gt;</text>
      <text xp="25" yp="15" sp="1.1" font="mono">&lt;curve xp1="5" yp1="10" xp2="15" yp2="20" xp3="15" yp3="10" sp="0.3" color="green"/&gt;</text>
      <text xp="25" yp="10" sp="1.1" font="mono">&lt;arc xp="20" yp="10" wp="10" wp="10" a1="0" a2="180" sp="0.2" color="blue"/&gt;</text>
    </slide>
@@ -299,7 +299,7 @@ func main() {
       <text xp="50" yp="10" sp="4" align="center">Percentage-based layout</text>
       <text xp="10" yp="50" sp="3" color="rgb(127,0,0)">Hello</text>
       <image xp="50" yp="50" width="360" height="203" name="desert2.jpg"/>
-      <rect xp="90" yp="50" wp="10" hp="10" color="rgb(127,0,0)" opacity="50"/>
+      <rect xp="90" yp="50" wp="10" hp="100" color="rgb(127,0,0)" opacity="50"/>
       <text xp="10" yp="80" sp="1.5"  align="center">10%, 50%</text>
       <text xp="50" yp="80" sp="1.5"  align="center">50%, 50%</text>
       <text xp="90" yp="80" sp="1.5"  align="center">90%, 50%</text>
@@ -308,9 +308,9 @@ func main() {
       <line xp1="50" yp1="80" xp2="50" yp2="50" sp="0.1" color="gray"/>
       <line xp1="90" yp1="80" xp2="90" yp2="50" sp="0.1" color="gray"/>
         
-      <ellipse xp="10" yp="50" wp="0.5" hp="0.5" color="gray"/>
-      <ellipse xp="50" yp="50" wp="0.5" hp="0.5" color="gray"/>
-      <ellipse xp="90" yp="50" wp="0.5" hp="0.5" color="gray"/>
+      <ellipse xp="10" yp="50" wp="0.5" hp="100" color="gray"/>
+      <ellipse xp="50" yp="50" wp="0.5" hp="100" color="gray"/>
+      <ellipse xp="90" yp="50" wp="0.5" hp="100" color="gray"/>
   </slide>
 
   <slide>
