@@ -30,11 +30,11 @@ var fontmap = map[string]string{}
 
 // pagemap defines page dimensions
 var pagemap = map[string]PageDimen{
-	"Letter": {612, 792, 1},
-	"Legal":  {612, 1008, 1},
-	"A3":     {297, 420, mm2pt},
-	"A4":     {210, 297, mm2pt},
-	"A5":     {148, 210, mm2pt},
+	"Letter": {792, 612, 1},
+	"Legal":  {1008, 612, 1},
+	"A3":     {420, 297, mm2pt},
+	"A4":     {297, 210, mm2pt},
+	"A5":     {210, 148, mm2pt},
 }
 
 // pct converts percentages to canvas measures
@@ -106,7 +106,7 @@ func bullet(doc *gofpdf.Fpdf, x, y, size float64, color string) {
 	rs := size / 2
 	r, g, b := colorlookup(color)
 	doc.SetFillColor(r, g, b)
-	doc.Circle(x-size*2, y-rs, rs, "F") 
+	doc.Circle(x-size*2, y-rs, rs, "F")
 	//dorect(doc, x-size, y-rs, rs, rs, color)
 }
 
@@ -387,10 +387,12 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 }
 
 // doslides reads the deck file, making the PDF version
-func doslides(doc *gofpdf.Fpdf, filename, author, title string, w, h int, gp float64) {
+func doslides(doc *gofpdf.Fpdf, pc gofpdf.InitType, filename, author, title string, gp float64) {
 	var d deck.Deck
 	var err error
 
+	w := int(pc.Size.Wd)
+	h := int(pc.Size.Ht)
 	for _, v := range fontmap {
 		doc.AddFont(v, "", v+".json")
 	}
@@ -398,6 +400,9 @@ func doslides(doc *gofpdf.Fpdf, filename, author, title string, w, h int, gp flo
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
 		return
+	}
+	if pc.OrientationStr == "L" {
+		w, h = h, w
 	}
 	d.Canvas.Width = w
 	d.Canvas.Height = h
@@ -416,27 +421,12 @@ func doslides(doc *gofpdf.Fpdf, filename, author, title string, w, h int, gp flo
 // dodeck turns deck input files into PDFs
 // if the sflag is set, all output goes to the standard output file,
 // otherwise, PDFs are written the destination directory, to filenames based on the input name.
-func dodeck(files []string, pageconfig *gofpdf.InitType, sflag bool, outdir, author, title string, gp float64) {
-	var cw, ch int
-	// if custom page dimensions are specified, they override standard page dimensions
-	if pageconfig.Size.Wd > 0 && pageconfig.Size.Ht > 0 {
-		cw = int(pageconfig.Size.Wd)
-		ch = int(pageconfig.Size.Ht)
-	} else {
-		p, ok := pagemap[pageconfig.SizeStr]
-		if !ok {
-			p = pagemap["Letter"]
-		}
-		cw = int(p.width * p.unit)
-		ch = int(p.height * p.unit)
-	}
-	if pageconfig.OrientationStr == "L" {
-		ch, cw = cw, ch
-	}
+func dodeck(files []string, pageconfig gofpdf.InitType, w, h float64, sflag bool, outdir, author, title string, gp float64) {
+	pc := &pageconfig
 	if sflag { // combined output to standard output
-		doc := gofpdf.NewCustom(pageconfig)
+		doc := gofpdf.NewCustom(pc)
 		for _, filename := range files {
-			doslides(doc, filename, author, title, cw, ch, gp)
+			doslides(doc, pageconfig, filename, author, title, gp)
 		}
 		err := doc.Output(os.Stdout)
 		if err != nil {
@@ -450,8 +440,8 @@ func dodeck(files []string, pageconfig *gofpdf.InitType, sflag bool, outdir, aut
 				fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
 				continue
 			}
-			doc := gofpdf.NewCustom(pageconfig)
-			doslides(doc, filename, author, title, cw, ch, gp)
+			doc := gofpdf.NewCustom(pc)
+			doslides(doc, pageconfig, filename, author, title, gp)
 			err = doc.Output(out)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
@@ -479,15 +469,27 @@ func main() {
 		gridpct    = flag.Float64("grid", 0, "draw a percentage grid on each slide")
 	)
 	flag.Parse()
-	pageconfig := &gofpdf.InitType{
-		UnitStr:        "pt",
-		OrientationStr: "L",
-		Size:           gofpdf.SizeType{Wd: *pageheight, Ht: *pagewidth},
-		SizeStr:        *pagesize,
-		FontDirStr:     *fontdir,
+
+	pw := *pagewidth
+	ph := *pageheight
+
+	if pw == 0 && ph == 0 {
+		p, ok := pagemap[*pagesize]
+		if !ok {
+			p = pagemap["Letter"]
+		}
+		pw = p.width * p.unit
+		ph = p.height * p.unit
+	}
+
+	pageconfig := gofpdf.InitType{
+		UnitStr:    "pt",
+		SizeStr:    *pagesize,
+		Size:       gofpdf.SizeType{Wd: pw, Ht: ph},
+		FontDirStr: *fontdir,
 	}
 	fontmap["sans"] = *sansfont
 	fontmap["serif"] = *serifont
 	fontmap["mono"] = *monofont
-	dodeck(flag.Args(), pageconfig, *stdout, *outdir, *author, *title, *gridpct)
+	dodeck(flag.Args(), pageconfig, pw, ph, *stdout, *outdir, *author, *title, *gridpct)
 }
