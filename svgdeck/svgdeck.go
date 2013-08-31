@@ -159,13 +159,13 @@ func doellipse(doc *svg.SVG, x, y, w, h int, color string, opacity float64) {
 // dotext places text elements on the canvas according to type
 func dotext(doc *svg.SVG, cw, x, y, fs int, wp float64, tdata, font, color string, opacity float64, align, ttype string) {
 	var tw int
-	const emsperpixel = 16 
+	const emsperpixel = 10
 	ls := fs + ((fs * 8) / 10)
 	td := strings.Split(tdata, "\n")
 	if ttype == "code" {
 		font = "mono"
 		ch := len(td) * ls
-		tw = cw - 20
+		tw = cw - x - 20
 		dorect(doc, x-fs, y-fs, tw, ch, "rgb(240,240,240)", opacity)
 	}
 	if ttype == "block" {
@@ -198,7 +198,7 @@ func textalign(s string) string {
 
 // showtext places fully attributed text at the specified location
 func showtext(doc *svg.SVG, x, y int, s string, fs int, font, color, align string) {
-	doc.Text(x, y, s, `xml:space="preserve"`, fmt.Sprintf("fill:%s;font-size:%dpt;font-family:%s;text-anchor:%s", color, fs, fontlookup(font), textalign(align)))
+	doc.Text(x, y, s, `xml:space="preserve"`, fmt.Sprintf("fill:%s;font-size:%dpx;font-family:%s;text-anchor:%s", color, fs, fontlookup(font), textalign(align)))
 }
 
 // dolists places lists on the canvas
@@ -206,9 +206,9 @@ func dolist(doc *svg.SVG, x, y, fs int, tdata []string, font, color string, opac
 	if font == "" {
 		font = "sans"
 	}
-	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%dpt", setop(opacity), color, fontlookup(font), fs))
+	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%dpx", setop(opacity), color, fontlookup(font), fs))
 	if ltype == "bullet" {
-		x += fs 
+		x += fs
 	}
 	ls := fs * 2
 	for i, t := range tdata {
@@ -226,7 +226,7 @@ func dolist(doc *svg.SVG, x, y, fs int, tdata []string, font, color string, opac
 
 // textwrap draws text at location, wrapping at the specified width
 func textwrap(doc *svg.SVG, x, y, w, fs int, leading int, s, font, color string, opacity float64) {
-	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%dpt", setop(opacity), color, fontlookup(font), fs))
+	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%dpx", setop(opacity), color, fontlookup(font), fs))
 	words := strings.FieldsFunc(s, whitespace)
 	xp := x
 	yp := y
