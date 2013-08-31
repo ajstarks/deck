@@ -120,7 +120,7 @@ func fontlookup(s string) string {
 // bullet draws a bullet
 func bullet(doc *svg.SVG, x, y, size int, color string) {
 	rs := size / 2
-	doc.Circle(x-size, y-rs, rs/2, "fill:"+color)
+	doc.Circle(x-size, y-(rs*2)/3, rs/2, "fill:"+color)
 	// dorect(doc, x-size, y-rs-(rs/2), rs, rs, color, 0)
 }
 
