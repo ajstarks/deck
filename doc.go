@@ -74,5 +74,21 @@ The sizes of graphical elements (width, height, stroke width) are also scaled to
 The content of the slides are automatically scaled based on the specified canvas size
 (sane defaults are should be set by clients, if dimensions are not specified).
 
+Example
+	d, err := deck.Read("deck.xml", 1024, 768) // open the deck
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, s := range d.Slide { // for every slide...
+		for _, t := range s.Text { // process the text elements
+			x, y, size := deck.Dimen(d.Canvas, t.Xp, t.Yp, t.Sp)
+			dotext(x, y, size, t.Tdata, t.Color, t.Align, t.Font)
+		}
+		for _, l := range s.List { // process the list elements
+			x, y, size := deck.Dimen(d.Canvas, l.Xp, l.Yp, l.Sp)
+			dolist(x, y, size, l.Li, l.Color, l.Font)
+		}
+	}
+
 */
 package deck
