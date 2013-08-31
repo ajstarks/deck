@@ -18,7 +18,7 @@ the -author option adds author metadata.
 
 the -title options adds title metadata.
 
-the -pagesize option specifies the page dimensions (Letter, Legal, A3, A4, A5).
+the -pagesize option specifies the page dimensions (Letter, Legal, Tabloid, A2, A3, A4, A5, ArchA, Index, 4R, Widescreen).
 
 the -pagewidth and pageheight options specify custom page dimensions.
 

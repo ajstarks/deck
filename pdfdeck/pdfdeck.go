@@ -30,11 +30,17 @@ var fontmap = map[string]string{}
 
 // pagemap defines page dimensions
 var pagemap = map[string]PageDimen{
-	"Letter": {792, 612, 1},
-	"Legal":  {1008, 612, 1},
-	"A3":     {420, 297, mm2pt},
-	"A4":     {297, 210, mm2pt},
-	"A5":     {210, 148, mm2pt},
+	"Letter":     {792, 612, 1},
+	"Legal":      {1008, 612, 1},
+	"Tabloid":    {1224, 792, 1},
+	"ArchA":      {864, 648, 1},
+	"Widescreen": {1152, 648, 1},
+	"4R":         {432, 288, 1},
+	"Index":      {360, 216, 1},
+	"A2":         {420, 594, mm2pt},
+	"A3":         {420, 297, mm2pt},
+	"A4":         {297, 210, mm2pt},
+	"A5":         {210, 148, mm2pt},
 }
 
 // pct converts percentages to canvas measures
