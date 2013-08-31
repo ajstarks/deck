@@ -446,7 +446,7 @@ func main() {
       <li>q</li>
     </list>
 
-    <text xp="10" yp="15" sp="2" wp="70" type="block" font="serif">
+    <text xp="10" yp="15" sp="2" wp="60" type="block" font="serif">
       All commands are a single keystroke, acted on immediately
       (only the search command waits until you hit [Return]
       after entering your search text). To cycle through the deck,
