@@ -382,9 +382,7 @@ func main() {
   <slide bg="rgb(232,233,232)" fg="rgb(50,50,50)">
     <text xp="20" yp="90" sp="3" color="rgb(127,0,0)" font="mono">pdfdeck [options] file.xml...</text>
     <list xp="20" yp="80" sp="2">
-      <li>-mono [monospaced font]</li>
-      <li>-serif [serif font]</li>
-      <li>-sans [sans font]</li>
+      <li>-sans, -serif, -mono [font] specify fonts</li>
       <li>-pagesize [Letter, Legal, Tabloid, A2, A3, A4, A5, ArchA, Index, 4R, Widescreen]</li>
       <li>-pagewidth [page width (pt)]</li>
       <li>-pageheight [page height (pt)]</li>
@@ -400,9 +398,7 @@ func main() {
   <slide bg="rgb(232,233,232)" fg="rgb(50,50,50)">
     <text xp="20" yp="90" sp="3" color="rgb(127,0,0)" font="mono">svgdeck [options] file.xml...</text>
     <list xp="20" yp="80" sp="2">
-      <li>-mono [monospaced font]</li>
-      <li>-serif [serif font]</li>
-      <li>-sans [sans font]</li>
+      <li>-sans, -serif, -mono [font] specify fonts</li>
       <li>-pagesize [Letter, Legal, A3, A4, A5]</li>
       <li>-pagewidth [canvas width]</li>
       <li>-pageheight [canvas height]</li>
