@@ -391,14 +391,11 @@ func main() {
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
 	<text xp="20" yp="90" sp="3">A Deck Client</text>
 	<text xp="20" yp="85" sp="1.2" type="code" color="black">package main
-
 import (
     "fmt"
     "log"
-
     "github.com/ajstarks/deck"
 )
-
 func main() {
     presentation, err := deck.Read("deck.xml", 1024, 768) // open the deck
     if err != nil {
