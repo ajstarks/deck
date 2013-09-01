@@ -464,7 +464,7 @@ func main() {
 		sansfont   = flag.String("sans", "helvetica", "sans font")
 		serifont   = flag.String("serif", "times", "serif font")
 		monofont   = flag.String("mono", "courier", "mono font")
-		pagesize   = flag.String("pagesize", "Letter", "pagesize (Letter, Legal, A3, A4, A5)")
+		pagesize   = flag.String("pagesize", "Letter", "pagesize (Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen)")
 		pagewidth  = flag.Float64("pagewidth", 0, "page width (pt)")
 		pageheight = flag.Float64("pageheight", 0, "page height (pt)")
 		fontdir    = flag.String("fontdir", filepath.Join(os.Getenv("GOPATH"), "src/code.google.com/p/gofpdf/font"), "directory for fonts")
