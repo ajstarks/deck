@@ -261,9 +261,6 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 	if slide.Fg == "" {
 		slide.Fg = "black"
 	}
-	if gp > 0 {
-		grid(doc, cw, ch, slide.Fg, gp)
-	}
 	// for every image on the slide...
 	for _, im := range slide.Image {
 		x, y, _ = dimen(cw, ch, im.Xp, im.Yp, 0)
@@ -389,6 +386,10 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		setopacity(doc, l.Opacity)
 		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
 		dolist(doc, x, y, fs, l.Li, l.Font, l.Color, l.Type)
+	}
+	// add a grid, if specified
+	if gp > 0 {
+		grid(doc, cw, ch, slide.Fg, gp)
 	}
 }
 

@@ -317,9 +317,6 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 	if slide.Fg == "" {
 		slide.Fg = "black"
 	}
-	if gp > 0 {
-		grid(doc, cw, ch, slide.Fg, gp)
-	}
 	// for every image on the slide...
 	for _, im := range slide.Image {
 		x, y, _ = dimen(cw, ch, im.Xp, im.Yp, 0)
@@ -429,7 +426,11 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
 		dolist(doc, x, y, fs, l.Li, l.Font, l.Color, l.Opacity, l.Type)
 	}
-
+	// add a grid, if specified
+	if gp > 0 {
+		grid(doc, cw, ch, slide.Fg, gp)
+	}
+	// complete the link
 	if len(outname) > 0 {
 		doc.LinkEnd()
 	}
