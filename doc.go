@@ -1,7 +1,7 @@
 /*
-Package deck provides an interface for clients to make scalable presentations, using a standard markup language.
+Package deck is a library for clients to make scalable presentations, using a standard markup language.
 Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc.
-From a single markup language, clients may be interactive or produce standard formats such as SVG or PDF.
+Clients may be interactive or produce standard formats such as SVG or PDF.
 
 Elements
 
@@ -74,26 +74,43 @@ The sizes of graphical elements (width, height, stroke width) are also scaled to
 The content of the slides are automatically scaled based on the specified canvas size
 (sane defaults are should be set by clients, if dimensions are not specified).
 
+
 Example
 
+
 	package main
+	
 	import (
-		"github.com/ajstarks/deck"
+		"fmt"
 		"log"
+	
+		"github.com/ajstarks/deck"
 	)
+	
+	func dotext(x, y, size float64, text deck.Text) {
+		fmt.Println("\tText:", x, y, size, text.Tdata)
+	}
+	
+	func dolist(x, y, size float64, list deck.List) {
+		fmt.Println("\tList:", x, y, size)
+		for i, l := range list.Li {
+			fmt.Println("\t\titem", i, l)
+		}
+	}
 	func main() {
-		d, err := deck.Read("deck.xml", 1024, 768) // open the deck
+		presentation, err := deck.Read("deck.xml", 1024, 768) // open the deck
 		if err != nil {
 			log.Fatal(err)
 		}
-		for _, s := range d.Slide { // for every slide...
-			for _, t := range s.Text { // process the text elements
-				x, y, size := deck.Dimen(d.Canvas, t.Xp, t.Yp, t.Sp)
-				dotext(x, y, size, t.Tdata, t.Color, t.Align, t.Font)
+		for slidenumber, slide := range presentation.Slide { // for every slide...
+			fmt.Println("Processing slide", slidenumber)
+			for _, t := range slide.Text { // process the text elements
+				x, y, size := deck.Dimen(presentation.Canvas, t.Xp, t.Yp, t.Sp)
+				dotext(x, y, size, t)
 			}
-			for _, l := range s.List { // process the list elements
-				x, y, size := deck.Dimen(d.Canvas, l.Xp, l.Yp, l.Sp)
-				dolist(x, y, size, l.Li, l.Color, l.Font)
+			for _, l := range slide.List { // process the list elements
+				x, y, size := deck.Dimen(presentation.Canvas, l.Xp, l.Yp, l.Sp)
+				dolist(x, y, size, l)
 			}
 		}
 	}

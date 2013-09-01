@@ -2,9 +2,9 @@
 
 <a href="http://www.flickr.com/photos/ajstarks/9592115613/" title="Deck Intro by ajstarks, on Flickr"><img src="http://farm8.staticflickr.com/7410/9592115613_5d23402703.jpg" width="500" height="281" alt="Deck Intro"></a>
 
-Package deck provides an interface for clients to make scalable presentations, using a standard markup language.
+Deck is a library for clients to make scalable presentations, using a standard markup language.
 Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc.
-From a single markup language, clients may be interactive or produce standard formats such as SVG or PDF.
+Clients may be interactive or produce standard formats such as SVG or PDF.
 
 ## Elements ##
 
