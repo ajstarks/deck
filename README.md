@@ -83,6 +83,46 @@ The content of the slides are automatically scaled based on the specified canvas
 
 ## Clients ##
 
+### example client ###
+
+
+	package main
+	
+	import (
+		"fmt"
+		"log"
+	
+		"github.com/ajstarks/deck"
+	)
+	
+	func dotext(x, y, size float64, text deck.Text) {
+		fmt.Println("\tText:", x, y, size, text.Tdata)
+	}
+	
+	func dolist(x, y, size float64, list deck.List) {
+		fmt.Println("\tList:", x, y, size)
+		for i, l := range list.Li {
+			fmt.Println("\t\titem", i, l)
+		}
+	}
+	func main() {
+		presentation, err := deck.Read("deck.xml", 1024, 768) // open the deck
+		if err != nil {
+			log.Fatal(err)
+		}
+		for slidenumber, slide := range presentation.Slide { // for every slide...
+			fmt.Println("Processing slide", slidenumber)
+			for _, t := range slide.Text { // process the text elements
+				x, y, size := deck.Dimen(presentation.Canvas, t.Xp, t.Yp, t.Sp)
+				dotext(x, y, size, t)
+			}
+			for _, l := range slide.List { // process the list elements
+				x, y, size := deck.Dimen(presentation.Canvas, l.Xp, l.Yp, l.Sp)
+				dolist(x, y, size, l)
+			}
+		}
+	}
+
 Currently there are three clients: vgdeck, pdfdeck and svgdeck.
 
 vgdeck is a program for showing presentations on the Raspberry Pi, using the openvg library.
