@@ -493,13 +493,6 @@ func main() {
       <li>s, Ctrl-S</li>
       <li>q</li>
     </list>
-
-    <text xp="10" yp="17" sp="2" wp="60" type="block" font="serif">
-      All commands are a single keystroke, acted on immediately
-      (only the search command waits until you hit [Return]
-      after entering your search text). To cycle through the deck,
-      tap the [Return] key
-    </text>
   </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
