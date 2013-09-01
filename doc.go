@@ -1,7 +1,7 @@
 /*
-Package deck provides an interface, via a standard markup language for making scalable, percentage-based layout slide decks.
+Package deck provides an interface for clients to make scalable presentations, using a standard markup language.
 Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc.
-From a single markup language, clients may be interactive or produce standard formats such as HTML or PDF.
+From a single markup language, clients may be interactive or produce standard formats such as SVG or PDF.
 
 Elements
 
