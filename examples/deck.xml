@@ -18,16 +18,15 @@
   </slide>
 
   <slide bg="rgb(127,127,127)" fg="white">
-      <text xp="10" yp="10" sp="4">Elements</text>
+      <text xp="10" yp="10" sp="5">Elements</text>
   </slide>
     
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
-    <text xp="30" yp="90" sp="2" color="rgb(127,0,0)">Hello, World</text>
-    <text xp="30" yp="80" sp="2" wp="30" color="rgb(0,0,127)" font="serif" type="block">
-        This is a block of text, word-wrapped to a specified width. You can specify size, font, color, and opacity.
+    <text xp="20" yp="90" sp="3" color="rgb(127,0,0)">Hello, World</text>
+    <text xp="20" yp="80" sp="3" wp="60" color="rgb(0,0,127)" font="serif" type="block">
+        A block of text, word-wrapped to a specified width. You may specify size, font, color, and opacity.
     </text>
-
-    <text xp="30" yp="50" sp="1.5" wp="50" type="code">package main
+    <text xp="20" yp="50" sp="2" wp="50" type="code">package main
 import "fmt"
 func main() {
     fmt.Println("Hello, World")
@@ -36,20 +35,24 @@ func main() {
   </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
-    <list xp="20" yp="70" sp="2" font="serif" color="rgb(127,0,0)">
-      <li>Item 1</li>
-      <li>Item 2</li>
-      <li>Item 3</li>
+    <text xp="10" yp="80" sp="3" color="rgb(127,0,0)">plain</text>
+    <list xp="10" yp="70" sp="3" font="sans" color="rgb(0,127,0)">
+      <li>Point A</li>
+      <li>Point B</li>
+      <li>Point C</li>
+      <li>Point D</li>
     </list>
 
-    <list xp="40" yp="70" sp="2" color="rgb(0,0,127)" font="serif" type="bullet">
+    <text xp="35" yp="80" sp="3" color="rgb(127,0,0)">bullet</text>
+    <list xp="35" yp="70" sp="3" color="rgb(0,0,127)" font="serif" type="bullet">
       <li>First item</li>
       <li>Second item</li>
       <li>The third item</li>
       <li>and the last thing</li>
     </list>
 
-    <list xp="70" yp="70" sp="2" font="serif" color="black" type="number">
+    <text xp="75" yp="80" sp="3" color="rgb(127,0,0)">number</text>
+    <list xp="75" yp="70" sp="3" font="mono" color="black" type="number">
        <li>This</li>
        <li>That</li>
        <li>The other</li>
@@ -61,52 +64,52 @@ func main() {
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
       <image xp="50" yp="50" width="360" height="203" name="desert2.jpg"/>
       <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;image .../&gt;</text>
-      <text xp="50" yp="50" sp="2" align="center" color="rgb(127,0,0)">x, y</text>
-      <text xp="15" yp="50" sp="2" align="right"  color="rgb(127,0,0)">height</text>
-      <text xp="50" yp="25" sp="2" align="center" color="rgb(127,0,0)">width</text>
+      <text xp="50" yp="50" sp="3" align="center" color="rgb(127,0,0)">x, y</text>
+      <text xp="15" yp="50" sp="3" align="right"  color="rgb(127,0,0)">height</text>
+      <text xp="50" yp="25" sp="3" align="center" color="rgb(127,0,0)">width</text>
   </slide>
     
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
      <rect xp="50" yp="50" wp="20" hr="100" color="rgb(127,0,0)"/>
-     <text xp="50" yp="50" sp="2" align="center" color="white">x, y</text>
-     <text xp="50" yp="25" sp="2" align="center" color="rgb(127,0,0)">width</text>
-     <text xp="20" yp="50" sp="2" wp="10" type="block" color="rgb(127,0,0)">height (relative to element or canvas width)</text>
+     <text xp="50" yp="50" sp="3" align="center" color="white">x, y</text>
+     <text xp="50" yp="25" sp="3" align="center" color="rgb(127,0,0)">width</text>
+     <text xp="20" yp="60" sp="3" wp="10" type="block" color="rgb(127,0,0)">height (relative to element or canvas width)</text>
      <text xp="50" yp="10" sp="4" align="center" font="mono">&lt;rect .../&gt;</text>
   </slide>
     
    <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
      <ellipse xp="50" yp="50" wp="20" hr="100" color="rgb(127,0,0)"/>
-     <text xp="50" yp="50" sp="2" align="center" color="white">x, y</text>
-     <text xp="50" yp="25" sp="2" align="center" color="rgb(127,0,0)">width</text>
-     <text xp="20" yp="50" sp="2" type="block" wp="10" color="rgb(127,0,0)">height (relative to element or canvas width)</text>
+     <text xp="50" yp="50" sp="3" align="center" color="white">x, y</text>
+     <text xp="50" yp="25" sp="3" align="center" color="rgb(127,0,0)">width</text>
+     <text xp="20" yp="60" sp="3" type="block" wp="10" color="rgb(127,0,0)">height (relative to element or canvas width)</text>
      <text xp="50" yp="10" sp="4" align="center" font="mono">&lt;ellipse .../&gt;</text>
    </slide>
     
    <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
      <line xp1="35" yp1="50" xp2="65" yp2="65" sp="0.5"/>
-     <text xp="35" yp="50" sp="2" align="center" color="rgb(127,0,0)">start</text>
-     <text xp="65" yp="65" sp="2" align="center" color="rgb(127,0,0)">end</text>
+     <text xp="35" yp="50" sp="3" align="center" color="rgb(127,0,0)">start</text>
+     <text xp="65" yp="65" sp="3" align="center" color="rgb(127,0,0)">end</text>
      <text xp="50" yp="10" sp="4" align="center" font="mono">&lt;line .../&gt;</text>
    </slide>
     
    <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
       <arc xp="50" yp="50" wp="30" hp="30" a1="0" a2="90" sp="0.5"/>
-      <text xp="50" yp="70" sp="2" align="center" color="rgb(127,0,0)">angle2 (90 deg)</text>
-      <text xp="65" yp="50" sp="2" align="center" color="rgb(127,0,0)">angle1 (0 deg)</text>
-      <text xp="50" yp="50" sp="2" align="center" color="rgb(127,0,0)">x, y</text>
+      <text xp="50" yp="70" sp="3" align="center" color="rgb(127,0,0)">angle2 (90 deg)</text>
+      <text xp="65" yp="50" sp="3" align="center" color="rgb(127,0,0)">angle1 (0 deg)</text>
+      <text xp="50" yp="50" sp="3" align="center" color="rgb(127,0,0)">x, y</text>
       <text xp="50" yp="10" sp="4" align="center" font="mono">&lt;arc .../&gt;</text>
    </slide>
     
    <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
      <curve xp1="30" yp1="50" xp2="80" yp2="80" xp3="70" yp3="50" sp="0.5"/>
-     <text xp="30" yp="50" sp="2" align="center" color="rgb(127,0,0)">start</text>
-     <text xp="80" yp="90" sp="2" align="center" color="rgb(127,0,0)">control</text>
-     <text xp="70" yp="50" sp="2" align="center" color="rgb(127,0,0)">end</text>
+     <text xp="30" yp="50" sp="3" align="center" color="rgb(127,0,0)">start</text>
+     <text xp="80" yp="90" sp="3" align="center" color="rgb(127,0,0)">control</text>
+     <text xp="70" yp="50" sp="3" align="center" color="rgb(127,0,0)">end</text>
      <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;curve .../&gt;</text>
    </slide>
 
   <slide bg="rgb(127,127,127)" fg="white">
-      <text xp="10" yp="10" sp="4">Markup and Layout</text>
+      <text xp="10" yp="10" sp="5">Markup and Layout</text>
   </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
@@ -304,7 +307,7 @@ func main() {
   </slide>
   
   <slide bg="rgb(127,127,127)" fg="white">
-     <text xp="10" yp="10" sp="4">Design Examples</text>
+     <text xp="10" yp="10" sp="5">Design Examples</text>
   </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
@@ -324,6 +327,15 @@ func main() {
       <li>Seven</li>
       <li>Eight</li>
     </list>
+  </slide>
+
+
+<slide bg="white" fg="black">
+     <text xp="20" yp="70" sp="2" wp="50" font="serif" type="block">
+     A few months ago, I had a look at the brainchild of a few serious heavyweights working at Google.
+     Their project, the Go programming language, is a static typed, c lookalike, semicolon-less, 
+     self formatting, package managed, object oriented, easily paralellizable, 
+     cluster fuck of genius with an unique class inheritance system. It doesn't have one.</text>
   </slide>
 
   <slide bg="white" fg="black">
@@ -369,13 +381,7 @@ func main() {
      <text xp="5" yp="20" sp="2" color="maroon">It doesn't have one.</text>
     <text xp="5" yp="5" sp="1" align="begin" color="gray">Andrew Mackenzie-Ross, OBJECTIVE-C LESSONS FROM GO</text>
   </slide>
-  <slide bg="white" fg="black">
-     <text xp="20" yp="70" sp="2" wp="50" font="serif" type="block">
-     A few months ago, I had a look at the brainchild of a few serious heavyweights working at Google.
-     Their project, the Go programming language, is a static typed, c lookalike, semicolon-less, 
-     self formatting, package managed, object oriented, easily paralellizable, 
-     cluster fuck of genius with an unique class inheritance system.</text>
-  </slide>
+  
 
   <slide bg="white" bg="black">
      <image xp="85" yp="45" width="75" height="100" name="doc.png"/>
@@ -383,9 +389,15 @@ func main() {
      <text xp="20" yp="40" sp="5" font="serif" color="rgb(127,0,0)">what would Go do</text>
      <text xp="20" yp="15" sp="1" color="rgb(127,127,127)">Andrew Mackenzie-Ross, http://pocket.co/sSc56</text>
   </slide>
+
+  <slide>
+    <text xp="10" yp="40" sp="5" color="white">Deck is heavenly</text>
+    <rect xp="50" yp="42" wp="100" hp="15" color="black" opacity="40"/>
+    <image name="cloudy1024.jpg" width="1024" height="768" xp="50" yp="50"/>
+  </slide>
   
   <slide bg="rgb(127,127,127)" fg="white">
-     <text xp="10" yp="10" sp="4">Clients</text>
+     <text xp="10" yp="10" sp="5">Clients</text>
   </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
@@ -417,13 +429,13 @@ func main() {
 
   <slide>
     <image xp="12" yp="85" width="144" height="128" name="rpi-logo.jpg"/>
-    <text  xp="25" yp="85" sp="2" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/vgdeck</text>
+    <text  xp="25" yp="85" sp="3" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/vgdeck</text>
 
     <image xp="12" yp="55" width="128" height="128" name="pdf-logo.jpg"/>
-    <text  xp="25" yp="55" sp="2" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/pdfdeck</text>
+    <text  xp="25" yp="55" sp="3" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/pdfdeck</text>
 
     <image xp="12" yp="20" width="145" height="145" name="svg.png"/>
-    <text  xp="25" yp="20" sp="2" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/svgdeck</text>
+    <text  xp="25" yp="20" sp="3" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/svgdeck</text>
   </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
@@ -503,7 +515,7 @@ func main() {
   <slide bg="rgb(127,127,127)" fg="white">
     <text  xp="50" yp="85" sp="5" align="center">github.com/ajstarks/deck</text>
     <image xp="50" yp="50" width="270" height="270" name="sdeck256.png" />
-    <text  xp="50" yp="12" sp="1.5" align="center">ajstarks@gmail.com</text>
+    <text  xp="50" yp="12" sp="2.5" align="center">ajstarks@gmail.com</text>
   </slide>
 
 </deck>
