@@ -35,8 +35,8 @@ func main() {
   </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
-    <text xp="10" yp="80" sp="3" color="rgb(127,0,0)">plain</text>
-    <list xp="10" yp="70" sp="3" font="sans" color="rgb(0,127,0)">
+    <text xp="5" yp="80" sp="3" color="rgb(127,0,0)">plain</text>
+    <list xp="5" yp="70" sp="3" font="sans" color="rgb(0,127,0)">
       <li>Point A</li>
       <li>Point B</li>
       <li>Point C</li>
@@ -51,8 +51,8 @@ func main() {
       <li>and the last thing</li>
     </list>
 
-    <text xp="75" yp="80" sp="3" color="rgb(127,0,0)">number</text>
-    <list xp="75" yp="70" sp="3" font="mono" color="black" type="number">
+    <text xp="70" yp="80" sp="3" color="rgb(127,0,0)">number</text>
+    <list xp="70" yp="70" sp="3" font="mono" color="black" type="number">
        <li>This</li>
        <li>That</li>
        <li>The other</li>
@@ -396,6 +396,17 @@ func main() {
     <image name="cloudy1024.jpg" width="1024" height="768" xp="50" yp="50"/>
   </slide>
   
+  <slide>
+    <text xp="50" yp="70" sp="6" font="serif" color="rgb(127,0,0)" align="center">FOR, LO,</text>
+    <text xp="50" yp="60" sp="3.3" font="serif" align="center">the winter is past,
+the rain is over and gone;
+The flowers appear on the earth;
+the time for the singing of birds is come, 
+and the voice of the turtle is heard in our land.
+    </text>
+    <text xp="50" yp="10" sp="1" align="center" color="rgb(127,127,127)">Song of Solomon 2:11-12</text>
+  </slide>
+
   <slide bg="rgb(127,127,127)" fg="white">
      <text xp="10" yp="10" sp="5">Clients</text>
   </slide>
