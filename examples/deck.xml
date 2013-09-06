@@ -35,16 +35,16 @@ func main() {
   </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
-    <text xp="5" yp="80" sp="3" color="rgb(127,0,0)">plain</text>
-    <list xp="5" yp="70" sp="3" font="sans" color="rgb(0,127,0)">
+    <text xp="5" yp="80" sp="3" color="rgb(127,0,0)">bullet</text>
+    <list xp="5" yp="70" sp="3" font="sans" color="rgb(0,127,0)" type="bullet">
       <li>Point A</li>
       <li>Point B</li>
       <li>Point C</li>
       <li>Point D</li>
     </list>
 
-    <text xp="35" yp="80" sp="3" color="rgb(127,0,0)">bullet</text>
-    <list xp="35" yp="70" sp="3" color="rgb(0,0,127)" font="serif" type="bullet">
+    <text xp="35" yp="80" sp="3" color="rgb(127,0,0)">plain</text>
+    <list xp="35" yp="70" sp="3" color="rgb(0,0,127)" font="serif">
       <li>First item</li>
       <li>Second item</li>
       <li>The third item</li>
@@ -114,7 +114,7 @@ func main() {
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
     <text xp="95" yp="5" sp="3" align="right">Anatomy of a Deck</text>
-    <list  xp="20" yp="90" sp="1.5" font="mono">
+    <list  xp="20" yp="90" sp="1.4" font="mono">
         <li>&lt;deck&gt;</li>
         <li>  &lt;canvas width="1024" height="768" /&gt;</li>
         <li>  &lt;slide bg="white" fg="black"&gt;</li>
@@ -133,7 +133,7 @@ func main() {
         <li>  &lt;/slide&gt;</li>
         <li>&lt;/deck&gt;</li>
     </list>
-    <list xp="3" yp="90" sp="1.5" color="rgb(127,0,0)" >
+    <list xp="3" yp="90" sp="1.4" color="rgb(127,0,0)" >
         <li>Start the deck</li>
         <li>Set the canvas size</li>
         <li>Begin a slide</li>
@@ -384,10 +384,11 @@ func main() {
   
 
   <slide bg="white" bg="black">
-     <image xp="85" yp="45" width="75" height="100" name="doc.png"/>
-     <text xp="20" yp="70" sp="2.5" wp="40" font="serif" type="block">So, the next time you're about to make a subclass, think hard and ask yourself</text>
+     <image xp="95" yp="10" width="75" height="100" name="doc.png"/>
+     <text xp="20" yp="70" sp="3" wp="40" font="serif" type="block">So, the next time you're about to make a subclass, 
+     think hard and ask yourself</text>
      <text xp="20" yp="40" sp="5" font="serif" color="rgb(127,0,0)">what would Go do</text>
-     <text xp="20" yp="15" sp="1" color="rgb(127,127,127)">Andrew Mackenzie-Ross, http://pocket.co/sSc56</text>
+     <text xp="20" yp="15" sp="2" color="rgb(127,127,127)">Andrew Mackenzie-Ross, http://pocket.co/sSc56</text>
   </slide>
 
   <slide>
@@ -412,11 +413,10 @@ and the voice of the turtle is heard in our land.
   </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
-	<text xp="20" yp="90" sp="3">A Deck Client</text>
-	<text xp="20" yp="85" sp="1.2" type="code" color="black">package main
-import (
-    "fmt"
-    "log"
+	
+	<text xp="5" yp="95" sp="1.4" type="code" color="black">package main
+import ( 
+    "log"  
     "github.com/ajstarks/deck"
 )
 func main() {
@@ -424,27 +424,25 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    for slidenumber, slide := range presentation.Slide { // for every slide...
-        fmt.Println("Processing slide", slidenumber)
-        for _, t := range slide.Text { // process the text elements
+    for _, slide := range presentation.Slide {           // for every slide...
+        for _, t := range slide.Text {                   // process the text elements
             x, y, size := deck.Dimen(presentation.Canvas, t.Xp, t.Yp, t.Sp)
-            dotext(x, y, size, t)
+            slideText(x, y, size, t)
         }
-        for _, l := range slide.List { // process the list elements
+        for _, l := range slide.List {                   // process the list elements
             x, y, size := deck.Dimen(presentation.Canvas, l.Xp, l.Yp, l.Sp)
-            dolist(x, y, size, l)
+            slideList(x, y, size, l)
         }
     }
 }</text>
+<text xp="90" yp="10" sp="3" align="right">A Deck Client</text>
   </slide>
 
   <slide>
     <image xp="12" yp="85" width="144" height="128" name="rpi-logo.jpg"/>
     <text  xp="25" yp="85" sp="3" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/vgdeck</text>
-
     <image xp="12" yp="55" width="128" height="128" name="pdf-logo.jpg"/>
     <text  xp="25" yp="55" sp="3" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/pdfdeck</text>
-
     <image xp="12" yp="20" width="145" height="145" name="svg.png"/>
     <text  xp="25" yp="20" sp="3" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/svgdeck</text>
   </slide>
