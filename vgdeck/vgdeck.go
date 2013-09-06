@@ -428,7 +428,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 
 	// every list in the slide
 	var offset, textopacity openvg.VGfloat
-	const blinespacing = 2.0
+	const blinespacing = 2.4
 	for _, l := range slide.List {
 		if l.Font == "" {
 			l.Font = "sans"
@@ -466,7 +466,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 	openvg.FillColor(slide.Fg)
 
 	// every text in the slide
-	const linespacing = 1.8
+	const linespacing =  1.8 
 
 	for _, t := range slide.Text {
 		if t.Font == "" {
