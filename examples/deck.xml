@@ -435,7 +435,7 @@ func main() {
         }
     }
 }</text>
-<text xp="90" yp="10" sp="3" align="right">A Deck Client</text>
+<text xp="90" yp="5" sp="3" align="right">A Deck Client</text>
   </slide>
 
   <slide>
