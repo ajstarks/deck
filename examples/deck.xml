@@ -339,8 +339,22 @@ func main() {
     </list>
   </slide>
 
+  <slide>
+    <line xp1="0" yp1="8.30" xp2="100" yp2="8.30" color="blue" sp="0.1"/>
+    <line xp1="0" yp1="16.60" xp2="100" yp2="16.60" color="blue" sp="0.1" />
+    <line xp1="0" yp1="24.90" xp2="100" yp2="24.90" color="blue" sp="0.1" />
+    <line xp1="0" yp1="33.20" xp2="100" yp2="33.20" color="blue" sp="0.1" />
+    <line xp1="0" yp1="41.50" xp2="100" yp2="41.50" color="blue" sp="0.1" />
+    <line xp1="0" yp1="49.80" xp2="100" yp2="49.80" color="blue" sp="0.1" />
+    <line xp1="0" yp1="58.10" xp2="100" yp2="58.10" color="blue" sp="0.1" />
+    <line xp1="0" yp1="66.40" xp2="100" yp2="66.40" color="blue" sp="0.1" />
+    <line xp1="0" yp1="74.70" xp2="100" yp2="74.70" color="blue" sp="0.1" />
+    <line xp1="0" yp1="83.00" xp2="100" yp2="83.00" color="blue" sp="0.1" />
+    <line xp1="0" yp1="91.30" xp2="100" yp2="91.30" color="red" sp="0.1"/>
+    <text xp="50" yp="50" sp="5" align="center" font="mono" color="rgb(100,100,100)">Skeuomorphism</text>
+  </slide>
 
-<slide bg="white" fg="black">
+  <slide bg="white" fg="black">
      <text xp="20" yp="70" sp="2" wp="50" font="serif" type="block">
      A few months ago, I had a look at the brainchild of a few serious heavyweights working at Google.
      Their project, the Go programming language, is a static typed, c lookalike, semicolon-less, 
@@ -392,7 +406,6 @@ func main() {
     <text xp="5" yp="5" sp="1" align="begin" color="gray">Andrew Mackenzie-Ross, OBJECTIVE-C LESSONS FROM GO</text>
   </slide>
   
-
   <slide bg="white" bg="black">
      <image xp="95" yp="10" width="75" height="100" name="doc.png"/>
      <text xp="20" yp="70" sp="3" wp="40" font="serif" type="block">So, the next time you're about to make a subclass, 
