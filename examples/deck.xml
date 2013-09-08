@@ -309,7 +309,17 @@ func main() {
   <slide bg="rgb(127,127,127)" fg="white">
      <text xp="10" yp="10" sp="5">Design Examples</text>
   </slide>
-
+  <slide bg="black" fg="black">
+      <rect xp="50" yp="95" wp="100" hp="10" color="lightgray"/>
+      <rect xp="50" yp="5" wp="100" hp="10" color="lightgray"/>
+      <rect xp="15" yp="50" wp="30" hp="80" color="white"/>
+      <rect xp="65" yp="50" wp="70" hp="80" color="rgb(127,0,0)"/>
+      
+      <text xp="50" yp="3" sp="4" align="center">Header</text>
+      <text xp="50" yp="93" sp="4" align="center">Footer</text>
+      <text xp="15" yp="50" sp="10" color="black" align="center">Left</text>
+      <text xp="65" yp="50" sp="10" color="white" align="center">Right</text>
+  </slide>
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
     <text xp="50" yp="90" sp="3" align="center">Two Columns</text>
     <line xp1="50" yp1="70" xp2="50" yp2="10" sp="0.1" color="black" />
