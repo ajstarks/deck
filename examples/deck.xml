@@ -1,3 +1,4 @@
+a
 <deck>
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
     <text xp="5" yp="50" sp="20">Deck</text>
@@ -305,21 +306,51 @@ func main() {
       <ellipse xp="50" yp="50" wp="0.5" hr="100" color="gray"/>
       <ellipse xp="90" yp="50" wp="0.5" hr="100" color="gray"/>
   </slide>
-  
+
   <slide bg="rgb(127,127,127)" fg="white">
      <text xp="10" yp="10" sp="5">Design Examples</text>
   </slide>
+
+   <slide bg="black" fg="black">
+      <rect xp="50" yp="95" wp="100" hp="10" color="lightgray"/>
+      <rect xp="50" yp="5" wp="100" hp="10" color="lightgray"/>
+      <rect xp="15" yp="50" wp="30" hp="80" color="white"/>
+      <rect xp="65" yp="50" wp="70" hp="80" color="rgb(127,0,0)"/>
+      
+      <text xp="50" yp="3" sp="4" align="center">20%</text>
+      <text xp="50" yp="93" sp="4" align="center">20%</text>
+      <text xp="15" yp="50" sp="10" color="black" align="center">30%</text>
+      <text xp="65" yp="50" sp="10" color="white" align="center">70%</text>
+  </slide>
+
   <slide bg="black" fg="black">
       <rect xp="50" yp="95" wp="100" hp="10" color="lightgray"/>
       <rect xp="50" yp="5" wp="100" hp="10" color="lightgray"/>
       <rect xp="15" yp="50" wp="30" hp="80" color="white"/>
       <rect xp="65" yp="50" wp="70" hp="80" color="rgb(127,0,0)"/>
       
-      <text xp="50" yp="3" sp="4" align="center">Header</text>
-      <text xp="50" yp="93" sp="4" align="center">Footer</text>
+      <text xp="50" yp="3" sp="4" align="center">Bottom</text>
+      <text xp="50" yp="93" sp="4" align="center">Top</text>
       <text xp="15" yp="50" sp="10" color="black" align="center">Left</text>
       <text xp="65" yp="50" sp="10" color="white" align="center">Right</text>
   </slide>
+
+  <slide bg="black" fg="black">
+      <rect xp="50" yp="95" wp="100" hp="10" color="lightgray"/>
+      <rect xp="50" yp="5" wp="100" hp="10" color="lightgray"/>
+      <rect xp="15" yp="50" wp="30" hp="80" color="white"/>
+      <rect xp="65" yp="50" wp="70" hp="80" color="rgb(127,0,0)"/>
+      
+      <text xp="50" yp="3" sp="4" align="center">Footer (bottom 20%)</text>
+      <text xp="50" yp="93" sp="4" align="center">Header (top 20%)</text>
+      <text xp="15" yp="50" sp="5" color="black" align="center">Summary
+(30%)</text>
+      <text xp="65" yp="50" sp="5" color="white" align="center">Detail
+(70%)</text>
+  </slide>
+
+  
+
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
     <text xp="50" yp="90" sp="3" align="center">Two Columns</text>
     <line xp1="50" yp1="70" xp2="50" yp2="10" sp="0.1" color="black" />
@@ -340,7 +371,7 @@ func main() {
   </slide>
 
   <slide>
-    <line xp1="0" yp1="8.30" xp2="100" yp2="8.30" color="blue" sp="0.1"/>
+    <line xp1="0" yp1="08.30" xp2="100" yp2="08.30" color="blue" sp="0.1"/>
     <line xp1="0" yp1="16.60" xp2="100" yp2="16.60" color="blue" sp="0.1" />
     <line xp1="0" yp1="24.90" xp2="100" yp2="24.90" color="blue" sp="0.1" />
     <line xp1="0" yp1="33.20" xp2="100" yp2="33.20" color="blue" sp="0.1" />
@@ -350,8 +381,8 @@ func main() {
     <line xp1="0" yp1="66.40" xp2="100" yp2="66.40" color="blue" sp="0.1" />
     <line xp1="0" yp1="74.70" xp2="100" yp2="74.70" color="blue" sp="0.1" />
     <line xp1="0" yp1="83.00" xp2="100" yp2="83.00" color="blue" sp="0.1" />
-    <line xp1="0" yp1="91.30" xp2="100" yp2="91.30" color="red" sp="0.1"/>
-    <text xp="50" yp="50" sp="5" align="center" font="mono" color="rgb(100,100,100)">Skeuomorphism</text>
+    <line xp1="0" yp1="91.30" xp2="100" yp2="91.30" color="red"  sp="0.1"/>
+    <text xp="50" yp="50" sp="5" align="center" font="mono" color="rgb(100,100,100)">This is not a notecard</text>
   </slide>
 
   <slide bg="white" fg="black">
@@ -471,11 +502,10 @@ func main() {
   </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
-    <text xp="20" yp="90" sp="3" color="rgb(127,0,0)" font="mono">pdfdeck [options] file.xml...</text>
-    <list xp="20" yp="80" sp="2">
+    <text xp="10" yp="90" sp="3" color="rgb(127,0,0)" font="mono">pdfdeck [options] file.xml...</text>
+    <list xp="10" yp="80" sp="2">
       <li>-sans, -serif, -mono [font] specify fonts</li>
-      <li>-pagesize [Letter, Legal, Tabloid, A2, A3, A4, A5,</li>
-      <li>          ArchA, Index, 4R, Widescreen]</li>
+      <li>-pagesize [Letter, Legal, Tabloid, A2, A3, A4, A5, ArchA, Index, 4R, Widescreen]</li>
       <li>-pagewidth [page width (pt)]</li>
       <li>-pageheight [page height (pt)]</li>
       <li>-stdout (output to standard out)</li>
@@ -488,8 +518,8 @@ func main() {
   </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
-    <text xp="20" yp="90" sp="3" color="rgb(127,0,0)" font="mono">svgdeck [options] file.xml...</text>
-    <list xp="20" yp="80" sp="2">
+    <text xp="10" yp="90" sp="3" color="rgb(127,0,0)" font="mono">svgdeck [options] file.xml...</text>
+    <list xp="10" yp="80" sp="2">
       <li>-sans, -serif, -mono [font] specify fonts</li>
       <li>-pagesize [Letter, Legal, A3, A4, A5]</li>
       <li>-pagewidth [canvas width]</li>
@@ -502,8 +532,8 @@ func main() {
   </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
-    <text xp="20" yp="90" sp="3" color="rgb(127,0,0)" font="mono">vgdeck [options] file.xml...</text>
-    <list xp="20" yp="80" sp="2">
+    <text xp="10" yp="90" sp="3" color="rgb(127,0,0)" font="mono">vgdeck [options] file.xml...</text>
+    <list xp="10" yp="80" sp="2">
       <li>-loop [duration] loop, pausing [duration] between slides</li>
       <li>-slide [number] start at slide number</li>
       <li>-w [width] canvas width</li>
@@ -513,8 +543,8 @@ func main() {
   </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
-    <text xp="20" yp="90" sp="3">vgdeck Commands</text>
-    <list xp="60" yp="80" sp="2">
+    <text xp="10" yp="90" sp="3">vgdeck Commands</text>
+    <list xp="50" yp="80" sp="2">
       <li>Next slide</li>
       <li>Previous slide</li>
       <li>First slide</li>
@@ -526,7 +556,7 @@ func main() {
       <li>Quit</li>
     </list>
 
-    <list xp="20" yp="80" sp="2" font="mono" color="rgb(127,0,0)">
+    <list xp="10" yp="80" sp="2" font="mono" color="rgb(127,0,0)">
       <li>+, Ctrl-N, [Return]</li>
       <li>-, Ctrl-P, [Backspace]</li>
       <li>^, Ctrl-A</li>
