@@ -565,9 +565,9 @@ func main() {
     <line xp1="65" yp1="42.5" xp2="70" yp2="25" sp=".25" color="rgb(0,127,0)"/>
 
     <rect xp="50" yp="50" wp="30" hp="15" color="black" opacity="20" />
-    <rect xp="90" yp="75" wp="40" hp="15" color="rgb(0,0,127)" opacity="20" />
-    <rect xp="90" yp="50" wp="40" hp="15" color="rgb(127,0,0)" opacity="20" />
-    <rect xp="90" yp="25" wp="40" hp="15" color="rgb(0,127,0)" opacity="20" />
+    <rect xp="85" yp="75" wp="30" hp="15" color="rgb(0,0,127)" opacity="20" />
+    <rect xp="85" yp="50" wp="30" hp="15" color="rgb(127,0,0)" opacity="20" />
+    <rect xp="85" yp="25" wp="30" hp="15" color="rgb(0,127,0)" opacity="20" />
   </slide>
 
   <slide>
