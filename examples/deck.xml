@@ -1,8 +1,4 @@
 <deck>
-  <slide bg="black" fg="white">
-    <image xp="50" yp="50" width="1024" height="576" name="deck-desk1024.jpg"/>
-    <text xp="50" yp="10" sp="4" align="center">Deck: a Go package for presentations</text>
-  </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
     <text xp="5" yp="50" sp="20">Deck</text>
@@ -663,4 +659,8 @@ func main() {
     <text  xp="50" yp="4" sp="2.5" align="center">@ajstarks</text>
   </slide>
 
+  <slide bg="black" fg="white">
+    <image xp="50" yp="50" width="1024" height="576" name="deck-desk1024.jpg"/>
+    <text xp="50" yp="10" sp="4" align="center">Deck: a Go package for presentations</text>
+  </slide>
 </deck>
