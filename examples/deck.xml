@@ -1,12 +1,16 @@
-a
 <deck>
+  <slide bg="black" fg="white">
+    <image xp="50" yp="50" width="1024" height="576" name="deck-desk1024.jpg"/>
+    <text xp="50" yp="10" sp="4" align="center">Deck: a Go package for presentations</text>
+  </slide>
+
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
     <text xp="5" yp="50" sp="20">Deck</text>
     <image xp="75" yp="60" width="256" height="256" name="sdeck256.png" />
     <text xp="90" yp="5" sp="3" align="right">a Go package for presentations</text>
   </slide>
 
-<slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
+  <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
     <line xp1="5" yp1="90" xp2="90" yp2="90" color="rgb(50,50,50)" sp="0.1"/> 
     <text xp="5" yp="85" sp="2.5" color="rgb(127,0,0)">DECK: a package for presentations</text>
     <list xp="5" yp="45" sp="2.5">
@@ -25,7 +29,7 @@ a
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
     <text xp="20" yp="90" sp="3" color="rgb(127,0,0)">Hello, World</text>
     <text xp="20" yp="80" sp="3" wp="60" color="rgb(0,0,127)" font="serif" type="block">
-        A block of text, word-wrapped to a specified width. You may specify size, font, color, and opacity.
+    A block of text, word-wrapped to a specified width. You may specify size, font, color, and opacity.
     </text>
     <text xp="20" yp="50" sp="2" wp="50" type="code">package main
 import "fmt"
@@ -35,7 +39,7 @@ func main() {
       <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;text&gt;...&lt;/text&gt;</text>
   </slide>
 
-  <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
+  <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)"> 
     <text xp="5" yp="80" sp="3" color="rgb(127,0,0)">bullet</text>
     <list xp="5" yp="70" sp="3" font="sans" color="rgb(0,127,0)" type="bullet">
       <li>Point A</li>
@@ -307,9 +311,80 @@ func main() {
       <ellipse xp="90" yp="50" wp="0.5" hr="100" color="gray"/>
   </slide>
 
+  <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)"> 
+    <text xp="5" yp="80" sp="3" color="rgb(127,0,0)">bullet</text>
+    <list xp="5" yp="70" sp="3" font="sans" color="rgb(0,127,0)" type="bullet">
+      <li>Point A</li>
+      <li>Point B</li>
+      <li>Point C</li>
+      <li>Point D</li>
+    </list>
+
+    <text xp="35" yp="80" sp="3" color="rgb(127,0,0)">plain</text>
+    <list xp="35" yp="70" sp="3" color="rgb(0,0,127)" font="serif">
+      <li>First item</li>
+      <li>Second item</li>
+      <li>The third item</li>
+      <li>and the last thing</li>
+    </list>
+
+    <text xp="70" yp="80" sp="3" color="rgb(127,0,0)">number</text>
+    <list xp="70" yp="70" sp="3" font="mono" color="black" type="number">
+       <li>This</li>
+       <li>That</li>
+       <li>The other</li>
+       <li>One more</li>
+    </list>
+      <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;list&gt;...&lt;/list&gt;</text>
+  </slide>
+
+  <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)"> 
+    <rect xp="10" yp="60" wp="30" hp="80" color="red" opacity="20"/>
+    <rect xp="45" yp="60" wp="30" hp="80" color="red" opacity="20"/>
+    <rect xp="80" yp="60" wp="30" hp="80" color="red" opacity="20"/>
+    <rect xp="50" yp="10" wp="100" hp="20" color="green" opacity="20"/>
+
+    <text xp="5" yp="80" sp="3" color="rgb(127,0,0)">bullet</text>
+    <list xp="5" yp="70" sp="3" font="sans" color="rgb(0,127,0)" type="bullet">
+      <li>Point A</li>
+      <li>Point B</li>
+      <li>Point C</li>
+      <li>Point D</li>
+    </list>
+
+    <text xp="35" yp="80" sp="3" color="rgb(127,0,0)">plain</text>
+    <list xp="35" yp="70" sp="3" color="rgb(0,0,127)" font="serif">
+      <li>First item</li>
+      <li>Second item</li>
+      <li>The third item</li>
+      <li>and the last thing</li>
+    </list>
+
+    <text xp="70" yp="80" sp="3" color="rgb(127,0,0)">number</text>
+    <list xp="70" yp="70" sp="3" font="mono" color="black" type="number">
+       <li>This</li>
+       <li>That</li>
+       <li>The other</li>
+       <li>One more</li>
+    </list>
+      <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;list&gt;...&lt;/list&gt;</text>
+  </slide>
+
   <slide bg="rgb(127,127,127)" fg="white">
      <text xp="10" yp="10" sp="5">Design Examples</text>
   </slide>
+
+   <slide bg="black" fg="black">
+      <rect xp="50" yp="95" wp="100" hp="10" color="lightgray"/>
+      <rect xp="50" yp="5" wp="100" hp="10" color="lightgray"/>
+      <rect xp="15" yp="50" wp="30" hp="80" color="white"/>
+      <rect xp="65" yp="50" wp="70" hp="80" color="rgb(127,0,0)"/>
+      
+      <text xp="50" yp="3" sp="4" align="center">Bottom</text>
+      <text xp="50" yp="93" sp="4" align="center">Top</text>
+      <text xp="15" yp="50" sp="10" color="black" align="center">Left</text>
+      <text xp="65" yp="50" sp="10" color="white" align="center">Right</text>
+    </slide>
 
    <slide bg="black" fg="black">
       <rect xp="50" yp="95" wp="100" hp="10" color="lightgray"/>
@@ -323,18 +398,7 @@ func main() {
       <text xp="65" yp="50" sp="10" color="white" align="center">70%</text>
   </slide>
 
-  <slide bg="black" fg="black">
-      <rect xp="50" yp="95" wp="100" hp="10" color="lightgray"/>
-      <rect xp="50" yp="5" wp="100" hp="10" color="lightgray"/>
-      <rect xp="15" yp="50" wp="30" hp="80" color="white"/>
-      <rect xp="65" yp="50" wp="70" hp="80" color="rgb(127,0,0)"/>
-      
-      <text xp="50" yp="3" sp="4" align="center">Bottom</text>
-      <text xp="50" yp="93" sp="4" align="center">Top</text>
-      <text xp="15" yp="50" sp="10" color="black" align="center">Left</text>
-      <text xp="65" yp="50" sp="10" color="white" align="center">Right</text>
-  </slide>
-
+ 
   <slide bg="black" fg="black">
       <rect xp="50" yp="95" wp="100" hp="10" color="lightgray"/>
       <rect xp="50" yp="5" wp="100" hp="10" color="lightgray"/>
@@ -446,8 +510,8 @@ func main() {
   </slide>
 
   <slide>
-    <text xp="10" yp="40" sp="5" color="white">Deck is heavenly</text>
-    <rect xp="50" yp="42" wp="100" hp="15" color="black" opacity="40"/>
+    <text xp="50" yp="50" sp="3" color="white" align="center">You must not blame me if I do talk to the clouds.</text>
+    <rect xp="50" yp="52" wp="100" hp="15" color="black" opacity="40"/>
     <image name="cloudy1024.jpg" width="1024" height="768" xp="50" yp="50"/>
   </slide>
   
@@ -490,6 +554,24 @@ func main() {
     }
 }</text>
 <text xp="90" yp="5" sp="3" align="right">A Deck Client</text>
+  </slide>
+
+  <slide>
+    <text xp="5" yp="47.5" sp="4">Process</text>
+    <text xp="50" yp="47.5" sp="4" align="center">deck code</text>
+    <text xp="75" yp="72.5" sp="4">interactive</text>
+    <text xp="75" yp="47.5" sp="4">PDF</text>
+    <text xp="75" yp="22.5" sp="4">SVG</text>
+
+    <line xp1="25" yp1="50" xp2="35" yp2="50" sp=".25" color="rgb(127,127,127)"/>
+    <line xp1="65" yp1="57.5" xp2="70" yp2="75" sp=".25" color="rgb(0,0,127)" />
+    <line xp1="65" yp1="50" xp2="70" yp2="50" sp=".25" color="rgb(127,0,0)" />
+    <line xp1="65" yp1="42.5" xp2="70" yp2="25" sp=".25" color="rgb(0,127,0)"/>
+
+    <rect xp="50" yp="50" wp="30" hp="15" color="black" opacity="20" />
+    <rect xp="90" yp="75" wp="40" hp="15" color="rgb(0,0,127)" opacity="20" />
+    <rect xp="90" yp="50" wp="40" hp="15" color="rgb(127,0,0)" opacity="20" />
+    <rect xp="90" yp="25" wp="40" hp="15" color="rgb(0,127,0)" opacity="20" />
   </slide>
 
   <slide>
@@ -577,7 +659,8 @@ func main() {
   <slide bg="rgb(127,127,127)" fg="white">
     <text  xp="50" yp="85" sp="5" align="center">github.com/ajstarks/deck</text>
     <image xp="50" yp="50" width="270" height="270" name="sdeck256.png" />
-    <text  xp="50" yp="12" sp="2.5" align="center">ajstarks@gmail.com</text>
+    <text  xp="50" yp="10" sp="2.5" align="center">ajstarks@gmail.com</text>
+    <text  xp="50" yp="4" sp="2.5" align="center">@ajstarks</text>
   </slide>
 
 </deck>
