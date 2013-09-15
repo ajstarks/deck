@@ -522,8 +522,9 @@ and the voice of the turtle is heard in our land.
     <text xp="50" yp="10" sp="1" align="center" color="rgb(127,127,127)">Song of Solomon 2:11-12</text>
   </slide>
 
-  <slide bg="rgb(127,127,127)" fg="white">
-     <text xp="10" yp="10" sp="5">Clients</text>
+  <slide bg="black" fg="white">
+    <image xp="50" yp="50" width="1024" height="576" name="deck-desk1024.jpg"/>
+    <text xp="10" yp="10" sp="5">Clients</text>
   </slide>
 
   <slide bg="rgb(220,220,220)" fg="rgb(50,50,50)">
@@ -659,8 +660,4 @@ func main() {
     <text  xp="50" yp="4" sp="2.5" align="center">@ajstarks</text>
   </slide>
 
-  <slide bg="black" fg="white">
-    <image xp="50" yp="50" width="1024" height="576" name="deck-desk1024.jpg"/>
-    <text xp="50" yp="10" sp="4" align="center">Deck: a Go package for presentations</text>
-  </slide>
 </deck>
