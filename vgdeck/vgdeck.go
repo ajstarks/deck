@@ -16,7 +16,7 @@ import (
 )
 
 // dodeck sets up the graphics environment and kicks off the interaction
-func dodeck(filename string, pausetime time.Duration, slidenum, cw, ch int, gp float64) {
+func dodeck(filename, searchterm string, pausetime time.Duration, slidenum, cw, ch int, gp float64) {
 	w, h := openvg.Init()
 	if cw > 0 {
 		w = cw
@@ -26,7 +26,7 @@ func dodeck(filename string, pausetime time.Duration, slidenum, cw, ch int, gp f
 	}
 	openvg.Background(0, 0, 0)
 	if pausetime == 0 {
-		interact(filename, w, h, slidenum, gp)
+		interact(filename, searchterm, w, h, slidenum, gp)
 	} else {
 		loop(filename, w, h, pausetime)
 	}
@@ -54,7 +54,7 @@ func loadimage(d deck.Deck, m map[string]image.Image) {
 }
 
 // interact controls the display of the deck
-func interact(filename string, w, h, slidenum int, gp float64) {
+func interact(filename, searchterm string, w, h, slidenum int, gp float64) {
 	openvg.SaveTerm()
 	defer openvg.RestoreTerm()
 	var d deck.Deck
@@ -72,6 +72,12 @@ func interact(filename string, w, h, slidenum int, gp float64) {
 	}
 	if slidenum < 0 {
 		slidenum = 0
+	}
+	if len(searchterm) > 0 {
+		sr := deck.Search(d, searchterm)
+		if sr >= 0 {
+			slidenum = sr
+		}
 	}
 	n := slidenum
 	xray := 1
@@ -540,12 +546,13 @@ func readcmd(r *bufio.Reader) byte {
 // for every file, make a deck
 func main() {
 	var pause = flag.Duration("loop", 0, "loop, pausing the specified duration between slides")
+	var search = flag.String("search", "", "search term")
 	var gridpct = flag.Float64("g", 10, "Grid percentage")
 	var slidenum = flag.Int("slide", 0, "initial slide")
 	var cw = flag.Int("w", 0, "canvas width")
 	var ch = flag.Int("h", 0, "canvas height")
 	flag.Parse()
 	for _, f := range flag.Args() {
-		dodeck(f, *pause, *slidenum, *cw, *ch, *gridpct)
+		dodeck(f, *search, *pause, *slidenum, *cw, *ch, *gridpct)
 	}
 }
