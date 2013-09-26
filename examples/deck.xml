@@ -445,6 +445,19 @@ func main() {
     <text xp="50" yp="50" sp="5" align="center" font="mono" color="rgb(100,100,100)">This is not a notecard</text>
   </slide>
 
+  <slide>
+    <line xp1="50" yp1="100" xp2="50" yp2="0" color="lightgray" opacity="100" sp="0.2"/>
+    <line xp1="0" yp1="50" xp2="100" yp2="50" color="lightgray" opacity="100" sp="0.2"/>
+    <text xp="25" yp="75" sp="3" color="blue" align="center">Can't buy me love</text>
+    <text xp="75" yp="75" sp="3" color="green" align="center">Bliss</text>
+    <text xp="25" yp="25" sp="3" color="red" align="center">Misery</text>
+    <text xp="75" yp="25" sp="3" color="purple" align="center">We have each other</text>
+    <text xp="98" yp="50" sp="2" align="right" font="mono">Better</text>
+    <text xp="2" yp="50" sp="2" align="" font="mono">Worse</text>
+    <text xp="50" yp="95" sp="2" align="center" font="mono">Rich</text>
+    <text xp="50" yp="5" sp="2" align="center" font="mono">Poor</text>
+  </slide>
+
   <slide bg="white" fg="black">
      <text xp="20" yp="70" sp="2" wp="50" font="serif" type="block">
      A few months ago, I had a look at the brainchild of a few serious heavyweights working at Google.
