@@ -224,9 +224,12 @@ func dolist(doc *gofpdf.Fpdf, x, y, fs float64, tdata []string, font, color, lty
 
 // textwrap draws text at location, wrapping at the specified width
 func textwrap(doc *gofpdf.Fpdf, x, y, w, fs, leading float64, s, font string) {
-	const factor = 0.3
+	var factor = 0.3
+	if font == "mono" {
+		factor = 1.0
+	}
 	doc.SetFont(fontlookup(font), "", fs)
-	wordspacing := doc.GetStringWidth("m")
+	wordspacing := doc.GetStringWidth("M")
 	words := strings.FieldsFunc(s, whitespace)
 	xp := x
 	yp := y
