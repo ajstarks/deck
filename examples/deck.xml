@@ -353,7 +353,7 @@ func main() {
       <li>First item</li>
       <li>Second item</li>
       <li>The third item</li>
-      <li>and the last thing</li>
+      <li>the last thing</li>
     </list>
 
     <text xp="70" yp="80" sp="3" color="rgb(127,0,0)">number</text>
@@ -369,6 +369,11 @@ func main() {
   <slide bg="rgb(127,127,127)" fg="white">
      <text xp="10" yp="10" sp="5">Design Examples</text>
   </slide>
+
+  <slide bg="black" fg="white">
+     <ellipse xp="50" yp="0" wp="100" hr="100" color="rgb(44,77,232)"/>
+     <text xp="50" yp="50" align="center" sp="10">hello, world</text>
+  </slide> 
 
    <slide bg="black" fg="black">
       <rect xp="50" yp="95" wp="100" hp="10" color="lightgray"/>
@@ -409,7 +414,6 @@ func main() {
 (70%)</text>
   </slide>
 
-  
 
   <slide bg="snow" fg="rgb(50,50,50)">
     <text xp="50" yp="90" sp="3" align="center">Two Columns</text>
