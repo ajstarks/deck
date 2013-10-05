@@ -49,7 +49,7 @@ func main() {
       <li>First item</li>
       <li>Second item</li>
       <li>The third item</li>
-      <li>and the last thing</li>
+      <li>the last thing</li>
     </list>
 
     <text xp="70" yp="80" sp="3" color="rgb(127,0,0)">number</text>
@@ -321,7 +321,7 @@ func main() {
       <li>First item</li>
       <li>Second item</li>
       <li>The third item</li>
-      <li>and the last thing</li>
+      <li>the last thing</li>
     </list>
 
     <text xp="70" yp="80" sp="3" color="rgb(127,0,0)">number</text>
