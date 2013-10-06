@@ -160,7 +160,7 @@ func doellipse(doc *svg.SVG, x, y, w, h int, color string, opacity float64) {
 func dotext(doc *svg.SVG, cw, x, y, fs int, wp float64, tdata, font, color string, opacity float64, align, ttype string) {
 	var tw int
 	const emsperpixel = 10
-	ls := fs + ((fs * 8) / 10)
+	ls := fs + ((fs * 4) / 10)
 	td := strings.Split(tdata, "\n")
 	if ttype == "code" {
 		font = "mono"
