@@ -568,7 +568,7 @@ and the voice of the turtle is heard in our land.
     <text xp="10" yp="10" sp="5">Clients</text>
   </slide>
 
-  <slide bg="snow" fg="rgb(50,50,50)">
+  <slide bg="white" fg="rgb(50,50,50)">
 	
 	<text xp="5" yp="95" sp="1.4" type="code" color="black">package main
 import ( 
@@ -611,13 +611,13 @@ func main() {
     <rect xp="85" yp="50" wp="30" hp="15" color="rgb(127,0,0)" opacity="20" />
     <rect xp="85" yp="25" wp="30" hp="15" color="rgb(0,127,0)" opacity="20" />
   </slide>
-  <slide bg="snow" fg="rgb(50,50,50)">
+  <slide bg="white" fg="rgb(50,50,50)">
     <text xp="5" yp="95" sp="1.4" color="black" type="code">func main() {
     benchmarks := []Bardata{
-        {"Macbook Air", 161.498},
-        {"MacBook Pro (2008)", 284.868},
-        {"BeagleBone Black", 2860.26},
-        {"Raspberry Pi", 5311.09},
+        {"Macbook Air", 154.701},
+        {"MacBook Pro (2008)", 289.603},
+        {"BeagleBone Black", 2896.037},
+        {"Raspberry Pi", 5765.568},
     }
     ts := 2.5
     hts := ts / 2
@@ -627,6 +627,7 @@ func main() {
     y := 60.0
     maxdata := 5400.0
     linespacing := ts * 2.0
+    text(x, y+20, "Go 1.1.2 Build and Test Times", ts*2, "black")
     for _, data := range benchmarks {
         text(x, y, data.label, ts, "rgb(100,100,100)")
         bv := vmap(data.value, 0, maxdata, bx1, bx2)
@@ -634,24 +635,24 @@ func main() {
         text(bv+0.5, y+(hts/2), fmt.Sprintf("%.1f", data.value), hts, "rgb(127,0,0)")
         y -= linespacing
     }
-}</text>
-    <text xp="90" yp="5" sp="3" align="end">Generating a Barchart</text>
+} </text>
+    <text xp="90" yp="5" sp="3" align="right">Generating a Barchart</text>
   </slide>
   <slide>
-  <text xp="10" yp="80" sp="4">Go 1.1.1 Build and Test Times (sec)</text>
-  <text xp="10.00" yp="60.00" sp="2.50" color="rgb(100,100,100)">Macbook Air</text>
-<line xp1="40.00" yp1="61.25" xp2="41.50" yp2="61.25" sp="2.50" color="lightgray"/>
-<text xp="42.00" yp="60.62" sp="1.25" color="rgb(127,0,0)">161.5</text>
+<text xp="10.00" yp="80.00" sp="5.00" color="black">Go 1.1.2 Build and Test Times</text>
+<text xp="10.00" yp="60.00" sp="2.50" color="rgb(100,100,100)">Macbook Air</text>
+<line xp1="40.00" yp1="61.25" xp2="41.43" yp2="61.25" sp="2.50" color="lightgray"/>
+<text xp="41.93" yp="60.62" sp="1.25" color="rgb(127,0,0)">154.7</text>
 <text xp="10.00" yp="55.00" sp="2.50" color="rgb(100,100,100)">MacBook Pro (2008)</text>
-<line xp1="40.00" yp1="56.25" xp2="42.64" yp2="56.25" sp="2.50" color="lightgray"/>
-<text xp="43.14" yp="55.62" sp="1.25" color="rgb(127,0,0)">284.9</text>
+<line xp1="40.00" yp1="56.25" xp2="42.68" yp2="56.25" sp="2.50" color="lightgray"/>
+<text xp="43.18" yp="55.62" sp="1.25" color="rgb(127,0,0)">289.6</text>
 <text xp="10.00" yp="50.00" sp="2.50" color="rgb(100,100,100)">BeagleBone Black</text>
-<line xp1="40.00" yp1="51.25" xp2="66.48" yp2="51.25" sp="2.50" color="lightgray"/>
-<text xp="66.98" yp="50.62" sp="1.25" color="rgb(127,0,0)">2860.3</text>
+<line xp1="40.00" yp1="51.25" xp2="66.82" yp2="51.25" sp="2.50" color="lightgray"/>
+<text xp="67.32" yp="50.62" sp="1.25" color="rgb(127,0,0)">2896.0</text>
 <text xp="10.00" yp="45.00" sp="2.50" color="rgb(100,100,100)">Raspberry Pi</text>
-<line xp1="40.00" yp1="46.25" xp2="89.18" yp2="46.25" sp="2.50" color="lightgray"/>
-<text xp="89.68" yp="45.62" sp="1.25" color="rgb(127,0,0)">5311.1</text>
-<text xp="5" yp="20" sp="1.3" type="code">$ (echo '&lt;slide&gt;&lt;text xp="10" yp="80" sp="4"&gt;Go 1.1.1 Build and Test Times&lt;/text&gt;'; go run deckbc.go; echo '&lt;/slide&gt;')</text>
+<line xp1="40.00" yp1="46.25" xp2="93.38" yp2="46.25" sp="2.50" color="lightgray"/>
+<text xp="93.88" yp="45.62" sp="1.25" color="rgb(127,0,0)">5765.6</text>
+<text xp="10" yp="20" sp="1.3" type="code">$ (echo '&lt;deck&gt;&lt;slide&gt;'; go run deckbc.go; echo '&lt;/slide&gt;&lt;/deck&gt;')</text>
 </slide>
   <slide>
     <image xp="12" yp="85" width="144" height="128" name="rpi-logo.jpg"/>
