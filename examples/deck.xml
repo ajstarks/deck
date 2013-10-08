@@ -625,7 +625,7 @@ func main() {
     bx1 := x + (ts * 12)
     bx2 := bx1 + 50.0
     y := 60.0
-    maxdata := 5400.0
+    maxdata := 5800.0
     linespacing := ts * 2.0
     text(x, y+20, "Go 1.1.2 Build and Test Times", ts*2, "black")
     for _, data := range benchmarks {
@@ -641,17 +641,17 @@ func main() {
   <slide>
 <text xp="10.00" yp="80.00" sp="5.00" color="black">Go 1.1.2 Build and Test Times</text>
 <text xp="10.00" yp="60.00" sp="2.50" color="rgb(100,100,100)">Macbook Air</text>
-<line xp1="40.00" yp1="61.25" xp2="41.43" yp2="61.25" sp="2.50" color="lightgray"/>
-<text xp="41.93" yp="60.62" sp="1.25" color="rgb(127,0,0)">154.7</text>
+<line xp1="40.00" yp1="61.25" xp2="41.33" yp2="61.25" sp="2.50" color="lightgray"/>
+<text xp="41.83" yp="60.62" sp="1.25" color="rgb(127,0,0)">154.7</text>
 <text xp="10.00" yp="55.00" sp="2.50" color="rgb(100,100,100)">MacBook Pro (2008)</text>
-<line xp1="40.00" yp1="56.25" xp2="42.68" yp2="56.25" sp="2.50" color="lightgray"/>
-<text xp="43.18" yp="55.62" sp="1.25" color="rgb(127,0,0)">289.6</text>
+<line xp1="40.00" yp1="56.25" xp2="42.50" yp2="56.25" sp="2.50" color="lightgray"/>
+<text xp="43.00" yp="55.62" sp="1.25" color="rgb(127,0,0)">289.6</text>
 <text xp="10.00" yp="50.00" sp="2.50" color="rgb(100,100,100)">BeagleBone Black</text>
-<line xp1="40.00" yp1="51.25" xp2="66.82" yp2="51.25" sp="2.50" color="lightgray"/>
-<text xp="67.32" yp="50.62" sp="1.25" color="rgb(127,0,0)">2896.0</text>
+<line xp1="40.00" yp1="51.25" xp2="64.97" yp2="51.25" sp="2.50" color="lightgray"/>
+<text xp="65.47" yp="50.62" sp="1.25" color="rgb(127,0,0)">2896.0</text>
 <text xp="10.00" yp="45.00" sp="2.50" color="rgb(100,100,100)">Raspberry Pi</text>
-<line xp1="40.00" yp1="46.25" xp2="93.38" yp2="46.25" sp="2.50" color="lightgray"/>
-<text xp="93.88" yp="45.62" sp="1.25" color="rgb(127,0,0)">5765.6</text>
+<line xp1="40.00" yp1="46.25" xp2="89.70" yp2="46.25" sp="2.50" color="lightgray"/>
+<text xp="90.20" yp="45.62" sp="1.25" color="rgb(127,0,0)">5765.6</text>
 <text xp="10" yp="20" sp="1.3" type="code">$ (echo '&lt;deck&gt;&lt;slide&gt;'; go run deckbc.go; echo '&lt;/slide&gt;&lt;/deck&gt;')</text>
 </slide>
   <slide>
