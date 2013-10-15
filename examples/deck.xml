@@ -462,28 +462,32 @@ func main() {
     <text xp="50" yp="5" sp="2" align="center" font="mono">Poor</text>
   </slide>
   <slide>
-  <image xp="75" yp="50" width="545" height="545" name="at.png"/>
     <text xp="25" yp="90" sp="2" align="center">Code</text>
     <text xp="75" yp="90" sp="2" align="center">Output</text>
-    <text xp="2" yp="80" sp="1.2" wp="50" type="code">
-package main
+    <image xp="75" yp="50" width="545" height="545" name="rotext.png"/>
+    <text xp="2" yp="80" sp="1.2" wp="50" type="code"> package main 
 import (
-    "os"
     "github.com/ajstarks/svgo"
+    "os"
 )
+
 func main() {
     canvas := svg.New(os.Stdout)
-    width := 850
-    height := 1100
+    width, height := 500, 500
+    a, ai, ti := 1.0, 0.03, 10.0
+
     canvas.Start(width, height)
-    canvas.Gstyle("fill-opacity:0.3;font-size:480pt")
-    for r := 0.0; r &lt; 360.0; r += 45 {
-        canvas.TranslateRotate(width/2, height/2, r)
-        canvas.Text(0, 0, "a")
+    canvas.Rect(0, 0, width, height)
+    canvas.Gstyle("font-family:serif;font-size:144pt")
+
+    for t := 0.0; t &lt;= 360.0; t += ti {
+        canvas.TranslateRotate(width/2, height/2, t)
+        canvas.Text(0, 0, "i", canvas.RGBA(255, 255, 255, a))
         canvas.Gend()
-     }
-     canvas.Gend()
-     canvas.End()
+        a -= ai
+    }
+    canvas.Gend()
+    canvas.End()
 }</text>
   </slide>
   <slide bg="white" fg="black">
