@@ -468,21 +468,21 @@ func main() {
 		sansfont   = flag.String("sans", "helvetica", "sans font")
 		serifont   = flag.String("serif", "times", "serif font")
 		monofont   = flag.String("mono", "courier", "mono font")
-		pagesize   = flag.String("pagesize", "Letter", "pagesize (Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen)")
-		pagewidth  = flag.Float64("pagewidth", 0, "page width (pt)")
-		pageheight = flag.Float64("pageheight", 0, "page height (pt)")
+		pagesize   = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
 		fontdir    = flag.String("fontdir", filepath.Join(os.Getenv("GOPATH"), "src/code.google.com/p/gofpdf/font"), "directory for fonts")
 		outdir     = flag.String("outdir", ".", "output directory")
-		stdout     = flag.Bool("stdout", false, "output to standard output")
 		title      = flag.String("title", "", "document title")
 		author     = flag.String("author", "", "document author")
 		gridpct    = flag.Float64("grid", 0, "draw a percentage grid on each slide")
+		stdout     = flag.Bool("stdout", false, "output to standard output")
 	)
 	flag.Parse()
 
-	pw := *pagewidth
-	ph := *pageheight
-
+	var pw, ph float64
+	nd, err := fmt.Sscanf(*pagesize, "%g,%g", &pw, &ph)
+	if nd != 2 || err != nil {
+		pw, ph = 0.0, 0.0
+	}
 	if pw == 0 && ph == 0 {
 		p, ok := pagemap[*pagesize]
 		if !ok {
