@@ -446,7 +446,7 @@ func main() {
     <line xp1="0" yp1="74.70" xp2="100" yp2="74.70" color="blue" sp="0.1" />
     <line xp1="0" yp1="83.00" xp2="100" yp2="83.00" color="blue" sp="0.1" />
     <line xp1="0" yp1="91.30" xp2="100" yp2="91.30" color="red"  sp="0.1"/>
-    <text xp="50" yp="50" sp="5" align="center" font="mono" color="rgb(100,100,100)">This is not a notecard</text>
+    <text xp="50" yp="50" sp="5" align="center" font="mono" color="rgb(100,100,100)">This is not a index card</text>
   </slide>
 
   <slide>
@@ -494,7 +494,7 @@ func main() {
      <text xp="20" yp="70" sp="2" wp="50" font="serif" type="block">
      A few months ago, I had a look at the brainchild of a few serious heavyweights working at Google.
      Their project, the Go programming language, is a static typed, c lookalike, semicolon-less, 
-     self formatting, package managed, object oriented, easily paralellizable, 
+     self formatting, package managed, object oriented, easily parallelizable, 
      cluster fuck of genius with an unique class inheritance system. It doesn't have one.</text>
   </slide>
 
@@ -507,7 +507,7 @@ func main() {
       <li>self formatting,</li>
       <li>package managed,</li>
       <li>object oriented,</li>
-      <li>easily paralellizable,</li>
+      <li>easily parallelizable,</li>
       <li>cluster fuck of genius</li>
       <li>with an unique class inheritance system.</li>
     </list>
@@ -523,7 +523,7 @@ func main() {
       <li>self formatting,</li>
       <li>package managed,</li>
       <li>object oriented,</li>
-      <li>easily paralellizable,</li>
+      <li>easily parallelizable,</li>
       <li>cluster fuck of genius</li>
       <li>with an unique class inheritance system.</li>
     </list>
@@ -535,7 +535,7 @@ func main() {
     <line xp1="5" yp1="90" xp2="90" yp2="90" color="rgb(50,50,50)" sp="0.1"/> 
     <list xp="5" yp="50" sp="2" type="text"> 
      <li>is a static typed, c lookalike, semicolon-less, self formatting,</li>
-     <li>package managed, object oriented, easily paralellizable,</li>
+     <li>package managed, object oriented, easily parallelizable,</li>
      <li>cluster fuck of genius with an unique class inheritance system.</li>
     </list>
      <text xp="5" yp="20" sp="2" color="maroon">It doesn't have one.</text>
