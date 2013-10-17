@@ -465,7 +465,7 @@ func main() {
     <text xp="25" yp="90" sp="2" align="center">Code</text>
     <text xp="75" yp="90" sp="2" align="center">Output</text>
     <image xp="75" yp="50" width="545" height="545" name="rotext.png"/>
-    <text xp="2" yp="80" sp="1.2" wp="50" type="code"> package main 
+    <text xp="2" yp="80" sp="1.2" wp="50" type="code">package main 
 import (
     "github.com/ajstarks/svgo"
     "os"
