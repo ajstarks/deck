@@ -1,5 +1,5 @@
 <deck>
-
+  <!-- version 2013-10-18 -->
   <slide bg="snow" fg="rgb(50,50,50)">
     <text xp="5" yp="50" sp="20">Deck</text>
     <image xp="75" yp="60" width="256" height="256" name="sdeck256.png" />
@@ -710,11 +710,11 @@ func main() {
 </slide>
   <slide>
     <image xp="12" yp="85" width="144" height="128" name="rpi-logo.jpg"/>
-    <text  xp="25" yp="85" sp="3" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/vgdeck</text>
+    <text  xp="25" yp="85" sp="2.75" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/vgdeck</text>
     <image xp="12" yp="55" width="128" height="128" name="pdf-logo.jpg"/>
-    <text  xp="25" yp="55" sp="3" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/pdfdeck</text>
+    <text  xp="25" yp="55" sp="2.75" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/pdfdeck</text>
     <image xp="12" yp="20" width="145" height="145" name="svg.png"/>
-    <text  xp="25" yp="20" sp="3" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/svgdeck</text>
+    <text  xp="25" yp="20" sp="2.75" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/svgdeck</text>
   </slide>
 
   <slide bg="snow" fg="rgb(50,50,50)">
