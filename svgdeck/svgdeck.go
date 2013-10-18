@@ -202,7 +202,7 @@ func showtext(doc *svg.SVG, x, y int, s string, fs int, font, color, align strin
 }
 
 // dolists places lists on the canvas
-func dolist(doc *svg.SVG, x, y, fs int, tdata []string, font, color string, opacity float64, ltype string) {
+func dolist(doc *svg.SVG, x, y, fs int, tlist []deck.ListItem, font, color string, opacity float64, ltype string) {
 	if font == "" {
 		font = "sans"
 	}
@@ -211,14 +211,28 @@ func dolist(doc *svg.SVG, x, y, fs int, tdata []string, font, color string, opac
 		x += fs
 	}
 	ls := fs * 2
-	for i, t := range tdata {
+	var t string
+	for i, tl := range tlist {
 		if ltype == "number" {
-			t = fmt.Sprintf("%d. ", i+1) + t
+			t = fmt.Sprintf("%d. ", i+1) + tl.ListText
+		} else {
+			t = tl.ListText
 		}
 		if ltype == "bullet" {
 			bullet(doc, x, y, fs, color)
 		}
-		doc.Text(x, y, t, `xml:space="preserve"`)
+		lifmt := ""
+		if len(tl.Color) > 0 {
+			lifmt += "fill:" + tl.Color
+		}
+		if len(tl.Font) > 0 {
+			lifmt += ";font-family:" + tl.Font
+		}
+		if len(lifmt) > 0 {
+			doc.Text(x, y, t, `xml:space="preserve"`, lifmt)
+		} else {
+			doc.Text(x, y, t, `xml:space="preserve"`)
+		}
 		y += ls
 	}
 	doc.Gend()

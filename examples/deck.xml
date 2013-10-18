@@ -415,6 +415,49 @@ func main() {
   </slide>
 
 
+    <slide bg="black" fg="white">
+      <text  xp="15"  yp="70" sp="11" align="center">BOS</text>
+      <image xp="15"  yp="55" width="50" height="50" name="plane.png"/>
+      <text  xp="15"  yp="25" sp="11" align="center">SFO</text>
+      <line  xp1="30" yp1="90" xp2="30" yp2="15" color="white" sp="0.1"/>
+      <text  xp="35"  yp="75" sp="6.25">Virgin America 351
+Gate B38
+8:35am</text>
+      <text xp="35" yp="25" sp="6.25" color="rgb(136,195,38)">On Time</text>
+    </slide>
+
+    <slide bg="black" fg="white">
+      <text  xp="15"  yp="70" sp="11" align="center">JFK</text>
+      <image xp="15"  yp="55" width="50" height="50" name="plane.png"/>
+      <text  xp="15"  yp="25" sp="11" align="center">IND</text>
+      <line  xp1="30" yp1="90" xp2="30" yp2="15" color="white" sp="0.1"/>
+      <text  xp="35"  yp="75" sp="6.25">US Airways 1207
+Gate C31C
+5:35pm</text>
+      <text xp="35" yp="25" sp="6.25" color="red">Delayed</text>
+    </slide>
+
+    <slide bg="black" fg="white">
+      <list xp="5" yp="80" sp="5.3">
+        <li>AAPL</li>
+        <li>AMZN</li>
+        <li>GOOG</li>
+      </list>
+
+      <list xp="30" yp="80" sp="5.3">
+        <li>503.73</li>
+        <li>274.03</li>
+        <li>727.58</li>
+      </list>
+
+      <list xp="55" yp="80" sp="5.3" color="rgb(171,50,50)">
+        <li>-16.57 (3.18%)</li>
+        <li color="rgb(136,195,38)">+6.09 (2.27%)</li>
+        <li>-12.41 (1.68%)</li>
+      </list>
+    </slide>
+
+
   <slide bg="snow" fg="rgb(50,50,50)">
     <text xp="50" yp="90" sp="3" align="center">Two Columns</text>
     <line xp1="50" yp1="70" xp2="50" yp2="10" sp="0.1" color="black" />
@@ -550,6 +593,13 @@ func main() {
      <text xp="20" yp="15" sp="2" color="rgb(127,127,127)">Andrew Mackenzie-Ross, http://pocket.co/sSc56</text>
   </slide>
 
+  <slide bg="rgb(130,130,130)" fg="rgb(240,240,240)">
+    	<text xp="10" yp="75" sp="3.75"  wp="65" type="block">Python and Ruby programmers come to Go 
+		because they don't have to surrender much expressiveness, 
+		but gain performance and get to play with concurrency.</text>
+          <text xp="10" yp="15" sp="2">Less is exponentially more
+Rob Pike</text>
+  </slide>
   <slide>
     <text xp="50" yp="50" sp="3" color="white" align="center">You must not blame me if I do talk to the clouds.</text>
     <rect xp="50" yp="52" wp="100" hp="15" color="black" opacity="40"/>

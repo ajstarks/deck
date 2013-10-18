@@ -51,13 +51,21 @@ type Dimension struct {
 	Wp float64 `xml:"wp,attr"`
 	Hp float64 `xml:"hp,attr"`
 	Hr float64 `xml:"hr,attr"`
-        Hw float64 `xml:"hw,attr"`  
+	Hw float64 `xml:"hw,attr"`
+}
+
+// ListItem describes a list item
+type ListItem struct {
+	Color    string  `xml:"color,attr"`
+	Opacity  float64 `xml:"opacity,attr"`
+	Font     string  `xml:"font,attr"`
+	ListText string  `xml:",chardata"`
 }
 
 // List describes the list element
 type List struct {
 	CommonAttr
-	Li []string `xml:"li"`
+	Li []ListItem `xml:"li"`
 }
 
 // Text describes the text element
@@ -159,7 +167,7 @@ func Search(d Deck, s string) int {
 		// search lists
 		for _, l := range slide.List {
 			for _, ll := range l.Li {
-				if strings.Contains(ll, s) {
+				if strings.Contains(ll.ListText, s) {
 					return i
 				}
 			}

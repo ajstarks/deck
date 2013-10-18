@@ -79,18 +79,18 @@ Example
 
 
 	package main
-	
+
 	import (
 		"fmt"
 		"log"
-	
+
 		"github.com/ajstarks/deck"
 	)
-	
+
 	func dotext(x, y, size float64, text deck.Text) {
 		fmt.Println("\tText:", x, y, size, text.Tdata)
 	}
-	
+
 	func dolist(x, y, size float64, list deck.List) {
 		fmt.Println("\tList:", x, y, size)
 		for i, l := range list.Li {

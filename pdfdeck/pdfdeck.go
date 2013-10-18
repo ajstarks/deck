@@ -199,23 +199,34 @@ func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align 
 }
 
 // dolists places lists on the canvas
-func dolist(doc *gofpdf.Fpdf, x, y, fs float64, tdata []string, font, color, ltype string) {
+func dolist(doc *gofpdf.Fpdf, x, y, fs float64, list []deck.ListItem, font, color, ltype string) {
 	if font == "" {
 		font = "sans"
 	}
-	doc.SetFont(fontlookup(font), "", fs)
 	red, green, blue := colorlookup(color)
-	doc.SetTextColor(red, green, blue)
+
 	if ltype == "bullet" {
 		x += fs * 1.2
 	}
 	ls := 2.0 * fs
-	for i, t := range tdata {
+	var t string
+	for i, tl := range list {
+		doc.SetFont(fontlookup(font), "", fs)
+		doc.SetTextColor(red, green, blue)
 		if ltype == "number" {
-			t = fmt.Sprintf("%d. ", i+1) + t
+			t = fmt.Sprintf("%d. ", i+1) + tl.ListText
+		} else {
+			t = tl.ListText
 		}
 		if ltype == "bullet" {
 			bullet(doc, x, y, fs/2, color)
+		}
+		if len(tl.Color) > 0 {
+			tlred, tlgreen, tlblue := colorlookup(tl.Color)
+			doc.SetTextColor(tlred, tlgreen, tlblue)
+		}
+		if len(tl.Font) > 0 {
+			doc.SetFont(fontlookup(tl.Font), "", fs)
 		}
 		doc.Text(x, y, t)
 		y += ls
@@ -465,16 +476,16 @@ func dodeck(files []string, pageconfig gofpdf.InitType, w, h float64, sflag bool
 // for every file, make a deck
 func main() {
 	var (
-		sansfont   = flag.String("sans", "helvetica", "sans font")
-		serifont   = flag.String("serif", "times", "serif font")
-		monofont   = flag.String("mono", "courier", "mono font")
-		pagesize   = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
-		fontdir    = flag.String("fontdir", filepath.Join(os.Getenv("GOPATH"), "src/code.google.com/p/gofpdf/font"), "directory for fonts")
-		outdir     = flag.String("outdir", ".", "output directory")
-		title      = flag.String("title", "", "document title")
-		author     = flag.String("author", "", "document author")
-		gridpct    = flag.Float64("grid", 0, "draw a percentage grid on each slide")
-		stdout     = flag.Bool("stdout", false, "output to standard output")
+		sansfont = flag.String("sans", "helvetica", "sans font")
+		serifont = flag.String("serif", "times", "serif font")
+		monofont = flag.String("mono", "courier", "mono font")
+		pagesize = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
+		fontdir  = flag.String("fontdir", filepath.Join(os.Getenv("GOPATH"), "src/code.google.com/p/gofpdf/font"), "directory for fonts")
+		outdir   = flag.String("outdir", ".", "output directory")
+		title    = flag.String("title", "", "document title")
+		author   = flag.String("author", "", "document author")
+		gridpct  = flag.Float64("grid", 0, "draw a percentage grid on each slide")
+		stdout   = flag.Bool("stdout", false, "output to standard output")
 	)
 	flag.Parse()
 
