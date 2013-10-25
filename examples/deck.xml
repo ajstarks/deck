@@ -508,7 +508,7 @@ Gate C31C
     <text xp="25" yp="90" sp="2" align="center">Code</text>
     <text xp="75" yp="90" sp="2" align="center">Output</text>
     <image xp="75" yp="50" width="545" height="545" name="rotext.png"/>
-    <text xp="2" yp="80" sp="1.2" wp="50" type="code">package main 
+    <text xp="5" yp="80" sp="1.2" wp="50" type="code">package main 
 import (
     "github.com/ajstarks/svgo"
     "os"
@@ -781,11 +781,6 @@ func main() {
       <li>s, Ctrl-S</li>
       <li>q</li>
     </list>
-  </slide>
-
-  <slide bg="snow" fg="rgb(50,50,50)">
-      <image xp="50" yp="50" width="768" height="432" name="xray.png"/>
-      <text xp="50" yp="10" sp="2" align="center">X-Ray mode shows the percent grid, and highlights images</text>
   </slide>
 
   <slide bg="rgb(127,127,127)" fg="white">
