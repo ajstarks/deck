@@ -19,8 +19,8 @@ the -author option adds author metadata.
 the -title options adds title metadata.
 
 the -pagesize option specifies the page dimensions (Letter, Legal, Tabloid, A2, A3, A4, A5, ArchA, Index, 4R, Widescreen).
+Specifying w,h sets an arbitrary dimension, for example -pagesize 1600,900.
 
-the -pagewidth and pageheight options specify custom page dimensions.
 
 the -stdout option specified that output goes to the standard output file.
 */
