@@ -450,22 +450,33 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		} else {
 			textopacity = openvg.VGfloat(l.Opacity/100)
 		}
-		if l.Color == "" {
-			openvg.FillColor(slide.Fg)
-		} else {
-			openvg.FillColor(l.Color, textopacity)
-		}
 		// every list item
-		for ln, li := range l.Li {
+		var li, lifont string
+		for ln, tl := range l.Li {
+			if len(l.Color) > 0  {
+				openvg.FillColor(l.Color, textopacity)
+			} else {
+				openvg.FillColor(slide.Fg)
+			}
 			if l.Type == "bullet" {
 				boffset := fs / 2
 				openvg.Ellipse(x, y+boffset, boffset, boffset)
 				//openvg.Rect(x, y+boffset/2, boffset, boffset)
 			}
 			if l.Type == "number" {
-				li = fmt.Sprintf("%d. ", ln+1) + li
+				li = fmt.Sprintf("%d. ", ln+1) + tl.ListText 
+			} else {
+				li = tl.ListText
 			}
-			showtext(x+offset, y, li, l.Align, l.Font, fs)
+			if len(tl.Color) > 0 {
+				openvg.FillColor(tl.Color, textopacity)
+			}
+			if len(tl.Font) > 0 {
+				lifont = tl.Font
+			} else {
+				lifont = l.Font
+			}
+			showtext(x+offset, y, li, l.Align, lifont, fs)
 			y -= fs * blinespacing
 		}
 	}
