@@ -1,0 +1,40 @@
+#!/bin/sh
+#
+# mktbl: make a deck table, with rules
+#
+# input is a tab-separted list of columns, one line per row.
+# The first record specifies the position (in percentages) and alignment of the columns.
+# for example, 
+#
+# 10:left<tab>40:right<tab>60:center
+# Item A<tab>Item B<tab>Item C
+#
+# specifies three columns beginning at 10, 40, and 60%, aligned left, right, and center
+#
+awk '
+BEGIN {
+    showrule=1
+    FS="\t"
+    y=90
+    linespacing=7
+    textsize=3
+    tightness=3
+}
+NR == 1 {
+	for (i=1; i <= NF; i++) {
+		split($i, c, ":")
+		colx[i]=c[1]
+		align[i]=c[2]
+	}
+	next
+}
+{
+    ty=y-(linespacing/tightness)
+    for (i=1; i <= NF; i++) {
+    	printf "<text xp=\"%g\" yp=\"%g\" sp=\"%g\" align=\"%s\">%s</text>\n", colx[i], y, textsize, align[i], $i
+    }
+    if (showrule) {
+	printf "<line xp1=\"%g\" yp1=\"%g\" xp2=\"%g\" yp2=\"%g\" sp=\"0.05\"/>\n", colx[1], ty, colx[NF]+5,  ty
+    }
+    y -= linespacing
+}' $*

@@ -169,3 +169,5 @@ This command:
 	pdfdeck deck.xml
 
 produces one slide per SVG file, with each slide linked to the next.
+
+The shell script, `mktbl` creates a tabular layout from tab-separated text
