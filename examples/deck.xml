@@ -476,7 +476,50 @@ Gate C31C
       <li>Eight</li>
     </list>
   </slide>
+<slide>
+<text xp="5" yp="50" sp="4" font="mono" color="rgb(127,0,0)">go</text>
+      <text xp="15" yp="90" sp="2" font="mono">build</text>
+      <text xp="15" yp="83" sp="2" font="mono">clean</text>
+      <text xp="15" yp="76" sp="2" font="mono">env</text>
+      <text xp="15" yp="69" sp="2" font="mono">fix</text>
+      <text xp="15" yp="62" sp="2" font="mono">fmt</text>
+      <text xp="15" yp="55" sp="2" font="mono">get</text>
+      <text xp="15" yp="48" sp="2" font="mono">install</text>
+      <text xp="15" yp="41" sp="2" font="mono">list</text>
+      <text xp="15" yp="34" sp="2" font="mono">run</text>
+      <text xp="15" yp="27" sp="2" font="mono">test</text>
+      <text xp="15" yp="20" sp="2" font="mono">tool</text>
+      <text xp="15" yp="13" sp="2" font="mono">version</text>
+      <text xp="15" yp="6"  sp="2" font="mono">vet</text>
+  
+      <text xp="30" yp="90" sp="2" color="gray">compile packages and dependencies</text>
+      <text xp="30" yp="83" sp="2" color="gray">remove object files</text>
+      <text xp="30" yp="76" sp="2" color="gray">print Go environment information</text>
+      <text xp="30" yp="69" sp="2" color="gray">run go tool fix on packages</text>
+      <text xp="30" yp="62" sp="2" color="gray">run gofmt on package sources</text>
+      <text xp="30" yp="55" sp="2" color="gray">download and install packages and dependencies</text>
+      <text xp="30" yp="48" sp="2" color="gray">compile and install packages and dependencies</text>
+      <text xp="30" yp="41" sp="2" color="gray">list packages</text>
+      <text xp="30" yp="34" sp="2" color="gray">compile and run Go program</text>
+      <text xp="30" yp="27" sp="2" color="gray">test packages</text>
+      <text xp="30" yp="20" sp="2" color="gray">run specified go tool</text>
+      <text xp="30" yp="13" sp="2" color="gray">print Go version</text>
+      <text xp="30" yp="6" sp="2" color="gray">run go tool vet on packages</text>
 
+      <line xp1="15" yp1="88" xp2="90" yp2="88" sp="0.01"/>
+      <line xp1="15" yp1="81" xp2="90" yp2="81" sp="0.01"/>
+      <line xp1="15" yp1="74" xp2="90" yp2="74" sp="0.01"/>
+      <line xp1="15" yp1="67" xp2="90" yp2="67" sp="0.01"/>
+      <line xp1="15" yp1="60" xp2="90" yp2="60" sp="0.01"/>
+      <line xp1="15" yp1="53" xp2="90" yp2="53" sp="0.01"/>
+      <line xp1="15" yp1="46" xp2="90" yp2="46" sp="0.01"/>
+      <line xp1="15" yp1="39" xp2="90" yp2="39" sp="0.01"/>
+      <line xp1="15" yp1="32" xp2="90" yp2="32" sp="0.01"/>
+      <line xp1="15" yp1="25" xp2="90" yp2="25" sp="0.01"/>
+      <line xp1="15" yp1="18" xp2="90" yp2="18" sp="0.01"/>
+      <line xp1="15" yp1="11" xp2="90" yp2="11" sp="0.01"/>
+      <line xp1="15" yp1="4" xp2="90" yp2="4" sp="0.01"/>
+</slide>
   <slide>
     <line xp1="0" yp1="08.30" xp2="100" yp2="08.30" color="blue" sp="0.1"/>
     <line xp1="0" yp1="16.60" xp2="100" yp2="16.60" color="blue" sp="0.1" />
@@ -617,6 +660,22 @@ and the voice of the turtle is heard in our land.
     <text xp="50" yp="10" sp="1" align="center" color="rgb(127,127,127)">Song of Solomon 2:11-12</text>
   </slide>
 
+  <slide>
+        <image xp="70" yp="50" width="600" height="600" name="dr600.jpg" caption="Dieter Rams" color="gray"/>
+        <text xp="4" yp="90" sp="3">Good Design</text>
+        <list xp="4" yp="75" sp="2.0" type="plain">
+            <li>is innovative</li>
+            <li>makes a product useful</li>
+            <li>is aesthetic</li>
+            <li>makes a product understandable</li>
+            <li>is unobtrusive</li>
+            <li>is honest</li>
+            <li>is long-lasting</li>
+            <li>is thorough down to the last detail</li>
+            <li>is environmentally-friendly</li>
+            <li color="rgb(127,0,0)">is as little design as possible</li>
+        </list>
+  </slide>
   <slide bg="black" fg="white">
     <image xp="50" yp="50" width="1024" height="576" name="deck-desk1024.jpg"/>
     <text xp="10" yp="10" sp="5">Clients</text>
