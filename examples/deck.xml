@@ -628,7 +628,7 @@ func main() {
     <text xp="5" yp="5" sp="1" align="begin" color="gray">Andrew Mackenzie-Ross, OBJECTIVE-C LESSONS FROM GO</text>
   </slide>
   
-  <slide bg="white" bg="black">
+  <slide bg="white" fg="black">
      <image xp="95" yp="10" width="75" height="100" name="doc.png"/>
      <text xp="20" yp="70" sp="3" wp="40" font="serif" type="block">So, the next time you're about to make a subclass, 
      think hard and ask yourself</text>

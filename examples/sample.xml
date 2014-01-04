@@ -1,17 +1,17 @@
 <deck>
   <canvas width="1024" height="768" />
   <slide bg="white" fg="black">
-      <image xp="50" yp="60" width="256" height="179" name="work.png" />
-      <text  xp="20" yp="80" sp="3">Deck uses these elements</text>
+      <image xp="50" yp="60" width="256" height="179" name="work.png" caption="my desk"/>
+      <text  xp="20" yp="80" sp="4">Deck uses these elements</text>
       <list  xp="20" yp="70" sp="2" type="bullet">
          <li>text</li>
          <li>list</li>
          <li>image</li>
          <li>line</li>
-         <li>rect</li>
-         <li>ellipse</li>
-         <li>arc</li>
-         <li>curve</li>
+         <li color="rgb(127,0,0)">rect</li>
+         <li color="rgb(0,127,0)">ellipse</li>
+         <li color="rgb(0,0,127)">arc</li>
+         <li color="rgb(127,127,127)">curve</li>
       </list>
       <line    xp1="20" yp1="10" xp2="30" yp2="10"/>
       <rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/>
