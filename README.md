@@ -28,6 +28,7 @@ within slides any number of:
 Here is a sample deck in XML:
 
 	<deck>
+		<title>Sample Deck</title>
 		<canvas width="1024" height="768"/>
 		<slide bg="maroon" fg="white">
 			<image xp="20" yp="30" width="256" height="256" name="picture.png"/>
