@@ -11,14 +11,14 @@ import (
 // Deck defines the structure of a presentation deck
 // The size of the canvas, and series of slides
 type Deck struct {
-	Canvas canvas  `xml:"canvas"`
-	Title string `xml:",chardata"`
-	Creator string `xml:",chardata"`
-	Subject string `xml:",chardata"`
-	Publisher string `xml:",chardata"`
-	Description string `xml:",chardata"`
-	Date string `xml:",chardata"`
-	Slide  []slide `xml:"slide"`
+	Title       string  `xml:"title"`
+	Creator     string  `xml:"creator"`
+	Subject     string  `xml:"subject"`
+	Publisher   string  `xml:"publisher"`
+	Description string  `xml:"description"`
+	Date        string  `xml:"date"`
+	Canvas      canvas  `xml:"canvas"`
+	Slide       []slide `xml:"slide"`
 }
 
 type canvas struct {
@@ -190,6 +190,8 @@ func Search(d Deck, s string) int {
 
 // Dump shows the decoded description
 func Dump(d Deck) {
+	fmt.Printf("Title: %s\nCreator: %s\nDescription: %s\nDate: %s\nPublisher: %s\nSubject: %s\n",
+		d.Title, d.Creator, d.Description, d.Date, d.Publisher, d.Subject)
 	fmt.Printf("Canvas = %v\n", d.Canvas)
 	for i, s := range d.Slide {
 		fmt.Printf("Slide [%d] = %#v %#v\n", i, s.Bg, s.Fg)
