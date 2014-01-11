@@ -1,5 +1,8 @@
 <deck>
-  <!-- version 2013-10-18 -->
+ <title>A Deck on Deck</title>
+ <creator>Anthony Starks</creator>
+ <subject>presentations, Go, markup, design</subject>
+ <date>2014-01-10</date>
   <slide bg="white" fg="rgb(50,50,50)">
     <text xp="5" yp="50" sp="20">Deck</text>
     <image xp="75" yp="60" width="256" height="256" name="sdeck256.png" />

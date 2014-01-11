@@ -9,6 +9,7 @@ Here are the elements of a deck:
 
 	deck: enclosing element
 	canvas: describe the dimensions of the drawing canvas, one per deck
+	metadata elements: title, creator, date, publisher, subject, description
 	slide: within a deck, any number of slides, specify the slide background and text colors.
 
 within slides an number of:
@@ -28,6 +29,9 @@ Here is a sample deck in XML:
 
 	<deck>
 	     <canvas width="1024" height="768"/>
+	     <title>Sample Deck</title>
+	     <creator>John Doe</creator>
+             <date>August, 2013</date>
 	     <slide bg="maroon" fg="white">
 		<image xp="20" yp="30" width="256" height="256" name="picture.png"/>
 		<text xp="20" yp="80" sp="3">Deck uses these elements</text>

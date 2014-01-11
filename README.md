@@ -10,6 +10,7 @@ Clients may be interactive or produce standard formats such as SVG or PDF.
 
 * deck: enclosing element 
 * canvas: describe the dimensions of the drawing canvas, one per deck
+* metadata elements: title, creator, publisher, subject, description, date
 * slide: within a deck, any number of slides, specify the slide background and text colors.
 
 within slides any number of:

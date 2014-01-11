@@ -12,6 +12,12 @@ import (
 // The size of the canvas, and series of slides
 type Deck struct {
 	Canvas canvas  `xml:"canvas"`
+	Title string `xml:",chardata"`
+	Creator string `xml:",chardata"`
+	Subject string `xml:",chardata"`
+	Publisher string `xml:",chardata"`
+	Description string `xml:",chardata"`
+	Date string `xml:",chardata"`
 	Slide  []slide `xml:"slide"`
 }
 
