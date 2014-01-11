@@ -3,6 +3,7 @@
  <creator>Anthony Starks</creator>
  <subject>presentations, Go, markup, design</subject>
  <date>2014-01-10</date>
+ <description>Deck is a library for clients to make scalable presentations, using a standard markup language. Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc. Clients may be interactive or produce standard formats such as SVG or PDF.</description>
   <slide bg="white" fg="rgb(50,50,50)">
     <text xp="5" yp="50" sp="20">Deck</text>
     <image xp="75" yp="60" width="256" height="256" name="sdeck256.png" />

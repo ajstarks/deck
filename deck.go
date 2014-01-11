@@ -190,7 +190,7 @@ func Search(d Deck, s string) int {
 
 // Dump shows the decoded description
 func Dump(d Deck) {
-	fmt.Printf("Title: %s\nCreator: %s\nDescription: %s\nDate: %s\nPublisher: %s\nSubject: %s\n",
+	fmt.Printf("Title: %#v\nCreator: %#v\nDescription: %#v\nDate: %#v\nPublisher: %#v\nSubject: %#v\n",
 		d.Title, d.Creator, d.Description, d.Date, d.Publisher, d.Subject)
 	fmt.Printf("Canvas = %v\n", d.Canvas)
 	for i, s := range d.Slide {
