@@ -18,7 +18,7 @@ type Deck struct {
 	Description string  `xml:"description"`
 	Date        string  `xml:"date"`
 	Canvas      canvas  `xml:"canvas"`
-	Slide       []slide `xml:"slide"`
+	Slide       []Slide `xml:"slide"`
 }
 
 type canvas struct {
@@ -26,7 +26,7 @@ type canvas struct {
 	Height int `xml:"height,attr"`
 }
 
-type slide struct {
+type Slide struct {
 	Bg      string    `xml:"bg,attr"`
 	Fg      string    `xml:"fg,attr"`
 	List    []List    `xml:"list"`
@@ -194,30 +194,30 @@ func Dump(d Deck) {
 		d.Title, d.Creator, d.Description, d.Date, d.Publisher, d.Subject)
 	fmt.Printf("Canvas = %v\n", d.Canvas)
 	for i, s := range d.Slide {
-		fmt.Printf("Slide [%d] = %#v %#v\n", i, s.Bg, s.Fg)
+		fmt.Printf("Slide [%d] = %+v %+v\n", i, s.Bg, s.Fg)
 		for j, l := range s.List {
-			fmt.Printf("\tList [%d] = %#v\n", j, l)
+			fmt.Printf("\tList [%d] = %+v\n", j, l)
 		}
 		for k, t := range s.Text {
-			fmt.Printf("\tText [%d] = %#v\n", k, t)
+			fmt.Printf("\tText [%d] = %+v\n", k, t)
 		}
 		for m, im := range s.Image {
-			fmt.Printf("\tImage [%d] = %#v\n", m, im)
+			fmt.Printf("\tImage [%d] = %+v\n", m, im)
 		}
 		for l, line := range s.Line {
-			fmt.Printf("\tLine [%d] = %#v\n", l, line)
+			fmt.Printf("\tLine [%d] = %+v\n", l, line)
 		}
 		for r, rect := range s.Rect {
-			fmt.Printf("\tRect [%d] = %#v\n", r, rect)
+			fmt.Printf("\tRect [%d] = %+v\n", r, rect)
 		}
 		for a, arc := range s.Arc {
-			fmt.Printf("\tArc [%d] = %#v\n", a, arc)
+			fmt.Printf("\tArc [%d] = %+v\n", a, arc)
 		}
 		for c, curve := range s.Curve {
-			fmt.Printf("\tCurve [%d] = %#v\n", c, curve)
+			fmt.Printf("\tCurve [%d] = %+v\n", c, curve)
 		}
 		for e, ellipse := range s.Ellipse {
-			fmt.Printf("\tEllipse [%d] = %#v\n", e, ellipse)
+			fmt.Printf("\tEllipse [%d] = %+v\n", e, ellipse)
 		}
 	}
 }
