@@ -13,17 +13,21 @@ import (
 )
 
 var port = flag.String("port", ":1958", "http service address")
+var deckdir = flag.String("dir", ".", "directory for decks")
 var deckpid = -1
-
 const timeformat = "Jan 2, 2006, 3:04pm (MST)"
 
 func main() {
-	log.Print("Starting...")
 	flag.Parse()
+	err := os.Chdir(*deckdir)
+	if  err != nil {
+		log.Fatal("Set Directory", err)
+	}
+	log.Print("Startup...")
 	http.Handle("/deck/", http.HandlerFunc(deck))
 	http.Handle("/upload/", http.HandlerFunc(upload))
 
-	err := http.ListenAndServe(*port, nil)
+	err = http.ListenAndServe(*port, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}
@@ -65,7 +69,6 @@ func upload(w http.ResponseWriter, req *http.Request) {
 	}
 }
 func deck(w http.ResponseWriter, req *http.Request) {
-	var deckdir = "."
 	requester := req.RemoteAddr
 	switch req.Method {
 	case "POST":
@@ -102,7 +105,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 			}
 		}
 	case "GET":
-		f, err := os.Open(deckdir)
+		f, err := os.Open(*deckdir)
 		if err != nil {
 			log.Printf("%s %v", requester, err)
 			w.WriteHeader(500)
