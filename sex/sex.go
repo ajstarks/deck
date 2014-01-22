@@ -33,6 +33,7 @@ func main() {
 	}
 }
 
+// writedeckinfo returns information (file, size, date) for a .xml files in the deck directory
 func writedeckinfo(w http.ResponseWriter, data []os.FileInfo, suffix string) {
 	w.Write([]byte(`{"decks":[`))
 	nf := 0
@@ -48,6 +49,8 @@ func writedeckinfo(w http.ResponseWriter, data []os.FileInfo, suffix string) {
 	}
 	w.Write([]byte(`]}`))
 }
+
+// upload uploads decks
 func upload(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
 	if req.Method == "POST" || req.Method == "PUT" {
@@ -68,6 +71,12 @@ func upload(w http.ResponseWriter, req *http.Request) {
 		log.Printf("%s Write: %#v, %d bytes", requester, path, len(deckdata))
 	}
 }
+
+// deck services deck requests:
+// GET /deck list information
+// POST /deck with Deck and Duration headers starts a deck
+// POST /deck with Kill header stops a deck
+// DELETE /deck with Deck header removes a deck
 func deck(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
 	switch req.Method {
