@@ -9,19 +9,22 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path"
 	"strings"
 )
 
 var port = flag.String("port", ":1958", "http service address")
 var deckdir = flag.String("dir", ".", "directory for decks")
-var deckpid = -1
+var deckrun = false
+var deckpid int
+
 const timeformat = "Jan 2, 2006, 3:04pm (MST)"
 
 func main() {
 	flag.Parse()
 	err := os.Chdir(*deckdir)
-	if  err != nil {
-		log.Fatal("Set Directory", err)
+	if err != nil {
+		log.Fatal("Set Directory:", err)
 	}
 	log.Print("Startup...")
 	http.Handle("/deck/", http.HandlerFunc(deck))
@@ -72,48 +75,60 @@ func upload(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// deck services deck requests:
-// GET /deck list information
-// POST /deck with Deck and Duration headers starts a deck
-// POST /deck with Kill header stops a deck
-// DELETE /deck with Deck header removes a deck
+// deck processes slide decks
+// GET /slide  -- list information
+// POST /slide/file.xml?cmd=[duration] -- starts a deck
+// POST /slide?cmd=stop -- stops a deck
+// DELETE /slide/file.xml  --  removes a deck
 func deck(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
-	switch req.Method {
-	case "POST":
-		deck := req.Header.Get("Deck")
-		duration := req.Header.Get("Duration")
-		if deckpid == -1 {
-			if duration == "" || deck == "" {
-				w.WriteHeader(406)
-				return
-			}
-			cmd := exec.Command("vgdeck", "-loop", duration, deck)
-			err := cmd.Start()
-			if err != nil {
-				log.Printf("%s %v", requester, err)
-				w.WriteHeader(500)
-			}
-			deckpid = cmd.Process.Pid
-			log.Printf("%s deck: %#v, duration: %#v, pid: %d", requester, deck, duration, deckpid)
-			w.Header().Set("Content-Type", "application/json")
-			w.Write([]byte(fmt.Sprintf(`{"DeckPid":"%d", "Deck":"%s", "Duration":"%s"}`, deckpid, deck, duration)))
+	query := req.URL.Query()
+	deck := path.Base(req.URL.Path)
+	cmd := query["cmd"]
+	method := req.Method
+	postflag := method == "POST" && len(cmd) == 1
+	log.Printf("%s %s %#v %#v", requester, method, deck, cmd)
+	if deck == "deck" {
+		return
+	}
+	switch {
+	case postflag && !deckrun && cmd[0] != "stop":
+		if deck == "" {
+			w.WriteHeader(406)
+			return
 		}
-
-		if req.Header.Get("Kill") != "" {
-			kp, err := os.FindProcess(deckpid)
-			if err == nil {
-				kp.Kill()
-				log.Printf("%s kill %d", requester, deckpid)
-				w.Header().Set("Content-Type", "application/json")
-				w.Write([]byte(fmt.Sprintf(`{"DeckPid":"%d"}`, deckpid)))
-				deckpid = -1
-			} else {
-				w.WriteHeader(500)
-				log.Printf("%s %v", requester, err)
-			}
+		command := exec.Command("vgdeck", "-loop", cmd[0], deck)
+		err := command.Start()
+		if err != nil {
+			log.Printf("%s %v", requester, err)
+			w.WriteHeader(500)
+			return
 		}
-	case "GET":
+		deckpid = command.Process.Pid
+		deckrun = true
+		log.Printf("%s deck: %#v, duration: %#v, pid: %d", requester, deck, cmd[0], deckpid)
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(fmt.Sprintf(`{"DeckPid":"%d", "Deck":"%s", "Duration":"%s"}`, deckpid, deck, cmd[0])))
+		return
+	case postflag && deckrun && cmd[0] == "stop":
+		kp, err := os.FindProcess(deckpid)
+		if err != nil {
+			w.WriteHeader(500)
+			log.Printf("%s %v", requester, err)
+			return
+		}
+		err = kp.Kill()
+		if err != nil {
+			w.WriteHeader(500)
+			log.Printf("%s %v", requester, err)
+			return
+		}
+		log.Printf("%s kill %d", requester, deckpid)
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(fmt.Sprintf(`{"DeckPid":"%d"}`, deckpid)))
+		deckrun = false
+		return
+	case method == "GET":
 		f, err := os.Open(*deckdir)
 		if err != nil {
 			log.Printf("%s %v", requester, err)
@@ -129,19 +144,20 @@ func deck(w http.ResponseWriter, req *http.Request) {
 		log.Printf("%s list decks", requester)
 		w.Header().Set("Content-Type", "application/json")
 		writedeckinfo(w, names, ".xml")
-	case "DELETE":
-		remdeck := req.Header.Get("Deck")
-		if remdeck != "" {
-			err := os.Remove(remdeck)
-			if err != nil {
-				log.Printf("%s %v", requester, err)
-				w.WriteHeader(500)
-				return
-			}
-			log.Printf("%s remove %s", requester, remdeck)
-		} else {
+		return
+	case method == "DELETE":
+		if deck == "" {
 			log.Printf("%s need the name to remove", requester)
-			w.WriteHeader(406)
+                        w.WriteHeader(406)
+			return
 		}
+		err := os.Remove(deck)
+		if err != nil {
+			log.Printf("%s %v", requester, err)
+			w.WriteHeader(500)
+			return
+		}
+		log.Printf("%s remove %s", requester, deck)
+		return
 	}
 }
