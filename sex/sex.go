@@ -76,21 +76,18 @@ func upload(w http.ResponseWriter, req *http.Request) {
 }
 
 // deck processes slide decks
-// GET /slide  -- list information
-// POST /slide/file.xml?cmd=[duration] -- starts a deck
-// POST /slide?cmd=stop -- stops a deck
-// DELETE /slide/file.xml  --  removes a deck
+// GET /deck  -- list information
+// POST /deck/file.xml?cmd=[duration] -- starts a deck
+// POST /deck?cmd=stop -- stops a deck
+// DELETE /deck/file.xml  --  removes a deck
 func deck(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
 	query := req.URL.Query()
 	deck := path.Base(req.URL.Path)
 	cmd := query["cmd"]
 	method := req.Method
-	postflag := method == "POST" && len(cmd) == 1
+	postflag := method == "POST" && len(cmd) == 1 && deck != "deck"
 	log.Printf("%s %s %#v %#v", requester, method, deck, cmd)
-	if deck == "deck" {
-		return
-	}
 	switch {
 	case postflag && !deckrun && cmd[0] != "stop":
 		if deck == "" {
@@ -148,7 +145,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 	case method == "DELETE":
 		if deck == "" {
 			log.Printf("%s need the name to remove", requester)
-                        w.WriteHeader(406)
+			w.WriteHeader(406)
 			return
 		}
 		err := os.Remove(deck)
