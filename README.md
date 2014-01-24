@@ -173,3 +173,27 @@ This command:
 produces one slide per SVG file, with each slide linked to the next.
 
 The shell script, `mktbl` creates a tabular layout from tab-separated text
+
+The command `sexi` is a server program that provides an API for slide decks. 
+The API supports deck start, stop, listing, upload, and remove.
+
+To install:
+        
+        go get github.com/ajstarks/deck/sex
+
+Command line options control the working directory and address:port
+
+-port Address:port (default: localhost:1958) 
+
+-dir working directory (default: ".")
+
+GET /deck lists information on slide decks, (filename, file size, modification time) in JSON
+
+POST /deck/file.xml?cmd=[duration]  starts up a deck; the deck, duration, and process id are returned in JSON
+
+POST /deck?cmd=stop stops the running deck
+
+DELETE /deck/file.xml  removes a deck
+
+PUT or POST to /upload uploads the contents of the Deck: header to the server
+

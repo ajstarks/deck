@@ -19,7 +19,7 @@ POST /deck?cmd=stop stops the running  deck
 
 DELETE /deck/file.xml  removes a deck
 
-PUT or POST to /upload with the Deck: header sets uploads the contents of the Deck: header to the server
+PUT or POST to /upload  uploads the contents of the Deck: header to the server
 
 */ 
 package main
