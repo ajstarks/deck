@@ -47,8 +47,8 @@ func main() {
 	}
 }
 
-// writedeckinfo returns information (file, size, date) for a .xml files in the deck directory
-func writedeckinfo(w http.ResponseWriter, data []os.FileInfo, suffix string) {
+// deckinfo returns information (file, size, date) for a .xml files in the deck directory
+func deckinfo(w http.ResponseWriter, data []os.FileInfo, suffix string) {
 	w.Write([]byte(`{"decks":[`))
 	nf := 0
 	for _, s := range data {
@@ -80,13 +80,16 @@ func maketable(w io.Writer, r io.Reader) {
 		data := scanner.Text()
 		fields := strings.Split(data, "\t")
 		nf := len(fields)
-		if nf > 10 {
+		if nf > 10 || nf < 1 {
 			nf = 10
 		}
 
 		if nr == 0 {
 			for i := 0; i < nf; i++ {
 				c := strings.Split(fields[i], ":")
+				if len(c) != 2 {
+					return
+				}
 				x, _ := strconv.ParseFloat(c[0], 64)
 				l[i].x = x
 				l[i].align = c[1]
@@ -224,7 +227,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		log.Printf("%s list decks", requester)
-		writedeckinfo(w, names, ".xml")
+		deckinfo(w, names, ".xml")
 		return
 	case method == "DELETE" && deck != "deck":
 		if deck == "" {
