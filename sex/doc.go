@@ -21,5 +21,7 @@ DELETE /deck/file.xml  removes a deck
 
 PUT or POST to /upload  uploads the contents of the Deck: header to the server
 
+POST /table with the content of a tab-separated list, creates a slide with a formatted table, the Deck: header specifies the resulting deck file
+
 */ 
 package main
