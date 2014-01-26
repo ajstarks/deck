@@ -55,13 +55,13 @@ func writedeckinfo(w http.ResponseWriter, data []os.FileInfo, suffix string) {
 		if strings.HasSuffix(s.Name(), suffix) {
 			nf++
 			if nf > 1 {
-				w.Write([]byte(`,`))
+				w.Write([]byte(",\n"))
 			}
-			w.Write([]byte(fmt.Sprintf(`{"name":"%s", "size":%d, "date":"%s"}`,
+			w.Write([]byte(fmt.Sprintf("{\"name\":\"%s\", \"size\":%d, \"date\":\"%s\"}",
 				s.Name(), s.Size(), s.ModTime().Format(timeformat))))
 		}
 	}
-	w.Write([]byte(`]}`))
+	w.Write([]byte("]}\n"))
 }
 
 // maketable creates a deck file from a tab separated list
@@ -121,7 +121,8 @@ func processtable(w http.ResponseWriter, req *http.Request) {
 		}
 		maketable(f, req.Body)
 		f.Close()
-		log.Printf("%s Table %s", requester, deckpath)
+		w.Write([]byte(fmt.Sprintf("{\"table\":\"%s\"}\n", deckpath)))
+		log.Printf("%s table %s", requester, deckpath)
 	}
 }
 
@@ -143,7 +144,8 @@ func upload(w http.ResponseWriter, req *http.Request) {
 			log.Printf("%s %v", requester, err)
 			return
 		}
-		log.Printf("%s Write: %#v, %d bytes", requester, deckpath, len(deckdata))
+		w.Write([]byte(fmt.Sprintf("{\"upload\":\"%s\"}\n", deckpath)))
+		log.Printf("%s write: %#v, %d bytes", requester, deckpath, len(deckdata))
 	}
 }
 
@@ -177,7 +179,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 		deckrun = true
 		log.Printf("%s deck: %#v, duration: %#v, pid: %d", requester, deck, cmd[0], deckpid)
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(fmt.Sprintf(`{"DeckPid":"%d", "Deck":"%s", "Duration":"%s"}`, deckpid, deck, cmd[0])))
+		w.Write([]byte(fmt.Sprintf("{\"deckpid\":\"%d\", \"deck\":\"%s\", \"duration\":\"%s\"}\n", deckpid, deck, cmd[0])))
 		return
 	case postflag && deckrun && cmd[0] == "stop":
 		kp, err := os.FindProcess(deckpid)
@@ -194,7 +196,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 		}
 		log.Printf("%s kill %d", requester, deckpid)
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(fmt.Sprintf(`{"DeckPid":"%d"}`, deckpid)))
+		w.Write([]byte(fmt.Sprintf("{\"deckpid\":\"%d\"}\n", deckpid)))
 		deckrun = false
 		return
 	case method == "GET":
@@ -226,6 +228,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 			w.WriteHeader(500)
 			return
 		}
+		w.Write([]byte(fmt.Sprintf("{\"remove\":\"%s\"}\n", deck)))
 		log.Printf("%s remove %s", requester, deck)
 		return
 	}
