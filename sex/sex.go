@@ -39,7 +39,7 @@ func main() {
 	log.Print("Startup...")
 	http.Handle("/deck/", http.HandlerFunc(deck))
 	http.Handle("/upload/", http.HandlerFunc(upload))
-	http.Handle("/table/", http.HandlerFunc(processtable))
+	http.Handle("/table/", http.HandlerFunc(table))
 
 	err = http.ListenAndServe(*port, nil)
 	if err != nil {
@@ -108,11 +108,17 @@ func maketable(w io.Writer, r io.Reader) {
 }
 
 // table makes a table from POSTed data
-func processtable(w http.ResponseWriter, req *http.Request) {
+func table(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
+	w.Header().Set("Content-Type", "application/json")
 	if req.Method == "POST" {
-		deckpath := req.Header.Get("Deck")
 		defer req.Body.Close()
+		deckpath := req.Header.Get("Deck")
+		if deckpath == "" {
+			w.WriteHeader(500)
+			log.Printf("%s no deckpath", requester)
+			return
+		}
 		f, err := os.Create(deckpath)
 		if err != nil {
 			w.WriteHeader(500)
@@ -129,8 +135,14 @@ func processtable(w http.ResponseWriter, req *http.Request) {
 // upload uploads decks from POSTed data
 func upload(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
+	w.Header().Set("Content-Type", "application/json")
 	if req.Method == "POST" || req.Method == "PUT" {
 		deckpath := req.Header.Get("Deck")
+		if deckpath == "" {
+			w.WriteHeader(500)
+			log.Printf("%s no deckpath", requester)
+			return
+		}
 		deckdata, err := ioutil.ReadAll(req.Body)
 		if err != nil {
 			w.WriteHeader(500)
@@ -156,6 +168,7 @@ func upload(w http.ResponseWriter, req *http.Request) {
 // DELETE /deck/file.xml  --  removes a deck
 func deck(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
+	w.Header().Set("Content-Type", "application/json")
 	query := req.URL.Query()
 	deck := path.Base(req.URL.Path)
 	cmd := query["cmd"]
@@ -178,7 +191,6 @@ func deck(w http.ResponseWriter, req *http.Request) {
 		deckpid = command.Process.Pid
 		deckrun = true
 		log.Printf("%s deck: %#v, duration: %#v, pid: %d", requester, deck, cmd[0], deckpid)
-		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(fmt.Sprintf("{\"deckpid\":\"%d\", \"deck\":\"%s\", \"duration\":\"%s\"}\n", deckpid, deck, cmd[0])))
 		return
 	case postflag && deckrun && cmd[0] == "stop":
@@ -194,9 +206,8 @@ func deck(w http.ResponseWriter, req *http.Request) {
 			log.Printf("%s %v", requester, err)
 			return
 		}
-		log.Printf("%s kill %d", requester, deckpid)
-		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(fmt.Sprintf("{\"deckpid\":\"%d\"}\n", deckpid)))
+		log.Printf("%s stop %d", requester, deckpid)
+		w.Write([]byte(fmt.Sprintf("{\"stop\":\"%d\"}\n", deckpid)))
 		deckrun = false
 		return
 	case method == "GET":
@@ -213,10 +224,9 @@ func deck(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		log.Printf("%s list decks", requester)
-		w.Header().Set("Content-Type", "application/json")
 		writedeckinfo(w, names, ".xml")
 		return
-	case method == "DELETE":
+	case method == "DELETE" && deck != "deck":
 		if deck == "" {
 			log.Printf("%s need the name to remove", requester)
 			w.WriteHeader(406)
