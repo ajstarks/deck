@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -23,7 +24,10 @@ var (
 	deckpid int
 )
 
-const timeformat = "Jan 2, 2006, 3:04pm (MST)"
+const (
+	timeformat = "Jan 2, 2006, 3:04pm (MST)"
+	filepattern = "\\.xml$|\\.mov$|\\.mp4$|\\.m4v$|\\.avi$"
+)
 
 type layout struct {
 	x     float64
@@ -40,6 +44,7 @@ func main() {
 	http.Handle("/deck/", http.HandlerFunc(deck))
 	http.Handle("/upload/", http.HandlerFunc(upload))
 	http.Handle("/table/", http.HandlerFunc(table))
+	http.Handle("/media/", http.HandlerFunc(media))
 
 	err = http.ListenAndServe(*port, nil)
 	if err != nil {
@@ -52,12 +57,13 @@ func writeresponse(w http.ResponseWriter, s string) {
 	io.WriteString(w, s)
 }
 
-// deckinfo returns information (file, size, date) for a .xml files in the deck directory
-func deckinfo(w http.ResponseWriter, data []os.FileInfo, suffix string) {
+// deckinfo returns information (file, size, date) for a deck and movie files in the deck directory
+func deckinfo(w http.ResponseWriter, data []os.FileInfo, pattern string) {
 	writeresponse(w, `{"decks":[`)
 	nf := 0
 	for _, s := range data {
-		if strings.HasSuffix(s.Name(), suffix) {
+		matched, err := regexp.MatchString(pattern, s.Name())
+		if err == nil && matched  {
 			nf++
 			if nf > 1 {
 				writeresponse(w, ",\n")
@@ -168,6 +174,24 @@ func upload(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
+// media uploads and plays media
+func media(w http.ResponseWriter, req *http.Request) {
+	requester := req.RemoteAddr
+	w.Header().Set("Content-Type", "application/json")
+	media := req.Header.Get("Media")
+	log.Printf("%s running %s", requester, media)
+	command := exec.Command("omxplayer", "-o", "both", media)
+	err := command.Start()
+	if err != nil {
+		log.Printf("%s %v", requester, err)
+		w.WriteHeader(500)
+		return
+	}
+	deckpid = command.Process.Pid
+	log.Printf("%s deck: %#v, pid: %d", requester, media, deckpid)
+	writeresponse(w, fmt.Sprintf("{\"deckpid\":\"%d\", \"media\":\"%s\"}\n", deckpid, media))
+}
+
 // deck processes slide decks
 // GET /deck  -- list information
 // POST /deck/file.xml?cmd=[duration] -- starts a deck
@@ -231,7 +255,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		log.Printf("%s list decks", requester)
-		deckinfo(w, names, ".xml")
+		deckinfo(w, names, filepattern)
 		return
 	case method == "DELETE" && deck != "deck":
 		if deck == "" {

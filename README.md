@@ -197,3 +197,4 @@ DELETE /deck/file.xml  removes a deck
 
 PUT or POST to /upload uploads the contents of the Deck: header to the server
 
+POST to /media plays the media file specified in the Media: header
