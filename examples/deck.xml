@@ -846,21 +846,42 @@ func main() {
     </list>
   </slide>
 
-<slide>
+  <slide>
+	<text xp="10" yp="90" sp="3">Deck Web API</text>
+	<list xp="10" yp="80" sp="2" font="mono" color="rgb(127,0,0)">
+		<li>GET /decks/</li>
+		<li>POST /upload/ Deck:foo.xml</li>
+		<li>POST /deck/foo.xml?cmd=1s</li>
+		<li>POST /deck/foo.xml?cmd=stop</li>
+		<li>DELETE /deck/foo.xml</li>
+		<li>POST /table/ Deck:file.txt</li>
+		<li>POST /media/ Media:foo.mov</li>
+	</list>
+	<list xp="50" yp="80" sp="2">
+		<li>List the content on the server</li>
+		<li>Upload content</li>
+		<li>Play a deck with the specified duration</li>
+		<li>Stop playing a deck</li>
+		<li>Remove content</li>
+		<li>Generate a table from a tab-separated list</li>
+		<li>Play the specified video</li>
+	</list>
+  </slide>
+  <slide>
 
-		<!-- Screen -->
-		<text xp="50" yp="95" sp="2" align="center" color="gray">Display</text>
-		<rect xp="50" yp="65" wp="50" hr="56.2" color="black"/>
-		<rect xp="50" yp="65" wp="46" hr="56.2" color="white"/>
+	<!-- Screen -->
+	<text xp="50" yp="95" sp="2" align="center" color="gray">Display</text>
+	<rect xp="50" yp="65" wp="50" hr="56.2" color="black"/>
+	<rect xp="50" yp="65" wp="46" hr="56.2" color="white"/>
+	
+	<!-- Raspi -->
+	<text xp="82.5" yp="75" sp="2" align="center" color="gray">Server</text>
+	<line xp1="75" yp1="70" xp2="80" yp2="70" sp="0.2" color="black"/>
+	<text xp="77.5" yp="72" sp="1.2" align="center" color="gray">HDMI</text>
+	<rect xp="82.5" yp="70" wp="5" hr="75" color="green"/>
 		
-		<!-- Raspi -->
-		<text xp="82.5" yp="75" sp="2" align="center" color="gray">Server</text>
-		<line xp1="75" yp1="70" xp2="80" yp2="70" sp="0.2" color="black"/>
-		<text xp="77.5" yp="72" sp="1.2" align="center" color="gray">HDMI</text>
-		<rect xp="82.5" yp="70" wp="5" hr="75" color="green"/>
-		
-		<!-- Presentation on the remote display -->
-		<text xp="30" yp="65" sp="2">Good Design</text>
+	<!-- Presentation on the remote display -->
+	<text xp="30" yp="65" sp="2">Good Design</text>
         <list xp="45" yp="80" sp="1.1" type="plain">
             <li>is innovative</li>
             <li>makes a product useful</li>
@@ -876,21 +897,20 @@ func main() {
         
         <!-- PC -->
         <text xp="50" yp="25" sp="2" align="center" color="gray">Controller</text>
-		<rect xp="50" yp="15" wp="15" hr="70" color="black"/>
-		<rect xp="50" yp="15" wp="14" hr="70" color="rgb(240,240,240)"/>
-		<rect xp="50" yp="7" wp="15" hr="5" color="black"/>
-		<rect xp="50" yp="5" wp="20" hr="5" color="black"/>
+	<rect xp="50" yp="15" wp="15" hr="70" color="black"/>
+	<rect xp="50" yp="15" wp="14" hr="70" color="rgb(240,240,240)"/>
+	<rect xp="50" yp="7" wp="15" hr="5" color="black"/>
+	<rect xp="50" yp="5" wp="20" hr="5" color="black"/>
 
-		
-		<!-- Controlling PC, UI
+ <!--		
         <list xp="45" yp="20" sp="1" color="black">
         	<li>&gt; list</li>
         	<li>&gt; upload</li>
         	<li>&gt; play/stop</li>
         	<li>&gt; delete</li>
         </list>
-        -->
-        
+-->
+	<!-- Controlling PC, UI -->
         <text xp="45" yp="19" sp="1.4">&gt; list</text>
         <text xp="45" yp="16" sp="1.4">&gt; upload</text>
         <text xp="45" yp="13" sp="1.4">&gt; play/stop</text>
@@ -899,7 +919,7 @@ func main() {
         <text xp="90" yp="70" sp="1.2" align="center" color="gray">RESTful API</text>
         <!-- <curve xp1="57.5" yp1="15" xp2="80" yp2="25" xp3="82.5" yp3="67.5"/> -->
 
-	</slide>
+  </slide>
   <slide bg="rgb(127,127,127)" fg="white">
     <text  xp="50" yp="85" sp="5" align="center">github.com/ajstarks/deck</text>
     <image xp="50" yp="50" width="270" height="270" name="sdeck256.png" />
