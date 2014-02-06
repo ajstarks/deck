@@ -370,6 +370,247 @@ func main() {
       <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;list&gt;...&lt;/list&gt;</text>
   </slide>
 
+  <slide bg="black" fg="white">
+    <image xp="50" yp="50" width="1024" height="576" name="deck-desk1024.jpg"/>
+    <text xp="10" yp="10" sp="5">Clients</text>
+  </slide>
+
+  <slide bg="white" fg="rgb(50,50,50)">
+	
+	<text xp="5" yp="95" sp="1.4" type="code" color="black">package main
+import ( 
+    "log"  
+    "github.com/ajstarks/deck"
+)
+func main() {
+    presentation, err := deck.Read("deck.xml", 1024, 768) // open the deck
+    if err != nil {
+        log.Fatal(err)
+    }
+    for _, slide := range presentation.Slide {           // for every slide...
+        for _, t := range slide.Text {                   // process the text elements
+            x, y, size := deck.Dimen(presentation.Canvas, t.Xp, t.Yp, t.Sp)
+            slideText(x, y, size, t)
+        }
+        for _, l := range slide.List {                   // process the list elements
+            x, y, size := deck.Dimen(presentation.Canvas, l.Xp, l.Yp, l.Sp)
+            slideList(x, y, size, l)
+        }
+    }
+}</text>
+<text xp="90" yp="5" sp="3" align="right">A Deck Client</text>
+  </slide>
+
+  <slide>
+    <text xp="5" yp="47.5" sp="4">Process</text>
+    <text xp="50" yp="47.5" sp="4" align="center">deck code</text>
+    <text xp="75" yp="72.5" sp="4">interactive</text>
+    <text xp="75" yp="47.5" sp="4">PDF</text>
+    <text xp="75" yp="22.5" sp="4">SVG</text>
+
+    <line xp1="25" yp1="50" xp2="35" yp2="50" sp=".25" color="rgb(127,127,127)"/>
+    <line xp1="65" yp1="57.5" xp2="70" yp2="75" sp=".25" color="rgb(0,0,127)" />
+    <line xp1="65" yp1="50" xp2="70" yp2="50" sp=".25" color="rgb(127,0,0)" />
+    <line xp1="65" yp1="42.5" xp2="70" yp2="25" sp=".25" color="rgb(0,127,0)"/>
+
+    <rect xp="50" yp="50" wp="30" hp="15" color="black" opacity="20" />
+    <rect xp="85" yp="75" wp="30" hp="15" color="rgb(0,0,127)" opacity="20" />
+    <rect xp="85" yp="50" wp="30" hp="15" color="rgb(127,0,0)" opacity="20" />
+    <rect xp="85" yp="25" wp="30" hp="15" color="rgb(0,127,0)" opacity="20" />
+  </slide>
+  <slide bg="white" fg="rgb(50,50,50)">
+    <text xp="5" yp="95" sp="1.4" color="black" type="code">func main() {
+    benchmarks := []Bardata{
+        {"Macbook Air", 154.701},
+        {"MacBook Pro (2008)", 289.603},
+        {"BeagleBone Black", 2896.037},
+        {"Raspberry Pi", 5765.568},
+    }
+    ts := 2.5
+    hts := ts / 2
+    x := 10.0
+    bx1 := x + (ts * 12)
+    bx2 := bx1 + 50.0
+    y := 60.0
+    maxdata := 5800.0
+    linespacing := ts * 2.0
+    text(x, y+20, "Go 1.1.2 Build and Test Times", ts*2, "black")
+    for _, data := range benchmarks {
+        text(x, y, data.label, ts, "rgb(100,100,100)")
+        bv := vmap(data.value, 0, maxdata, bx1, bx2)
+        line(bx1, y+hts, bv, y+hts, ts, "lightgray")
+        text(bv+0.5, y+(hts/2), fmt.Sprintf("%.1f", data.value), hts, "rgb(127,0,0)")
+        y -= linespacing
+    }
+} </text>
+    <text xp="90" yp="5" sp="3" align="right">Generating a Barchart</text>
+  </slide>
+  <slide>
+<text xp="10.00" yp="80.00" sp="5.00" color="black">Go 1.1.2 Build and Test Times</text>
+<text xp="10.00" yp="60.00" sp="2.50" color="rgb(100,100,100)">Macbook Air</text>
+<line xp1="40.00" yp1="61.25" xp2="41.33" yp2="61.25" sp="2.50" color="lightgray"/>
+<text xp="41.83" yp="60.62" sp="1.25" color="rgb(127,0,0)">154.7</text>
+<text xp="10.00" yp="55.00" sp="2.50" color="rgb(100,100,100)">MacBook Pro (2008)</text>
+<line xp1="40.00" yp1="56.25" xp2="42.50" yp2="56.25" sp="2.50" color="lightgray"/>
+<text xp="43.00" yp="55.62" sp="1.25" color="rgb(127,0,0)">289.6</text>
+<text xp="10.00" yp="50.00" sp="2.50" color="rgb(100,100,100)">BeagleBone Black</text>
+<line xp1="40.00" yp1="51.25" xp2="64.97" yp2="51.25" sp="2.50" color="lightgray"/>
+<text xp="65.47" yp="50.62" sp="1.25" color="rgb(127,0,0)">2896.0</text>
+<text xp="10.00" yp="45.00" sp="2.50" color="rgb(100,100,100)">Raspberry Pi</text>
+<line xp1="40.00" yp1="46.25" xp2="89.70" yp2="46.25" sp="2.50" color="lightgray"/>
+<text xp="90.20" yp="45.62" sp="1.25" color="rgb(127,0,0)">5765.6</text>
+<text xp="10" yp="20" sp="1.3" type="code">$ (echo '&lt;deck&gt;&lt;slide&gt;'; go run deckbc.go; echo '&lt;/slide&gt;&lt;/deck&gt;')</text>
+</slide>
+  <slide>
+    <image xp="12" yp="85" width="144" height="128" name="rpi-logo.jpg"/>
+    <text  xp="25" yp="85" sp="2.75" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/vgdeck</text>
+    <image xp="12" yp="55" width="128" height="128" name="pdf-logo.jpg"/>
+    <text  xp="25" yp="55" sp="2.75" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/pdfdeck</text>
+    <image xp="12" yp="20" width="145" height="145" name="svg.png"/>
+    <text  xp="25" yp="20" sp="2.75" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/svgdeck</text>
+  </slide>
+
+  <slide bg="white" fg="rgb(50,50,50)">
+    <text xp="10" yp="90" sp="3" color="rgb(127,0,0)" font="mono">pdfdeck [options] file.xml...</text>
+    <list xp="10" yp="80" sp="2">
+      <li>-sans, -serif, -mono [font] specify fonts</li>
+      <li>-pagesize [w,h, or Letter, Legal, Tabloid, A2-A5, ArchA, Index, 4R, Widescreen]</li>
+      <li>-stdout (output to standard out)</li>
+      <li>-outdir [directory] directory for PDF output</li>
+      <li>-fontdir [directory] directory containing font information</li>
+      <li>-author [author name] set the document author</li>
+      <li>-title [title text] set the document title</li>
+      <li>-grid [percent] draw a percent grid on each slide</li>
+    </list>
+  </slide>
+
+  <slide bg="white" fg="rgb(50,50,50)">
+    <text xp="10" yp="90" sp="3" color="rgb(127,0,0)" font="mono">svgdeck [options] file.xml...</text>
+    <list xp="10" yp="80" sp="2">
+      <li>-sans, -serif, -mono [font] specify fonts</li>
+      <li>-pagesize [Letter, Legal, A3, A4, A5]</li>
+      <li>-pagewidth [canvas width]</li>
+      <li>-pageheight [canvas height]</li>
+      <li>-stdout (output to standard out)</li>
+      <li>-outdir [directory] directory for PDF output</li>
+      <li>-title [title text] set the document title</li>
+      <li>-grid [percent] draw a percent grid on each slide</li>
+    </list>
+  </slide>
+
+  <slide bg="white" fg="rgb(50,50,50)">
+    <text xp="10" yp="90" sp="3" color="rgb(127,0,0)" font="mono">vgdeck [options] file.xml...</text>
+    <list xp="10" yp="80" sp="2">
+      <li>-loop [duration] loop, pausing [duration] between slides</li>
+      <li>-slide [number] start at slide number</li>
+      <li>-w [width] canvas width</li>
+      <li>-h [height] canvas height</li>
+      <li>-g [percent] draw a percent grid</li>
+    </list>
+  </slide>
+
+  <slide bg="white" fg="rgb(50,50,50)">
+    <text xp="10" yp="90" sp="3">vgdeck Commands</text>
+    <list xp="50" yp="80" sp="2">
+      <li>Next slide</li>
+      <li>Previous slide</li>
+      <li>First slide</li>
+      <li>Last slide</li>
+      <li>Reload</li>
+      <li>X-Ray</li>
+      <li>Search</li>
+      <li>Save</li>
+      <li>Quit</li>
+    </list>
+
+    <list xp="10" yp="80" sp="2" font="mono" color="rgb(127,0,0)">
+      <li>+, Ctrl-N, [Return]</li>
+      <li>-, Ctrl-P, [Backspace]</li>
+      <li>^, Ctrl-A</li>
+      <li>$, Ctrl-E</li>
+      <li>r, Ctrl-R</li>
+      <li>x, Ctrl-X</li>
+      <li>/, Ctrl-F [text]</li>
+      <li>s, Ctrl-S</li>
+      <li>q</li>
+    </list>
+  </slide>
+
+  <slide>
+	<text xp="10" yp="90" sp="3">Deck Web API</text>
+	<list xp="10" yp="80" sp="2" font="mono" color="rgb(127,0,0)">
+		<li>GET /decks/</li>
+		<li>POST /upload/ Deck:foo.xml</li>
+		<li>POST /deck/foo.xml?cmd=1s</li>
+		<li>POST /deck/foo.xml?cmd=stop</li>
+		<li>DELETE /deck/foo.xml</li>
+		<li>POST /table/ Deck:file.txt</li>
+		<li>POST /media/ Media:foo.mov</li>
+	</list>
+	<list xp="50" yp="80" sp="2">
+		<li>List the content on the server</li>
+		<li>Upload content</li>
+		<li>Play a deck with the specified duration</li>
+		<li>Stop playing a deck</li>
+		<li>Remove content</li>
+		<li>Generate a table from a tab-separated list</li>
+		<li>Play the specified video</li>
+	</list>
+  </slide>
+  <slide>
+
+	<!-- Screen -->
+	<text xp="50" yp="95" sp="2" align="center" color="gray">Display</text>
+	<rect xp="50" yp="65" wp="50" hr="56.2" color="black"/>
+	<rect xp="50" yp="65" wp="46" hr="56.2" color="white"/>
+	
+	<!-- Raspi -->
+	<text xp="82.5" yp="75" sp="2" align="center" color="gray">Server</text>
+	<line xp1="75" yp1="70" xp2="80" yp2="70" sp="0.2" color="black"/>
+	<text xp="77.5" yp="72" sp="1.2" align="center" color="gray">HDMI</text>
+	<rect xp="82.5" yp="70" wp="5" hr="75" color="green"/>
+		
+	<!-- Presentation on the remote display -->
+	<text xp="30" yp="65" sp="2">Good Design</text>
+        <list xp="45" yp="80" sp="1.1" type="plain">
+            <li>is innovative</li>
+            <li>makes a product useful</li>
+            <li>is aesthetic</li>
+            <li>makes a product understandable</li>
+            <li>is unobtrusive</li>
+            <li>is honest</li>
+            <li>is long-lasting</li>
+            <li>is thorough down to the last detail</li>
+            <li>is environmentally-friendly</li>
+            <li color="rgb(127,0,0)">is as little design as possible</li>
+        </list>
+        
+        <!-- PC -->
+        <text xp="50" yp="25" sp="2" align="center" color="gray">Controller</text>
+	<rect xp="50" yp="15" wp="15" hr="70" color="black"/>
+	<rect xp="50" yp="15" wp="14" hr="70" color="rgb(240,240,240)"/>
+	<rect xp="50" yp="7" wp="15" hr="5" color="black"/>
+	<rect xp="50" yp="5" wp="20" hr="5" color="black"/>
+
+ <!--		
+        <list xp="45" yp="20" sp="1" color="black">
+        	<li>&gt; list</li>
+        	<li>&gt; upload</li>
+        	<li>&gt; play/stop</li>
+        	<li>&gt; delete</li>
+        </list>
+-->
+	<!-- Controlling PC, UI -->
+        <text xp="45" yp="19" sp="1.4">&gt; list</text>
+        <text xp="45" yp="16" sp="1.4">&gt; upload</text>
+        <text xp="45" yp="13" sp="1.4">&gt; play/stop</text>
+        <text xp="45" yp="10" sp="1.4">&gt; delete</text>
+
+        <text xp="90" yp="70" sp="1.2" align="center" color="gray">RESTful API</text>
+        <!-- <curve xp1="57.5" yp1="15" xp2="80" yp2="25" xp3="82.5" yp3="67.5"/> -->
+
+  </slide>
+
   <slide bg="rgb(127,127,127)" fg="white">
      <text xp="10" yp="10" sp="5">Design Examples</text>
   </slide>
@@ -680,251 +921,10 @@ and the voice of the turtle is heard in our land.
             <li color="rgb(127,0,0)">is as little design as possible</li>
         </list>
   </slide>
-  <slide bg="black" fg="white">
-    <image xp="50" yp="50" width="1024" height="576" name="deck-desk1024.jpg"/>
-    <text xp="10" yp="10" sp="5">Clients</text>
-  </slide>
-
-  <slide bg="white" fg="rgb(50,50,50)">
-	
-	<text xp="5" yp="95" sp="1.4" type="code" color="black">package main
-import ( 
-    "log"  
-    "github.com/ajstarks/deck"
-)
-func main() {
-    presentation, err := deck.Read("deck.xml", 1024, 768) // open the deck
-    if err != nil {
-        log.Fatal(err)
-    }
-    for _, slide := range presentation.Slide {           // for every slide...
-        for _, t := range slide.Text {                   // process the text elements
-            x, y, size := deck.Dimen(presentation.Canvas, t.Xp, t.Yp, t.Sp)
-            slideText(x, y, size, t)
-        }
-        for _, l := range slide.List {                   // process the list elements
-            x, y, size := deck.Dimen(presentation.Canvas, l.Xp, l.Yp, l.Sp)
-            slideList(x, y, size, l)
-        }
-    }
-}</text>
-<text xp="90" yp="5" sp="3" align="right">A Deck Client</text>
-  </slide>
-
-  <slide>
-    <text xp="5" yp="47.5" sp="4">Process</text>
-    <text xp="50" yp="47.5" sp="4" align="center">deck code</text>
-    <text xp="75" yp="72.5" sp="4">interactive</text>
-    <text xp="75" yp="47.5" sp="4">PDF</text>
-    <text xp="75" yp="22.5" sp="4">SVG</text>
-
-    <line xp1="25" yp1="50" xp2="35" yp2="50" sp=".25" color="rgb(127,127,127)"/>
-    <line xp1="65" yp1="57.5" xp2="70" yp2="75" sp=".25" color="rgb(0,0,127)" />
-    <line xp1="65" yp1="50" xp2="70" yp2="50" sp=".25" color="rgb(127,0,0)" />
-    <line xp1="65" yp1="42.5" xp2="70" yp2="25" sp=".25" color="rgb(0,127,0)"/>
-
-    <rect xp="50" yp="50" wp="30" hp="15" color="black" opacity="20" />
-    <rect xp="85" yp="75" wp="30" hp="15" color="rgb(0,0,127)" opacity="20" />
-    <rect xp="85" yp="50" wp="30" hp="15" color="rgb(127,0,0)" opacity="20" />
-    <rect xp="85" yp="25" wp="30" hp="15" color="rgb(0,127,0)" opacity="20" />
-  </slide>
-  <slide bg="white" fg="rgb(50,50,50)">
-    <text xp="5" yp="95" sp="1.4" color="black" type="code">func main() {
-    benchmarks := []Bardata{
-        {"Macbook Air", 154.701},
-        {"MacBook Pro (2008)", 289.603},
-        {"BeagleBone Black", 2896.037},
-        {"Raspberry Pi", 5765.568},
-    }
-    ts := 2.5
-    hts := ts / 2
-    x := 10.0
-    bx1 := x + (ts * 12)
-    bx2 := bx1 + 50.0
-    y := 60.0
-    maxdata := 5800.0
-    linespacing := ts * 2.0
-    text(x, y+20, "Go 1.1.2 Build and Test Times", ts*2, "black")
-    for _, data := range benchmarks {
-        text(x, y, data.label, ts, "rgb(100,100,100)")
-        bv := vmap(data.value, 0, maxdata, bx1, bx2)
-        line(bx1, y+hts, bv, y+hts, ts, "lightgray")
-        text(bv+0.5, y+(hts/2), fmt.Sprintf("%.1f", data.value), hts, "rgb(127,0,0)")
-        y -= linespacing
-    }
-} </text>
-    <text xp="90" yp="5" sp="3" align="right">Generating a Barchart</text>
-  </slide>
-  <slide>
-<text xp="10.00" yp="80.00" sp="5.00" color="black">Go 1.1.2 Build and Test Times</text>
-<text xp="10.00" yp="60.00" sp="2.50" color="rgb(100,100,100)">Macbook Air</text>
-<line xp1="40.00" yp1="61.25" xp2="41.33" yp2="61.25" sp="2.50" color="lightgray"/>
-<text xp="41.83" yp="60.62" sp="1.25" color="rgb(127,0,0)">154.7</text>
-<text xp="10.00" yp="55.00" sp="2.50" color="rgb(100,100,100)">MacBook Pro (2008)</text>
-<line xp1="40.00" yp1="56.25" xp2="42.50" yp2="56.25" sp="2.50" color="lightgray"/>
-<text xp="43.00" yp="55.62" sp="1.25" color="rgb(127,0,0)">289.6</text>
-<text xp="10.00" yp="50.00" sp="2.50" color="rgb(100,100,100)">BeagleBone Black</text>
-<line xp1="40.00" yp1="51.25" xp2="64.97" yp2="51.25" sp="2.50" color="lightgray"/>
-<text xp="65.47" yp="50.62" sp="1.25" color="rgb(127,0,0)">2896.0</text>
-<text xp="10.00" yp="45.00" sp="2.50" color="rgb(100,100,100)">Raspberry Pi</text>
-<line xp1="40.00" yp1="46.25" xp2="89.70" yp2="46.25" sp="2.50" color="lightgray"/>
-<text xp="90.20" yp="45.62" sp="1.25" color="rgb(127,0,0)">5765.6</text>
-<text xp="10" yp="20" sp="1.3" type="code">$ (echo '&lt;deck&gt;&lt;slide&gt;'; go run deckbc.go; echo '&lt;/slide&gt;&lt;/deck&gt;')</text>
-</slide>
-  <slide>
-    <image xp="12" yp="85" width="144" height="128" name="rpi-logo.jpg"/>
-    <text  xp="25" yp="85" sp="2.75" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/vgdeck</text>
-    <image xp="12" yp="55" width="128" height="128" name="pdf-logo.jpg"/>
-    <text  xp="25" yp="55" sp="2.75" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/pdfdeck</text>
-    <image xp="12" yp="20" width="145" height="145" name="svg.png"/>
-    <text  xp="25" yp="20" sp="2.75" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/svgdeck</text>
-  </slide>
-
-  <slide bg="white" fg="rgb(50,50,50)">
-    <text xp="10" yp="90" sp="3" color="rgb(127,0,0)" font="mono">pdfdeck [options] file.xml...</text>
-    <list xp="10" yp="80" sp="2">
-      <li>-sans, -serif, -mono [font] specify fonts</li>
-      <li>-pagesize [w,h, or Letter, Legal, Tabloid, A2-A5, ArchA, Index, 4R, Widescreen]</li>
-      <li>-stdout (output to standard out)</li>
-      <li>-outdir [directory] directory for PDF output</li>
-      <li>-fontdir [directory] directory containing font information</li>
-      <li>-author [author name] set the document author</li>
-      <li>-title [title text] set the document title</li>
-      <li>-grid [percent] draw a percent grid on each slide</li>
-    </list>
-  </slide>
-
-  <slide bg="white" fg="rgb(50,50,50)">
-    <text xp="10" yp="90" sp="3" color="rgb(127,0,0)" font="mono">svgdeck [options] file.xml...</text>
-    <list xp="10" yp="80" sp="2">
-      <li>-sans, -serif, -mono [font] specify fonts</li>
-      <li>-pagesize [Letter, Legal, A3, A4, A5]</li>
-      <li>-pagewidth [canvas width]</li>
-      <li>-pageheight [canvas height]</li>
-      <li>-stdout (output to standard out)</li>
-      <li>-outdir [directory] directory for PDF output</li>
-      <li>-title [title text] set the document title</li>
-      <li>-grid [percent] draw a percent grid on each slide</li>
-    </list>
-  </slide>
-
-  <slide bg="white" fg="rgb(50,50,50)">
-    <text xp="10" yp="90" sp="3" color="rgb(127,0,0)" font="mono">vgdeck [options] file.xml...</text>
-    <list xp="10" yp="80" sp="2">
-      <li>-loop [duration] loop, pausing [duration] between slides</li>
-      <li>-slide [number] start at slide number</li>
-      <li>-w [width] canvas width</li>
-      <li>-h [height] canvas height</li>
-      <li>-g [percent] draw a percent grid</li>
-    </list>
-  </slide>
-
-  <slide bg="white" fg="rgb(50,50,50)">
-    <text xp="10" yp="90" sp="3">vgdeck Commands</text>
-    <list xp="50" yp="80" sp="2">
-      <li>Next slide</li>
-      <li>Previous slide</li>
-      <li>First slide</li>
-      <li>Last slide</li>
-      <li>Reload</li>
-      <li>X-Ray</li>
-      <li>Search</li>
-      <li>Save</li>
-      <li>Quit</li>
-    </list>
-
-    <list xp="10" yp="80" sp="2" font="mono" color="rgb(127,0,0)">
-      <li>+, Ctrl-N, [Return]</li>
-      <li>-, Ctrl-P, [Backspace]</li>
-      <li>^, Ctrl-A</li>
-      <li>$, Ctrl-E</li>
-      <li>r, Ctrl-R</li>
-      <li>x, Ctrl-X</li>
-      <li>/, Ctrl-F [text]</li>
-      <li>s, Ctrl-S</li>
-      <li>q</li>
-    </list>
-  </slide>
-
-  <slide>
-	<text xp="10" yp="90" sp="3">Deck Web API</text>
-	<list xp="10" yp="80" sp="2" font="mono" color="rgb(127,0,0)">
-		<li>GET /decks/</li>
-		<li>POST /upload/ Deck:foo.xml</li>
-		<li>POST /deck/foo.xml?cmd=1s</li>
-		<li>POST /deck/foo.xml?cmd=stop</li>
-		<li>DELETE /deck/foo.xml</li>
-		<li>POST /table/ Deck:file.txt</li>
-		<li>POST /media/ Media:foo.mov</li>
-	</list>
-	<list xp="50" yp="80" sp="2">
-		<li>List the content on the server</li>
-		<li>Upload content</li>
-		<li>Play a deck with the specified duration</li>
-		<li>Stop playing a deck</li>
-		<li>Remove content</li>
-		<li>Generate a table from a tab-separated list</li>
-		<li>Play the specified video</li>
-	</list>
-  </slide>
-  <slide>
-
-	<!-- Screen -->
-	<text xp="50" yp="95" sp="2" align="center" color="gray">Display</text>
-	<rect xp="50" yp="65" wp="50" hr="56.2" color="black"/>
-	<rect xp="50" yp="65" wp="46" hr="56.2" color="white"/>
-	
-	<!-- Raspi -->
-	<text xp="82.5" yp="75" sp="2" align="center" color="gray">Server</text>
-	<line xp1="75" yp1="70" xp2="80" yp2="70" sp="0.2" color="black"/>
-	<text xp="77.5" yp="72" sp="1.2" align="center" color="gray">HDMI</text>
-	<rect xp="82.5" yp="70" wp="5" hr="75" color="green"/>
-		
-	<!-- Presentation on the remote display -->
-	<text xp="30" yp="65" sp="2">Good Design</text>
-        <list xp="45" yp="80" sp="1.1" type="plain">
-            <li>is innovative</li>
-            <li>makes a product useful</li>
-            <li>is aesthetic</li>
-            <li>makes a product understandable</li>
-            <li>is unobtrusive</li>
-            <li>is honest</li>
-            <li>is long-lasting</li>
-            <li>is thorough down to the last detail</li>
-            <li>is environmentally-friendly</li>
-            <li color="rgb(127,0,0)">is as little design as possible</li>
-        </list>
-        
-        <!-- PC -->
-        <text xp="50" yp="25" sp="2" align="center" color="gray">Controller</text>
-	<rect xp="50" yp="15" wp="15" hr="70" color="black"/>
-	<rect xp="50" yp="15" wp="14" hr="70" color="rgb(240,240,240)"/>
-	<rect xp="50" yp="7" wp="15" hr="5" color="black"/>
-	<rect xp="50" yp="5" wp="20" hr="5" color="black"/>
-
- <!--		
-        <list xp="45" yp="20" sp="1" color="black">
-        	<li>&gt; list</li>
-        	<li>&gt; upload</li>
-        	<li>&gt; play/stop</li>
-        	<li>&gt; delete</li>
-        </list>
--->
-	<!-- Controlling PC, UI -->
-        <text xp="45" yp="19" sp="1.4">&gt; list</text>
-        <text xp="45" yp="16" sp="1.4">&gt; upload</text>
-        <text xp="45" yp="13" sp="1.4">&gt; play/stop</text>
-        <text xp="45" yp="10" sp="1.4">&gt; delete</text>
-
-        <text xp="90" yp="70" sp="1.2" align="center" color="gray">RESTful API</text>
-        <!-- <curve xp1="57.5" yp1="15" xp2="80" yp2="25" xp3="82.5" yp3="67.5"/> -->
-
-  </slide>
   <slide bg="rgb(127,127,127)" fg="white">
     <text  xp="50" yp="85" sp="5" align="center">github.com/ajstarks/deck</text>
     <image xp="50" yp="50" width="270" height="270" name="sdeck256.png" />
     <text  xp="50" yp="10" sp="2.5" align="center">ajstarks@gmail.com</text>
     <text  xp="50" yp="4" sp="2.5" align="center">@ajstarks</text>
   </slide>
-
 </deck>
