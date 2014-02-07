@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	port    = flag.String("port", ":1958", "http service address")
+	listen    = flag.String("listen", ":1958", "http service address")
 	deckdir = flag.String("dir", ".", "directory for decks")
 	deckrun = false
 	deckpid int
@@ -26,7 +26,7 @@ var (
 
 const (
 	timeformat  = "Jan 2, 2006, 3:04pm (MST)"
-	filepattern = "\\.xml$|\\.mov$|\\.mp4$|\\.m4v$|\\.avi$"
+	filepattern = "\\.xml$|\\.mov$|\\.mp4$|\\.m4v$|\\.avi$|\\.h264$"
 )
 
 type layout struct {
@@ -46,7 +46,7 @@ func main() {
 	http.Handle("/table/", http.HandlerFunc(table))
 	http.Handle("/media/", http.HandlerFunc(media))
 
-	err = http.ListenAndServe(*port, nil)
+	err = http.ListenAndServe(*listen, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}
