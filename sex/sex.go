@@ -40,7 +40,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Set Directory:", err)
 	}
-	log.Print("Startup...")
+	log.Printf("Serving from %s", *deckdir)
 	http.Handle("/deck/", http.HandlerFunc(deck))
 	http.Handle("/upload/", http.HandlerFunc(upload))
 	http.Handle("/table/", http.HandlerFunc(table))
@@ -58,8 +58,8 @@ func writeresponse(w http.ResponseWriter, s string) {
 }
 
 // eresp sends the client a JSON encoded error
-func eresp(w http.ResponseWriter, err string) {
-	writeresponse(w, fmt.Sprintf("{\"error\": \"%s\"}\n", err))
+func eresp(w http.ResponseWriter, err string, code int) {
+	http.Error(w, fmt.Sprintf("{\"error\": \"%s\"}", err), code)
 }
 
 // deckinfo returns information (file, size, date) for a deck and movie files in the deck directory
@@ -134,15 +134,13 @@ func table(w http.ResponseWriter, req *http.Request) {
 		defer req.Body.Close()
 		deckpath := req.Header.Get("Deck")
 		if deckpath == "" {
-			w.WriteHeader(500)
-			eresp(w, "table: no deckpath")
+			eresp(w, "table: no deckpath", 500)
 			log.Printf("%s table error: no deckpath", requester)
 			return
 		}
 		f, err := os.Create(deckpath)
 		if err != nil {
-			w.WriteHeader(500)
-			eresp(w, err.Error())
+			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
 			return
 		}
@@ -161,23 +159,20 @@ func upload(w http.ResponseWriter, req *http.Request) {
 	if req.Method == "POST" || req.Method == "PUT" {
 		deckpath := req.Header.Get("Deck")
 		if deckpath == "" {
-			w.WriteHeader(500)
-			eresp(w, "upload: no deckpath")
+			eresp(w, "upload: no deckpath", 500)
 			log.Printf("%s upload error: no deckpath", requester)
 			return
 		}
 		deckdata, err := ioutil.ReadAll(req.Body)
 		if err != nil {
-			w.WriteHeader(500)
-			eresp(w, err.Error())
+			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
 			return
 		}
 		defer req.Body.Close()
 		err = ioutil.WriteFile(deckpath, deckdata, 0644)
 		if err != nil {
-			w.WriteHeader(500)
-			eresp(w, err.Error())
+			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
 			return
 		}
@@ -192,18 +187,45 @@ func media(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
 	w.Header().Set("Content-Type", "application/json")
 	media := req.Header.Get("Media")
-	log.Printf("%s media: running %s", requester, media)
-	command := exec.Command("omxplayer", "-o", "both", media)
-	err := command.Start()
-	if err != nil {
-		log.Printf("%s %v", requester, err)
-		w.WriteHeader(500)
-		eresp(w, err.Error())
+	method := req.Method
+	query := req.URL.Query()
+	p, ok := query["cmd"]
+	var param string
+	if ok {
+		param = p[0]
+	}
+	if method == "POST" && param == "" {
+		log.Printf("%s media: running %s", requester, media)
+		command := exec.Command("omxplayer", "-o", "both", media)
+		err := command.Start()
+		if err != nil {
+			eresp(w, err.Error(), 500)
+			log.Printf("%s %v", requester, err)
+			return
+		}
+		deckpid = command.Process.Pid
+		log.Printf("%s video: %#v, pid: %d", requester, media, deckpid)
+		writeresponse(w, fmt.Sprintf("{\"deckpid\":\"%d\", \"media\":\"%s\"}\n", deckpid, media))
 		return
 	}
-	deckpid = command.Process.Pid
-	log.Printf("%s video: %#v, pid: %d", requester, media, deckpid)
-	writeresponse(w, fmt.Sprintf("{\"deckpid\":\"%d\", \"media\":\"%s\"}\n", deckpid, media))
+
+	if method == "POST" && param == "stop" {
+		kp, err := os.FindProcess(deckpid)
+		if err != nil {
+			eresp(w, err.Error(), 500)
+			log.Printf("%s %v", requester, err)
+			return
+		}
+		err = kp.Kill()
+		if err != nil {
+			eresp(w, err.Error(), 500)
+			log.Printf("%s %v", requester, err)
+			return
+		}
+		log.Printf("%s video: stop %d", requester, deckpid)
+		writeresponse(w, fmt.Sprintf("{\"stop\":\"%d\"}\n", deckpid))
+		return
+	}
 }
 
 // deck processes slide decks
@@ -223,20 +245,18 @@ func deck(w http.ResponseWriter, req *http.Request) {
 	}
 	method := req.Method
 	postflag := method == "POST" && len(param) > 0 && deck != "deck"
-	log.Printf("%s %s %#v %#v", requester, method, deck, param)
 	switch {
 	case postflag && !deckrun && param != "stop":
 		if deck == "" {
-			w.WriteHeader(406)
-			eresp(w, "deck: need a deck")
+			eresp(w, "deck: need a deck", 406)
+			log.Printf("%s deck: need a deck", requester)
 			return
 		}
 		command := exec.Command("vgdeck", "-loop", param, deck)
 		err := command.Start()
 		if err != nil {
+			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
-			w.WriteHeader(500)
-			eresp(w, err.Error())
 			return
 		}
 		deckpid = command.Process.Pid
@@ -247,35 +267,31 @@ func deck(w http.ResponseWriter, req *http.Request) {
 	case postflag && deckrun && param == "stop":
 		kp, err := os.FindProcess(deckpid)
 		if err != nil {
-			w.WriteHeader(500)
-			eresp(w, err.Error())
+			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
 			return
 		}
 		err = kp.Kill()
 		if err != nil {
-			w.WriteHeader(500)
-			eresp(w, err.Error())
+			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
 			return
 		}
-		log.Printf("%s stop %d", requester, deckpid)
+		log.Printf("%s deck: stop %d", requester, deckpid)
 		writeresponse(w, fmt.Sprintf("{\"stop\":\"%d\"}\n", deckpid))
 		deckrun = false
 		return
 	case method == "GET":
 		f, err := os.Open(*deckdir)
 		if err != nil {
+			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
-			w.WriteHeader(500)
-			eresp(w, err.Error())
 			return
 		}
 		names, err := f.Readdir(-1)
 		if err != nil {
+			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
-			w.WriteHeader(500)
-			eresp(w, err.Error())
 			return
 		}
 		log.Printf("%s list decks", requester)
@@ -283,16 +299,14 @@ func deck(w http.ResponseWriter, req *http.Request) {
 		return
 	case method == "DELETE" && deck != "deck":
 		if deck == "" {
+			eresp(w, "deck delete: specify a name", 406)
 			log.Printf("%s delete error: specify a name", requester)
-			w.WriteHeader(406)
-			eresp(w, "deck delete: specify a name")
 			return
 		}
 		err := os.Remove(deck)
 		if err != nil {
+			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
-			w.WriteHeader(500)
-			eresp(w, err.Error())
 			return
 		}
 		writeresponse(w, fmt.Sprintf("{\"remove\":\"%s\"}\n", deck))
