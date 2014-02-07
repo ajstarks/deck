@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
 	"regexp"
 	"strconv"
@@ -251,14 +250,20 @@ func deck(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
 	w.Header().Set("Content-Type", "application/json")
 	query := req.URL.Query()
-	deck := path.Base(req.URL.Path)
+	dpath := strings.Split(req.URL.Path, "/")
+	if len(dpath) < 3 {
+		eresp(w, "malformed URL", 406)
+		log.Printf("%s malformed URL", requester)
+		return
+	}
+	deck := dpath[2] 
 	p, ok := query["cmd"]
 	var param string
 	if ok {
 		param = p[0]
 	}
 	method := req.Method
-	postflag := method == "POST" && len(param) > 0 && deck != "deck"
+	postflag := method == "POST" && len(param) > 0
 	switch {
 	case postflag && !deckrun && param != "stop":
 		if deck == "" {
@@ -311,14 +316,25 @@ func deck(w http.ResponseWriter, req *http.Request) {
 		log.Printf("%s list decks", requester)
 		deckinfo(w, names, filepattern)
 		return
-	case method == "DELETE" && deck != "deck" :
+	case method == "DELETE":
 		if deck == "" {
 			eresp(w, "deck delete: specify a name", 406)
 			log.Printf("%s delete error: specify a name", requester)
 			return
 		}
+		fs, err := os.Stat(deck)
+		if err != nil {
+			eresp(w, err.Error(), 500)
+			log.Printf("%s %v", requester, err)
+			return
+		}
+		if fs.IsDir() {
+			eresp(w, "cannot remove directories", 500)
+			log.Printf("%s cannot remove directories", requester)
+			return
+		}
 		log.Printf("removing %s", deck)
-		err := os.Remove(deck)
+		err = os.Remove(deck)
 		if err != nil {
 			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
