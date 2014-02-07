@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -19,7 +20,7 @@ import (
 
 var (
 	listen    = flag.String("listen", ":1958", "http service address")
-	deckdir = flag.String("dir", ".", "directory for decks")
+	sdir = flag.String("dir", ".", "directory for decks")
 	deckrun = false
 	deckpid int
 )
@@ -36,11 +37,15 @@ type layout struct {
 
 func main() {
 	flag.Parse()
-	err := os.Chdir(*deckdir)
+	deckdir, err := filepath.Abs(*sdir)
+	if err != nil {
+		log.Fatal("Directory:", err)
+	}
+	err = os.Chdir(deckdir)
 	if err != nil {
 		log.Fatal("Set Directory:", err)
 	}
-	log.Printf("Serving from %s", *deckdir)
+	log.Printf("Serving from %s", deckdir)
 	http.Handle("/deck/", http.HandlerFunc(deck))
 	http.Handle("/upload/", http.HandlerFunc(upload))
 	http.Handle("/table/", http.HandlerFunc(table))
@@ -50,6 +55,15 @@ func main() {
 	if err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}
+}
+
+// validpath returns the base of path, or the empty string for the current path
+func validpath(s string) string  {
+	b := filepath.Base(s)
+	if b == "." {
+		return ""
+	}
+	return b
 }
 
 // writeresponse writes a string to a ResponseWriter
@@ -132,7 +146,7 @@ func table(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if req.Method == "POST" {
 		defer req.Body.Close()
-		deckpath := req.Header.Get("Deck")
+		deckpath := validpath(req.Header.Get("Deck"))
 		if deckpath == "" {
 			eresp(w, "table: no deckpath", 500)
 			log.Printf("%s table error: no deckpath", requester)
@@ -157,7 +171,7 @@ func upload(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
 	w.Header().Set("Content-Type", "application/json")
 	if req.Method == "POST" || req.Method == "PUT" {
-		deckpath := req.Header.Get("Deck")
+		deckpath := validpath(req.Header.Get("Deck"))
 		if deckpath == "" {
 			eresp(w, "upload: no deckpath", 500)
 			log.Printf("%s upload error: no deckpath", requester)
@@ -186,7 +200,7 @@ func upload(w http.ResponseWriter, req *http.Request) {
 func media(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
 	w.Header().Set("Content-Type", "application/json")
-	media := req.Header.Get("Media")
+	media := validpath(req.Header.Get("Media"))
 	method := req.Method
 	query := req.URL.Query()
 	p, ok := query["cmd"]
@@ -194,7 +208,7 @@ func media(w http.ResponseWriter, req *http.Request) {
 	if ok {
 		param = p[0]
 	}
-	if method == "POST" && param == "" {
+	if method == "POST" && param == "" && media != ""  {
 		log.Printf("%s media: running %s", requester, media)
 		command := exec.Command("omxplayer", "-o", "both", media)
 		err := command.Start()
@@ -282,7 +296,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 		deckrun = false
 		return
 	case method == "GET":
-		f, err := os.Open(*deckdir)
+		f, err := os.Open(".")
 		if err != nil {
 			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
@@ -297,12 +311,13 @@ func deck(w http.ResponseWriter, req *http.Request) {
 		log.Printf("%s list decks", requester)
 		deckinfo(w, names, filepattern)
 		return
-	case method == "DELETE" && deck != "deck":
+	case method == "DELETE" && deck != "deck" :
 		if deck == "" {
 			eresp(w, "deck delete: specify a name", 406)
 			log.Printf("%s delete error: specify a name", requester)
 			return
 		}
+		log.Printf("removing %s", deck)
 		err := os.Remove(deck)
 		if err != nil {
 			eresp(w, err.Error(), 500)
