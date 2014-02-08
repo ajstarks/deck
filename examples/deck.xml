@@ -2,7 +2,7 @@
  <title>A Deck on Deck</title>
  <creator>Anthony Starks</creator>
  <subject>presentations, Go, markup, design</subject>
- <date>2014-01-10</date>
+ <date>2014-02-07</date>
  <description>Deck is a library for clients to make scalable presentations, using a standard markup language. Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc. Clients may be interactive or produce standard formats such as SVG or PDF.</description>
   <slide bg="white" fg="rgb(50,50,50)">
     <text xp="5" yp="50" sp="20">Deck</text>
@@ -539,23 +539,33 @@ func main() {
   <slide>
 	<text xp="10" yp="90" sp="3">Deck Web API</text>
 	<list xp="10" yp="80" sp="2" font="mono" color="rgb(127,0,0)">
-		<li>GET /decks/</li>
-		<li>POST /upload/ Deck:foo.xml</li>
-		<li>POST /deck/foo.xml?cmd=1s</li>
-		<li>POST /deck/foo.xml?cmd=stop</li>
-		<li>DELETE /deck/foo.xml</li>
-		<li>POST /table/ Deck:file.txt</li>
-		<li>POST /media/ Media:foo.mov</li>
+		<li>GET</li>
+		<li>POST</li>
+		<li>POST</li>
+		<li>DELETE</li>
+		<li>POST</li>
+		<li>POST</li>
+		<li>POST</li>
 	</list>
-	<list xp="50" yp="80" sp="2">
+	<list xp="20" yp="80" sp="2" font="mono" color="rgb(0,0,127)">
+		<li>/deck/</li>
+		<li>/deck/content.xml?cmd=1s</li>
+		<li>/deck/content.xml?cmd=stop</li>
+		<li>/deck/content.xml</li>
+		<li>/upload/ Deck:content.xml</li>
+		<li>/table/ Deck:content.txt</li>
+		<li>/media/ Media:content.mov</li>
+	</list>
+	<list xp="55" yp="80" sp="2">
 		<li>List the content on the server</li>
-		<li>Upload content</li>
 		<li>Play a deck with the specified duration</li>
 		<li>Stop playing a deck</li>
 		<li>Remove content</li>
+		<li>Upload content</li>
 		<li>Generate a table from a tab-separated list</li>
 		<li>Play the specified video</li>
 	</list>
+	<text xp="55" yp="90" sp="1" color="rgb(127,0,0)" font="mono">sex -dir [start dir] -listen [address:port]</text>
   </slide>
   <slide>
 
@@ -881,7 +891,7 @@ func main() {
      <text xp="20" yp="15" sp="2" color="rgb(127,127,127)">Andrew Mackenzie-Ross, http://pocket.co/sSc56</text>
   </slide>
 
-  <slide bg="rgb(130,130,130)" fg="rgb(240,240,240)">
+  <slide bg="rgb(0,0,127)" fg="rgb(240,240,240)">
     	<text xp="10" yp="75" sp="3.75"  wp="65" type="block">Python and Ruby programmers come to Go 
 		because they don't have to surrender much expressiveness, 
 		but gain performance and get to play with concurrency.</text>
