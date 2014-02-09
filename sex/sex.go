@@ -49,12 +49,12 @@ func main() {
 	if err != nil {
 		log.Fatal("Set Directory:", err)
 	}
-	log.Printf("Serving from %q, upload limit: %d", deckdir, *maxupload)
 	http.Handle("/deck/", http.HandlerFunc(deck))
 	http.Handle("/upload/", http.HandlerFunc(upload))
 	http.Handle("/table/", http.HandlerFunc(table))
 	http.Handle("/media/", http.HandlerFunc(media))
 
+	log.Printf("Serving from %q, upload limit: %d", deckdir, *maxupload)
 	err = http.ListenAndServe(*listen, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe:", err)
