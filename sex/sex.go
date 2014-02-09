@@ -19,15 +19,15 @@ import (
 
 var (
 	listen    = flag.String("listen", ":1958", "http service address")
-	sdir = flag.String("dir", ".", "directory for decks")
-	deckrun = false
-	deckpid int
+	sdir      = flag.String("dir", ".", "directory for decks")
+	maxupload = flag.Int64("maxsize", 50*1024*1024, "maximum upload size")
+	deckrun   = false
+	deckpid   int
 )
 
 const (
 	timeformat  = "Jan 2, 2006, 3:04pm (MST)"
 	filepattern = "\\.xml$|\\.mov$|\\.mp4$|\\.m4v$|\\.avi$|\\.h264$"
-	maxcontentlength = 50 * 1024 * 1024
 )
 
 type layout struct {
@@ -58,7 +58,7 @@ func main() {
 }
 
 // validpath returns the base of path, or the empty string for the current path
-func validpath(s string) string  {
+func validpath(s string) string {
 	b := filepath.Base(s)
 	if b == "." {
 		return ""
@@ -179,10 +179,10 @@ func upload(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		defer req.Body.Close()
-		dl := len(deckdata)
-		if dl > maxcontentlength {
+		dl := int64(len(deckdata))
+		if dl > *maxupload {
 			eresp(w, "upload: too much data", 500)
-			log.Printf("%s upload: content size (%d) > %d", requester, dl, maxcontentlength)
+			log.Printf("%s upload: content size %d > %d", requester, dl, *maxupload)
 			return
 		}
 		err = ioutil.WriteFile(deckpath, deckdata, 0644)
@@ -209,7 +209,7 @@ func media(w http.ResponseWriter, req *http.Request) {
 	if ok {
 		param = p[0]
 	}
-	if method == "POST" && param == "" && media != ""  {
+	if method == "POST" && param == "" && media != "" {
 		log.Printf("%s media: running %s", requester, media)
 		command := exec.Command("omxplayer", "-o", "both", media)
 		err := command.Start()
@@ -258,7 +258,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 		log.Printf("%s malformed URL", requester)
 		return
 	}
-	deck := dpath[2] 
+	deck := dpath[2]
 	p, ok := query["cmd"]
 	var param string
 	if ok {
