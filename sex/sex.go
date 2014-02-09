@@ -181,8 +181,9 @@ func upload(w http.ResponseWriter, req *http.Request) {
 		defer req.Body.Close()
 		dl := int64(len(deckdata))
 		if dl > *maxupload {
-			eresp(w, "upload: too much data", 500)
-			log.Printf("%s upload: content size %d > %d", requester, dl, *maxupload)
+			msg := fmt.Sprintf("upload: %d bytes over the limit of %d", dl - *maxupload, *maxupload)
+			eresp(w, msg, 500)
+			log.Printf(requester + " " + msg)
 			return
 		}
 		err = ioutil.WriteFile(deckpath, deckdata, 0644)
