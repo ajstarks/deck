@@ -45,7 +45,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Set Directory:", err)
 	}
-	log.Printf("Serving from %s", deckdir)
+	log.Printf("Serving from %q, upload limit: %d", deckdir, *maxupload)
 	http.Handle("/deck/", http.HandlerFunc(deck))
 	http.Handle("/upload/", http.HandlerFunc(upload))
 	http.Handle("/table/", http.HandlerFunc(table))
