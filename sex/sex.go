@@ -17,18 +17,23 @@ import (
 	"strings"
 )
 
+const (
+	timeformat  = "Jan 2, 2006, 3:04pm (MST)"
+	deckpat = `\.xml$`
+	stdpat = `\.xml$|\.mov$|\.mp4$|\.m4v$|\.avi$|\.h264$`
+	imgpat = `\.png$|\.jpg$|\.jpeg$`
+	vidpat = `\.mov$|\.mp4$|\.m4v$|\.avi$|\.h264$`
+)
+
 var (
 	listen    = flag.String("listen", ":1958", "http service address")
 	sdir      = flag.String("dir", ".", "directory for decks")
 	maxupload = flag.Int64("maxsize", 50*1024*1024, "maximum upload size")
 	deckrun   = false
 	deckpid   int
+	filepats  = map[string]string{"std": stdpat, "deck": deckpat, "image": imgpat, "video": vidpat}
 )
 
-const (
-	timeformat  = "Jan 2, 2006, 3:04pm (MST)"
-	filepattern = "\\.xml$|\\.mov$|\\.mp4$|\\.m4v$|\\.avi$|\\.h264$"
-)
 
 type layout struct {
 	x     float64
@@ -182,7 +187,7 @@ func upload(w http.ResponseWriter, req *http.Request) {
 		dl := int64(len(deckdata))
 		if dl > *maxupload {
 			msg := fmt.Sprintf("upload: %d bytes over the limit of %d", dl - *maxupload, *maxupload)
-			eresp(w, msg, 500)
+			eresp(w, msg, 403)
 			log.Printf(requester + " " + msg)
 			return
 		}
@@ -255,7 +260,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 	query := req.URL.Query()
 	dpath := strings.Split(req.URL.Path, "/")
 	if len(dpath) < 3 {
-		eresp(w, "malformed URL", 406)
+		eresp(w, "malformed URL", 403)
 		log.Printf("%s malformed URL", requester)
 		return
 	}
@@ -270,7 +275,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 	switch {
 	case postflag && !deckrun && param != "stop":
 		if deck == "" {
-			eresp(w, "deck: need a deck", 406)
+			eresp(w, "deck: need a deck", 403)
 			log.Printf("%s deck: need a deck", requester)
 			return
 		}
@@ -304,24 +309,26 @@ func deck(w http.ResponseWriter, req *http.Request) {
 		deckrun = false
 		return
 	case method == "GET":
-		f, err := os.Open(".")
+		names, err := ioutil.ReadDir(".") 
 		if err != nil {
 			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
 			return
 		}
-		names, err := f.Readdir(-1)
-		if err != nil {
-			eresp(w, err.Error(), 500)
-			log.Printf("%s %v", requester, err)
-			return
+		filepattern := stdpat
+		filter, fok := query["filter"]
+		if fok  {
+			fp, pok := filepats[filter[0]]
+			if pok {
+				filepattern = fp
+			}
 		}
-		log.Printf("%s deck: list content", requester)
+		log.Printf("%s deck: list content %s", requester, filepattern)
 		deckinfo(w, names, filepattern)
 		return
 	case method == "DELETE":
 		if deck == "" {
-			eresp(w, "deck delete: specify a name", 406)
+			eresp(w, "deck delete: specify a name", 403)
 			log.Printf("%s delete error: specify a name", requester)
 			return
 		}
