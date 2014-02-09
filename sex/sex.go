@@ -27,6 +27,7 @@ var (
 const (
 	timeformat  = "Jan 2, 2006, 3:04pm (MST)"
 	filepattern = "\\.xml$|\\.mov$|\\.mp4$|\\.m4v$|\\.avi$|\\.h264$"
+	maxcontentlength = 50 * 1024 * 1024
 )
 
 type layout struct {
@@ -65,11 +66,6 @@ func validpath(s string) string  {
 	return b
 }
 
-// writeresponse writes a string to a ResponseWriter
-func writeresponse(w http.ResponseWriter, s string) {
-	io.WriteString(w, s)
-}
-
 // eresp sends the client a JSON encoded error
 func eresp(w http.ResponseWriter, err string, code int) {
 	http.Error(w, fmt.Sprintf("{\"error\": \"%s\"}", err), code)
@@ -77,20 +73,20 @@ func eresp(w http.ResponseWriter, err string, code int) {
 
 // deckinfo returns information (file, size, date) for a deck and movie files in the deck directory
 func deckinfo(w http.ResponseWriter, data []os.FileInfo, pattern string) {
-	writeresponse(w, `{"decks":[`)
+	io.WriteString(w, `{"decks":[`)
 	nf := 0
 	for _, s := range data {
 		matched, err := regexp.MatchString(pattern, s.Name())
 		if err == nil && matched {
 			nf++
 			if nf > 1 {
-				writeresponse(w, ",\n")
+				io.WriteString(w, ",\n")
 			}
-			writeresponse(w, fmt.Sprintf(`{"name":"%s", "size":%d, "date":"%s"}`,
+			io.WriteString(w, fmt.Sprintf(`{"name":"%s", "size":%d, "date":"%s"}`,
 				s.Name(), s.Size(), s.ModTime().Format(timeformat)))
 		}
 	}
-	writeresponse(w, "]}\n")
+	io.WriteString(w, "]}\n")
 }
 
 // maketable creates a deck file from a tab separated list
@@ -159,8 +155,8 @@ func table(w http.ResponseWriter, req *http.Request) {
 		}
 		maketable(f, req.Body)
 		f.Close()
-		writeresponse(w, fmt.Sprintf("{\"table\":\"%s\"}\n", deckpath))
-		log.Printf("%s table %s", requester, deckpath)
+		io.WriteString(w, fmt.Sprintf("{\"table\":\"%s\"}\n", deckpath))
+		log.Printf("%s table: %s", requester, deckpath)
 	}
 }
 
@@ -183,14 +179,20 @@ func upload(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		defer req.Body.Close()
+		dl := len(deckdata)
+		if dl > maxcontentlength {
+			eresp(w, "upload: too much data", 500)
+			log.Printf("%s upload: content size (%d) > %d", requester, dl, maxcontentlength)
+			return
+		}
 		err = ioutil.WriteFile(deckpath, deckdata, 0644)
 		if err != nil {
 			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
 			return
 		}
-		writeresponse(w, fmt.Sprintf("{\"upload\":\"%s\"}\n", deckpath))
-		log.Printf("%s write: %#v, %d bytes", requester, deckpath, len(deckdata))
+		io.WriteString(w, fmt.Sprintf("{\"upload\":\"%s\", \"size\": %d}\n", deckpath, dl))
+		log.Printf("%s upload: %#v, %d bytes", requester, deckpath, dl)
 	}
 }
 
@@ -217,8 +219,8 @@ func media(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		deckpid = command.Process.Pid
-		log.Printf("%s video: %#v, pid: %d", requester, media, deckpid)
-		writeresponse(w, fmt.Sprintf("{\"deckpid\":\"%d\", \"media\":\"%s\"}\n", deckpid, media))
+		log.Printf("%s media: %#v, pid: %d", requester, media, deckpid)
+		io.WriteString(w, fmt.Sprintf("{\"deckpid\":\"%d\", \"media\":\"%s\"}\n", deckpid, media))
 		return
 	}
 
@@ -236,7 +238,7 @@ func media(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		log.Printf("%s video: stop %d", requester, deckpid)
-		writeresponse(w, fmt.Sprintf("{\"stop\":\"%d\"}\n", deckpid))
+		io.WriteString(w, fmt.Sprintf("{\"stop\":\"%d\"}\n", deckpid))
 		return
 	}
 }
@@ -281,7 +283,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 		deckpid = command.Process.Pid
 		deckrun = true
 		log.Printf("%s deck: %#v, duration: %#v, pid: %d", requester, deck, param, deckpid)
-		writeresponse(w, fmt.Sprintf("{\"deckpid\":\"%d\", \"deck\":\"%s\", \"duration\":\"%s\"}\n", deckpid, deck, param))
+		io.WriteString(w, fmt.Sprintf("{\"deckpid\":\"%d\", \"deck\":\"%s\", \"duration\":\"%s\"}\n", deckpid, deck, param))
 		return
 	case postflag && deckrun && param == "stop":
 		kp, err := os.FindProcess(deckpid)
@@ -297,7 +299,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		log.Printf("%s deck: stop %d", requester, deckpid)
-		writeresponse(w, fmt.Sprintf("{\"stop\":\"%d\"}\n", deckpid))
+		io.WriteString(w, fmt.Sprintf("{\"stop\":\"%d\"}\n", deckpid))
 		deckrun = false
 		return
 	case method == "GET":
@@ -313,7 +315,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 			log.Printf("%s %v", requester, err)
 			return
 		}
-		log.Printf("%s list decks", requester)
+		log.Printf("%s deck: list content", requester)
 		deckinfo(w, names, filepattern)
 		return
 	case method == "DELETE":
@@ -333,15 +335,14 @@ func deck(w http.ResponseWriter, req *http.Request) {
 			log.Printf("%s cannot remove directories", requester)
 			return
 		}
-		log.Printf("removing %s", deck)
 		err = os.Remove(deck)
 		if err != nil {
 			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
 			return
 		}
-		writeresponse(w, fmt.Sprintf("{\"remove\":\"%s\"}\n", deck))
-		log.Printf("%s remove %s", requester, deck)
+		io.WriteString(w, fmt.Sprintf("{\"remove\":\"%s\"}\n", deck))
+		log.Printf("%s deck: remove %s", requester, deck)
 		return
 	}
 }
