@@ -18,11 +18,11 @@ import (
 )
 
 const (
-	timeformat  = "Jan 2, 2006, 3:04pm (MST)"
-	deckpat = `\.xml$`
-	stdpat = `\.xml$|\.mov$|\.mp4$|\.m4v$|\.avi$|\.h264$`
-	imgpat = `\.png$|\.jpg$|\.jpeg$`
-	vidpat = `\.mov$|\.mp4$|\.m4v$|\.avi$|\.h264$`
+	timeformat = "Jan 2, 2006, 3:04pm (MST)"
+	deckpat    = `\.xml$`
+	stdpat     = `\.xml$|\.mov$|\.mp4$|\.m4v$|\.avi$|\.h264$`
+	imgpat     = `\.png$|\.jpg$|\.jpeg$`
+	vidpat     = `\.mov$|\.mp4$|\.m4v$|\.avi$|\.h264$`
 )
 
 var (
@@ -33,7 +33,6 @@ var (
 	deckpid   int
 	filepats  = map[string]string{"std": stdpat, "deck": deckpat, "image": imgpat, "video": vidpat}
 )
-
 
 type layout struct {
 	x     float64
@@ -186,7 +185,7 @@ func upload(w http.ResponseWriter, req *http.Request) {
 		defer req.Body.Close()
 		dl := int64(len(deckdata))
 		if dl > *maxupload {
-			msg := fmt.Sprintf("upload: %d bytes over the limit of %d", dl - *maxupload, *maxupload)
+			msg := fmt.Sprintf("upload: %d bytes over the limit of %d", dl-*maxupload, *maxupload)
 			eresp(w, msg, 403)
 			log.Printf(requester + " " + msg)
 			return
@@ -309,7 +308,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 		deckrun = false
 		return
 	case method == "GET":
-		names, err := ioutil.ReadDir(".") 
+		names, err := ioutil.ReadDir(".")
 		if err != nil {
 			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
@@ -317,7 +316,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 		}
 		filepattern := stdpat
 		filter, fok := query["filter"]
-		if fok  {
+		if fok {
 			fp, pok := filepats[filter[0]]
 			if pok {
 				filepattern = fp
