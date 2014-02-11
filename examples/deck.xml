@@ -338,37 +338,6 @@ func main() {
       <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;list&gt;...&lt;/list&gt;</text>
   </slide>
 
-  <slide bg="white" fg="rgb(50,50,50)"> 
-    <rect xp="10" yp="60" wp="30" hp="80" color="red" opacity="20"/>
-    <rect xp="45" yp="60" wp="30" hp="80" color="red" opacity="20"/>
-    <rect xp="80" yp="60" wp="30" hp="80" color="red" opacity="20"/>
-    <rect xp="50" yp="10" wp="100" hp="20" color="green" opacity="20"/>
-
-    <text xp="5" yp="80" sp="3" color="rgb(127,0,0)">bullet</text>
-    <list xp="5" yp="70" sp="3" font="sans" color="rgb(0,127,0)" type="bullet">
-      <li>Point A</li>
-      <li>Point B</li>
-      <li>Point C</li>
-      <li>Point D</li>
-    </list>
-
-    <text xp="35" yp="80" sp="3" color="rgb(127,0,0)">plain</text>
-    <list xp="35" yp="70" sp="3" color="rgb(0,0,127)" font="serif">
-      <li>First item</li>
-      <li>Second item</li>
-      <li>The third item</li>
-      <li>the last thing</li>
-    </list>
-
-    <text xp="70" yp="80" sp="3" color="rgb(127,0,0)">number</text>
-    <list xp="70" yp="70" sp="3" font="mono" color="black" type="number">
-       <li>This</li>
-       <li>That</li>
-       <li>The other</li>
-       <li>One more</li>
-    </list>
-      <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;list&gt;...&lt;/list&gt;</text>
-  </slide>
 
   <slide bg="black" fg="white">
     <image xp="50" yp="50" width="1024" height="576" name="deck-desk1024.jpg"/>
@@ -588,6 +557,14 @@ func main() {
 	<line xp1="75" yp1="70" xp2="80" yp2="70" sp="0.2" color="black"/>
 	<text xp="77.5" yp="72" sp="1.2" align="center" color="gray">HDMI</text>
 	<rect xp="82.5" yp="70" wp="5" hr="75" color="green"/>
+
+	<!-- Wifi -->
+<arc xp="82.5" yp="80" wp="5" hp="5" a1="45" a2="135" color="gray" sp="0.2"/>
+<arc xp="82.5" yp="80" wp="4" hp="4" a1="45" a2="135" color="gray" sp="0.2"/>
+<arc xp="82.5" yp="80" wp="3" hp="3" a1="45" a2="135" color="gray" sp="0.2"/>
+<arc xp="82.5" yp="80" wp="2" hp="2" a1="45" a2="135" color="gray" sp="0.2"/>
+<arc xp="82.5" yp="80" wp="1" hp="1" a1="45" a2="135" color="gray" sp="0.2"/>
+
 		
 	<!-- Presentation on the remote display -->
 	<text xp="30" yp="65" sp="2">Good Design</text>
@@ -678,6 +655,37 @@ func main() {
 (70%)</text>
   </slide>
 
+  <slide bg="white" fg="rgb(50,50,50)"> 
+    <rect xp="10" yp="60" wp="30" hp="80" color="red" opacity="20"/>
+    <rect xp="45" yp="60" wp="30" hp="80" color="red" opacity="20"/>
+    <rect xp="80" yp="60" wp="30" hp="80" color="red" opacity="20"/>
+    <rect xp="50" yp="10" wp="100" hp="20" color="green" opacity="20"/>
+
+    <text xp="5" yp="80" sp="3" color="rgb(127,0,0)">bullet</text>
+    <list xp="5" yp="70" sp="3" font="sans" color="rgb(0,127,0)" type="bullet">
+      <li>Point A</li>
+      <li>Point B</li>
+      <li>Point C</li>
+      <li>Point D</li>
+    </list>
+
+    <text xp="35" yp="80" sp="3" color="rgb(127,0,0)">plain</text>
+    <list xp="35" yp="70" sp="3" color="rgb(0,0,127)" font="serif">
+      <li>First item</li>
+      <li>Second item</li>
+      <li>The third item</li>
+      <li>the last thing</li>
+    </list>
+
+    <text xp="70" yp="80" sp="3" color="rgb(127,0,0)">number</text>
+    <list xp="70" yp="70" sp="3" font="mono" color="black" type="number">
+       <li>This</li>
+       <li>That</li>
+       <li>The other</li>
+       <li>One more</li>
+    </list>
+      <text xp="50" yp="10" sp="4" font="mono" align="center">&lt;list&gt;...&lt;/list&gt;</text>
+  </slide>
 
     <slide bg="black" fg="white">
       <text  xp="15"  yp="70" sp="11" align="center">BOS</text>
