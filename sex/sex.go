@@ -23,13 +23,13 @@ const (
 	stdpat     = `\.xml$|\.mov$|\.mp4$|\.m4v$|\.avi$|\.h264$`
 	imgpat     = `\.png$|\.jpg$|\.jpeg$`
 	vidpat     = `\.mov$|\.mp4$|\.m4v$|\.avi$|\.h264$`
-	inforesp    = "{\"API\":[{\"deck\":\"/deck/\"},{\"upload\":\"/upload/\"},{\"media\":\"/media/\"},{\"table\":\"/table/\"}]}\n"
+	inforesp   = "{\"API\":[{\"deck\":\"/deck/\"},{\"upload\":\"/upload/\"},{\"media\":\"/media/\"},{\"table\":\"/table/\"}]}\n"
 )
 
 var (
 	listen    = flag.String("listen", ":1958", "http service address")
 	sdir      = flag.String("dir", ".", "directory for decks")
-	maxupload = flag.Int64("maxsize", 50*1024*1024, "maximum upload size")
+	maxupload = flag.Int64("maxupload", 50*1024*1024, "maximum upload size")
 	deckrun   = false
 	deckpid   int
 	filepats  = map[string]string{"std": stdpat, "deck": deckpat, "image": imgpat, "video": vidpat}
@@ -168,12 +168,13 @@ func maketable(w io.Writer, r io.Reader) {
 // info show API information
 // GET /
 func info(w http.ResponseWriter, req *http.Request) {
-        w.Header().Set("Content-Type", "application/json")
-        if req.Method == "GET" {
+	w.Header().Set("Content-Type", "application/json")
+	if req.Method == "GET" {
 		io.WriteString(w, inforesp)
 		log.Printf("%s info", req.RemoteAddr)
 	}
 }
+
 // table makes a table from POSTed data
 // POST /table, Deck:<input>
 func table(w http.ResponseWriter, req *http.Request) {

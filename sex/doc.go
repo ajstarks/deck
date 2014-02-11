@@ -7,11 +7,17 @@ To install:
 
 Command line options control the working directory and address:port
 
--port Address:port (default: localhost:1958)
+-listen Address:port (default: localhost:1958)
 
 -dir working directory (default: ".")
 
+-maxupload maximum upload size (bytes)
+
+GET / lists the API
+
 GET /deck lists information on content, (filename, file size, modification time) in JSON
+
+GET /deck?filter=[type] filter content list by type (std, deck, image, video)
 
 POST /deck/file.xml?cmd=[duration]  starts up a deck; the deck, duration, and process id are returned in JSON
 
