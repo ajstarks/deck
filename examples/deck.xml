@@ -540,6 +540,9 @@ func main() {
 	<text xp="10" yp="90" sp="3">Deck Web API</text>
 	<list xp="10" yp="80" sp="2" font="mono" color="rgb(127,0,0)">
 		<li>GET</li>
+		<li>GET</li>
+		<li>GET</li>
+		<li></li>
 		<li>POST</li>
 		<li>POST</li>
 		<li>DELETE</li>
@@ -548,7 +551,10 @@ func main() {
 		<li>POST</li>
 	</list>
 	<list xp="20" yp="80" sp="2" font="mono" color="rgb(0,0,127)">
+		<li>/</li>
 		<li>/deck/</li>
+		<li>/deck/?filter=[type]</li>
+		<li></li>
 		<li>/deck/content.xml?cmd=1s</li>
 		<li>/deck/content.xml?cmd=stop</li>
 		<li>/deck/content.xml</li>
@@ -557,7 +563,10 @@ func main() {
 		<li>/media/ Media:content.mov</li>
 	</list>
 	<list xp="55" yp="80" sp="2">
+		<li>List the API</li>
 		<li>List the content on the server</li>
+		<li>List content filtered by type</li>
+		<li>(deck, image, video)</li>
 		<li>Play a deck with the specified duration</li>
 		<li>Stop playing a deck</li>
 		<li>Remove content</li>
@@ -565,7 +574,7 @@ func main() {
 		<li>Generate a table from a tab-separated list</li>
 		<li>Play the specified video</li>
 	</list>
-	<text xp="55" yp="90" sp="1" color="rgb(127,0,0)" font="mono">sex -dir [start dir] -listen [address:port]</text>
+	<text xp="55" yp="90" sp="1" color="rgb(127,0,0)" font="mono">sex -dir [start dir] -listen [address:port] -maxupload [bytes]</text>
   </slide>
   <slide>
 
