@@ -23,6 +23,7 @@ const (
 	stdpat     = `\.xml$|\.mov$|\.mp4$|\.m4v$|\.avi$|\.h264$`
 	imgpat     = `\.png$|\.jpg$|\.jpeg$`
 	vidpat     = `\.mov$|\.mp4$|\.m4v$|\.avi$|\.h264$`
+	inforesp    = "{\"API\":[{\"deck\":\"/deck/\"},{\"upload\":\"/upload/\"},{\"media\":\"/media/\"},{\"table\":\"/table/\"}]}\n"
 )
 
 var (
@@ -49,6 +50,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Set Directory:", err)
 	}
+	http.Handle("/", http.HandlerFunc(info))
 	http.Handle("/deck/", http.HandlerFunc(deck))
 	http.Handle("/upload/", http.HandlerFunc(upload))
 	http.Handle("/table/", http.HandlerFunc(table))
@@ -59,6 +61,31 @@ func main() {
 	if err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}
+}
+
+// stopProcess kills and waits for a running process to exit
+func stopProcess(w http.ResponseWriter, pid int, requester string) {
+	kp, err := os.FindProcess(pid)
+	if err != nil {
+		eresp(w, err.Error(), 500)
+		log.Printf("%s %v", requester, err)
+		return
+	}
+	err = kp.Kill()
+	if err != nil {
+		eresp(w, err.Error(), 500)
+		log.Printf("%s %v", requester, err)
+		return
+	}
+	var ps *os.ProcessState
+	ps, err = kp.Wait()
+	if err != nil {
+		eresp(w, err.Error(), 500)
+		log.Printf("%s %v", requester, err)
+		return
+	}
+
+	log.Printf("%s deck: %v %d exited=%v", requester, ps, pid, ps.Exited())
 }
 
 // validpath returns the base of path, or the empty string for the current path
@@ -138,6 +165,15 @@ func maketable(w io.Writer, r io.Reader) {
 	fmt.Fprintf(w, "</slide></deck>\n")
 }
 
+// info show API information
+// GET /
+func info(w http.ResponseWriter, req *http.Request) {
+        w.Header().Set("Content-Type", "application/json")
+        if req.Method == "GET" {
+		io.WriteString(w, inforesp)
+		log.Printf("%s info", req.RemoteAddr)
+	}
+}
 // table makes a table from POSTed data
 // POST /table, Deck:<input>
 func table(w http.ResponseWriter, req *http.Request) {
@@ -230,19 +266,7 @@ func media(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if method == "POST" && param == "stop" {
-		kp, err := os.FindProcess(deckpid)
-		if err != nil {
-			eresp(w, err.Error(), 500)
-			log.Printf("%s %v", requester, err)
-			return
-		}
-		err = kp.Kill()
-		if err != nil {
-			eresp(w, err.Error(), 500)
-			log.Printf("%s %v", requester, err)
-			return
-		}
-		log.Printf("%s video: stop %d", requester, deckpid)
+		stopProcess(w, deckpid, requester)
 		io.WriteString(w, fmt.Sprintf("{\"stop\":\"%d\"}\n", deckpid))
 		return
 	}
@@ -291,19 +315,7 @@ func deck(w http.ResponseWriter, req *http.Request) {
 		io.WriteString(w, fmt.Sprintf("{\"deckpid\":\"%d\", \"deck\":\"%s\", \"duration\":\"%s\"}\n", deckpid, deck, param))
 		return
 	case postflag && deckrun && param == "stop":
-		kp, err := os.FindProcess(deckpid)
-		if err != nil {
-			eresp(w, err.Error(), 500)
-			log.Printf("%s %v", requester, err)
-			return
-		}
-		err = kp.Kill()
-		if err != nil {
-			eresp(w, err.Error(), 500)
-			log.Printf("%s %v", requester, err)
-			return
-		}
-		log.Printf("%s deck: stop %d", requester, deckpid)
+		stopProcess(w, deckpid, requester)
 		io.WriteString(w, fmt.Sprintf("{\"stop\":\"%d\"}\n", deckpid))
 		deckrun = false
 		return
