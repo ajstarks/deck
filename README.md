@@ -6,6 +6,9 @@ Deck is a library for clients to make scalable presentations, using a standard m
 Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc.
 Clients may be interactive or produce standard formats such as SVG or PDF.
 
+Also included is a REST API for listing content, uploading, stopping, starting, uploading and removing decks, 
+generating tables, and playing video.
+
 ## Elements ##
 
 * deck: enclosing element 
@@ -174,8 +177,8 @@ produces one slide per SVG file, with each slide linked to the next.
 
 The shell script, `mktbl` creates a tabular layout from tab-separated text
 
-The command `sexi` is a server program that provides an API for slide decks. 
-The API supports deck start, stop, listing, upload, and remove.
+The command `sex` is a server program that provides an API for slide decks. 
+The API supports deck start, stop, listing, upload, and remove. Responses are encoded in JSON.
 
 To install:
         

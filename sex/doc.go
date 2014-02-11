@@ -1,6 +1,6 @@
 /*
 
-sex is a server program that provides an API for slide decks
+sex is a server program that provides an API for slide decks. Responses are encoded in JSON.
 To install:
 
 	go get github.com/ajstarks/deck/sex
