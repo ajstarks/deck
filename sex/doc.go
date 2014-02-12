@@ -29,6 +29,7 @@ PUT or POST to /upload  uploads the contents of the Deck: header to the server
 
 POST /table with the content of a tab-separated list, creates a slide with a formatted table, the Deck: header specifies the resulting deck file
 
+POST /table/?textsize=[size] -- specify the text size of the generated table
 POST /media plays the media file specified in the Media: header
 */
 package main

@@ -15,6 +15,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const (
@@ -88,6 +89,7 @@ func stopProcess(w http.ResponseWriter, pid int, requester string) {
 	log.Printf("%s deck: %v %d exited=%v", requester, ps, pid, ps.Exited())
 }
 
+
 // validpath returns the base of path, or the empty string for the current path
 func validpath(s string) string {
 	b := filepath.Base(s)
@@ -120,14 +122,22 @@ func deckinfo(w http.ResponseWriter, data []os.FileInfo, pattern string) {
 	io.WriteString(w, "]}\n")
 }
 
+// info show API information
+// GET /
+func info(w http.ResponseWriter, req *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	if req.Method == "GET" {
+		io.WriteString(w, inforesp)
+		log.Printf("%s info", req.RemoteAddr)
+	}
+}
+
 // maketable creates a deck file from a tab separated list
 // that includes a specification in the first record
-func maketable(w io.Writer, r io.Reader) {
+func maketable(w io.Writer, r io.Reader, textsize float64) {
 	y := 90.0
-	linespacing := 8.0
-	textsize := 3.0
-	tightness := 3.5
-	showrule := true
+	linespacing := (textsize * 2.0) + 2.0
+	// tightness :=  0.0 // linespacing / 2.0 
 
 	l := make([]layout, 10)
 	fmt.Fprintf(w, "<deck><slide>\n")
@@ -150,35 +160,35 @@ func maketable(w io.Writer, r io.Reader) {
 				l[i].align = c[1]
 			}
 		} else {
-			ty := y - (linespacing / tightness)
 			for i := 0; i < nf; i++ {
 				fmt.Fprintf(w, "<text xp=\"%g\" yp=\"%g\" sp=\"%g\" align=\"%s\">%s</text>\n",
 					l[i].x, y, textsize, l[i].align, fields[i])
 			}
+			/*
+			ty := y - (linespacing - tightness)
 			if showrule {
 				fmt.Fprintf(w, "<line xp1=\"%g\" yp1=\"%.2f\" xp2=\"%g\" yp2=\"%.2f\" sp=\"0.05\"/>\n",
 					l[0].x, ty, l[nf-1].x+5, ty)
 			}
+			*/
 		}
 		y -= linespacing
 	}
 	fmt.Fprintf(w, "</slide></deck>\n")
 }
 
-// info show API information
-// GET /
-func info(w http.ResponseWriter, req *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	if req.Method == "GET" {
-		io.WriteString(w, inforesp)
-		log.Printf("%s info", req.RemoteAddr)
-	}
-}
 
 // table makes a table from POSTed data
-// POST /table, Deck:<input>
+// POST /table/, Deck:<input>
+// POST /table/?textsize=[size] Deck:<input> -- speciify the text size
 func table(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
+	query := req.URL.Query()
+	p, ok := query["textsize"]
+	var param string
+	if ok {
+		param = p[0]
+	}
 	w.Header().Set("Content-Type", "application/json")
 	if req.Method == "POST" {
 		defer req.Body.Close()
@@ -194,10 +204,15 @@ func table(w http.ResponseWriter, req *http.Request) {
 			log.Printf("%s %v", requester, err)
 			return
 		}
-		maketable(f, req.Body)
+		var textsize float64
+		textsize, err = strconv.ParseFloat(param, 64)
+		if err != nil || textsize > 20 || textsize < 0.5 {
+			textsize = 3.0
+		}
+		maketable(f, req.Body, textsize)
 		f.Close()
-		io.WriteString(w, fmt.Sprintf("{\"table\":\"%s\"}\n", deckpath))
-		log.Printf("%s table: %s", requester, deckpath)
+		io.WriteString(w, fmt.Sprintf("{\"table\":\"%s (%.1f)\"}\n", deckpath, textsize))
+		log.Printf("%s table: %s size:%.1f", requester, deckpath, textsize)
 	}
 }
 
@@ -303,8 +318,19 @@ func deck(w http.ResponseWriter, req *http.Request) {
 			log.Printf("%s deck: need a deck", requester)
 			return
 		}
+		pausetime, err := time.ParseDuration(param)
+		if err != nil {
+			eresp(w, err.Error(), 403)
+			log.Printf("%s %v", requester, err)
+			return
+		}
+		if pausetime > 24*time.Hour {
+			eresp(w, "deck: pause time too long", 403)
+			log.Printf("%s deck: pause time too long", requester)
+			return
+		}
 		command := exec.Command("vgdeck", "-loop", param, deck)
-		err := command.Start()
+		err = command.Start()
 		if err != nil {
 			eresp(w, err.Error(), 500)
 			log.Printf("%s %v", requester, err)
