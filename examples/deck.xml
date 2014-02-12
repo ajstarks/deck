@@ -518,6 +518,7 @@ func main() {
 		<li>POST</li>
 		<li>POST</li>
 		<li>POST</li>
+		<li>POST</li>
 	</list>
 	<list xp="20" yp="80" sp="2" font="mono" color="rgb(0,0,127)">
 		<li>/</li>
@@ -529,6 +530,7 @@ func main() {
 		<li>/deck/content.xml</li>
 		<li>/upload/ Deck:content.xml</li>
 		<li>/table/ Deck:content.txt</li>
+		<li>/table/?textsize=[size]</li>
 		<li>/media/ Media:content.mov</li>
 	</list>
 	<list xp="55" yp="80" sp="2">
@@ -541,6 +543,7 @@ func main() {
 		<li>Remove content</li>
 		<li>Upload content</li>
 		<li>Generate a table from a tab-separated list</li>
+		<li>Specify the text size of the table</li>
 		<li>Play the specified video</li>
 	</list>
 	<text xp="55" yp="90" sp="1" color="rgb(127,0,0)" font="mono">sex -dir [start dir] -listen [address:port] -maxupload [bytes]</text>
