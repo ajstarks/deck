@@ -73,20 +73,20 @@ func main() {
 func stopProcess(w http.ResponseWriter, pid int, requester string) {
 	kp, err := os.FindProcess(pid)
 	if err != nil {
-		eresp(w, err.Error(), 500)
+		eresp(w, err.Error(), http.StatusInternalServerError)
 		log.Printf("%s %v", requester, err)
 		return
 	}
 	err = kp.Kill()
 	if err != nil {
-		eresp(w, err.Error(), 500)
+		eresp(w, err.Error(), http.StatusInternalServerError)
 		log.Printf("%s %v", requester, err)
 		return
 	}
 	var ps *os.ProcessState
 	ps, err = kp.Wait()
 	if err != nil {
-		eresp(w, err.Error(), 500)
+		eresp(w, err.Error(), http.StatusInternalServerError)
 		log.Printf("%s %v", requester, err)
 		return
 	}
@@ -167,7 +167,7 @@ func info(w http.ResponseWriter, req *http.Request) {
 // maketable creates a deck file from a tab separated list
 // that includes a specification in the first record
 func maketable(w io.Writer, r io.Reader, textsize float64) {
-	y := 90.0
+	y := 95.0
 	linespacing := (textsize * 2.0) + 2.0
 	// tightness :=  0.0 // linespacing / 2.0
 
@@ -225,13 +225,13 @@ func table(w http.ResponseWriter, req *http.Request) {
 		defer req.Body.Close()
 		deckpath := validpath(req.Header.Get("Deck"))
 		if deckpath == "" {
-			eresp(w, "table: no deckpath", 500)
+			eresp(w, "table: no deckpath", http.StatusInternalServerError)
 			log.Printf("%s table error: no deckpath", requester)
 			return
 		}
 		f, err := os.Create(deckpath)
 		if err != nil {
-			eresp(w, err.Error(), 500)
+			eresp(w, err.Error(), http.StatusInternalServerError)
 			log.Printf("%s %v", requester, err)
 			return
 		}
@@ -255,13 +255,13 @@ func upload(w http.ResponseWriter, req *http.Request) {
 	if req.Method == "POST" || req.Method == "PUT" {
 		deckpath := validpath(req.Header.Get("Deck"))
 		if deckpath == "" {
-			eresp(w, "upload: no deckpath", 500)
+			eresp(w, "upload: no deckpath", http.StatusInternalServerError)
 			log.Printf("%s upload error: no deckpath", requester)
 			return
 		}
 		deckdata, err := ioutil.ReadAll(req.Body)
 		if err != nil {
-			eresp(w, err.Error(), 500)
+			eresp(w, err.Error(), http.StatusInternalServerError)
 			log.Printf("%s %v", requester, err)
 			return
 		}
@@ -269,13 +269,13 @@ func upload(w http.ResponseWriter, req *http.Request) {
 		dl := int64(len(deckdata))
 		if dl > *maxupload {
 			msg := fmt.Sprintf("upload: %d bytes over the limit of %d", dl-*maxupload, *maxupload)
-			eresp(w, msg, 403)
+			eresp(w, msg, http.StatusForbidden)
 			log.Printf(requester + " " + msg)
 			return
 		}
 		err = ioutil.WriteFile(deckpath, deckdata, 0644)
 		if err != nil {
-			eresp(w, err.Error(), 500)
+			eresp(w, err.Error(), http.StatusInternalServerError)
 			log.Printf("%s %v", requester, err)
 			return
 		}
@@ -302,7 +302,7 @@ func media(w http.ResponseWriter, req *http.Request) {
 		command := exec.Command("omxplayer", "-o", "both", media)
 		err := command.Start()
 		if err != nil {
-			eresp(w, err.Error(), 500)
+			eresp(w, err.Error(), http.StatusInternalServerError)
 			log.Printf("%s %v", requester, err)
 			return
 		}
@@ -330,7 +330,7 @@ func dodeck(w http.ResponseWriter, req *http.Request) {
 	query := req.URL.Query()
 	dpath := strings.Split(req.URL.Path, "/")
 	if len(dpath) < 3 {
-		eresp(w, "malformed URL", 403)
+		eresp(w, "malformed URL", http.StatusForbidden)
 		log.Printf("%s malformed URL", requester)
 		return
 	}
@@ -345,25 +345,25 @@ func dodeck(w http.ResponseWriter, req *http.Request) {
 	switch {
 	case postflag && !deckrun && param != "stop":
 		if deck == "" {
-			eresp(w, "deck: need a deck", 403)
+			eresp(w, "deck: need a deck", http.StatusForbidden)
 			log.Printf("%s deck: need a deck", requester)
 			return
 		}
 		pausetime, err := time.ParseDuration(param)
 		if err != nil {
-			eresp(w, err.Error(), 403)
+			eresp(w, err.Error(), http.StatusForbidden)
 			log.Printf("%s %v", requester, err)
 			return
 		}
 		if pausetime > 24*time.Hour {
-			eresp(w, "deck: pause time too long", 403)
+			eresp(w, "deck: pause time too long", http.StatusForbidden)
 			log.Printf("%s deck: pause time too long", requester)
 			return
 		}
 		command := exec.Command("vgdeck", "-loop", param, deck)
 		err = command.Start()
 		if err != nil {
-			eresp(w, err.Error(), 500)
+			eresp(w, err.Error(), http.StatusInternalServerError)
 			log.Printf("%s %v", requester, err)
 			return
 		}
@@ -380,7 +380,7 @@ func dodeck(w http.ResponseWriter, req *http.Request) {
 	case method == "GET":
 		names, err := ioutil.ReadDir(".")
 		if err != nil {
-			eresp(w, err.Error(), 500)
+			eresp(w, err.Error(), http.StatusInternalServerError)
 			log.Printf("%s %v", requester, err)
 			return
 		}
@@ -397,24 +397,24 @@ func dodeck(w http.ResponseWriter, req *http.Request) {
 		return
 	case method == "DELETE":
 		if deck == "" {
-			eresp(w, "deck delete: specify a name", 403)
+			eresp(w, "deck delete: specify a name", http.StatusForbidden)
 			log.Printf("%s delete error: specify a name", requester)
 			return
 		}
 		fs, err := os.Stat(deck)
 		if err != nil {
-			eresp(w, err.Error(), 500)
+			eresp(w, err.Error(), http.StatusInternalServerError)
 			log.Printf("%s %v", requester, err)
 			return
 		}
 		if fs.IsDir() {
-			eresp(w, "cannot remove directories", 500)
+			eresp(w, "cannot remove directories", http.StatusInternalServerError)
 			log.Printf("%s cannot remove directories", requester)
 			return
 		}
 		err = os.Remove(deck)
 		if err != nil {
-			eresp(w, err.Error(), 500)
+			eresp(w, err.Error(), http.StatusInternalServerError)
 			log.Printf("%s %v", requester, err)
 			return
 		}
