@@ -5,6 +5,9 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"image"
+	_ "image/jpeg"
+	_ "image/png"
 	"io"
 	"io/ioutil"
 	"log"
@@ -16,13 +19,15 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/ajstarks/deck"
 )
 
 const (
 	timeformat = "Jan 2, 2006, 3:04pm (MST)"
 	deckpat    = `\.xml$`
-	stdpat     = `\.xml$|\.mov$|\.mp4$|\.m4v$|\.avi$|\.h264$`
 	imgpat     = `\.png$|\.jpg$|\.jpeg$`
+	stdpat     = `\.xml$|` + imgpat
 	vidpat     = `\.mov$|\.mp4$|\.m4v$|\.avi$|\.h264$`
 	inforesp   = "{\"API\":[{\"deck\":\"/deck/\"},{\"upload\":\"/upload/\"},{\"media\":\"/media/\"},{\"table\":\"/table/\"}]}\n"
 )
@@ -52,7 +57,7 @@ func main() {
 		log.Fatal("Set Directory:", err)
 	}
 	http.Handle("/", http.HandlerFunc(info))
-	http.Handle("/deck/", http.HandlerFunc(deck))
+	http.Handle("/deck/", http.HandlerFunc(dodeck))
 	http.Handle("/upload/", http.HandlerFunc(upload))
 	http.Handle("/table/", http.HandlerFunc(table))
 	http.Handle("/media/", http.HandlerFunc(media))
@@ -89,7 +94,6 @@ func stopProcess(w http.ResponseWriter, pid int, requester string) {
 	log.Printf("%s deck: %v %d exited=%v", requester, ps, pid, ps.Exited())
 }
 
-
 // validpath returns the base of path, or the empty string for the current path
 func validpath(s string) string {
 	b := filepath.Base(s)
@@ -104,6 +108,34 @@ func eresp(w http.ResponseWriter, err string, code int) {
 	http.Error(w, fmt.Sprintf("{\"error\": \"%s\"}", err), code)
 }
 
+func metadata(filename string) string {
+	stdmeta := "---"
+	if strings.HasSuffix(filename, ".xml") {
+		d, err := deck.Read(filename, 0, 0)
+		if err != nil {
+			return stdmeta
+		} else {
+			return fmt.Sprintf("%d slides", len(d.Slide))
+		}
+	}
+
+	if strings.HasSuffix(filename, ".png") || strings.HasSuffix(filename, ".jpg") || strings.HasSuffix(filename, ".jpeg") {
+		var err error
+		f, err := os.Open(filename)
+		if err != nil {
+			return stdmeta
+		}
+		defer f.Close()
+		im, _, err := image.DecodeConfig(f)
+		if err != nil {
+			return stdmeta
+		} else {
+			return fmt.Sprintf("(%d x %d)", im.Width, im.Height)
+		}
+	}
+	return stdmeta
+}
+
 // deckinfo returns information (file, size, date) for a deck and movie files in the deck directory
 func deckinfo(w http.ResponseWriter, data []os.FileInfo, pattern string) {
 	io.WriteString(w, `{"decks":[`)
@@ -115,8 +147,8 @@ func deckinfo(w http.ResponseWriter, data []os.FileInfo, pattern string) {
 			if nf > 1 {
 				io.WriteString(w, ",\n")
 			}
-			io.WriteString(w, fmt.Sprintf(`{"name":"%s", "size":%d, "date":"%s"}`,
-				s.Name(), s.Size(), s.ModTime().Format(timeformat)))
+			io.WriteString(w, fmt.Sprintf(`{"name":"%s", "meta":"%s", "size":%d, "date":"%s"}`,
+				s.Name(), metadata(s.Name()), s.Size(), s.ModTime().Format(timeformat)))
 		}
 	}
 	io.WriteString(w, "]}\n")
@@ -137,7 +169,7 @@ func info(w http.ResponseWriter, req *http.Request) {
 func maketable(w io.Writer, r io.Reader, textsize float64) {
 	y := 90.0
 	linespacing := (textsize * 2.0) + 2.0
-	// tightness :=  0.0 // linespacing / 2.0 
+	// tightness :=  0.0 // linespacing / 2.0
 
 	l := make([]layout, 10)
 	fmt.Fprintf(w, "<deck><slide>\n")
@@ -165,18 +197,17 @@ func maketable(w io.Writer, r io.Reader, textsize float64) {
 					l[i].x, y, textsize, l[i].align, fields[i])
 			}
 			/*
-			ty := y - (linespacing - tightness)
-			if showrule {
-				fmt.Fprintf(w, "<line xp1=\"%g\" yp1=\"%.2f\" xp2=\"%g\" yp2=\"%.2f\" sp=\"0.05\"/>\n",
-					l[0].x, ty, l[nf-1].x+5, ty)
-			}
+				ty := y - (linespacing - tightness)
+				if showrule {
+					fmt.Fprintf(w, "<line xp1=\"%g\" yp1=\"%.2f\" xp2=\"%g\" yp2=\"%.2f\" sp=\"0.05\"/>\n",
+						l[0].x, ty, l[nf-1].x+5, ty)
+				}
 			*/
 		}
 		y -= linespacing
 	}
 	fmt.Fprintf(w, "</slide></deck>\n")
 }
-
 
 // table makes a table from POSTed data
 // POST /table/, Deck:<input>
@@ -293,7 +324,7 @@ func media(w http.ResponseWriter, req *http.Request) {
 // POST /deck/file.xml?cmd=[duration] -- starts a deck
 // POST /deck?cmd=stop -- stops a deck
 // DELETE /deck/file.xml  --  removes a deck
-func deck(w http.ResponseWriter, req *http.Request) {
+func dodeck(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
 	w.Header().Set("Content-Type", "application/json")
 	query := req.URL.Query()
