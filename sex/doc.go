@@ -21,7 +21,9 @@ GET /deck?filter=[type] filter content list by type (std, deck, image, video)
 
 POST /deck/file.xml?cmd=[duration]  starts up a deck; the deck, duration, and process id are returned in JSON
 
-POST /deck?cmd=stop stops the running  deck
+POST /deck?cmd=stop stops the running deck
+
+POST /deck/file.xml?slide=[num] start at the specified slide
 
 DELETE /deck/file.xml  removes a deck
 
