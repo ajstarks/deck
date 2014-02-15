@@ -360,7 +360,15 @@ func dodeck(w http.ResponseWriter, req *http.Request) {
 			log.Printf("%s deck: pause time too long", requester)
 			return
 		}
-		command := exec.Command("vgdeck", "-loop", param, deck)
+		var slidenum string
+		sn, ok := query["slide"]
+		if ok {
+			slidenum = sn[0]
+		} else {
+			slidenum = "0"
+		}
+		log.Printf("vgdeck -loop %s -slide %s %s", param, slidenum, deck)
+		command := exec.Command("vgdeck", "-loop", param, "-slide", slidenum, deck)
 		err = command.Start()
 		if err != nil {
 			eresp(w, err.Error(), http.StatusInternalServerError)

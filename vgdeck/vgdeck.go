@@ -28,11 +28,13 @@ func dodeck(filename, searchterm string, pausetime time.Duration, slidenum, cw, 
 	if pausetime == 0 {
 		interact(filename, searchterm, w, h, slidenum, gp)
 	} else {
-		loop(filename, w, h, pausetime)
+		loop(filename, w, h, slidenum, pausetime)
 	}
 	openvg.Finish()
 }
-
+// titleslide
+func titleslide(d deck.Deck) {
+}
 // loadimage loads all the images of the deck into a map for later display
 func loadimage(d deck.Deck, m map[string]image.Image) {
 	for _, s := range d.Slide {
@@ -162,7 +164,7 @@ func interact(filename, searchterm string, w, h, slidenum int, gp float64) {
 }
 
 // loop through slides with a pause
-func loop(filename string, w, h int, n time.Duration) {
+func loop(filename string, w, h, slidenum int, n time.Duration) {
 	openvg.SaveTerm()
 	defer openvg.RestoreTerm()
 	var d deck.Deck
@@ -177,8 +179,16 @@ func loop(filename string, w, h int, n time.Duration) {
 	imap := make(map[string]image.Image)
 	loadimage(d, imap)
 	// respond to keyboard commands, 'q' to exit
+	var start int
+	pass := 0
 	for {
-		for i := 0; i < len(d.Slide); i++ {
+		pass++
+		if pass == 1 {
+			start = slidenum
+		} else {
+			start = 0
+		}
+		for i := start; i < len(d.Slide); i++ {
 			cmd := readcmd(r)
 			if cmd == 'q' {
 				return
@@ -325,7 +335,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 	// line
 	for _, line := range slide.Line {
 		if line.Color == "" {
-			line.Color = defaultColor
+			line.Color = slide.Fg // defaultColor
 		}
 		if line.Opacity == 0 {
 			strokeopacity = 1
