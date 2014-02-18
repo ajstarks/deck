@@ -548,6 +548,25 @@ func main() {
 	</list>
 	<text xp="55" yp="90" sp="1" color="rgb(127,0,0)" font="mono">sex -dir [start dir] -listen [address:port] -maxupload [bytes]</text>
   </slide>
+  
+  <slide>
+  	<text xp="10" yp="90" sp="3" font="mono" color="rgb(127,0,0)">deck [command] [argument]</text>
+  	<list xp="10" yp="80" sp="2" font="mono" color="rgb(127,0,0)">
+  		<li>deck play file</li>
+  		<li>deck stop</li>
+  		<li>deck list [deck|image|video]</li>
+  		<li>deck upload file...</li>
+  		<li>deck remove file...</li>
+  	</list>
+  	<list xp="50" yp="80" sp="2">
+  		<li>Play a deck</li>
+  		<li>Stop playing a deck</li>
+  		<li>List contents</li>
+  		<li>Upload content</li>
+  		<li>Remove content</li>
+  	</list>
+  </slide>
+  
   <slide>
 
 	<!-- Screen -->
@@ -609,6 +628,8 @@ func main() {
         <!-- <curve xp1="57.5" yp1="15" xp2="80" yp2="25" xp3="82.5" yp3="67.5"/> -->
 
   </slide>
+  
+
 
   <slide bg="rgb(127,127,127)" fg="white">
      <text xp="10" yp="10" sp="5">Design Examples</text>
