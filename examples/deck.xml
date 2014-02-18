@@ -557,6 +557,7 @@ func main() {
   		<li>deck list [deck|image|video]</li>
   		<li>deck upload file...</li>
   		<li>deck remove file...</li>
+		<li>deck table file</li>
   	</list>
   	<list xp="50" yp="80" sp="2">
   		<li>Play a deck</li>
@@ -564,7 +565,18 @@ func main() {
   		<li>List contents</li>
   		<li>Upload content</li>
   		<li>Remove content</li>
+		<li>Make a table</li>
   	</list>
+	<list xp="10" yp="30" sp="1.4" font="mono" color="rgb(127,0,0)">
+		<li>$ deck upload *.jpg</li>
+		<li>$ mkpicdeck *.jpg | deck upload /dev/stdin</li>
+		<li>$ deck play stdin</li>
+	</list>
+	<list xp="50" yp="30" sp="1.4" font="mono" color="rgb(127,127,127)">
+		<li># upload images</li>
+		<li># generate the slide show deck</li>
+		<li># play it</li>
+	</list>
   </slide>
   
   <slide>
