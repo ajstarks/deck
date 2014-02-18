@@ -1,0 +1,36 @@
+#!/bin/sh
+# deck -- command line interface to the deck API
+case $1 in
+	list)
+		gttp -raw GET $srv/deck/?filter=$2
+		;;
+	start|play)
+		gttp -raw POST $srv/deck/$2?cmd=1s
+		;;
+	stop)
+		gttp -raw POST $srv/deck/f.xml?cmd=stop
+		;;
+	up|upload)
+		shift
+		for f in $*
+		do
+			deck=`basename $f`
+			gttp -raw POST $srv/upload/ Deck:$deck -@$f
+		done
+		;;
+	del|delete|remove)
+		shift
+		for f in $*
+		do
+			gttp -raw DELETE $srv/deck/$f Deck:$f
+		done
+		;;
+	*)
+		echo "Play:     deck [start|play] file" 1>&2
+		echo "Stop:     deck stop" 1>&2
+		echo "List:     deck list [image|deck|video]" 1>&2
+		echo "Upload:   deck upload file..." 1>&2
+		echo "Delete:   deck [del|delete|remove] file..." 1>&2
+		exit 1
+		;;
+esac

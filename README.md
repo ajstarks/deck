@@ -214,3 +214,11 @@ POST /table/?textsize=[size] -- specify the text size of the generated table
 
 POST /media plays the media file specified in the Media: header
 
+The shell script `deck` is a command line interface to the deck Web API:
+
+	Play:     deck [start|play] file
+	Stop:     deck stop
+	List:     deck list [image|deck|video]
+	Upload:   deck upload file...
+	Delete:   deck [del|delete|remove] file.
+	
