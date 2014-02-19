@@ -133,7 +133,7 @@ Currently there are three clients: vgdeck, pdfdeck and svgdeck.
 vgdeck is a program for showing presentations on the Raspberry Pi, using the openvg library.
 To install:
 
-	go get github.com/ajstarks/deck/vgdeck
+	go get github.com/ajstarks/deck/cmd/vgdeck
 
 To run vgdeck, specify one or more files (marked up in deck XML) on the command line, and each will be shown in turn.
 
@@ -157,7 +157,7 @@ To cycle through the deck, repeatedly tap [Return] key
 
 For PDF decks, install pdfdeck:
 
-	go get github.com/ajstarks/deck/pdfdeck
+	go get github.com/ajstarks/deck/cmd/pdfdeck
 
 pdfdeck produces decks in PDF corresponding to the input file:
 
@@ -167,7 +167,7 @@ produces deck.pdf
 
 For SVG decks, install svgdeck:
 
-	go get github.com/ajstarks/deck/svgdeck
+	go get github.com/ajstarks/deck/cmd/svgdeck
 
 This command:
 
@@ -182,7 +182,7 @@ The API supports deck start, stop, listing, upload, and remove. Responses are en
 
 To install:
         
-        go get github.com/ajstarks/deck/sex
+        go get github.com/ajstarks/deck/cmd/sex
 
 Command line options control the working directory and address:port
 
@@ -214,11 +214,18 @@ POST /table/?textsize=[size] -- specify the text size of the generated table
 
 POST /media plays the media file specified in the Media: header
 
-The shell script `deck` is a command line interface to the deck Web API:
+The command `deck` is a command line interface to the deck Web API. Install it like this:
 
-	Play:     deck [start|play] file
-	Stop:     deck stop
-	List:     deck list [image|deck|video]
-	Upload:   deck upload file...
-	Delete:   deck [del|delete|remove] file.
+	go get github.com/ajstarks/deck/cmd/deck
+
+	$ deck
+	Usage:
+		List:    deck list [image|deck|video]
+		Play:    deck play file
+		Stop:    deck stop
+		Upload:  deck upload files...
+		Remove:  deck remove files...
+		Video:   deck video file
+		Table:   deck table file [textsize]
 	
+The shell script version of the command is in `deck.sh`. This version uses `gttp` (go get github.com/dgryski/gttp) to make HTTP requests.
