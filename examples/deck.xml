@@ -2,7 +2,7 @@
  <title>A Deck on Deck</title>
  <creator>Anthony Starks</creator>
  <subject>presentations, Go, markup, design</subject>
- <date>2014-02-07</date>
+ <date>2014-02-18</date>
  <description>Deck is a library for clients to make scalable presentations, using a standard markup language. Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc. Clients may be interactive or produce standard formats such as SVG or PDF.</description>
   <slide bg="white" fg="rgb(50,50,50)">
     <text xp="5" yp="50" sp="20">Deck</text>
@@ -432,11 +432,11 @@ func main() {
 </slide>
   <slide>
     <image xp="12" yp="85" width="144" height="128" name="rpi-logo.jpg"/>
-    <text  xp="25" yp="85" sp="2.75" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/vgdeck</text>
+    <text  xp="25" yp="85" sp="2.5" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/cmd/vgdeck</text>
     <image xp="12" yp="55" width="128" height="128" name="pdf-logo.jpg"/>
-    <text  xp="25" yp="55" sp="2.75" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/pdfdeck</text>
+    <text  xp="25" yp="55" sp="2.5" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/cmd/pdfdeck</text>
     <image xp="12" yp="20" width="145" height="145" name="svg.png"/>
-    <text  xp="25" yp="20" sp="2.75" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/svgdeck</text>
+    <text  xp="25" yp="20" sp="2.5" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/cmd/svgdeck</text>
   </slide>
 
   <slide bg="white" fg="rgb(50,50,50)">
@@ -557,6 +557,7 @@ func main() {
   		<li>deck list [deck|image|video]</li>
   		<li>deck upload file...</li>
   		<li>deck remove file...</li>
+		<li>deck video file</li>
 		<li>deck table file</li>
   	</list>
   	<list xp="50" yp="80" sp="2">
@@ -565,6 +566,7 @@ func main() {
   		<li>List contents</li>
   		<li>Upload content</li>
   		<li>Remove content</li>
+		<li>Play video</li>
 		<li>Make a table</li>
   	</list>
 	<list xp="10" yp="30" sp="1.4" font="mono" color="rgb(127,0,0)">
