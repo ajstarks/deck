@@ -1,0 +1,27 @@
+#!/bin/sh
+# testsex -- test the deck server API
+server=${1-$DECKS} # http://192.168.1.3:1958
+deck list deck
+deck list image
+deck list video
+deck list std
+deck play whygo.xml
+sleep 12
+deck stop
+deck upload good-design.xml
+deck play good-design.xml
+sleep 12
+deck stop
+deck table decktable.txt
+sleep 2
+deck play decktable.txt
+sleep 5
+deck stop
+deck remove decktable.txt
+deck video bored.mov
+sleep 50
+deck play whygo.xml 1
+deck play whygo.xml 25h
+deck remove hshshshsdhsjdhsdjh
+deck upload mockingbird.mov
+

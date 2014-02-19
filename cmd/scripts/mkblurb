@@ -1,0 +1,12 @@
+#!/bin/sh
+# mkblurb -- make a text slide
+if test $# -ne 4
+then
+	echo "mkblurb size bgcolor fgcolor startx" 1>&2
+	exit 1
+fi
+size=$1
+bg=$2
+fg=$3
+xp=$4
+(echo  "<deck><slide bg=\"$bg\" fg=\"$fg\"><text xp=\"$xp\" yp=\"60\" sp=\"$size\" wp=\"60\" type=\"block\">"; xmlquote ; echo '</text></slide></deck>' )
