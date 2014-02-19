@@ -552,13 +552,13 @@ func main() {
   <slide>
   	<text xp="10" yp="90" sp="3" font="mono" color="rgb(127,0,0)">deck [command] [argument]</text>
   	<list xp="10" yp="80" sp="2" font="mono" color="rgb(127,0,0)">
-  		<li>deck play file</li>
+  		<li>deck play file [duration]</li>
   		<li>deck stop</li>
   		<li>deck list [deck|image|video]</li>
   		<li>deck upload file...</li>
   		<li>deck remove file...</li>
 		<li>deck video file</li>
-		<li>deck table file</li>
+		<li>deck table file [textsize]</li>
   	</list>
   	<list xp="50" yp="80" sp="2">
   		<li>Play a deck</li>
