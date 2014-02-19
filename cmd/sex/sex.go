@@ -243,7 +243,7 @@ func media(w http.ResponseWriter, req *http.Request) {
 	}
 	if method == "POST" && param == "" && media != "" {
 		log.Printf("%s media: running %s", requester, media)
-		command := exec.Command("/usr/bin/omxplayer", "-o", "both", media)
+		command := exec.Command("/usr/bin/omxplayer", "-b", "-o", "both", media)
 		err := command.Start()
 		if err != nil {
 			eresp(w, err.Error(), http.StatusInternalServerError)
