@@ -68,10 +68,14 @@ func play(url string, files []string) {
 		return
 	}
 	duration := "1s"
+	slide := "0"
 	if len(files) > 2 {
 		duration = files[2]
 	}
-	resp, err := http.Post(url+"/deck/"+files[1]+"?cmd="+duration, "application/octet-stream", nil)
+	if len(files) > 3 {
+		slide = files[3]
+	}
+	resp, err := http.Post(url+"/deck/"+files[1]+"?cmd="+duration+"&slide="+slide, "application/octet-stream", nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return
@@ -186,7 +190,7 @@ func usage() {
 	fmt.Fprintf(os.Stderr, "%s",
 		`Usage:
 	List:    deck list [image|deck|video]
-	Play:    deck play file
+	Play:    deck play file [duration] [slide number]
 	Stop:    deck stop
 	Upload:  deck upload files...
 	Remove:  deck remove files...
