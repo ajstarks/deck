@@ -32,9 +32,11 @@ func dodeck(filename, searchterm string, pausetime time.Duration, slidenum, cw, 
 	}
 	openvg.Finish()
 }
+
 // titleslide
 func titleslide(d deck.Deck) {
 }
+
 // loadimage loads all the images of the deck into a map for later display
 func loadimage(d deck.Deck, m map[string]image.Image) {
 	for _, s := range d.Slide {
@@ -180,6 +182,7 @@ func loop(filename string, w, h, slidenum int, n time.Duration) {
 	loadimage(d, imap)
 	// respond to keyboard commands, 'q' to exit
 	var start int
+	var sd time.Duration
 	pass := 0
 	for {
 		pass++
@@ -189,12 +192,17 @@ func loop(filename string, w, h, slidenum int, n time.Duration) {
 			start = 0
 		}
 		for i := start; i < len(d.Slide); i++ {
-			cmd := readcmd(r)
-			if cmd == 'q' {
+			if readcmd(r) == 'q' {
 				return
 			}
 			showslide(d, imap, i)
-			time.Sleep(n)
+			pd, err := time.ParseDuration(d.Slide[i].Duration)
+			if err != nil {
+				sd = n
+			} else {
+				sd = pd
+			}
+			time.Sleep(sd)
 		}
 	}
 }
@@ -271,7 +279,7 @@ func showtext(x, y openvg.VGfloat, s, align, font string, fs openvg.VGfloat) {
 // dimen returns device dimemsion from percentages
 func dimen(d deck.Deck, x, y, s float64) (xo, yo, so openvg.VGfloat) {
 	xf, yf, sf := deck.Dimen(d.Canvas, x, y, s)
-	xo, yo, so = openvg.VGfloat(xf), openvg.VGfloat(yf), openvg.VGfloat(sf) * 0.8
+	xo, yo, so = openvg.VGfloat(xf), openvg.VGfloat(yf), openvg.VGfloat(sf)*0.8
 	return
 }
 
@@ -340,7 +348,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		if line.Opacity == 0 {
 			strokeopacity = 1
 		} else {
-			strokeopacity = line.Opacity/100.0
+			strokeopacity = line.Opacity / 100.0
 		}
 		x1, y1, sw := dimen(d, line.Xp1, line.Yp1, line.Sp)
 		x2, y2, _ := dimen(d, line.Xp2, line.Yp2, 0)
@@ -379,8 +387,8 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		x, y, _ = dimen(d, rect.Xp, rect.Yp, 0)
 		var w, h openvg.VGfloat
 		w = pct(rect.Wp, cw)
-		if rect.Hr == 0 { // if relative height not specified, base height on overall height 
-			h = pct(rect.Hp, ch) 
+		if rect.Hr == 0 { // if relative height not specified, base height on overall height
+			h = pct(rect.Hp, ch)
 		} else {
 			h = pct(rect.Hr, w)
 		}
@@ -401,9 +409,9 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 			curve.Color = defaultColor
 		}
 		if curve.Opacity == 0 {
-			strokeopacity = 1 
+			strokeopacity = 1
 		} else {
-			strokeopacity = curve.Opacity/100.0
+			strokeopacity = curve.Opacity / 100.0
 		}
 		x1, y1, sw := dimen(d, curve.Xp1, curve.Yp1, curve.Sp)
 		x2, y2, _ := dimen(d, curve.Xp2, curve.Yp2, 0)
@@ -426,7 +434,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		if arc.Opacity == 0 {
 			strokeopacity = 1
 		} else {
-			strokeopacity = arc.Opacity/100.0
+			strokeopacity = arc.Opacity / 100.0
 		}
 		ax, ay, sw := dimen(d, arc.Xp, arc.Yp, arc.Sp)
 		w := pct(arc.Wp, cw)
@@ -458,12 +466,12 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		if l.Opacity == 0 {
 			textopacity = 1
 		} else {
-			textopacity = openvg.VGfloat(l.Opacity/100)
+			textopacity = openvg.VGfloat(l.Opacity / 100)
 		}
 		// every list item
 		var li, lifont string
 		for ln, tl := range l.Li {
-			if len(l.Color) > 0  {
+			if len(l.Color) > 0 {
 				openvg.FillColor(l.Color, textopacity)
 			} else {
 				openvg.FillColor(slide.Fg)
@@ -474,7 +482,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 				//openvg.Rect(x, y+boffset/2, boffset, boffset)
 			}
 			if l.Type == "number" {
-				li = fmt.Sprintf("%d. ", ln+1) + tl.ListText 
+				li = fmt.Sprintf("%d. ", ln+1) + tl.ListText
 			} else {
 				li = tl.ListText
 			}
@@ -493,7 +501,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 	openvg.FillColor(slide.Fg)
 
 	// every text in the slide
-	const linespacing =  1.8 
+	const linespacing = 1.8
 
 	for _, t := range slide.Text {
 		if t.Font == "" {
@@ -502,7 +510,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		if t.Opacity == 0 {
 			textopacity = 1
 		} else {
-			textopacity = openvg.VGfloat(t.Opacity/100)
+			textopacity = openvg.VGfloat(t.Opacity / 100)
 		}
 		x, y, fs = dimen(d, t.Xp, t.Yp, t.Sp)
 		td := strings.Split(t.Tdata, "\n")
