@@ -27,16 +27,17 @@ type canvas struct {
 }
 
 type Slide struct {
-	Bg      string    `xml:"bg,attr"`
-	Fg      string    `xml:"fg,attr"`
-	List    []List    `xml:"list"`
-	Text    []Text    `xml:"text"`
-	Image   []Image   `xml:"image"`
-	Ellipse []Ellipse `xml:"ellipse"`
-	Line    []Line    `xml:"line"`
-	Rect    []Rect    `xml:"rect"`
-	Curve   []Curve   `xml:"curve"`
-	Arc     []Arc     `xml:"arc"`
+	Bg       string    `xml:"bg,attr"`
+	Fg       string    `xml:"fg,attr"`
+	Duration string    `xml:"duration,attr"`
+	List     []List    `xml:"list"`
+	Text     []Text    `xml:"text"`
+	Image    []Image   `xml:"image"`
+	Ellipse  []Ellipse `xml:"ellipse"`
+	Line     []Line    `xml:"line"`
+	Rect     []Rect    `xml:"rect"`
+	Curve    []Curve   `xml:"curve"`
+	Arc      []Arc     `xml:"arc"`
 }
 
 // CommonAttr are the common attributes for text and list
@@ -194,7 +195,7 @@ func Dump(d Deck) {
 		d.Title, d.Creator, d.Description, d.Date, d.Publisher, d.Subject)
 	fmt.Printf("Canvas = %v\n", d.Canvas)
 	for i, s := range d.Slide {
-		fmt.Printf("Slide [%d] = %+v %+v\n", i, s.Bg, s.Fg)
+		fmt.Printf("Slide [%d] = %+v %+v %+v\n", i, s.Bg, s.Fg, s.Duration)
 		for j, l := range s.List {
 			fmt.Printf("\tList [%d] = %+v\n", j, l)
 		}

@@ -1,0 +1,7 @@
+<deck>
+<slide duration="1s"><text xp="50" yp="50" sp="10" color="red">1</text></slide>
+<slide duration="2s"><text xp="50" yp="50" sp="10" color="red">2</text></slide>
+<slide duration="3s"><text xp="50" yp="50" sp="10" color="red">3</text></slide>
+<slide duration="4s"><text xp="50" yp="50" sp="10" color="red">4</text></slide>
+<slide duration="5s"><text xp="50" yp="50" sp="10" color="red">5</text></slide>
+</deck>

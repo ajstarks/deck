@@ -1,7 +1,8 @@
 /*
 Package deck is a library for clients to make scalable presentations, using a standard markup language.
 Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc.
-Clients may be interactive or produce standard formats such as SVG or PDF.
+Clients may be interactive or produce standard formats such as SVG or PDF. Decks may also be served via a 
+RESTful web API
 
 Elements
 
@@ -10,7 +11,7 @@ Here are the elements of a deck:
 	deck: enclosing element
 	canvas: describe the dimensions of the drawing canvas, one per deck
 	metadata elements: title, creator, date, publisher, subject, description
-	slide: within a deck, any number of slides, specify the slide background and text colors.
+	slide: within a deck, any number of slides, specify the slide background and text colors and duration.
 
 within slides an number of:
 
@@ -32,7 +33,7 @@ Here is a sample deck in XML:
 	     <title>Sample Deck</title>
 	     <creator>John Doe</creator>
              <date>August, 2013</date>
-	     <slide bg="maroon" fg="white">
+	     <slide bg="maroon" fg="white" duration="1s">
 		<image xp="20" yp="30" width="256" height="256" name="picture.png"/>
 		<text xp="20" yp="80" sp="3">Deck uses these elements</text>
 		<line xp1="20" yp1="75" xp2="90" yp2="75" sp="0.3" color="rgb(127,0,0)"/>
@@ -50,6 +51,7 @@ Here is a sample deck in XML:
 		<line    xp1="20" yp1="10" xp2="30" yp2="10"/>
 		<rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/>
 		<ellipse xp="45"  yp="10" wp="4" hr="75" color="rgb(0,127,0)"/>
+		<curve   xp1="60" yp1="10" xp2="75" yp2="20" xp3="70" yp3="10" />	
 		<arc     xp="55"  yp="10" wp="4" hr="75" a1="0" a2="180" color="rgb(0,0,127)"/>
 	     </slide>
 	</deck>
