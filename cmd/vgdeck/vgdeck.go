@@ -180,13 +180,10 @@ func loop(filename string, w, h, slidenum int, n time.Duration) {
 	r := bufio.NewReader(os.Stdin)
 	imap := make(map[string]image.Image)
 	loadimage(d, imap)
-	// respond to keyboard commands, 'q' to exit
 	var start int
 	var sd time.Duration
-	pass := 0
-	for {
-		pass++
-		if pass == 1 {
+	for pass := 0; ; pass++ {
+		if pass == 0 {
 			start = slidenum
 		} else {
 			start = 0
