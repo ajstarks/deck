@@ -27,9 +27,11 @@ const (
 	timeformat = "Jan 2, 2006, 3:04pm (MST)"
 	deckpat    = `\.xml$`
 	imgpat     = `\.png$|\.jpg$|\.jpeg$`
-	stdpat     = `\.xml$|` + imgpat
 	vidpat     = `\.mov$|\.mp4$|\.m4v$|\.avi$|\.h264$`
+	stdpat     = `\.xml$|` + imgpat
 	inforesp   = "{\"API\":[{\"deck\":\"/deck/\"},{\"upload\":\"/upload/\"},{\"media\":\"/media/\"},{\"table\":\"/table/\"}]}\n"
+	errmeta    = "."
+	stdmeta    = "..."
 )
 
 var (
@@ -127,7 +129,7 @@ func dodeck(w http.ResponseWriter, req *http.Request) {
 		} else {
 			slidenum = "0"
 		}
-		command := exec.Command("/home/pi/gowork/bin/vgdeck", "-loop", param, "-slide", slidenum, deck)
+		command := exec.Command("vgdeck", "-loop", param, "-slide", slidenum, deck)
 		err = command.Start()
 		if err != nil {
 			eresp(w, err.Error(), http.StatusInternalServerError)
@@ -343,25 +345,28 @@ func eresp(w http.ResponseWriter, err string, code int) {
 }
 
 func metadata(filename string) string {
-	stdmeta := "---"
 	if strings.HasSuffix(filename, ".xml") {
 		d, err := deck.Read(filename, 0, 0)
 		if err != nil {
-			return stdmeta
+			return errmeta
 		}
-		return fmt.Sprintf("%d slides", len(d.Slide))
+		ns := len(d.Slide)
+		if ns == 0 {
+			return errmeta
+		}
+		return fmt.Sprintf("%d slides", ns)
 	}
 
 	if strings.HasSuffix(filename, ".png") || strings.HasSuffix(filename, ".jpg") || strings.HasSuffix(filename, ".jpeg") {
 		var err error
 		f, err := os.Open(filename)
 		if err != nil {
-			return stdmeta
+			return errmeta
 		}
 		defer f.Close()
 		im, _, err := image.DecodeConfig(f)
 		if err != nil {
-			return stdmeta
+			return errmeta
 		}
 		return fmt.Sprintf("(%d x %d)", im.Width, im.Height)
 	}
@@ -370,17 +375,22 @@ func metadata(filename string) string {
 
 // deckinfo returns information (file, size, date) for a deck and movie files in the deck directory
 func deckinfo(w http.ResponseWriter, data []os.FileInfo, pattern string) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	io.WriteString(w, `{"decks":[`)
 	nf := 0
 	for _, s := range data {
 		matched, err := regexp.MatchString(pattern, s.Name())
 		if err == nil && matched {
+			meta := metadata(s.Name())
+			if meta == errmeta {
+				continue
+			}
 			nf++
 			if nf > 1 {
 				io.WriteString(w, ",\n")
 			}
-			io.WriteString(w, fmt.Sprintf(`{"name":"%s", "meta":"%s", "size":%d, "date":"%s"}`,
-				s.Name(), metadata(s.Name()), s.Size(), s.ModTime().Format(timeformat)))
+			io.WriteString(w, fmt.Sprintf(`{"name":"%s", "meta":"%s", "date":"%s"}`,
+				s.Name(), meta, s.ModTime().Format(timeformat)))
 		}
 	}
 	io.WriteString(w, "]}\n")
