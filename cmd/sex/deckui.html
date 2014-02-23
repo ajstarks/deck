@@ -1,9 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Presentations</title>
 <script type="application/javascript">
+
+// lookup table: locations:servers
+var screens  = {
+		"Desk": "localhost:1958", 
+		"Bedroom": "10.0.1.1:1958", 
+		"Classroom A113": "calarts.edu/a113", 
+		"Room 101": "minitrue.gov/work"
+	};
+
+// screenlookup gives the server associated with a specified location
+function screenlookup() {
+	var srv = screens[document.getElementById("servername").value];
+	if (srv == "") {
+		srv = "localhost:1958";
+	}
+	return srv;
+}
+		
+// Play a deck
 function Play() {
-	var srv = document.getElementById("servername").value;
+	var srv = screenlookup();
 	var df = document.getElementById("deckfile").value;
 	var dur = document.getElementById("duration").value;
 	var slide = document.getElementById("slidenum").value;
@@ -13,27 +33,20 @@ function Play() {
 	request.send();
 }
 
+// Stop a deck
 function Stop() {
-	var srv = document.getElementById("servername").value;
+	var srv = screenlookup();
 	
 	request = new XMLHttpRequest;
 	request.open('POST', "http://"+srv+"/deck/?cmd=stop", true);
 	request.send();
 }
 
-function Media() {
-	var srv = document.getElementById("servername").value;
-	var df = document.getElementById("deckfile").value;
-	
-	request = new XMLHttpRequest;
-	request.open('POST', "http://"+srv+"/media/", true);
-	request.setRequestHeader("Media", df);
-	request.send();
-}
-
+// List content on the server
 function List(style) {
-	var srv = document.getElementById("servername").value;
+	var srv = screenlookup();
 	var listype = document.getElementById("listype").value;
+	
 	request = new XMLHttpRequest;
 	request.open('GET', "http://"+srv+"/deck/?filter="+listype, true);
 	request.onload = function() {
@@ -41,8 +54,6 @@ function List(style) {
   		if (request.status == 200) {
     		data = JSON.parse(request.responseText);
     		output += '<table id="' + style + '">';
-    		//output += '<caption>' + listype + "s" + '</caption>';
-    		output += '<thead><tr><td>NAME</td><td>INFO</td><td>DATE</td></tr></thead>';
     		output += '<tbody>';
     		for (i in data.decks) {
     			output += '<tr>';
@@ -72,6 +83,10 @@ body {
 	font-size: 12px;
 }
 
+h1 {
+	font-size: 400%;
+}
+
 caption {
 	font-size: 125%;
 	font-style: bold;
@@ -84,7 +99,7 @@ caption {
 
 #deckinfo {
 	width: 75%;
-	background-color: black;
+	background-color: #eee;
 	padding: 1em;
 	line-height: 2em;
 	text-align: center;
@@ -101,6 +116,9 @@ caption {
 #deckparam {
 	font-size: 75%;
 	width: 75%;
+	padding: 1em;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 #decklist {
@@ -114,11 +132,26 @@ caption {
 	width: 75%;
 	text-align: center;
 }
+
+#listselect {
+	padding: 1em;
+	background-color: #eee;
+	width: 75%;
+}
+
+#serverselect {
+	padding: 1em;
+	background-color: #eee;
+	width: 75%;
+	bottom: 2em;
+}
+
 button {
 	font-size:120%;
 	color: white;
 	border: 0px;
 }
+
 #play {
 	background-color: green;
 }
@@ -127,15 +160,19 @@ button {
 	background-color: red;
 }
 
-#servername {
-
+select {
+	font-size: 120%;
+	border: 0;
+	width: 30%;
+	background: transparent;
 }
 
-select {
-	font-size: 100%;
-	border: 0;
-	width: 75%;
-	background: transparent;
+label {
+	color: #000;
+}
+
+input {
+	text-align: center;
 }
 
 #one-column-emphasis {
@@ -163,49 +200,48 @@ select {
 	color: #339;
 	background: #eff2ff;
 }
-
 </style>
+
 </head>
 
 <body>
 
 <div id="ui" align="center">
-<div id="screen">
+	<h1>Presentations</h1>
 
+	<div id="serverselect">
+		<select id="servername" type="text" value="Desk" maxlength="40">
+			<option>Bedroom</option>
+			<option>Desk</option>
+			<option>Room 101</option>
+			<option>Classroom A113</option>
+		</select>
+	</div>
 
-<div id="deckparam">
-	<label>Duration</label><input id="duration" type="text" value="1s" placeholder="1s" size="5"/<br/>
-	<label>Start Slide</label><input id="slidenum" type="text" placeholder="0" value="0" size="4" /><br/>
-</div>
+	<div id="deckinfo">
+		<input id="deckfile" maxlength="50" type="text" value="whygo.xml" placeholder="whygo.xml"/>
+		<div id="deckparam">
+			<label>Duration</label><input id="duration" type="text" value="1s" placeholder="1s" size="4"/<br/>
+			<label>Start Slide</label><input id="slidenum" type="text" placeholder="0" value="0" size="4" /><br/>
+		</div>
+	</div>
 
-<div id="deckinfo">
-	<input id="deckfile" maxlength="50" type="text" value="whygo.xml" placeholder="whygo.xml"/><br/>
-</div>
+	<div id="controls">
+		<button id="play" onclick="Play()">Play</button>
+		<button id="stop" onclick="Stop()">Stop</button>
+	</div>
 
-<div id="controls">
-	<button id="play" onclick="Play()">Play</button>
-	<button id="stop" onclick="Stop()">Stop</button>
-</div>
+	<div id="listselect">
+		<button onclick="List('one-column-emphasis')">List</button>
+		<select  id="listype" type="text" value="deck" placeholder="deck">
+			<option>standard</option>
+			<option>deck</option>
+			<option>image</option>
+			<option>video</option>
+		</select>
+	</div>
 
-
-<select id="servername" type="text" value="localhost:1958" placeholder="localhost">
-	<option>foo.local:1958</option>
-	<option>localhost:1958</option>
-</select>
-</div>
-
-<div id="listselect">
-	<select onchange="List('one-column-emphasis')" id="listype" type="text" value="deck" placeholder="deck">
-	<option>List Type</option>
-	<option>deck</option>
-	<option>image</option>
-	<option>video</option>
-</select>
-</div>
-
-
-
-<div id="decklist"></div>
+	<div id="decklist"></div>
 </div>
 
 </body>
