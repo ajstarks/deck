@@ -7,7 +7,7 @@
 // lookup table: locations:servers
 var screens  = {
 		"Desk": "localhost:1958", 
-		"Bedroom": "10.0.1.1:1958", 
+		"Bedroom": "10.0.1.22:1958", 
 		"Classroom A113": "calarts.edu/a113", 
 		"Room 101": "minitrue.gov/work"
 	};
@@ -160,6 +160,10 @@ button {
 	background-color: red;
 }
 
+#list {
+	background-color: darkgray;
+}
+
 select {
 	font-size: 120%;
 	border: 0;
@@ -232,7 +236,7 @@ input {
 	</div>
 
 	<div id="listselect">
-		<button onclick="List('one-column-emphasis')">List</button>
+		<button id="list" onclick="List('one-column-emphasis')">List</button>
 		<select  id="listype" type="text" value="deck" placeholder="deck">
 			<option>standard</option>
 			<option>deck</option>
