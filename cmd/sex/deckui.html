@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="application/javascript">
+function Play() {
+	var srv = document.getElementById("servername").value;
+	var df = document.getElementById("deckfile").value;
+	var dur = document.getElementById("duration").value;
+	var slide = document.getElementById("slidenum").value;
+	
+	request = new XMLHttpRequest;
+	request.open('POST', "http://"+srv+"/deck/"+df+"?cmd="+dur+"&slide="+slide, true);
+	request.send();
+}
+
+function Stop() {
+	var srv = document.getElementById("servername").value;
+	
+	request = new XMLHttpRequest;
+	request.open('POST', "http://"+srv+"/deck/?cmd=stop", true);
+	request.send();
+}
+
+function Media() {
+	var srv = document.getElementById("servername").value;
+	var df = document.getElementById("deckfile").value;
+	
+	request = new XMLHttpRequest;
+	request.open('POST', "http://"+srv+"/media/", true);
+	request.setRequestHeader("Media", df);
+	request.send();
+}
+
+function List(style) {
+	var srv = document.getElementById("servername").value;
+	var listype = document.getElementById("listype").value;
+	request = new XMLHttpRequest;
+	request.open('GET', "http://"+srv+"/deck/?filter="+listype, true);
+	request.onload = function() {
+		var output = "";
+  		if (request.status == 200) {
+    		data = JSON.parse(request.responseText);
+    		output += '<table id="' + style + '">';
+    		//output += '<caption>' + listype + "s" + '</caption>';
+    		output += '<thead><tr><td>NAME</td><td>INFO</td><td>DATE</td></tr></thead>';
+    		output += '<tbody>';
+    		for (i in data.decks) {
+    			output += '<tr>';
+    			output += '<td>' +  data.decks[i].name + '</td>';
+    			output += '<td>' +  data.decks[i].meta + '</td>';
+    			output += '<td>' +  data.decks[i].date + '</td>';
+    			output += '</tr>';
+    		}
+    		output += '</tbody>';
+    		output += '</table>';
+    		var update = document.getElementById('decklist');
+    		update.innerHTML = output;
+  		} else {
+  			alert("error");
+  		}
+	}
+	request.send();
+}
+</script>
+
+<style type="text/css">
+
+body {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	line-height: 0.5em;
+	margin: 10%;
+	font-size: 12px;
+}
+
+caption {
+	font-size: 125%;
+	font-style: bold;
+	text-align: center;
+	background-color: #000;
+	color: white;
+	margin-top: 1em;
+	padding: 0.5em;
+}
+
+#deckinfo {
+	width: 75%;
+	background-color: black;
+	padding: 1em;
+	line-height: 2em;
+	text-align: center;
+	width: 75%;
+}
+
+#deckfile {
+	font-size: 200%;
+	text-align: center;
+	color: #aaa;
+	width: 75%;
+}
+
+#deckparam {
+	font-size: 75%;
+	width: 75%;
+}
+
+#decklist {
+	width: 100%;
+}
+
+#controls {
+	padding: 1em;
+	line-height: 2em;
+	background-color: #eee;
+	width: 75%;
+	text-align: center;
+}
+button {
+	font-size:120%;
+	color: white;
+	border: 0px;
+}
+#play {
+	background-color: green;
+}
+
+#stop {
+	background-color: red;
+}
+
+#servername {
+
+}
+
+select {
+	font-size: 100%;
+	border: 0;
+	width: 75%;
+	background: transparent;
+}
+
+#one-column-emphasis {
+	font-size: 100%;
+	text-align: left;
+	border-collapse: collapse;
+}
+#one-column-emphasis th {
+	font-size: 120%;
+	font-weight: bold;
+	padding: 12px 15px;
+	color: #039;
+}
+#one-column-emphasis td {
+	padding: 10px 15px;
+	color: #669;
+	border-top: 1px solid #e8edff;
+}
+.oce-first {
+	background: #d0dafd;
+	border-right: 10px solid transparent;
+	border-left: 10px solid transparent;
+}
+#one-column-emphasis tr:hover td {
+	color: #339;
+	background: #eff2ff;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="ui" align="center">
+<div id="screen">
+
+
+<div id="deckparam">
+	<label>Duration</label><input id="duration" type="text" value="1s" placeholder="1s" size="5"/<br/>
+	<label>Start Slide</label><input id="slidenum" type="text" placeholder="0" value="0" size="4" /><br/>
+</div>
+
+<div id="deckinfo">
+	<input id="deckfile" maxlength="50" type="text" value="whygo.xml" placeholder="whygo.xml"/><br/>
+</div>
+
+<div id="controls">
+	<button id="play" onclick="Play()">Play</button>
+	<button id="stop" onclick="Stop()">Stop</button>
+</div>
+
+
+<select id="servername" type="text" value="10.0.1.22:1958" placeholder="raspi">
+	<option>raspi.local:1958</option>
+	<option>10.0.1.22:1958</option>
+	<option>192.168.1.3:1958</option>
+	<option>localhost:1958</option>
+</select>
+</div>
+
+<div id="listselect">
+	<select onchange="List('one-column-emphasis')" id="listype" type="text" value="deck" placeholder="deck">
+	<option>List Type</option>
+	<option>deck</option>
+	<option>image</option>
+	<option>video</option>
+</select>
+</div>
+
+
+
+<div id="decklist"></div>
+</div>
+
+</body>
+</html>
