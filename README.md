@@ -38,7 +38,7 @@ Here is a sample deck in XML:
 <deck>
 	<title>Sample Deck</title>
 	<canvas width="1024" height="768"/>
-	<slide bg="maroon" fg="white">
+	<slide bg="maroon" fg="white" duration="1s">
 		<image xp="20" yp="30" width="256" height="256" name="picture.png"/>
 		<text xp="20" yp="80" sp="3">Deck uses these elements</text>
 		<line xp1="20" yp1="75" xp2="90" yp2="75" sp="0.3" color="rgb(127,127,127)"/>
@@ -57,6 +57,7 @@ Here is a sample deck in XML:
 		<line    xp1="20" yp1="10" xp2="30" yp2="10"/>
 		<rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/>
 		<ellipse xp="45"  yp="10" wp="4" hp="3" color="rgb(0,127,0)"/>
+                <curve   xp1="60" yp1="10" xp2="75" yp2="20" xp3="70" yp3="10" />       
 		<arc     xp="55"  yp="10" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/>
 	</slide>
 </deck>
