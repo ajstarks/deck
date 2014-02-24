@@ -7,7 +7,7 @@
 // lookup table: locations:servers
 var screens  = {
 		"Desk": "localhost:1958", 
-		"Bedroom": "10.0.1.1:1958", 
+		"Bedroom": "10.0.1.22:1958", 
 		"Classroom A113": "calarts.edu/a113", 
 		"Room 101": "minitrue.gov/work"
 	};
@@ -20,11 +20,9 @@ function screenlookup() {
 	}
 	return srv;
 }
-		
-// Play a deck
-function Play() {
+
+function Playlist(df) {
 	var srv = screenlookup();
-	var df = document.getElementById("deckfile").value;
 	var dur = document.getElementById("duration").value;
 	var slide = document.getElementById("slidenum").value;
 	
@@ -57,6 +55,10 @@ function List(style) {
     		output += '<tbody>';
     		for (i in data.decks) {
     			output += '<tr>';
+    			if (listype == "deck") {
+    				output += '<td><button id="play" onclick="Playlist(\''+data.decks[i].name+'\')">Play</button></td>';
+    				output += '<td><button id="stop" onclick="Stop()">Stop</button>';
+    			}
     			output += '<td>' +  data.decks[i].name + '</td>';
     			output += '<td>' +  data.decks[i].meta + '</td>';
     			output += '<td>' +  data.decks[i].date + '</td>';
@@ -80,7 +82,7 @@ body {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
 	line-height: 0.5em;
 	margin: 10%;
-	font-size: 12px;
+	font-size: 16px;
 }
 
 h1 {
@@ -97,41 +99,11 @@ caption {
 	padding: 0.5em;
 }
 
-#deckinfo {
-	width: 75%;
-	background-color: #eee;
-	padding: 1em;
-	line-height: 2em;
-	text-align: center;
-	width: 75%;
-}
-
-#deckfile {
-	font-size: 200%;
-	text-align: center;
-	color: #aaa;
-	width: 75%;
-}
-
-#deckparam {
-	font-size: 75%;
-	width: 75%;
-	padding: 1em;
-	margin-left: auto;
-	margin-right: auto;
-}
 
 #decklist {
 	width: 100%;
 }
 
-#controls {
-	padding: 1em;
-	line-height: 2em;
-	background-color: #eee;
-	width: 75%;
-	text-align: center;
-}
 
 #listselect {
 	padding: 1em;
@@ -179,18 +151,18 @@ input {
 	text-align: center;
 }
 
-#one-column-emphasis {
+#listable {
 	font-size: 100%;
 	text-align: left;
 	border-collapse: collapse;
 }
-#one-column-emphasis th {
+#listable th {
 	font-size: 120%;
 	font-weight: bold;
 	padding: 12px 15px;
 	color: #039;
 }
-#one-column-emphasis td {
+#listable td {
 	padding: 10px 15px;
 	color: #669;
 	border-top: 1px solid #e8edff;
@@ -200,7 +172,7 @@ input {
 	border-right: 10px solid transparent;
 	border-left: 10px solid transparent;
 }
-#one-column-emphasis tr:hover td {
+#listable tr:hover td {
 	color: #339;
 	background: #eff2ff;
 }
@@ -211,7 +183,6 @@ input {
 <body>
 
 <div id="ui" align="center">
-	<h1>Presentations</h1>
 
 	<div id="serverselect">
 		<select id="servername" type="text" value="Desk" maxlength="40">
@@ -222,27 +193,15 @@ input {
 		</select>
 	</div>
 
-	<div id="deckinfo">
-		<input id="deckfile" maxlength="50" type="text" value="whygo.xml" placeholder="whygo.xml"/>
-		<div id="deckparam">
-			<label>Duration</label><input id="duration" type="text" value="1s" placeholder="1s" size="4"/<br/>
-			<label>Start Slide</label><input id="slidenum" type="text" placeholder="0" value="0" size="4" /><br/>
-		</div>
-	</div>
-
-	<div id="controls">
-		<button id="play" onclick="Play()">Play</button>
-		<button id="stop" onclick="Stop()">Stop</button>
-	</div>
-
 	<div id="listselect">
-		<button id="list" onclick="List('one-column-emphasis')">List</button>
+		<button id="list" onclick="List('listable')">List</button>
 		<select  id="listype" type="text" value="deck" placeholder="deck">
-			<option>standard</option>
 			<option>deck</option>
 			<option>image</option>
 			<option>video</option>
 		</select>
+		<label>Duration</label><input id="duration" type="text" value="1s" placeholder="1s" size="4"/>
+		<label>Start Slide</label><input id="slidenum" type="text" placeholder="0" value="0" size="4" />
 	</div>
 
 	<div id="decklist"></div>

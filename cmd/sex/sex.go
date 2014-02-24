@@ -139,7 +139,7 @@ func dodeck(w http.ResponseWriter, req *http.Request) {
 		deckpid = command.Process.Pid
 		deckrun = true
 		log.Printf("%s deck: %#v, duration: %#v, slide: %s pid: %d", requester, deck, param, slidenum, deckpid)
-		io.WriteString(w, fmt.Sprintf("{\"deckpid\":\"%d\", \"deck\":\"%s\", \"duration\":\"%s\"}\n", deckpid, deck, param))
+		io.WriteString(w, fmt.Sprintf("{\"deckpid\":\"%d\", \"deck\":\"%s\", \"duration\":\"%s\", \"slide\":\"%s\"}\n", deckpid, deck, param, slidenum))
 		return
 	case postflag && deckrun && param == "stop":
 		stopProcess(w, deckpid, requester)
