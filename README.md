@@ -57,7 +57,7 @@ Here is a sample deck in XML:
 		<line    xp1="20" yp1="10" xp2="30" yp2="10"/>
 		<rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/>
 		<ellipse xp="45"  yp="10" wp="4" hp="3" color="rgb(0,127,0)"/>
-                <curve   xp1="60" yp1="10" xp2="75" yp2="20" xp3="70" yp3="10" />       
+		<curve   xp1="60" yp1="10" xp2="75" yp2="20" xp3="70" yp3="10" />       
 		<arc     xp="55"  yp="10" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/>
 	</slide>
 </deck>
