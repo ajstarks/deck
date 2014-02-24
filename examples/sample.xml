@@ -1,6 +1,6 @@
 <deck>
   <canvas width="1024" height="768" />
-  <slide bg="white" fg="black">
+  <slide duration="2s" bg="white" fg="black">
       <image xp="50" yp="60" width="256" height="179" name="work.png" caption="my desk"/>
       <text  xp="20" yp="80" sp="4">Deck uses these elements</text>
       <list  xp="20" yp="70" sp="2" type="bullet">
