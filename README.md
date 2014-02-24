@@ -65,7 +65,7 @@ Here is a sample deck in XML:
 
 The list and text elements have common attributes:
 
-```yaml
+```
 xp: horizontal percentage
 yp: vertical percentage
 sp: font size percentage
@@ -90,9 +90,15 @@ The dimensions of graphical elements (width, height, stroke width) are also scal
 The content of the slides are automatically scaled based on the specified canvas size 
 (sane defaults are should be set the clients, if dimensions not specified)
 
-<a href="http://www.flickr.com/photos/ajstarks/9469642769/" title="deck's percent grid by ajstarks, on Flickr"><img src="http://farm8.staticflickr.com/7449/9469642769_c2dc83afac.jpg" width="500" height="281" alt="deck's percent grid"></a>
+[![deck's percent grid][4]][3]
 
-<a align="center" href="http://www.flickr.com/photos/ajstarks/9409916329/" title="Deck's percentage based layout by ajstarks, on Flickr"><img src="http://farm4.staticflickr.com/3818/9409916329_6b8e134f16.jpg" width="500" height="281" alt="Deck's percentage based layout"></a>
+[![Deck's percentage based layout][6]][5]
+
+[3]: http://www.flickr.com/photos/ajstarks/9469642769/
+[4]: http://farm8.staticflickr.com/7449/9469642769_c2dc83afac.jpg "deck's percent grid by ajstarks, on Flickr"
+
+[5]: http://www.flickr.com/photos/ajstarks/9409916329/
+[6]: http://farm4.staticflickr.com/3818/9409916329_6b8e134f16.jpg "Deck's percentage based layout by ajstarks, on Flickr"
 
 ## Clients ##
 
