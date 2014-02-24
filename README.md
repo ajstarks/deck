@@ -252,7 +252,7 @@ go get github.com/ajstarks/deck/cmd/deck
 $ deck
 Usage:
 	List:    deck list [image|deck|video]
-	Play:    deck play file
+	Play:    deck play file [duration] [start-slide]
 	Stop:    deck stop
 	Upload:  deck upload files...
 	Remove:  deck remove files...
