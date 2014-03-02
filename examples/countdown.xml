@@ -1,7 +1,7 @@
 <deck>
-<slide duration="1s"><text xp="50" yp="50" sp="10" color="red">1</text></slide>
-<slide duration="2s"><text xp="50" yp="50" sp="10" color="red">2</text></slide>
-<slide duration="3s"><text xp="50" yp="50" sp="10" color="red">3</text></slide>
-<slide duration="4s"><text xp="50" yp="50" sp="10" color="red">4</text></slide>
-<slide duration="5s"><text xp="50" yp="50" sp="10" color="red">5</text></slide>
+<slide duration="1s"><text align="center" xp="50" yp="50" sp="10" color="rgb(200,200,200)">1</text></slide>
+<slide duration="2s"><text align="center" xp="50" yp="40" sp="20" color="rgb(150,150,150)">2</text></slide>
+<slide duration="3s"><text align="center" xp="50" yp="30" sp="30" color="rgb(100,100,100)">3</text></slide>
+<slide duration="4s"><text align="center" xp="50" yp="25" sp="40" color="rgb(50,50,50)">4</text></slide>
+<slide duration="5s"><text align="center" xp="50" yp="15" sp="50" color="rgb(0,0,0)">5</text></slide>
 </deck>
