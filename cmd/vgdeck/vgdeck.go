@@ -24,7 +24,6 @@ func dodeck(filename, searchterm string, pausetime time.Duration, slidenum, cw, 
 	if ch > 0 {
 		h = ch
 	}
-	openvg.Background(0, 0, 0)
 	if pausetime == 0 {
 		interact(filename, searchterm, w, h, slidenum, gp)
 	} else {
@@ -39,8 +38,17 @@ func titleslide(d deck.Deck) {
 
 // loadimage loads all the images of the deck into a map for later display
 func loadimage(d deck.Deck, m map[string]image.Image) {
-	for _, s := range d.Slide {
-		for _, i := range s.Image {
+	w, h := d.Canvas.Width, d.Canvas.Height
+        cw := openvg.VGfloat(w)
+        ch := openvg.VGfloat(h)
+	msize := int(cw*.01)
+	mx := cw/2
+	my := ch*0.05
+	mbg := "white"
+	mfg := "black"
+	for ns, s := range d.Slide {
+		for ni, i := range s.Image {
+			openvg.Start(w, h)
 			f, err := os.Open(i.Name)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "%v\n", err)
@@ -51,8 +59,13 @@ func loadimage(d deck.Deck, m map[string]image.Image) {
 				fmt.Fprintf(os.Stderr, "%v\n", err)
 				continue
 			}
+			openvg.FillColor(mbg)
+			openvg.Rect(0, 0, cw, ch)
+			openvg.FillColor(mfg)
+			openvg.TextMid(mx, my, fmt.Sprintf("Loading image %d from slide %d", ni, ns), "sans", msize)
 			m[i.Name] = img
 			f.Close()
+			openvg.End()
 		}
 	}
 }
