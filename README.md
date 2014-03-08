@@ -12,6 +12,9 @@ Clients may be interactive or produce standard formats such as SVG or PDF.
 Also included is a REST API for listing content, uploading, stopping, starting and removing decks, 
 generating tables, and playing video.
 
+[![The deck on Deck][3]
+[3]: http://speakerdeck.com/ajstarks/deck-a-go-package-for-presentations
+
 ## Elements ##
 
 * deck: enclosing element 
