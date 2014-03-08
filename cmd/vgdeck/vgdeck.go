@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+var StartTime = time.Now()
+var firstrun = 0
+
 // dodeck sets up the graphics environment and kicks off the interaction
 func dodeck(filename, searchterm string, pausetime time.Duration, slidenum, cw, ch int, gp float64) {
 	w, h := openvg.Init()
@@ -32,22 +35,35 @@ func dodeck(filename, searchterm string, pausetime time.Duration, slidenum, cw, 
 	openvg.Finish()
 }
 
-// titleslide
-func titleslide(d deck.Deck) {
+// modfile returns true if the modification is newer than some epoch
+func modfile(filename string, when time.Time) bool {
+	if firstrun == 1 {
+		return true
+	}
+	f, err := os.Stat(filename)
+	if err != nil {
+		return false
+	}
+	fmt.Fprintf(os.Stderr, "comparing %v with %v\n", f.ModTime(), when)
+	return f.ModTime().After(when)
 }
 
 // loadimage loads all the images of the deck into a map for later display
 func loadimage(d deck.Deck, m map[string]image.Image) {
+	firstrun++
 	w, h := d.Canvas.Width, d.Canvas.Height
-        cw := openvg.VGfloat(w)
-        ch := openvg.VGfloat(h)
-	msize := int(cw*.01)
-	mx := cw/2
-	my := ch*0.05
+	cw := openvg.VGfloat(w)
+	ch := openvg.VGfloat(h)
+	msize := int(cw * .01)
+	mx := cw / 2
+	my := ch * 0.05
 	mbg := "white"
 	mfg := "black"
 	for ns, s := range d.Slide {
 		for ni, i := range s.Image {
+			if !modfile(i.Name, StartTime) {
+				continue
+			}
 			openvg.Start(w, h)
 			f, err := os.Open(i.Name)
 			if err != nil {
@@ -62,7 +78,7 @@ func loadimage(d deck.Deck, m map[string]image.Image) {
 			openvg.FillColor(mbg)
 			openvg.Rect(0, 0, cw, ch)
 			openvg.FillColor(mfg)
-			openvg.TextMid(mx, my, fmt.Sprintf("Loading image %d from slide %d", ni, ns), "sans", msize)
+			openvg.TextMid(mx, my, fmt.Sprintf("Loading image %s %d from slide %d", i.Name, ni, ns), "sans", msize)
 			m[i.Name] = img
 			f.Close()
 			openvg.End()
