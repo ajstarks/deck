@@ -44,7 +44,6 @@ func modfile(filename string, when time.Time) bool {
 	if err != nil {
 		return false
 	}
-	fmt.Fprintf(os.Stderr, "comparing %v with %v\n", f.ModTime(), when)
 	return f.ModTime().After(when)
 }
 
