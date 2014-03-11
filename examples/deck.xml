@@ -2,7 +2,7 @@
  <title>A Deck on Deck</title>
  <creator>Anthony Starks</creator>
  <subject>presentations, Go, markup, design</subject>
- <date>2014-03-10</date>
+ <date>2014-03-11</date>
  <description>Deck is a library for clients to make scalable presentations, using a standard markup language. Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc. Clients may be interactive or produce standard formats such as SVG or PDF.</description>
   <slide bg="white" fg="rgb(50,50,50)">
     <text xp="5" yp="50" sp="20">Deck</text>
@@ -13,7 +13,7 @@
   <slide bg="white" fg="rgb(50,50,50)">
     <line xp1="5" yp1="90" xp2="90" yp2="90" color="rgb(50,50,50)" sp="0.1"/> 
     <text xp="5" yp="85" sp="2.5" color="rgb(127,0,0)">DECK: a package for presentations</text>
-    <list xp="5" yp="45" sp="2.5">
+    <list xp="5" yp="50" sp="2.5">
       <li>Deck is a package written in Go</li>
       <li>That uses a singular markup language</li>
       <li>With elements for text, lists, code, and graphics</li>
@@ -125,7 +125,7 @@ func main() {
         <li>  &lt;canvas width="1024" height="768" /&gt;</li>
         <li>  &lt;slide bg="white" fg="black"&gt;</li>
         <li>      &lt;image xp="70" yp="60" width="256" height="179" name="work.png" caption="Desk"/&gt;</li>
-        <li>      &lt;text  xp="20" yp="80" sp="3"&gt;Deck uses these elements&lt;/text&gt;</li>
+        <li>      &lt;text  xp="20" yp="80" sp="3" link="http://goo.gl/Wm05Ex"&gt;Deck elements&lt;/text&gt;</li>
         <li>      &lt;list  xp="20" yp="70" sp="2" type="bullet"&gt;</li>
         <li>         &lt;li&gt;text, list, image&lt;/li&gt;</li>
         <li>         &lt;li&gt;line, rect, ellipse&lt;/li&gt;</li>
@@ -162,7 +162,7 @@ func main() {
 
   <slide bg="white" fg="black">
       <image xp="70" yp="60" width="256" height="179" name="work.png" caption="Desk" />
-      <text  xp="20" yp="90" sp="3">Deck uses these elements</text>
+      <text  xp="20" yp="90" sp="3" link="http://goo.gl/Wm05Ex">Deck elements</text>
       <list  xp="20" yp="70" sp="2" type="bullet">
          <li>text, list, image</li>
          <li>line, rect, ellipse</li>
@@ -177,32 +177,32 @@ func main() {
 
    <slide bg="white" fg="rgb(50,50,50)">
      <text xp="20" yp="90" sp="3">Text and List Markup</text>
-     <list xp="5" yp="70" sp="2" color="rgb(127,0,0)">
+     <list xp="5" yp="70" sp="1.5" color="rgb(127,0,0)">
        <li>Position, size</li>
        <li>Block of text</li>
        <li>Lines of code</li>
        <li>Attributes</li>
     </list>
 
-    <list xp="5" yp="35" sp="2" color="rgb(127,0,0)">
+    <list xp="5" yp="35" sp="1.5" color="rgb(127,0,0)">
        <li>Position, size</li>
        <li>Bullet list</li>
        <li>Numbered list</li>
        <li>Attributes</li>
     </list>
 
-    <list xp="20" yp="70" sp="2" font="mono">
+    <list xp="20" yp="70" sp="1.5" font="mono">
      <li>&lt;text xp="..." yp="..." sp="..."&gt;</li>
      <li>&lt;text ... type="block"&gt;</li>
      <li>&lt;text ... type="code"&gt;</li>
-     <li>&lt;text ... color="..." opacity="..." font="..." align="..."&gt;</li>
+     <li>&lt;text ... color="..." opacity="..." font="..." align="..." link="..."&gt;</li>
     </list>
 
-    <list xp="20" yp="35" sp="2" font="mono">
+    <list xp="20" yp="35" sp="1.5" font="mono">
      <li>&lt;list xp="..." yp="..." sp="..."&gt;</li>
      <li>&lt;list ... type="bullet"&gt;</li>
      <li>&lt;list ... type="number"&gt;</li>
-     <li>&lt;list ... color="..." opacity="..." font="..." align="..."&gt;</li>
+     <li>&lt;list ... color="..." opacity="..." font="..." align="..." link="..."&gt;</li>
     </list>
   </slide>
 
@@ -217,6 +217,7 @@ func main() {
       <li>color</li>
       <li>opacity</li>
       <li>font</li>
+      <li>link</li>
     </list>
 
     <list xp="30" yp="70" sp="2" font="sans">
@@ -228,6 +229,7 @@ func main() {
       <li>SVG names ("maroon"), or RGB "rgb(127,0,0)"</li>
       <li>percent opacity (0-100, transparent - opaque)</li>
       <li>"sans", "serif", "mono"</li>
+      <li>URL</li>
       </list>
   </slide>
 
