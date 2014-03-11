@@ -1,7 +1,7 @@
 /*
 Package deck is a library for clients to make scalable presentations, using a standard markup language.
 Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc.
-Clients may be interactive or produce standard formats such as SVG or PDF. Decks may also be served via a 
+Clients may be interactive or produce standard formats such as SVG or PDF. Decks may also be served via a
 RESTful web API
 
 Elements
@@ -35,7 +35,7 @@ Here is a sample deck in XML:
              <date>August, 2013</date>
 	     <slide bg="maroon" fg="white" duration="1s">
 		<image xp="20" yp="30" width="256" height="256" name="picture.png"/>
-		<text xp="20" yp="80" sp="3">Deck uses these elements</text>
+		<text xp="20" yp="80" sp="3" link="http://example.com/">Deck uses these elements</text>
 		<line xp1="20" yp1="75" xp2="90" yp2="75" sp="0.3" color="rgb(127,0,0)"/>
 		<list xp="20" yp="70" sp="1.5">
 			<li>canvas<li>
@@ -51,7 +51,7 @@ Here is a sample deck in XML:
 		<line    xp1="20" yp1="10" xp2="30" yp2="10"/>
 		<rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/>
 		<ellipse xp="45"  yp="10" wp="4" hr="75" color="rgb(0,127,0)"/>
-		<curve   xp1="60" yp1="10" xp2="75" yp2="20" xp3="70" yp3="10" />	
+		<curve   xp1="60" yp1="10" xp2="75" yp2="20" xp3="70" yp3="10" />
 		<arc     xp="55"  yp="10" wp="4" hr="75" a1="0" a2="180" color="rgb(0,0,127)"/>
 	     </slide>
 	</deck>
@@ -66,6 +66,7 @@ The list, text, rect, and ellipse elements have common attributes:
 	opacity: 0.0-1.0 (fully transparent - opaque)
 	color: SVG names ("maroon"), or RGB "rgb(127,0,0)"
 	font: "sans", "serif", "mono"
+	link: url
 
 Layout
 

@@ -42,7 +42,7 @@ Here is a sample deck in XML:
 	<canvas width="1024" height="768"/>
 	<slide bg="maroon" fg="white" duration="1s">
 		<image xp="20" yp="30" width="256" height="256" name="picture.png"/>
-		<text xp="20" yp="80" sp="3">Deck uses these elements</text>
+		<text xp="20" yp="80" sp="3" link="http://example.com/">Deck uses these elements</text>
 		<line xp1="20" yp1="75" xp2="90" yp2="75" sp="0.3" color="rgb(127,127,127)"/>
 		<list xp="20" yp="70" sp="1.5">
 			<li>canvas</li>
@@ -76,6 +76,7 @@ type: "bullet", "number" (list), "block", "code" (text)
 align: "left", "middle", "end"
 color: SVG names ("maroon"), or RGB "rgb(127,0,0)"
 font: "sans", "serif", "mono"
+link: url
 ```
 
 See the example directory for example decks.

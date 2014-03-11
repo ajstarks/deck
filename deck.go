@@ -50,6 +50,7 @@ type CommonAttr struct {
 	Color   string  `xml:"color,attr"`
 	Opacity float64 `xml:"opacity,attr"`
 	Font    string  `xml:"font,attr"`
+	Link    string  `xml:"link,attr"`
 }
 
 // Dimension describes a graphics object with width and height
