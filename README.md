@@ -209,6 +209,8 @@ produces one slide per SVG file, with each slide linked to the next.
 
 The shell script, `mktbl` creates a tabular layout from tab-separated text
 
+## API ##
+
 The command `sex` is a server program that provides an API for slide decks. 
 The API supports deck start, stop, listing, upload, and remove. Responses are encoded in JSON.
 
