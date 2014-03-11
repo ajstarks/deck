@@ -2,7 +2,7 @@
  <title>A Deck on Deck</title>
  <creator>Anthony Starks</creator>
  <subject>presentations, Go, markup, design</subject>
- <date>2014-02-18</date>
+ <date>2014-03-10</date>
  <description>Deck is a library for clients to make scalable presentations, using a standard markup language. Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc. Clients may be interactive or produce standard formats such as SVG or PDF.</description>
   <slide bg="white" fg="rgb(50,50,50)">
     <text xp="5" yp="50" sp="20">Deck</text>
@@ -19,6 +19,7 @@
       <li>With elements for text, lists, code, and graphics</li>
       <li>All layout and sizes are expressed as percentages</li>
       <li>Clients are interactive or create formats like PDF or SVG</li>
+      <li>Include a RESTful API</li>
     </list>
   </slide>
 
@@ -987,9 +988,9 @@ and the voice of the turtle is heard in our land.
         </list>
   </slide>
   <slide bg="rgb(127,127,127)" fg="white">
-    <text  xp="50" yp="85" sp="5" align="center">github.com/ajstarks/deck</text>
+    <text  xp="50" yp="85" sp="5" align="center" link="http://github.com/ajstarks/deck">github.com/ajstarks/deck</text>
     <image xp="50" yp="50" width="270" height="270" name="sdeck256.png" />
-    <text  xp="50" yp="10" sp="2.5" align="center">ajstarks@gmail.com</text>
-    <text  xp="50" yp="4" sp="2.5" align="center">@ajstarks</text>
+    <text  xp="50" yp="10" sp="2.5" align="center" link="mailto:ajstarks@gmail.com">ajstarks@gmail.com</text>
+    <text  xp="50" yp="4" sp="2.5" align="center" link="http://twitter.com/ajstarks">@ajstarks</text>
   </slide>
 </deck>

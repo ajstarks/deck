@@ -94,14 +94,14 @@ func grid(doc *gofpdf.Fpdf, w, h float64, color string, percent float64) {
 	for x, pl := 0.0, 0.0; x <= w; x += pw {
 		doc.Line(x, 0, x, h)
 		if pl > 0 {
-			showtext(doc, x, h-fs, fmt.Sprintf("%.0f", pl), fs, "sans", "center")
+			showtext(doc, x, h-fs, fmt.Sprintf("%.0f", pl), fs, "sans", "center", "")
 		}
 		pl += percent
 	}
 	for y, pl := 0.0, 0.0; y <= h; y += ph {
 		doc.Line(0, y, w, y)
 		if pl < 100 {
-			showtext(doc, fs, y+(fs/3), fmt.Sprintf("%.0f", 100-pl), fs, "sans", "center")
+			showtext(doc, fs, y+(fs/3), fmt.Sprintf("%.0f", 100-pl), fs, "sans", "center", "")
 		}
 		pl += percent
 	}
@@ -160,7 +160,7 @@ func doellipse(doc *gofpdf.Fpdf, x, y, w, h float64, color string) {
 }
 
 // dotext places text elements on the canvas according to type
-func dotext(doc *gofpdf.Fpdf, cw, x, y, fs float64, wp float64, tdata, font, color, align, ttype string) {
+func dotext(doc *gofpdf.Fpdf, cw, x, y, fs float64, wp float64, tdata, font, color, align, ttype, tlink string) {
 	var tw float64
 
 	td := strings.Split(tdata, "\n")
@@ -178,14 +178,14 @@ func dotext(doc *gofpdf.Fpdf, cw, x, y, fs float64, wp float64, tdata, font, col
 	} else {
 		ls := listspacing * fs
 		for _, t := range td {
-			showtext(doc, x, y, t, fs, font, align)
+			showtext(doc, x, y, t, fs, font, align, tlink)
 			y += ls
 		}
 	}
 }
 
 // showtext places fully attributed text at the specified location
-func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align string) {
+func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align, link string) {
 	offset := 0.0
 	doc.SetFont(fontlookup(font), "", fs)
 	tw := doc.GetStringWidth(s)
@@ -196,6 +196,9 @@ func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align 
 		offset = tw
 	}
 	doc.Text(x-offset, y, s)
+	if len(link) > 0 {
+		doc.LinkString(x-offset, y-fs, tw, fs, link)
+	}
 }
 
 // dolists places lists on the canvas
@@ -301,7 +304,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 			}
 			capr, capg, capb := colorlookup(im.Color)
 			doc.SetTextColor(capr, capg, capb)
-			showtext(doc, x, y+(midy)+(capsize*2), im.Caption, capsize, im.Font, im.Align)
+			showtext(doc, x, y+(midy)+(capsize*2), im.Caption, capsize, im.Font, im.Align, "")
 		}
 	}
 	// every graphic on the slide
@@ -390,7 +393,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		}
 		setopacity(doc, t.Opacity)
 		x, y, fs = dimen(cw, ch, t.Xp, t.Yp, t.Sp)
-		dotext(doc, cw, x, y, fs, t.Wp, t.Tdata, t.Font, t.Color, t.Align, t.Type)
+		dotext(doc, cw, x, y, fs, t.Wp, t.Tdata, t.Font, t.Color, t.Align, t.Type, t.Link)
 	}
 	// for every list element...
 	for _, l := range slide.List {
