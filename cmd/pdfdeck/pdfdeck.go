@@ -174,7 +174,7 @@ func dotext(doc *gofpdf.Fpdf, cw, x, y, fs float64, wp float64, tdata, font, col
 	}
 	if ttype == "block" {
 		tw = deck.Pwidth(wp, cw, cw/2)
-		textwrap(doc, x, y, tw, fs, fs*linespacing, tdata, font)
+		textwrap(doc, x, y, tw, fs, fs*linespacing, tdata, font, tlink)
 	} else {
 		ls := listspacing * fs
 		for _, t := range td {
@@ -237,7 +237,7 @@ func dolist(doc *gofpdf.Fpdf, x, y, fs float64, list []deck.ListItem, font, colo
 }
 
 // textwrap draws text at location, wrapping at the specified width
-func textwrap(doc *gofpdf.Fpdf, x, y, w, fs, leading float64, s, font string) {
+func textwrap(doc *gofpdf.Fpdf, x, y, w, fs, leading float64, s, font, link string) {
 	var factor = 0.3
 	if font == "mono" {
 		factor = 1.0
@@ -256,6 +256,9 @@ func textwrap(doc *gofpdf.Fpdf, x, y, w, fs, leading float64, s, font string) {
 			xp = x
 			yp += leading
 		}
+	}
+	if len(link) > 0 {
+		doc.LinkString(x, y-fs, edge, (yp-y)+fs, link)
 	}
 }
 
