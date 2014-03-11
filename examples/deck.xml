@@ -19,7 +19,7 @@
       <li>With elements for text, lists, code, and graphics</li>
       <li>All layout and sizes are expressed as percentages</li>
       <li>Clients are interactive or create formats like PDF or SVG</li>
-      <li>Include a RESTful API</li>
+      <li>Servers use a RESTful API for list, upload, stop, start, remove</li>
     </list>
   </slide>
 
@@ -908,7 +908,7 @@ func main() {
       <li>cluster fuck of genius</li>
       <li>with an unique class inheritance system.</li>
     </list>
-    <text xp="20" yp="5" sp="1" align="begin" color="gray">Andrew Mackenzie-Ross, OBJECTIVE-C LESSONS FROM GO</text>
+    <text xp="20" yp="5" sp="1" align="begin" color="gray" link="http://mackross.net/objc/2013/07/23/objective-c-lessons-from-go/">Andrew Mackenzie-Ross, OBJECTIVE-C LESSONS FROM GO</text>
   </slide>
 
   <slide bg="black" fg="white">
@@ -924,7 +924,7 @@ func main() {
       <li>cluster fuck of genius</li>
       <li>with an unique class inheritance system.</li>
     </list>
-    <text xp="20" yp="5" sp="1" align="begin" color="gray">Andrew Mackenzie-Ross, OBJECTIVE-C LESSONS FROM GO</text>
+    <text xp="20" yp="5" sp="1" align="begin" color="gray" link="http://mackross.net/objc/2013/07/23/objective-c-lessons-from-go/">Andrew Mackenzie-Ross, OBJECTIVE-C LESSONS FROM GO</text>
   </slide>
    
   <slide bg="white" fg="rgb(50,50,50)">
@@ -951,7 +951,7 @@ func main() {
     	<text xp="10" yp="75" sp="3.75"  wp="65" type="block">Python and Ruby programmers come to Go 
 		because they don't have to surrender much expressiveness, 
 		but gain performance and get to play with concurrency.</text>
-          <text xp="10" yp="15" sp="2">Less is exponentially more
+          <text xp="10" yp="15" sp="2" link="http://commandcenter.blogspot.com/2012/06/less-is-exponentially-more.html">Less is exponentially more
 Rob Pike</text>
   </slide>
   <slide>
@@ -973,7 +973,7 @@ and the voice of the turtle is heard in our land.
 
   <slide>
         <image xp="70" yp="50" width="600" height="600" name="dr600.jpg" caption="Dieter Rams" color="gray"/>
-        <text xp="4" yp="90" sp="3">Good Design</text>
+        <text xp="4" yp="90" sp="3" link="https://www.vitsoe.com/us/about/good-design">Good Design</text>
         <list xp="4" yp="75" sp="2.0" type="plain">
             <li>is innovative</li>
             <li>makes a product useful</li>
