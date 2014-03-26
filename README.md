@@ -3,7 +3,7 @@
 [![Deck Intro][2]][1]
 
 [1]: http://www.flickr.com/photos/ajstarks/9592115613/ "Deck Intro by ajstarks, on Flickr"
-[2]: http://farm8.staticflickr.com/7410/9592115613_5d23402703.jpg
+[2]: https://farm4.staticflickr.com/3820/13415195635_64da6a7a90.jpg 
 
 Deck is a library for clients to make scalable presentations, using a standard markup language.
 Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc.
