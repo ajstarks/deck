@@ -151,7 +151,7 @@ func interact(filename, searchterm string, w, h, slidenum int, gp float64) {
 			showslide(d, imap, n)
 
 		// next slide
-		case '+', 'n', '\n', ' ', '\t', 14, 27: // +,n,newline,space,tab,Crtl-N
+		case '+', 'n', '\n', ' ', '\t', 14: // +,n,newline,space,tab,Crtl-N
 			n++
 			if n > lastslide {
 				n = 0
@@ -173,7 +173,31 @@ func interact(filename, searchterm string, w, h, slidenum int, gp float64) {
 			if xray%2 == 0 {
 				showgrid(d, n, gp)
 			}
+		// Escape sequence from remotes
+		case 27:
+			remote, rerr := r.ReadString('~')
+			if len(remote) > 2 && rerr == nil {
+				switch remote[1] {
+				case '3': // blank screen
+					openvg.Start(d.Canvas.Width, d.Canvas.Height)
+					openvg.FillColor("black")
+					openvg.Rect(0, 0, openvg.VGfloat(d.Canvas.Width), openvg.VGfloat(d.Canvas.Height))
+					openvg.End()
 
+				case '5': // back
+					n--
+					if n < 0 {
+						n = lastslide
+					}
+					showslide(d, imap, n)
+				case '6': // forward
+					n++
+					if n > lastslide {
+						n = 0
+					}
+					showslide(d, imap, n)
+				}
+			}
 		// search
 		case '/', 6: // slash, Ctrl-F
 			openvg.RestoreTerm()
