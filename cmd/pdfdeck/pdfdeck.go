@@ -43,6 +43,27 @@ var pagemap = map[string]PageDimen{
 	"A5":         {210, 148, mm2pt},
 }
 
+// unicodemap maps selected typographic glyphs from Unicode to values gofpdf accepts
+var unicodemap *strings.Replacer = strings.NewReplacer(
+	"\u2018", "\x91",
+	"\u2019", "\x92",
+	"\u201c", "\x93",
+	"\u201d", "\x94",
+	"\u2022", "\x95",
+	"\u2013", "\x96",
+	"\u2014", "\x97",
+	"\u2122", "\x99",
+	"\u20ac", "\x80",
+	"\u2026", "\x85",
+	"\u00b6", "\xb6",
+	"\u00a7", "\xa7",
+	"\u00a9", "\xa9",
+	"\u00ae", "\xae",
+	"\u00b0", "\xb0")
+
+// translate is the function that does unicode character replacement
+var translate func(string) string
+
 // pct converts percentages to canvas measures
 func pct(p, m float64) float64 {
 	return (p / 100.0) * m
@@ -174,7 +195,7 @@ func dotext(doc *gofpdf.Fpdf, cw, x, y, fs float64, wp float64, tdata, font, col
 	}
 	if ttype == "block" {
 		tw = deck.Pwidth(wp, cw, cw/2)
-		textwrap(doc, x, y, tw, fs, fs*linespacing, tdata, font, tlink)
+		textwrap(doc, x, y, tw, fs, fs*linespacing, translate(tdata), font, tlink)
 	} else {
 		ls := listspacing * fs
 		for _, t := range td {
@@ -184,18 +205,25 @@ func dotext(doc *gofpdf.Fpdf, cw, x, y, fs float64, wp float64, tdata, font, col
 	}
 }
 
+// reptranslate converts selected unicode code points to font-mapped glyphs
+// using string replacement
+func reptranslate(s string) string {
+	return unicodemap.Replace(s)
+}
+
 // showtext places fully attributed text at the specified location
 func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align, link string) {
 	offset := 0.0
 	doc.SetFont(fontlookup(font), "", fs)
-	tw := doc.GetStringWidth(s)
+	t := translate(s)
+	tw := doc.GetStringWidth(t)
 	switch align {
 	case "center":
 		offset = (tw / 2)
 	case "right":
 		offset = tw
 	}
-	doc.Text(x-offset, y, s)
+	doc.Text(x-offset, y, t)
 	if len(link) > 0 {
 		doc.LinkString(x-offset, y-fs, tw, fs, link)
 	}
@@ -231,7 +259,7 @@ func dolist(doc *gofpdf.Fpdf, x, y, fs float64, list []deck.ListItem, font, colo
 		if len(tl.Font) > 0 {
 			doc.SetFont(fontlookup(tl.Font), "", fs)
 		}
-		doc.Text(x, y, t)
+		doc.Text(x, y, translate(t))
 		y += ls
 	}
 }
@@ -418,6 +446,7 @@ func doslides(doc *gofpdf.Fpdf, pc gofpdf.InitType, filename, author, title stri
 	var d deck.Deck
 	var err error
 
+	translate = doc.UnicodeTranslatorFromDescriptor("")
 	w := int(pc.Size.Wd)
 	h := int(pc.Size.Ht)
 	for _, v := range fontmap {
@@ -434,11 +463,26 @@ func doslides(doc *gofpdf.Fpdf, pc gofpdf.InitType, filename, author, title stri
 	d.Canvas.Width = w
 	d.Canvas.Height = h
 	doc.SetCreator("pdfdeck", true)
+
+	// Document-supplied overrides command-line specified metadata
+	if len(d.Creator) > 0 {
+		author = d.Creator
+	}
+
+	if len(d.Title) > 0 {
+		title = d.Title
+	}
+
 	if len(title) > 0 {
 		doc.SetTitle(title, true)
 	}
+
 	if len(author) > 0 {
 		doc.SetAuthor(author, true)
+	}
+
+	if len(d.Subject) > 0 {
+		doc.SetSubject(d.Subject, true)
 	}
 	for i := 0; i < len(d.Slide); i++ {
 		pdfslide(doc, d, i, gp)
