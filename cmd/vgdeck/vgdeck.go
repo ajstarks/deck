@@ -5,18 +5,22 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"github.com/ajstarks/deck"
-	"github.com/ajstarks/openvg"
+	"code.google.com/p/go-charset/charset"
+	_ "code.google.com/p/go-charset/data"
 	"image"
 	_ "image/jpeg"
 	_ "image/png"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/ajstarks/deck"
+	"github.com/ajstarks/openvg"
 )
 
 var StartTime = time.Now()
 var firstrun = 0
+var wintrans, _ = charset.TranslatorTo("windows-1252")
 
 // dodeck sets up the graphics environment and kicks off the interaction
 func dodeck(filename, searchterm string, pausetime time.Duration, slidenum, cw, ch int, gp float64) {
@@ -311,17 +315,25 @@ func showgrid(d deck.Deck, n int, p float64) {
 	}
 	openvg.End()
 }
+func fromUTF8(s string) string {
+	_, b, err := wintrans.Translate([]byte(s), true); if err != nil {
+		return s
+	} else {
+		return string(b)
+	}
+}
 
 //showtext displays text
 func showtext(x, y openvg.VGfloat, s, align, font string, fs openvg.VGfloat) {
+	t := fromUTF8(s)
 	fontsize := int(fs)
 	switch align {
 	case "center", "middle", "mid":
-		openvg.TextMid(x, y, s, font, fontsize)
+		openvg.TextMid(x, y, t, font, fontsize)
 	case "right", "end":
-		openvg.TextEnd(x, y, s, font, fontsize)
+		openvg.TextEnd(x, y, t, font, fontsize)
 	default:
-		openvg.Text(x, y, s, font, fontsize)
+		openvg.Text(x, y, t, font, fontsize)
 	}
 }
 
@@ -596,6 +608,9 @@ func whitespace(r rune) bool {
 // textwrap draws text at location, wrapping at the specified width
 func textwrap(x, y, w openvg.VGfloat, s string, font string, fs, leading, factor openvg.VGfloat) {
 	size := int(fs)
+	if font == "mono" {
+		factor = 1.0
+	}
 	wordspacing := openvg.TextWidth("m", font, size)
 	words := strings.FieldsFunc(s, whitespace)
 	xp := x
