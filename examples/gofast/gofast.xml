@@ -1,0 +1,808 @@
+<deck>
+
+	<slide bg="black" fg="white">
+		<text xp="50" yp="50" align="center" sp="5">Why Choose Go?</text>
+	</slide>
+
+
+	<slide>
+		<text  xp="50" yp="60" sp="5" align="center">Concurrency
+Ease of deployment
+Performance</text>
+	</slide>
+	
+	<slide>
+		<text xp="60" yp="50" sp="4">Performance</text>
+		<ellipse xp="30" yp="50" wp="30" hr="100" color="gray"/>
+		<ellipse xp="30" yp="50" wp="10" hr="100" color="black"/>
+		<ellipse xp="20" yp="25" wp="1" hr="100" color="black"/>
+		<ellipse xp="15" yp="35" wp="1" hr="100" color="black"/>
+		<ellipse xp="13" yp="50" wp="1" hr="100" color="black"/>
+		<ellipse xp="15" yp="65" wp="1" hr="100" color="black"/>
+		<ellipse xp="20" yp="75" wp="1" hr="100" color="black"/>
+		<ellipse xp="30" yp="80" wp="1" hr="100" color="black"/>
+		<ellipse xp="40" yp="75" wp="1" hr="100" color="black"/>
+		<ellipse xp="45" yp="65" wp="1" hr="100" color="black"/>
+		<ellipse xp="47" yp="50" wp="1" hr="100" color="black"/>
+		<ellipse xp="45" yp="35" wp="1" hr="100" color="black"/>
+		<ellipse xp="40" yp="25" wp="2" hr="100" color="red"/>
+		<text xp="40" yp="15" sp="2" align="center">MAX</text>
+		<text xp="20" yp="15" sp="2" align="center" color="gray">MIN</text>
+		<line xp1="30" yp1="50" xp2="38" yp2="29" sp=".5" color="black"/>
+	</slide>	
+
+
+	<slide bg="black" fg="rgb(245,213,165)">
+		<image xp="50" yp="60" width="314" height="108" name="j5things.png"/>
+		<text xp="50" yp="35" sp="4" align="center">Five things that make Go fast</text>
+	</slide>
+
+
+	<slide bg="black" fg="rgb(254,213,165)">
+		<image xp="50" yp="60" width="240" height="240" name="bj1.png"/>
+		<text xp="50" yp="35" sp="4" align="center">Values</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Go</text>
+		<text xp="5" yp="75" type="code" sp="3">var gocon int32 = 2014</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Python</text>
+		<text xp="5" yp="75" type="code" sp="3">% python
+>>> from sys import getsizeof
+>>> gocon = 2014
+>>> getsizeof(gocon)
+24</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Java</text>
+		<text xp="5" yp="75" type="code" sp="3">int gocon = 2014;</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Java</text>
+		<text xp="5" yp="75" type="code" sp="3">// 16 bytes on 32 bit JVM
+// 24 bytes on 64 bit JVM
+Integer gocon = new Integer(2014);</text>
+	</slide>
+
+
+	<slide>
+		<image xp="55" yp="60" width="924" height="454" name="procmem.png"/>
+		<text xp="50" yp="10" sp="3" align="center">Memory speed lags behind CPU speed</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">CPU Cache</text>
+		<image xp="50" yp="40" width="336" height="403" name="cpucache.png"/>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Values example</text>
+		<text xp="5" yp="75" type="code" sp="2.5">// Location is a point in a three dimensional space
+type Location struct {
+    // 8 bytes per float64
+    // 24 bytes in total
+    X, Y, Z float64
+}
+
+// Locations consumes 24 * 1000 bytes
+var Locations [1000]Location</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Values</text>
+		<text xp="5" yp="75" sp="3" font="serif" type="block">Go lets you create compact data
+		structures, avoiding unnecessary indirection, 
+		which use the cache better, leading to better performance.</text>
+	</slide>
+
+
+	<slide bg="black" fg="rgb(245,213,165)">
+		<image xp="50" yp="60" width="240" height="240" name="bj2.png"/>
+		<text xp="50" yp="35" sp="4" align="center">Inlining</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Function call procedure</text>
+		<list xp="5" yp="75" sp="3" type="number" font="serif">
+			<li>Create new stack frame</li>
+			<li>Record the return address of the caller</li>
+			<li>Save registers that may be overwritten during the function call</li>
+			<li>Compute the function address</li>
+			<li>Branch to the computed address</li>
+		</list>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="75" sp="4" wp="60" type="block" font="serif">Function calls have an unavoidable overhead</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="75" sp="4" wp="60" type="block" font="serif">The Go compiler inlines a function by treating the body of the function as if it were part of the caller.</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Inlining example</text>
+		<text xp="5" yp="75" sp="2" type="code">package util
+
+// Max returns the larger of a or b.
+func Max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}</text>
+	<text xp="5" yp="30" sp="2" type="code">package main
+
+import "util"
+
+// Double returns twice the value of the larger of a or b.
+func Double(a, b int) int { return 2 * util.Max(a, b) }</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">After inlining</text>
+			<rect xp="22" yp="58" wp="25" hp="30" color="orange" opacity="40"/>
+		<text xp="5" yp="75" sp="3" font="mono">func Double(a, b int) {
+    temp := b
+    if a > b {
+        temp = a
+    }
+    return 2 * temp
+}</text>
+	<text xp="45" yp="60" sp="2.5">Contents of util.Max copied into Double</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">util.a</text>
+		<text xp="5" yp="75" sp="2.5" type="code">% strings ~/pkg/linux_amd64/util.a
+...
+package util
+    import runtime "runtime"
+    func @"".Max (@"".a
+2 int , @"".b
+3 int) (? int) { if @"".a
+2 > @"".b
+3 { return @"".a
+2 }; return @"".b
+...</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Dead code elimination</text>
+		<text xp="5" yp="75" sp="3" type="code">func Test() bool { return false }
+
+func Expensive() {
+    if Test() {
+        // something expensive
+    }
+}</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Dead code elimination</text>
+				<text xp="5" yp="75" sp="3" type="code">func Expensive() {
+    if false {
+        // something expensive is now unreachable
+    }
+}</text>
+	</slide>
+
+
+	<slide bg="black" fg="rgb(245,213,165)">
+		<image xp="50" yp="60" width="240" height="240" name="bj3.png"/>
+		<text xp="50" yp="35" sp="4" align="center">Escape analysis</text>
+	
+	</slide>
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Process address space</text>
+		<rect xp="20" yp="75" wp="30" hp="10" color="rgb(127,127,127)"/>
+		<rect xp="20" yp="60" wp="30" hp="20" color="rgb(127,0,0)"/>
+		<rect xp="20" yp="35" wp="30" hp="40" color="rgb(200,200,200)"/>
+		<rect xp="20" yp="10" wp="30" hp="10" color="rgb(0,0,0)"/>
+		
+		<text xp="20" yp="75" sp="2" color="white" align="center">Stack</text>
+		<text xp="20" yp="35" sp="2" color="white" align="center">Heap</text>
+		<text xp="20" yp="10" sp="2" color="white" align="center">Program text</text>
+		
+		<text xp="40" yp="79" sp="2" font="mono">0x7fffffff</text>
+		<text xp="40" yp="10" sp="2" font="mono">0x00000000</text>
+	</slide>
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Escape analysis</text>
+		<text xp="5" yp="75" sp="3" font="serif" type="block">Determines whether any references to a value escape 
+		the function where the value is declared.
+		If no references escape, the value may be safely stored on the stack. 
+		Values stored in the stack do not need to be allocated or freed.</text>
+	</slide>
+	
+	
+	
+	
+		<slide>
+		<text xp="5" yp="85" sp="5">Escape analysis example</text>
+		<text xp="5" yp="75" sp="2" font="mono">// Sum returns the sum of the numbers 1 to 100.
+func Sum() int {
+    numbers := make([]int, 100)
+    for i := range numbers  {
+        numbers[i] = i + 1
+    }
+    var sum int
+    for _, i := range numbers {
+        sum += i
+    }
+    return sum
+}</text>
+	<rect xp="25" yp="66" wp="40" hp="6" color="orange" opacity="40"/>
+	<text xp="50" yp="65" sp="2">numbers never escape Sum()</text>
+	</slide>	
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Escape analysis example</text>
+		<text xp="5" yp="75" sp="1.8" font="mono">const Width, Height = 640,480
+
+type Cursor struct {
+    X, Y int
+}
+
+func Center(c *Cursor) {
+    c.X += Width / 2
+    c.Y += Height / 2
+}
+
+func CenterCursor() {
+    c := new(Cursor)
+    Center(c)
+    fmt.Println(c.X, c.Y)
+}</text>
+
+	<text xp="40" yp="47.5" sp="2" font="serif" color="rgb(127,0,0)">Center does not retain a reference to c</text>
+	<text xp="40" yp="22.5" sp="2" font="serif" wp="40" type="block" color="rgb(127,0,0)">c created with new, not visible outside of CenterCursor, allocated on the stack</text>
+
+	</slide>	
+
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Escape analysis in action</text>
+		<list xp="5" yp="75" sp="1.8" font="mono">
+			<li>% go build -gcflags=-m esc.go</li>
+			<li># command-line-arguments</li>
+			<li>./esc.go:26: can inline Center</li>
+			<li>./esc.go:33: inlining call to Center</li>
+			<li>./esc.go:6: Sum make([]int, 100) does not escape</li>
+			<li>./esc.go:26: CenterCursor new(Cursor) does not escape</li>
+			<li>./esc.go:34: NewPoint ... argument does not escape</li>
+		</list>
+		
+		
+		<list xp="65" yp="75" sp="1.8" font="serif" color="rgb(127,0,0)">
+			<li>Show escape analysis and inlining info</li>
+			<li></li>
+			<li>Center() inlined into CenterCursor()</li>
+			<li>make([]int, 100)</li>
+			<li>func Center(c *Cursor)</li>
+			<li>c := new(Cursor)</li>
+			<li>fmt.Println(c.X, c.Y)</li>
+		</list>
+	</slide>	
+
+
+	<slide bg="black" fg="rgb(245,213,165)">
+		<image xp="50" yp="60" width="240" height="240" name="bj4.png"/>
+		<text xp="50" yp="35" sp="4" align="center">Goroutines</text>
+	</slide>
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Process switching cost</text>
+		<list xp="5" yp="75" sp="3" type="bullet" font="serif">
+			<li>Saving and restoring all CPU registers</li>
+			<li>Reconfiguring the memory management unit</li>
+			<li>Switch into kernel space</li>
+			<li>Scheduler overhead</li>
+		</list>
+	</slide>
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Processor registers</text>
+		
+		<text xp="5" yp="75" sp="2.5">amd64 (up to 64 bits each)</text>
+		<text xp="5" yp="68" sp="2" wp="33" font="mono" type="block">RAX, RBX, RCX, RDX, RSP, RBP, 
+		RSI, RDI, R8, R9, R10, R11, R12, R13, R14, R15, RIP</text>
+		
+		<text xp="5" yp="35" sp="2.5">387 floating point (32 bits each)</text>
+		<text xp="5" yp="28" sp="2" wp="35" font="mono" type="block">F0, F1, F2, F3, F4, F5, F6, F7</text>
+		
+		<text xp="50" yp="75" sp="2.5">MMX (64 bits each)</text>
+		<text xp="50" yp="68" sp="2" wp="33" font="mono" type="block">MM0, MM1, MM2, MM3, MM4, MM5, MM6, MM7</text>
+		
+		<text xp="50" yp="35" sp="2.5">SE{2,3,4} (128 bits each)</text>
+		<text xp="50" yp="28" sp="2" wp="33" font="mono" type="block">XMM1, XMM2, XMM3, XMM4, XMM5, XMM6, XMM7, XMM8, XMM9, 
+		XMM10, XMM11, XMM12, XMM13, XMM14, XMM15</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Threads</text>
+		<text xp="5" yp="75" sp="3" type="block" font="serif">Many threads can share the same address space. 
+		Creation and switching are faster compared to indidivual processes.</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Goroutines</text>
+		<text xp="5" yp="75" sp="3" type="block" font="serif">Goroutines are cooperatively scheduled, 
+		with switching occuring only at well defined points. The compiler knows the registers in use, and saves them automatically</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Goroutine scheduling points</text>
+		<list xp="5" yp="75" sp="3" type="bullet" font="serif">
+			<li>Channel send and receive</li>
+			<li>go statement</li>
+			<li>Blocking system call</li>
+			<li>Garbage collection</li>
+		</list>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Goroutine example</text>
+		<text xp="5" yp="75" sp="2" font="mono">func ReadFile(name string) []byte {
+    f, _ := os.Open(name)</text>
+    
+    	<text xp="5" yp="60" sp="2" font="mono">    buf := make([]byte, 2048)
+    n, _ := f.Read(buf)
+    
+    return buf[:n]
+}</text>
+
+	<text xp="60" yp="75" sp="2" font="mono">func Process(c chan int) {
+    for {
+        v := &lt;- c
+        c &lt;- v + 1
+    }
+}</text>
+	
+	<line xp1="10" yp1="71" xp2="35" yp2="71" sp="2" color="red" opacity="30"/>
+	</slide>
+	
+	<slide>
+		<text xp="5" yp="85" sp="5">Goroutine example</text>
+		<text xp="5" yp="75" sp="2" font="mono">func ReadFile(name string) []byte {
+    f, _ := os.Open(name)</text>
+    
+    	<text xp="5" yp="60" sp="2" font="mono">    buf := make([]byte, 2048)
+    n, _ := f.Read(buf)
+    
+    return buf[:n]
+}</text>
+
+	<text xp="60" yp="75" sp="2" font="mono">func Process(c chan int) {
+    for {
+        v := &lt;- c
+        c &lt;- v + 1
+    }
+}</text>
+
+	<line xp1="60" yp1="76" xp2="90" yp2="76" sp="2" color="green" opacity="30"/>
+	</slide>
+	
+	<slide>
+		<text xp="5" yp="85" sp="5">Goroutine example</text>
+		<text xp="5" yp="75" sp="2" font="mono">func ReadFile(name string) []byte {
+    f, _ := os.Open(name)</text>
+    
+    	<text xp="5" yp="60" sp="2" font="mono">    buf := make([]byte, 2048)
+    n, _ := f.Read(buf)
+    
+    return buf[:n]
+}</text>
+
+	<text xp="60" yp="75" sp="2" font="mono">func Process(c chan int) {
+    for {
+        v := &lt;- c
+        c &lt;- v + 1
+    }
+}</text>
+
+
+	<line xp1="70" yp1="66" xp2="82" yp2="66" sp="2" color="red" opacity="30"/>
+	</slide>
+	
+	<slide>
+		<text xp="5" yp="85" sp="5">Goroutine example</text>
+		<text xp="5" yp="75" sp="2" font="mono">func ReadFile(name string) []byte {
+    f, _ := os.Open(name)</text>
+    
+    	<text xp="5" yp="60" sp="2" font="mono">    buf := make([]byte, 2048)
+    n, _ := f.Read(buf)
+    
+    return buf[:n]
+}</text>
+
+	<text xp="60" yp="75" sp="2" font="mono">func Process(c chan int) {
+    for {
+        v := &lt;- c
+        c &lt;- v + 1
+    }
+}</text>
+
+
+	
+	<line xp1="10" yp1="61" xp2="40" yp2="61" sp="2" color="green" opacity="30"/>
+
+	</slide>
+	
+	<slide>
+		<text xp="5" yp="85" sp="5">Goroutine example</text>
+		<text xp="5" yp="75" sp="2" font="mono">func ReadFile(name string) []byte {
+    f, _ := os.Open(name)</text>
+    
+    	<text xp="5" yp="60" sp="2" font="mono">    buf := make([]byte, 2048)
+    n, _ := f.Read(buf)
+    
+    return buf[:n]
+}</text>
+
+	<text xp="60" yp="75" sp="2" font="mono">func Process(c chan int) {
+    for {
+        v := &lt;- c
+        c &lt;- v + 1
+    }
+}</text>
+
+	<line xp1="10" yp1="56" xp2="35" yp2="56" sp="2" color="red" opacity="30"/>
+	
+	</slide>
+	
+	<slide>
+		<text xp="5" yp="85" sp="5">Goroutine example</text>
+		<text xp="5" yp="75" sp="2" font="mono">func ReadFile(name string) []byte {
+    f, _ := os.Open(name)</text>
+    
+    	<text xp="5" yp="60" sp="2" font="mono">    buf := make([]byte, 2048)
+    n, _ := f.Read(buf)
+    
+    return buf[:n]
+}</text>
+
+	<text xp="60" yp="75" sp="2" font="mono">func Process(c chan int) {
+    for {
+        v := &lt;- c
+        c &lt;- v + 1
+    }
+}</text>
+
+
+	<line xp1="70" yp1="61" xp2="85" yp2="61" sp="2" color="green" opacity="30"/>
+
+	</slide>
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Goroutine example</text>
+		<text xp="5" yp="75" sp="2" font="mono">func ReadFile(name string) []byte {
+    f, _ := os.Open(name)</text>
+    
+    	<text xp="5" yp="60" sp="2" font="mono">    buf := make([]byte, 2048)
+    n, _ := f.Read(buf)
+    
+    return buf[:n]
+}</text>
+
+	<text xp="60" yp="75" sp="2" font="mono">func Process(c chan int) {
+    for {
+        v := &lt;- c
+        c &lt;- v + 1
+    }
+}</text>
+
+
+	<line xp1="65" yp1="56" xp2="75" yp2="56" sp="2" color="red" opacity="30"/>
+	</slide>
+	
+	
+		<slide>
+		<text xp="5" yp="85" sp="5">Goroutine example</text>
+		<text xp="5" yp="75" sp="2" font="mono">func ReadFile(name string) []byte {
+    f, _ := os.Open(name)</text>
+    
+    	<text xp="5" yp="60" sp="2" font="mono">    buf := make([]byte, 2048)
+    n, _ := f.Read(buf)
+    
+    return buf[:n]
+}</text>
+
+	<text xp="60" yp="75" sp="2" font="mono">func Process(c chan int) {
+    for {
+        v := &lt;- c
+        c &lt;- v + 1
+    }
+}</text>
+
+
+	<line xp1="10" yp1="46" xp2="30" yp2="46" sp="2" color="green" opacity="30"/>
+	</slide>
+	
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Blocking syscalls</text>
+		<text xp="5" yp="75" sp="2" type="code">// package syscall
+TEXT    ·Syscall(SB), NOSPLIT,$0-56
+        CALL    runtime·entersyscall(DB)
+        ...
+        MOVQ    8(SP), AX    // syscall number
+        SYSCALL
+        ...
+        CALL    runtime·exitsyscall(SB)
+        RET</text>
+	</slide>
+
+
+	<slide bg="black" fg="rgb(245,213,165)">
+		<image xp="50" yp="60" width="240" height="240" name="bj5.png"/>
+		<text xp="50" yp="35" sp="4" align="center">Segmenting and copying stacks</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Process address space</text>
+		<rect xp="20" yp="70" wp="30" hp="20" color="rgb(127,127,127)"/>
+		<rect xp="20" yp="35" wp="30" hp="30" color="rgb(200,200,200)"/>
+		<rect xp="20" yp="15" wp="30" hp="10" color="rgb(0,0,0)"/>
+		
+		<line xp1="20" yp1="75" xp2="20" yp2="64" color="white"/>
+		<ellipse xp="20" yp="62" wp="2" hr="100" color="red" opacity="20"/>
+		
+		<line xp1="20" yp1="30" xp2="20" yp2="38" color="white"/>
+		<ellipse xp="20" yp="40" wp="2" hr="100" color="red" opacity="20"/>
+		
+		<text xp="20" yp="75" sp="2" color="white" align="center">Stack (grows down)</text>
+		<text xp="20" yp="25" sp="2" color="white" align="center">Heap (grows up)</text>
+		<text xp="20" yp="15" sp="2" color="white" align="center">Program text</text>
+		
+		<text xp="40" yp="79" sp="2" font="mono">0x7fffffff</text>
+		<text xp="40" yp="10" sp="2" font="mono">0x00000000</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Guard page</text>
+
+		<rect xp="20" yp="70" wp="30" hp="20" color="rgb(127,127,127)"/>
+		<rect xp="20" yp="55" wp="30" hp="10" color="rgb(127,0,0)"/>
+		<rect xp="20" yp="35" wp="30" hp="30" color="rgb(200,200,200)"/>
+		<rect xp="20" yp="15" wp="30" hp="10" color="rgb(0,0,0)"/>
+		
+		<line xp1="20" yp1="75" xp2="20" yp2="64" color="white"/>
+		<ellipse xp="20" yp="62" wp="2" hr="100" color="red" opacity="20"/>
+		
+		<line xp1="20" yp1="30" xp2="20" yp2="38" color="white"/>
+		<ellipse xp="20" yp="40" wp="2" hr="100" color="red" opacity="20"/>
+		
+		<text xp="20" yp="75" sp="2" color="white" align="center">Stack (grows down)</text>
+		<text xp="20" yp="25" sp="2" color="white" align="center">Heap (grows up)</text>
+		<text xp="20" yp="15" sp="2" color="white" align="center">Program text</text>
+		<text xp="20" yp="55" sp="2" color="white" align="center">Guard page</text>
+		
+		<text xp="40" yp="79" sp="2" font="mono">0x7fffffff</text>
+		<text xp="40" yp="10" sp="2" font="mono">0x00000000</text>
+
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Thread stacks and guard pages</text>
+		
+		<rect xp="20" yp="77.5" wp="30" hp="5" color="rgb(127,127,127)"/>
+		<rect xp="20" yp="72.5" wp="30" hp="5" color="rgb(127,0,0)"/>
+		<rect xp="20" yp="67.5" wp="30" hp="5" color="rgb(127,127,127)"/>
+		<rect xp="20" yp="62.5" wp="30" hp="5" color="rgb(127,0,0)"/>
+		
+		<rect xp="20" yp="52.5" wp="30" hp="15" color="rgb(127,127,127)"/>
+		
+		<rect xp="20" yp="42.5" wp="30" hp="5" color="rgb(127,127,127)"/>
+		<rect xp="20" yp="37.5" wp="30" hp="5" color="rgb(127,0,0)"/>
+		
+		<rect xp="20" yp="27.5" wp="30" hp="15" color="rgb(200,200,200)"/>
+		<rect xp="20" yp="15" wp="30" hp="10" color="rgb(0,0,0)"/>
+		
+		<text xp="20" yp="77.5" sp="1.5" color="white" align="center">Thread 1 stack</text>
+		<text xp="20" yp="72.5" sp="1.5" color="white" align="center">Guard page</text>
+		<text xp="20" yp="67.5" sp="1.5" color="white" align="center">Thread 2 stack</text>
+		<text xp="20" yp="62.5" sp="1.5" color="white" align="center">Guard page</text>
+		
+		<line xp1="20" yp1="25" xp2="20" yp2="31" color="white"/>
+		<ellipse xp="20" yp="32.5" wp="1.5" hr="100" color="red" opacity="20"/>
+		
+		<text xp="20" yp="42.5" sp="1.5" color="white" align="center">Thread n stack</text>
+		<text xp="20" yp="37.5" sp="1.5" color="white" align="center">Guard page</text>
+		<text xp="20" yp="22.5" sp="1.5" color="white" align="center">Heap</text>
+		<text xp="20" yp="15" sp="1.5" color="white" align="center">Program Text</text>
+		
+		<text xp="40" yp="27.5" sp="2" wp="30" type="block">The more threads in your program, the less heap is available</text>
+
+		
+		
+		<text xp="40" yp="79" sp="2" font="mono">0x7fffffff</text>
+		<text xp="40" yp="10" sp="2" font="mono">0x00000000</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Goroutine stacks</text>
+		<list xp="5" yp="75" sp="3" type="bullet" font="serif">
+			<li>No guard pages</li>
+			<li>Check for available space as part of the function call</li>
+			<li>The initial stack is very small, currently 8kb</li>
+			<li>Grow as needed</li>
+		</list>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Segmented stacks (Go 1.0 - 1.2)</text>
+		
+		<rect xp="10" yp="70"	wp="9.7" hp="12" color="red"/>
+		<rect xp="20" yp="70"	wp="9.7" hp="12" color="green"/>
+		<rect xp="30" yp="70"	wp="9.7" hp="12" color="blue"/>
+		<rect xp="65" yp="70"	wp="60"  hp="12" color="darkgray"/>
+		
+		<text xp="10" yp="70" sp="2" color="white" align="center" font="mono">main()</text>
+		<text xp="20" yp="70" sp="2" color="white" align="center" font="mono">F()</text>
+		<text xp="30" yp="70" sp="2" color="white" align="center" font="mono">G()</text>
+		
+		<text xp="20" yp="59" sp="2" align="center">8192 bytes</text>
+		<rect xp="20" yp="60" wp="30" hp="5" color="gray" opacity="30"/>
+
+		<rect xp="10" yp="45"	wp="9.7" hp="12" color="red"/>
+		<rect xp="20" yp="45"	wp="9.7" hp="12" color="green"/>
+		<rect xp="30" yp="45"	wp="9.7" hp="12" color="blue"/>
+		<rect xp="65" yp="45"	wp="60"  hp="12" color="darkgray"/>
+		<rect xp="50" yp="45"   wp="9.7" hp="12" color="black"/>
+	
+		<text xp="10" yp="45" sp="2" color="white" align="center" font="mono">main()</text>
+		<text xp="20" yp="45" sp="2" color="white" align="center" font="mono">F()</text>
+		<text xp="30" yp="45" sp="2" color="white" align="center" font="mono">G()</text>
+		<text xp="50" yp="45" sp="2" color="white" align="center" font="mono">H()</text>
+		
+		<curve   xp1="30" yp1="51" xp2="40" yp2="60" xp3="50" yp3="51"/>
+		<ellipse xp="50"  yp="51" wp="2" hr="100" color="red" opacity="50"/>
+		<curve   xp1="30" yp1="39" xp2="40" yp2="30" xp3="50" yp3="39"/>
+		<ellipse xp="30"  yp="39" wp="2" hr="100" color="red" opacity="50"/>
+
+		
+		<rect xp="10" yp="20"	wp="9.7" hp="12" color="red"/>
+		<rect xp="20" yp="20"	wp="9.7" hp="12" color="green"/>
+		<rect xp="30" yp="20"	wp="9.7" hp="12" color="blue"/>
+		<rect xp="65" yp="20"	wp="60"  hp="12" color="darkgray"/>
+		<rect xp="50" yp="20"   wp="9.7" hp="12" color="black" opacity="30"/>
+
+		
+		<text xp="10" yp="20" sp="2" color="white" align="center" font="mono">main()</text>
+		<text xp="20" yp="20" sp="2" color="white" align="center" font="mono">F()</text>
+		<text xp="30" yp="20" sp="2" color="white" align="center" font="mono">G()</text>
+		<text xp="50" yp="20" sp="2" color="white" align="center" font="mono">H()</text>
+		
+		<rect xp="" yp="" wp="" hp="" color=""/>
+		<rect xp="" yp="" wp="" hp="" color=""/>
+		<rect xp="" yp="" wp="" hp="" color=""/>
+		<rect xp="" yp="" wp="" hp="" color=""/>
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Hot split problem</text>
+		<text xp="5" yp="75" sp="2" type="code">func G(items []string) {
+    for item := range items {
+        H(item)
+    }
+}</text>
+		
+		<rect xp="10" yp="30"	wp="9.7" hp="12" color="red"/>
+		<rect xp="20" yp="30"	wp="9.7" hp="12" color="green"/>
+		<rect xp="30" yp="30"	wp="9.7" hp="12" color="blue"/>
+		<rect xp="65" yp="30"	wp="60"  hp="12" color="darkgray"/>
+		<rect xp="50" yp="30"   wp="9.7" hp="12" color="black"/>
+		<text xp="10" yp="30" sp="2" color="white" align="center" font="mono">main()</text>
+		<text xp="20" yp="30" sp="2" color="white" align="center" font="mono">F()</text>
+		<text xp="30" yp="30" sp="2" color="white" align="center" font="mono">G()</text>
+		<text xp="50" yp="30" sp="2" color="white" align="center" font="mono">H()</text>
+		
+		<curve   xp1="30" yp1="36" xp2="40" yp2="45" xp3="50" yp3="36"/>
+		<ellipse xp="50"  yp="36" wp="2" hr="100" color="red" opacity="50"/>
+		<curve   xp1="30" yp1="23" xp2="40" yp2="15" xp3="50" yp3="23"/>
+		<ellipse xp="30"  yp="23" wp="2" hr="100" color="red" opacity="50"/>
+		
+		<text xp="50" yp="45" sp="2" type="block" wp="30">New stack segment created and deleted on each call to H()</text>
+
+	</slide>
+
+
+	<slide>
+		<text xp="5" yp="85" sp="5">Copying stacks (Go 1.3)</text>
+		<rect xp="10" yp="70"	wp="9.7" hp="12" color="red"/>
+		<rect xp="20" yp="70"	wp="9.7" hp="12" color="green"/>
+		<rect xp="30" yp="70"	wp="9.7" hp="12" color="blue"/>
+		<rect xp="65" yp="70"	wp="60"  hp="12" color="darkgray"/>
+		
+		<text xp="10" yp="70" sp="2" color="white" align="center" font="mono">main()</text>
+		<text xp="20" yp="70" sp="2" color="white" align="center" font="mono">F()</text>
+		<text xp="30" yp="70" sp="2" color="white" align="center" font="mono">G()</text>
+
+		<text xp="20" yp="59" sp="2" align="center">8192 bytes</text>
+		<rect xp="20" yp="60" wp="30" hp="5" color="gray" opacity="30"/>
+
+		<rect xp="10" yp="45"	wp="9.7" hp="12" color="darkgray"/>
+		<rect xp="20" yp="45"	wp="9.7" hp="12" color="darkgray"/>
+		<rect xp="30" yp="45"	wp="9.7" hp="12" color="darkgray"/>
+		<rect xp="65" yp="45"	wp="60" hp="12" color="darkgray"/>
+	
+		<text xp="10" yp="45" sp="2" color="white" align="center" font="mono">main()</text>
+		<text xp="20" yp="45" sp="2" color="white" align="center" font="mono">F()</text>
+		<text xp="30" yp="45" sp="2" color="white" align="center" font="mono">G()</text>
+			
+		<rect xp="45" yp="45"	wp="9.7" hp="12" color="red"/>
+		<rect xp="55" yp="45"	wp="9.7" hp="12" color="green"/>
+		<rect xp="65" yp="45"	wp="9.7" hp="12" color="blue"/>
+		<rect xp="75" yp="45"   wp="9.7"  hp="12" color="blue"/>
+		<rect xp="86" yp="45"   wp="13"  hp="12" color="black"/>
+		<text xp="45" yp="45" sp="2" color="white" align="center" font="mono">main()</text>
+		<text xp="55" yp="45" sp="2" color="white" align="center" font="mono">F()</text>
+		<text xp="65" yp="45" sp="2" color="white" align="center" font="mono">G()</text>
+		<text xp="75" yp="45" sp="2" color="white" align="center" font="mono">H()</text>
+		<text xp="86" yp="45" sp="2" color="white" align="center" font="mono">free space</text>
+		
+		<text xp="65" yp="33" sp="2" align="center">16356 bytes</text>
+		<rect xp="66" yp="34" wp="53" hp="5" color="gray" opacity="30"/>
+
+
+
+
+	</slide>
+
+
+	<slide bg="black" fg="rgb(245,213,165)">
+		<text xp="50" yp="75" sp="4" align="center">Values
+Inlining
+Escape Analysis
+Goroutines
+Copying Stacks</text>
+	</slide>
+
+
+	<slide>
+		<text xp="5"  yp="85" sp="5">Thank you</text>
+		<text xp="5"  yp="75" sp="3" type="block" font="serif" wp="80">Thank you to the Gocon organiers for allowing me to speak today.</text>
+		<text xp="5"  yp="10" sp="2.5"                color="blue" font="mono" link="http://twitter.com/davecheney">@davecheney</text>
+		<text xp="50" yp="10" sp="2.5" align="center" color="blue" font="mono" link="http://dave.cheney.net">http://dave.cheney.net</text>
+		<text xp="95" yp="10" sp="2.5" align="right"  color="blue" font="mono" link="mailto:dave@cheney.net">dave@cheney.net</text>
+		<text xp="5"  yp="50" sp="3"  type="block" font="serif" wp="80">Thank you to Josh Bleecher Snyder, Bill Kennedy and Minux for their assistance
+		in preparing this talk.</text>
+	</slide>
+
+
+</deck>
