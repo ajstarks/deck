@@ -3,15 +3,16 @@ package main
 
 import (
 	"bufio"
-	"flag"
-	"fmt"
 	"code.google.com/p/go-charset/charset"
 	_ "code.google.com/p/go-charset/data"
+	"flag"
+	"fmt"
 	"image"
 	_ "image/jpeg"
 	_ "image/png"
 	"os"
 	"strings"
+	"strconv"
 	"time"
 
 	"github.com/ajstarks/deck"
@@ -25,6 +26,8 @@ var wintrans, _ = charset.TranslatorTo("windows-1252")
 // dodeck sets up the graphics environment and kicks off the interaction
 func dodeck(filename, searchterm string, pausetime time.Duration, slidenum, cw, ch int, gp float64) {
 	w, h := openvg.Init()
+	openvg.FillRGB(200,200,200,1)
+	openvg.Rect(0,0,openvg.VGfloat(w), openvg.VGfloat(h))
 	if cw > 0 {
 		w = cw
 	}
@@ -316,7 +319,8 @@ func showgrid(d deck.Deck, n int, p float64) {
 	openvg.End()
 }
 func fromUTF8(s string) string {
-	_, b, err := wintrans.Translate([]byte(s), true); if err != nil {
+	_, b, err := wintrans.Translate([]byte(s), true)
+	if err != nil {
 		return s
 	} else {
 		return string(b)
@@ -509,6 +513,45 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		openvg.Arc(ax, ay, w, h, openvg.VGfloat(arc.A1), openvg.VGfloat(arc.A2))
 		openvg.StrokeWidth(0)
 	}
+
+	// polygon
+	for _, poly := range slide.Polygon {
+		if poly.Color == "" {
+			poly.Color = defaultColor
+		}
+		if poly.Opacity == 0 {
+			poly.Opacity = 1
+		} else {
+			poly.Opacity /= 100
+		}
+		xs := strings.Split(poly.XC, " ")
+		ys := strings.Split(poly.YC, " ")
+		if len(xs) != len(ys) {
+			continue
+		}
+		if len(xs) < 3 || len(ys) < 3 {
+			continue
+		}
+		px := make([]openvg.VGfloat, len(xs))
+		py := make([]openvg.VGfloat, len(ys))
+		for i := 0; i < len(xs); i++ {
+			x, err := strconv.ParseFloat(xs[i], 32)
+			if err != nil {
+				px[i] = 0
+			} else {
+				px[i] = pct(x, cw)
+			}
+			y, err := strconv.ParseFloat(ys[i], 32)
+			if err != nil {
+				py[i] = 0
+			} else {
+				py[i] = pct(y, ch) 
+			}
+		}
+		openvg.FillColor(poly.Color, openvg.VGfloat(poly.Opacity))
+		openvg.Polygon(px, py)
+	}
+
 	openvg.FillColor(slide.Fg)
 
 	// every list in the slide

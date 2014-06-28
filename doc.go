@@ -23,37 +23,34 @@ within slides an number of:
 	ellipse: ellipse
 	curve: Quadratic Bezier curve
 	arc: elliptical arc
+	polygon: polygon
 
 Markup
 
 Here is a sample deck in XML:
-
 	<deck>
-	     <canvas width="1024" height="768"/>
-	     <title>Sample Deck</title>
-	     <creator>John Doe</creator>
-             <date>August, 2013</date>
-	     <slide bg="maroon" fg="white" duration="1s">
-		<image xp="20" yp="30" width="256" height="256" name="picture.png"/>
-		<text xp="20" yp="80" sp="3" link="http://example.com/">Deck uses these elements</text>
-		<line xp1="20" yp1="75" xp2="90" yp2="75" sp="0.3" color="rgb(127,0,0)"/>
-		<list xp="20" yp="70" sp="1.5">
-			<li>canvas<li>
-			<li>slide</li>
-			<li>text</li>
-			<li>list</li>
-			<li>line</li>
-			<li>rect</li>
-			<li>ellipse</li>
-			<li>curve</li>
-			<li>arc</li>
-		</list>
-		<line    xp1="20" yp1="10" xp2="30" yp2="10"/>
-		<rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/>
-		<ellipse xp="45"  yp="10" wp="4" hr="75" color="rgb(0,127,0)"/>
-		<curve   xp1="60" yp1="10" xp2="75" yp2="20" xp3="70" yp3="10" />
-		<arc     xp="55"  yp="10" wp="4" hr="75" a1="0" a2="180" color="rgb(0,0,127)"/>
-	     </slide>
+	  <canvas width="1024" height="768" />
+	  <slide duration="2s" bg="white" fg="black">
+	      <image xp="50" yp="60" width="256" height="179" name="work.png" caption="my desk"/>
+	      <text  xp="20" yp="80" sp="4">Deck uses these elements</text>
+	      <list  xp="20" yp="70" sp="2" type="bullet">
+	         <li>text</li>
+	         <li>list</li>
+	         <li>image</li>
+	         <li>line</li>
+	         <li color="rgb(127,0,0)">rect</li>
+	         <li color="rgb(0,127,0)">ellipse</li>
+	         <li color="rgb(0,0,127)">arc</li>
+	         <li color="rgb(127,127,127)">curve</li>
+	         <li color="rgb(0,0,127)">polygon</li>
+	      </list>
+	      <line    xp1="20" yp1="10" xp2="30" yp2="10"/>
+	      <rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/>
+	      <ellipse xp="45"  yp="10" wp="4" hp="3" color="rgb(0,127,0)"/>
+	      <arc     xp="55"  yp="10" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/>
+	      <curve   xp1="60" yp1="10" xp2="75" yp2="20" xp3="70" yp3="10" />
+	      <polygon xc="75 75 80" yc="8 12 10" color="rgb(0,0,127)"/>
+	  </slide>
 	</deck>
 
 The list, text, rect, and ellipse elements have common attributes:

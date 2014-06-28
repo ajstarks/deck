@@ -30,6 +30,7 @@ type Slide struct {
 	Bg       string    `xml:"bg,attr"`
 	Fg       string    `xml:"fg,attr"`
 	Duration string    `xml:"duration,attr"`
+	Note     string    `xml:"note"`
 	List     []List    `xml:"list"`
 	Text     []Text    `xml:"text"`
 	Image    []Image   `xml:"image"`
@@ -38,6 +39,7 @@ type Slide struct {
 	Rect     []Rect    `xml:"rect"`
 	Curve    []Curve   `xml:"curve"`
 	Arc      []Arc     `xml:"arc"`
+	Polygon []Polygon `xml:"polygon"`
 }
 
 // CommonAttr are the common attributes for text and list
@@ -63,6 +65,10 @@ type Dimension struct {
 }
 
 // ListItem describes a list item
+// <list xp="20" yp="70" sp="1.5">
+//	<li>canvas<li>
+//	<li>slide</li>
+// </list>
 type ListItem struct {
 	Color    string  `xml:"color,attr"`
 	Opacity  float64 `xml:"opacity,attr"`
@@ -84,6 +90,7 @@ type Text struct {
 }
 
 // Image describes an image
+// <image xp="20" yp="30" width="256" height="256" name="picture.png" caption="Pretty picture/>
 type Image struct {
 	CommonAttr
 	Width   int    `xml:"width,attr"`
@@ -93,16 +100,19 @@ type Image struct {
 }
 
 // Ellipse describes a rectangle with x,y,w,h
+// <ellipse xp="45"  yp="10" wp="4" hr="75" color="rgb(0,127,0)"/>
 type Ellipse struct {
 	Dimension
 }
 
 // Rect describes a rectangle with x,y,w,h
+// <rect xp="35"  yp="10" wp="4" hp="3"/>
 type Rect struct {
 	Dimension
 }
 
 // Line defines a straight line
+// <line xp1="20" yp1="10" xp2="30" yp2="10"/>
 type Line struct {
 	Xp1     float64 `xml:"xp1,attr"`
 	Yp1     float64 `xml:"yp1,attr"`
@@ -114,6 +124,8 @@ type Line struct {
 }
 
 // Curve defines a quadratic Bezier curve
+// The begining, ending, and control points are required:
+// <curve xp1="60" yp1="10" xp2="75" yp2="20" xp3="70" yp3="10" />
 type Curve struct {
 	Xp1     float64 `xml:"xp1,attr"`
 	Yp1     float64 `xml:"yp1,attr"`
@@ -127,10 +139,22 @@ type Curve struct {
 }
 
 // Arc defines an elliptical arc
+// the arc is defined by a beginning and ending angle in percentages
+// <arc xp="55"  yp="10" wp="4" hr="75" a1="0" a2="180"/>
 type Arc struct {
 	Dimension
 	A1      float64 `xml:"a1,attr"`
 	A2      float64 `xml:"a2,attr"`
+	Opacity float64 `xml:"opacity,attr"`
+}
+
+// Polygon defines a polygon, x and y coordinates are specified by 
+// strings of space-separated percentages: 
+// <polygon xc="10 20 30" yc="30 40 50"/>
+type Polygon struct {
+	XC string `xml:"xc,attr"`
+	YC string `xml:"yc,attr"`
+	Color string `xml:"color,attr"`
 	Opacity float64 `xml:"opacity,attr"`
 }
 
@@ -220,6 +244,9 @@ func Dump(d Deck) {
 		}
 		for e, ellipse := range s.Ellipse {
 			fmt.Printf("\tEllipse [%d] = %+v\n", e, ellipse)
+		}
+		for p, polygon := range s.Polygon {
+			fmt.Printf("\tPolygon [%d] = %+v\n", p, polygon)
 		}
 	}
 }

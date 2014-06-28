@@ -1,4 +1,10 @@
 <deck>
+<title>Sample deck</title>
+<creator>Anthony Starks ajstarks@gmail.com</creator>
+<date>2014-06-28</date>
+<publisher>Me</publisher>
+<subject>deck Go sample testing</subject>
+<description>Sample deck used for testing and illustration</description>
   <canvas width="1024" height="768" />
   <slide duration="2s" bg="white" fg="black">
       <image xp="50" yp="60" width="256" height="179" name="work.png" caption="my desk"/>
@@ -12,11 +18,13 @@
          <li color="rgb(0,127,0)">ellipse</li>
          <li color="rgb(0,0,127)">arc</li>
          <li color="rgb(127,127,127)">curve</li>
+         <li color="rgb(0,0,127)">polygon</li>
       </list>
       <line    xp1="20" yp1="10" xp2="30" yp2="10"/>
       <rect    xp="35"  yp="10" wp="4" hp="3" color="rgb(127,0,0)"/>
       <ellipse xp="45"  yp="10" wp="4" hp="3" color="rgb(0,127,0)"/>
       <arc     xp="55"  yp="10" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/>
       <curve   xp1="60" yp1="10" xp2="75" yp2="20" xp3="70" yp3="10" />
+      <polygon xc="75 75 80" yc="8 12 10" color="rgb(0,0,127)"/>
   </slide>
 </deck>
