@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"code.google.com/p/gofpdf"
@@ -178,6 +179,38 @@ func doellipse(doc *gofpdf.Fpdf, x, y, w, h float64, color string) {
 	r, g, b := colorlookup(color)
 	doc.SetFillColor(r, g, b)
 	doc.Ellipse(x, y, w, h, 0, "F")
+}
+
+// dopoly draws a polygon
+
+func dopoly(doc *gofpdf.Fpdf, xc, yc, color string, cw, ch float64) {
+	xs := strings.Split(xc, " ")
+	ys := strings.Split(yc, " ")
+	if len(xs) != len(ys) {
+		return
+	}
+	if len(xs) < 3 || len(ys) < 3 {
+		return
+	}
+	px := make([]float64, len(xs))
+	py := make([]float64, len(ys))
+	for i := 0; i < len(xs); i++ {
+		x, err := strconv.ParseFloat(xs[i], 64)
+		if err != nil {
+			px[i] = 0
+		} else {
+			px[i] = pct(x, cw)
+		}
+		y, err := strconv.ParseFloat(ys[i], 64)
+		if err != nil {
+			py[i] = 0
+		} else {
+			py[i] = pct(100-y, ch)
+		}
+	}
+	r, g, b := colorlookup(color)
+	doc.SetFillColor(r, g, b)
+	doc.Polygon(px, py, "F")
 }
 
 // dotext places text elements on the canvas according to type
@@ -412,6 +445,14 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 			sw = 2.0
 		}
 		doline(doc, x1, y1, x2, y2, sw, line.Color)
+	}
+	// polygon
+	for _, poly := range slide.Polygon {
+		if poly.Color == "" {
+			poly.Color = defaultColor
+		}
+		setopacity(doc, poly.Opacity)
+		dopoly(doc, poly.XC, poly.YC, poly.Color, cw, ch)
 	}
 
 	// for every text element...
