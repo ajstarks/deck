@@ -2,7 +2,7 @@
 #
 # randslide: make random patterns
 #
-awk -v seed=$RANDOM '
+awk '
 function randint(n) {
 	return int(n * rand())
 }
@@ -85,13 +85,18 @@ function randiamond(dsize) {
 	delta = randint(dsize)
 	printf "<polygon xc=\"%g %g %g %g\" yc=\"%g %g %g %g\" %s %s/>\n", 
 		cx-(delta/2), cx, cx+(delta/2), cx, cy, cy+delta, cy, cy-delta, randcolor(), randop()
+}
 
+function randarc(asize) {
+	radsize = randint(asize)
+	printf "<arc xp=\"%g\" yp=\"%g\" wp=\"%g\" hp=\"%g\" a1=\"%g\" a2=\"%g\" %s %s/>\n", 
+		randp(), randp(), radsize, radsize, randint(20), randint(300), randcolor(), randop()
 }
 
 BEGIN {
-	ntimes = 500
+	ntimes = 300
 	bg="white"
-	srand(seed)
+	srand()
 	print "<deck>"
 	
 	printf "<slide bg=\"%s\">", bg
@@ -138,10 +143,27 @@ BEGIN {
 	
 	printf "<slide bg=\"%s\">", bg
 	for (iter=0; iter < ntimes; iter++) {
+			randarc(10)
+	}
+	print "</slide>"
+	
+	printf "<slide bg=\"%s\">", bg
+	for (iter=0; iter < ntimes/3; iter++) {
+		randarc(10)
+		randiamond(10)
+		randtriangle(10)
+		randtext(10)
+		randsquare(10)
+		randshape("rect", 7, 10)
+		randshape("ellipse", 7, 10)
+	}
+	print "</slide>"
+	
+	printf "<slide bg=\"%s\">", bg
+	for (iter=0; iter < ntimes; iter++) {
 			randpoly(3, 20)
 	}
 	print "</slide>"
 
 	print "</deck>"
-
 }'
