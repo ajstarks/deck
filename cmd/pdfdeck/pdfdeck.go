@@ -192,25 +192,24 @@ func dopoly(doc *gofpdf.Fpdf, xc, yc, color string, cw, ch float64) {
 	if len(xs) < 3 || len(ys) < 3 {
 		return
 	}
-	px := make([]float64, len(xs))
-	py := make([]float64, len(ys))
+	poly := make([]gofpdf.PointType, len(xs))
 	for i := 0; i < len(xs); i++ {
 		x, err := strconv.ParseFloat(xs[i], 64)
 		if err != nil {
-			px[i] = 0
+			poly[i].X = 0
 		} else {
-			px[i] = pct(x, cw)
+			poly[i].X = pct(x, cw)
 		}
 		y, err := strconv.ParseFloat(ys[i], 64)
 		if err != nil {
-			py[i] = 0
+			poly[i].Y = 0
 		} else {
-			py[i] = pct(100-y, ch)
+			poly[i].Y = pct(100-y, ch)
 		}
 	}
 	r, g, b := colorlookup(color)
 	doc.SetFillColor(r, g, b)
-	doc.Polygon(px, py, "F")
+	doc.Polygon(poly, "F")
 }
 
 // dotext places text elements on the canvas according to type
