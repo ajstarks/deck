@@ -1,0 +1,147 @@
+#!/bin/sh
+#
+# randslide: make random patterns
+#
+awk -v seed=$RANDOM '
+function randint(n) {
+	return int(n * rand())
+}
+	
+function randp() {
+	return int(rand()*100)
+}
+
+function randcolor() {
+	return "color=\"rgb(" randint(255) "," randint(255) "," randint(255) ")\""
+}
+
+function randop() {
+	return "opacity=\"" randp() "\""
+}
+
+function randpoly(np, d) {
+	cx = randp()
+	cy = randp()
+	
+	for (i = 1; i <= np; i++) {
+		rdx = randint(d)
+		rdy = randint(d)
+		if (i % 2 == 0) {
+			rdx = -rdx
+			rdy = -rdy
+		}
+		x[i] = cx + rdx
+		y[i] = cy + rdy
+	}
+
+	printf "<polygon xc=\""
+	for (i = 1; i < np; i++) {
+		printf "%g ", x[i]
+	}
+	printf "%g\" yc=\"", x[np]
+	for (i = 1; i < np; i++) {
+		printf "%g ", y[i]
+	}
+	printf "%g\" %s %s/>\n", y[np], randcolor(), randop()
+}
+
+
+function randshape(type, width, height) {
+	printf "<%s xp=\"%d\" yp=\"%d\" wp=\"%d\" hp=\"%d\" %s %s />\n", 
+		type, randp(), randp(), randint(width), randint(height), randcolor(), randop()
+}
+
+function randcircle(radius) {
+	printf "<ellipse xp=\"%d\" yp=\"%d\" wp=\"%d\" hr=\"100\" %s %s />\n", 
+		randp(), randp(), randint(radius), randcolor(), randop()
+}
+
+function randsquare(radius) {
+	printf "<rect xp=\"%d\" yp=\"%d\" wp=\"%d\" hr=\"100\" %s %s />\n", 
+		randp(), randp(), randint(radius), randcolor(), randop()
+}
+
+function randtext(textsize) {
+	sp = randint(textsize)+1
+	printf "<text xp=\"%d\" yp=\"%d\" sp=\"%d\" %s %s>%d</text>\n", 
+		randp(), randp(), sp, randcolor(), randop(), sp
+}
+
+function randtriangle(tsize) {
+
+	cx = randp()
+	cy = randp()
+	delta = randint(tsize)
+	if (delta % 2 == 0) {
+		delta = -delta
+	}
+	printf "<polygon xc=\"%g %g %g\" yc=\"%g %g %g\" %s %s/>\n", 
+		cx-delta, cx, cx+delta, cy, cy+delta, cy, randcolor(), randop()
+}
+
+function randiamond(dsize) {
+	cx = randp()
+	cy = randp()
+	delta = randint(dsize)
+	printf "<polygon xc=\"%g %g %g %g\" yc=\"%g %g %g %g\" %s %s/>\n", 
+		cx-(delta/2), cx, cx+(delta/2), cx, cy, cy+delta, cy, cy-delta, randcolor(), randop()
+
+}
+
+BEGIN {
+	ntimes = 500
+	bg="white"
+	srand(seed)
+	print "<deck>"
+	
+	printf "<slide bg=\"%s\">", bg
+	for (iter=0; iter < ntimes; iter++) {
+			randshape("ellipse", 7, 10)
+	}
+	print "</slide>"
+	
+	printf "<slide bg=\"%s\">", bg
+	for (iter=0; iter < ntimes; iter++) {
+			randshape("rect", 7, 10)
+	}
+	print "</slide>"
+	
+	printf "<slide bg=\"%s\">", bg
+	for (iter=0; iter < ntimes; iter++) {
+			randcircle(10)
+	}
+	print "</slide>"
+	
+	printf "<slide bg=\"%s\">", bg
+	for (iter=0; iter < ntimes; iter++) {
+			randsquare(10)
+	}
+	print "</slide>"
+	
+	printf "<slide bg=\"%s\">", bg
+	for (iter=0; iter < ntimes; iter++) {
+			randtext(10)
+	}
+	print "</slide>"
+	
+	printf "<slide bg=\"%s\">", bg
+	for (iter=0; iter < ntimes; iter++) {
+			randtriangle(10)
+	}
+	print "</slide>"
+	
+	printf "<slide bg=\"%s\">", bg
+	for (iter=0; iter < ntimes; iter++) {
+			randiamond(10)
+	}
+	print "</slide>"
+	
+	printf "<slide bg=\"%s\">", bg
+	for (iter=0; iter < ntimes; iter++) {
+			randpoly(3, 20)
+	}
+	print "</slide>"
+
+	print "</deck>"
+
+}'
