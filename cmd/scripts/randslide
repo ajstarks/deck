@@ -3,12 +3,16 @@
 # randslide: make random patterns
 #
 awk '
+
+function abs(x) { return (x<0) ? x*-1 : x }
+
+
 function randint(n) {
-	return int(n * rand())
+	return int(abs(n * rand()))
 }
 	
 function randp() {
-	return int(rand()*100)
+	return int(abs(rand()*100))
 }
 
 function randcolor() {
@@ -18,33 +22,6 @@ function randcolor() {
 function randop() {
 	return "opacity=\"" randp() "\""
 }
-
-function randpoly(np, d) {
-	cx = randp()
-	cy = randp()
-	
-	for (i = 1; i <= np; i++) {
-		rdx = randint(d)
-		rdy = randint(d)
-		if (i % 2 == 0) {
-			rdx = -rdx
-			rdy = -rdy
-		}
-		x[i] = cx + rdx
-		y[i] = cy + rdy
-	}
-
-	printf "<polygon xc=\""
-	for (i = 1; i < np; i++) {
-		printf "%g ", x[i]
-	}
-	printf "%g\" yc=\"", x[np]
-	for (i = 1; i < np; i++) {
-		printf "%g ", y[i]
-	}
-	printf "%g\" %s %s/>\n", y[np], randcolor(), randop()
-}
-
 
 function randshape(type, width, height) {
 	printf "<%s xp=\"%d\" yp=\"%d\" wp=\"%d\" hp=\"%d\" %s %s />\n", 
@@ -93,8 +70,34 @@ function randarc(asize) {
 		randp(), randp(), radsize, radsize, randint(20), randint(300), randcolor(), randop()
 }
 
+function radial(radsize) {
+	cx = randp()
+	cy = randp()
+	
+	np = 5
+	a = 0
+	adiv = 360/np
+	for (i=1; i <= np; i++) {
+		t = a * (3.14159265/180)
+		r = randint(radsize)
+		rx[i] = (r * cos(t)) + cx
+		ry[i] = (r * sin(t)) + cy
+		a += adiv
+	}
+	np = 4
+	printf "<polygon xc=\""
+	for (i = 1; i < np; i++) {
+		printf "%g ", rx[i]
+	}
+	printf "%g\" yc=\"", rx[np]
+	for (i = 1; i < np; i++) {
+		printf "%g ", ry[i]
+	}
+	printf "%g\" %s %s/>\n", ry[np], randcolor(), randop()
+}
+
 BEGIN {
-	ntimes = 300
+	ntimes = 400
 	bg="white"
 	srand()
 	print "<deck>"
@@ -148,6 +151,12 @@ BEGIN {
 	print "</slide>"
 	
 	printf "<slide bg=\"%s\">", bg
+	for (iter=0; iter < ntimes; iter++) {
+			radial(10)
+	}
+	print "</slide>"
+	
+	printf "<slide bg=\"%s\">", bg
 	for (iter=0; iter < ntimes/3; iter++) {
 		randarc(10)
 		randiamond(10)
@@ -156,12 +165,7 @@ BEGIN {
 		randsquare(10)
 		randshape("rect", 7, 10)
 		randshape("ellipse", 7, 10)
-	}
-	print "</slide>"
-	
-	printf "<slide bg=\"%s\">", bg
-	for (iter=0; iter < ntimes; iter++) {
-			randpoly(3, 20)
+		radial(10)
 	}
 	print "</slide>"
 
