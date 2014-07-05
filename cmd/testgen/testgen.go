@@ -10,17 +10,10 @@ import (
 )
 
 const (
-	lorem   = `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
-	hellogo = `package main
-
-import "fmt"
-func main() {
-	fmt.Println("hello, world")
-}`
-
-	hellorun = `$ go run hello.go
-hello, world`
-	rgbfmt = `rgb(%d,%d,%d)`
+	lorem    = `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
+	hellogo  = "package main\nimport \"fmt\"\nfunc main() {\n    fmt.Println(\"hello, world\")\n}"
+	hellorun = "$ go run hello.go\nhello, world"
+	rgbfmt   = `rgb(%d,%d,%d)`
 )
 
 func randcolor() string {
@@ -138,7 +131,7 @@ func main() {
 	n := 200
 	sections := []string{"One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"}
 
-	deck := generate.NewSlides(os.Stdout, 1600, 900)
+	deck := generate.NewSlides(os.Stdout, 0, 0)
 	deck.StartDeck()
 
 	// Text
@@ -150,7 +143,7 @@ func main() {
 
 	// Text Block
 	deck.StartSlide("rgb(180,180,180)")
-	deck.TextBlock(10, 90, lorem, 2.5, 25, "black")
+	deck.TextBlock(10, 90, lorem, 2.5, 30, "black")
 	deck.TextBlock(10, 50, lorem, 2.5, 50, "gray")
 	deck.TextBlock(10, 20, lorem, 2.5, 75, "white")
 	deck.EndSlide()
@@ -184,8 +177,9 @@ func main() {
 
 	// Image
 	deck.StartSlide("gray")
-	for i := 0; i < n; i++ {
-		deck.Image(randp(100), randp(100), 100, 100, "sm.png")
+	y := 50.0
+	for x := 20.0; x < 90.0; x += 10.0 {
+		deck.Image(x, y, 100, 100, "sm.png")
 	}
 	deck.EndSlide()
 
@@ -243,7 +237,7 @@ func main() {
 		}
 	}
 	deck.EndSlide()
-	
+
 	// Polygon
 	deck.StartSlide()
 	for i := 0; i < n; i++ {
@@ -346,8 +340,8 @@ func main() {
 	rarrow(deck, 50, 50, 20, 2, 2, 5, "red", 40)
 	larrow(deck, 50, 50, 20, 2, 2, 5, "green", 40)
 	deck.TextMid(50, 40, "conflict", 3, "black")
-	deck.TextMid(25, 48, "Urgent", 4, "white")
-	deck.TextMid(75, 48, "Important", 4, "white")
+	deck.TextMid(25, 48, "Urgent", 3, "white")
+	deck.TextMid(75, 48, "Important", 3, "white")
 	deck.EndSlide()
 	deck.EndDeck()
 }
