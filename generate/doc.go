@@ -28,9 +28,9 @@ Example:
 	
 		// Text alignment
 		deck.StartSlide("rgb(180,180,180)")         // New slide with a gray background
-		deck.Text(50, 80, "left", 10, "black")      // left-aligned black text
-		deck.TextMid(50, 50, "center", 10, "gray")  // centered gray text
-		deck.TextEnd(50, 20, "right", 10, "white")  // right-aligned white text
+		deck.Text(50, 80, "Left", "sans", 10, "black")      // left-aligned black text
+		deck.TextMid(50, 50, "Center", "sans", 10, "gray")  // centered gray text
+		deck.TextEnd(50, 20, "Right", "sans", 10, "white")  // right-aligned white text
 		deck.Line(50, 100, 50, 0, 0.2, "black", 20) // vertical line
 		deck.EndSlide() // end the slide
 
