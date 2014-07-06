@@ -3,11 +3,12 @@ Package generate provides a high-level API for the creation of slide decks using
 the structures of the deck package (github.com/ajstarks/deck).
 
 Initialization of the package specifies the io.Writer destination for the generated markup,
-and the width and height of the slides's canvas. (Speciying (0,0) allows the client to use default dimensions).
+along with the width and height of the slides's canvas. (Speciying (0,0) allows the rendering client 
+to use default dimensions).
 
 Each deck element (text, list, image, rect, ellipse, line, curve, arc, and polygon) are supported.
 Slides use a percentage-based coordinate system (origin at the lower left corner,
-x increasing left to right, 0-100%, y increasing to the upwards, 0-100%).
+x increasing left to right, 0-100%, y increasing  upwards, 0-100%).
 
 By default slides use black text on a white background.
 Elements may have colors and opacities applied to them.
