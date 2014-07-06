@@ -54,9 +54,9 @@ func section(p *generate.Deck, name string, n int) {
 	size := 5.0
 
 	ry := y - (size / 2)
-	p.Text(x, y, name, size, "")
+	p.Text(x, y, name, "sans", size, "")
 	p.Line(x, ry, 100-x, ry, 0.1, "black")
-	p.Text(80, 10, fmt.Sprintf("%d", n), size/3, "gray")
+	p.Text(80, 10, fmt.Sprintf("%d", n), "sans", size/3, "gray")
 	list := []string{}
 	for i := 0; i < 5; i++ {
 		list = append(list, fmt.Sprintf("item number %d", (i+1)*(n*10)))
@@ -70,7 +70,7 @@ func section(p *generate.Deck, name string, n int) {
 	default:
 		ltype = "plain"
 	}
-	p.List(x, 60, size/2, list, ltype, "")
+	p.List(x, 60, size/2, list, ltype, "sans", "")
 }
 
 func fitlist(p *generate.Deck, x, y, size float64, list []string) {
@@ -78,7 +78,7 @@ func fitlist(p *generate.Deck, x, y, size float64, list []string) {
 	colsize := 35.0
 	interval := y/float64(len(list)) + size
 	for _, s := range list {
-		p.Text(x, yp, s, size, "black")
+		p.Text(x, yp, s, "sans", size, "black")
 		yp -= interval
 		if yp < size {
 			x += colsize
@@ -137,22 +137,22 @@ func main() {
 	// Text
 	deck.StartSlide()
 	for i := 0; i < n; i++ {
-		deck.TextMid(randp(100), randp(100), "hello", randp(10), randcolor(), randp(100))
+		deck.TextMid(randp(100), randp(100), "hello", "sans", randp(10), randcolor(), randp(100))
 	}
 	deck.EndSlide()
 
 	// Text Block
 	deck.StartSlide("rgb(180,180,180)")
-	deck.TextBlock(10, 90, lorem, 2.5, 30, "black")
-	deck.TextBlock(10, 50, lorem, 2.5, 50, "gray")
-	deck.TextBlock(10, 20, lorem, 2.5, 75, "white")
+	deck.TextBlock(10, 90, lorem, "sans", 2.5, 30, "black")
+	deck.TextBlock(10, 50, lorem, "sans", 2.5, 50, "gray")
+	deck.TextBlock(10, 20, lorem, "sans", 2.5, 75, "white")
 	deck.EndSlide()
 
 	// Text alignment
 	deck.StartSlide("rgb(180,180,180)")
-	deck.Text(50, 80, "left", 10, "black")
-	deck.TextMid(50, 50, "center", 10, "gray")
-	deck.TextEnd(50, 20, "right", 10, "white")
+	deck.Text(50, 80, "left", "sans", 10, "black")
+	deck.TextMid(50, 50, "center", "serif", 10, "gray")
+	deck.TextEnd(50, 20, "right", "mono", 10, "white")
 	deck.Line(50, 100, 50, 0, 0.2, "black", 20)
 	deck.EndSlide()
 
@@ -178,7 +178,7 @@ func main() {
 	// Image
 	deck.StartSlide("gray")
 	y := 50.0
-	for x := 20.0; x < 90.0; x += 10.0 {
+	for x := 20.0; x < 90.0; x += 20.0 {
 		deck.Image(x, y, 100, 100, "sm.png")
 	}
 	deck.EndSlide()
@@ -339,9 +339,9 @@ func main() {
 	deck.Rect(75, 50, 20, 15, "green")
 	rarrow(deck, 50, 50, 20, 2, 2, 5, "red", 40)
 	larrow(deck, 50, 50, 20, 2, 2, 5, "green", 40)
-	deck.TextMid(50, 40, "conflict", 3, "black")
-	deck.TextMid(25, 48, "Urgent", 3, "white")
-	deck.TextMid(75, 48, "Important", 3, "white")
+	deck.TextMid(50, 40, "conflict", "sans", 3, "black")
+	deck.TextMid(25, 48, "Urgent", "sans", 3, "white")
+	deck.TextMid(75, 48, "Important", "sans", 3, "white")
 	deck.EndSlide()
 	deck.EndDeck()
 }

@@ -16,9 +16,9 @@ const (
 	linefmt    = `<line xp1="%.2f" yp1="%.2f" xp2="%.2f" yp2="%.2f" sp="%.2f" opacity="%.2f" color="%s"/>`
 	curvefmt   = `<curve xp1="%.2f" yp1="%.2f" xp2="%.2f" yp2="%.2f" xp3="%.2f" yp3="%.2f" sp="%.2f" opacity="%.2f" color="%s"/>`
 	polygonfmt = `<polygon xc="%s" yc="%s" opacity="%.2f" color="%s"/>`
-	textfmt    = `<text xp="%.2f" yp="%.2f" sp="%.2f" align="%s" wp="%.2f" opacity="%.2f" color="%s" type="%s">%s</text>`
+	textfmt    = `<text xp="%.2f" yp="%.2f" sp="%.2f" align="%s" wp="%.2f" font="%s" opacity="%.2f" color="%s" type="%s">%s</text>`
 	imagefmt   = `<image xp="%.2f" yp="%.2f" width="%d" height="%d" name="%s"/>`
-	listfmt    = `<list type="%s" xp="%.2f" yp="%.2f" sp="%.2f" color="%s">`
+	listfmt    = `<list type="%s" xp="%.2f" yp="%.2f" sp="%.2f" font="%s" color="%s">`
 	lifmt      = `<li>%s</li>`
 	closelist  = `</list>`
 	slidefmt   = `<slide>`
@@ -50,7 +50,7 @@ func (p *Deck) EndDeck() {
 	fmt.Fprintln(p.dest, closedeck)
 }
 
-// Startslide begins a slide.
+// StartSlide begins a slide.
 func (p *Deck) StartSlide(colors ...string) {
 	switch len(colors) {
 	case 1:
@@ -62,12 +62,12 @@ func (p *Deck) StartSlide(colors ...string) {
 	}
 }
 
-// Endslide ends a slide.
+// EndSlide ends a slide.
 func (p *Deck) EndSlide() {
 	fmt.Fprintln(p.dest, closeslide)
 }
 
-// square makes  square markup from the rect structure.
+// square makes square markup from the rect structure.
 func (p *Deck) square(r deck.Rect) {
 	fmt.Fprintf(p.dest, squarefmt, r.Xp, r.Yp, r.Wp, r.Hr, r.Opacity, r.Color)
 }
@@ -109,7 +109,7 @@ func (p *Deck) polygon(poly deck.Polygon) {
 
 // text makes text markup from the deck text structure.
 func (p *Deck) text(t deck.Text) {
-	fmt.Fprintf(p.dest, textfmt, t.Xp, t.Yp, t.Sp, t.Align, t.Wp, t.Opacity, t.Color, t.Type, t.Tdata)
+	fmt.Fprintf(p.dest, textfmt, t.Xp, t.Yp, t.Sp, t.Align, t.Wp, t.Font, t.Opacity, t.Color, t.Type, t.Tdata)
 }
 
 // image makes image markup from the deck image structure.
@@ -118,20 +118,21 @@ func (p *Deck) image(pic deck.Image) {
 }
 
 // list makes markup from the list deck structure.
-func (p *Deck) list(l deck.List, items []string, ltype string) {
-	fmt.Fprintf(p.dest, listfmt, ltype, l.Xp, l.Yp, l.Sp, l.Color)
+func (p *Deck) list(l deck.List, items []string, ltype, font, color string) {
+	fmt.Fprintf(p.dest, listfmt, ltype, l.Xp, l.Yp, l.Sp, l.Font, l.Color)
 	for _, s := range items {
 		fmt.Fprintf(p.dest, lifmt, s)
 	}
 	fmt.Fprintln(p.dest, closelist)
 }
 
-// Text places plain text aligned at (x,y), with specified size and color. Opacity is optional
-func (p *Deck) Text(x, y float64, s string, size float64, color string, opacity ...float64) {
+// Text places plain text aligned at (x,y), with specified font, size and color. Opacity is optional
+func (p *Deck) Text(x, y float64, s, font string, size float64, color string, opacity ...float64) {
 	t := deck.Text{}
 	t.Xp = x
 	t.Yp = y
 	t.Sp = size
+	t.Font = font
 	t.Color = color
 	t.Tdata = s
 	if len(opacity) > 0 {
@@ -140,12 +141,13 @@ func (p *Deck) Text(x, y float64, s string, size float64, color string, opacity 
 	p.text(t)
 }
 
-// TextMid places centered text aligned at (x,y), with specified size and color. Opacity is optional.
-func (p *Deck) TextMid(x, y float64, s string, size float64, color string, opacity ...float64) {
+// TextMid places centered text aligned at (x,y), with specified font, size and color. Opacity is optional.
+func (p *Deck) TextMid(x, y float64, s, font string, size float64, color string, opacity ...float64) {
 	t := deck.Text{}
 	t.Xp = x
 	t.Yp = y
 	t.Sp = size
+	t.Font = font
 	t.Tdata = s
 	t.Color = color
 	t.Align = "center"
@@ -155,12 +157,13 @@ func (p *Deck) TextMid(x, y float64, s string, size float64, color string, opaci
 	p.text(t)
 }
 
-// TextEnd places right-justified text aligned at (x,y), with specified size and color. Opacity is optional.
-func (p *Deck) TextEnd(x, y float64, s string, size float64, color string, opacity ...float64) {
+// TextEnd places right-justified text aligned at (x,y), with specified font, size and color. Opacity is optional.
+func (p *Deck) TextEnd(x, y float64, s, font string, size float64, color string, opacity ...float64) {
 	t := deck.Text{}
 	t.Xp = x
 	t.Yp = y
 	t.Sp = size
+	t.Font = font
 	t.Tdata = s
 	t.Color = color
 	t.Align = "right"
@@ -170,12 +173,13 @@ func (p *Deck) TextEnd(x, y float64, s string, size float64, color string, opaci
 	p.text(t)
 }
 
-// TextBlock makes a block of text aligned at (x,y), wrapped at margin; with specified size and color. Opacity is optional.
-func (p *Deck) TextBlock(x, y float64, s string, size, margin float64, color string, opacity ...float64) {
+// TextBlock makes a block of text aligned at (x,y), wrapped at margin; with specified font, size and color. Opacity is optional.
+func (p *Deck) TextBlock(x, y float64, s, font string, size, margin float64, color string, opacity ...float64) {
 	t := deck.Text{}
 	t.Xp = x
 	t.Yp = y
 	t.Sp = size
+	t.Font = font
 	t.Wp = margin
 	t.Tdata = s
 	t.Color = color
@@ -203,14 +207,15 @@ func (p *Deck) Code(x, y float64, s string, size, margin float64, color string, 
 	p.text(t)
 }
 
-// List makes a plain, bullet, or plain list with the specified size and color.
-func (p *Deck) List(x, y, size float64, items []string, ltype, color string) {
+// List makes a plain, bullet, or plain list with the specified font, size and color.
+func (p *Deck) List(x, y, size float64, items []string, ltype, font, color string) {
 	l := deck.List{}
 	l.Xp = x
 	l.Yp = y
 	l.Sp = size
+	l.Font = font
 	l.Color = color
-	p.list(l, items, ltype)
+	p.list(l, items, ltype, font, color)
 }
 
 // Square makes a square, centered at (x,y), with width w, at the specified color and optional opacity.
