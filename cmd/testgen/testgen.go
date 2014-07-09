@@ -16,10 +16,12 @@ const (
 	rgbfmt   = `rgb(%d,%d,%d)`
 )
 
+// randcolor returns a random color in RGB format
 func randcolor() string {
-	return fmt.Sprintf(rgbfmt, rand.Intn(255), rand.Intn(255), rand.Intn(255))
+	return fmt.Sprintf(rgbfmt, rand.Intn(256), rand.Intn(256), rand.Intn(256))
 }
 
+// randp returns a random float
 func randp(n float64) float64 {
 	x := math.Ceil(rand.Float64() * n)
 	if x == 0 {
@@ -28,11 +30,13 @@ func randp(n float64) float64 {
 	return x
 }
 
+// randpoly returns the polygon coordinates centered from a point
 func randpoly(cx, cy, size float64, np int) (string, string) {
 	rx, ry := rp(cx, cy, size, np)
 	return generate.Polycoord(rx, ry)
 }
 
+// rp returns n random coordinates radiating from (cx, cy)
 func rp(cx, cy, size float64, np int) ([]float64, []float64) {
 	adiv := 360.0 / float64(np)
 	rx := make([]float64, np)
@@ -48,6 +52,7 @@ func rp(cx, cy, size float64, np int) ([]float64, []float64) {
 	return rx, ry
 }
 
+// section makes a slide "section"
 func section(p *generate.Deck, name string, n int) {
 	x := 10.0
 	y := 70.0
@@ -73,6 +78,7 @@ func section(p *generate.Deck, name string, n int) {
 	p.List(x, 60, size/2, list, ltype, "sans", "")
 }
 
+// fitlist fits a list in a vertical range
 func fitlist(p *generate.Deck, x, y, size float64, list []string) {
 	yp := y
 	colsize := 35.0
@@ -87,11 +93,13 @@ func fitlist(p *generate.Deck, x, y, size float64, list []string) {
 	}
 }
 
+// boxtext makes a colored box with centered text
 func boxtext(p *generate.Deck, x, y, w, h float64, s, font string, fontsize float64, bg, fg string) {
 	p.Rect(x, y, w, h, bg)
 	p.TextMid(x, y-(fontsize/2), s, font, fontsize, fg)
 }
 
+// rarrow draws an arrow pointing to the right
 func rarrow(p *generate.Deck, x, y, w, h, aw, ah float64, color string, opacity float64) {
 	xw := x - w
 	xa := x - aw
@@ -102,6 +110,7 @@ func rarrow(p *generate.Deck, x, y, w, h, aw, ah float64, color string, opacity 
 	p.Polygon(px, py, color, opacity)
 }
 
+// larrow draws an arrow pointing to the left
 func larrow(p *generate.Deck, x, y, w, h, aw, ah float64, color string, opacity float64) {
 	xw := x + w
 	xa := x + aw
@@ -112,6 +121,7 @@ func larrow(p *generate.Deck, x, y, w, h, aw, ah float64, color string, opacity 
 	p.Polygon(px, py, color, opacity)
 }
 
+// darrow draws an arrow pointing down 
 func darrow(p *generate.Deck, x, y, w, h, aw, ah float64, color string, opacity float64) {
 	w2 := w / 2
 	aw2 := aw / 2
@@ -121,6 +131,7 @@ func darrow(p *generate.Deck, x, y, w, h, aw, ah float64, color string, opacity 
 
 }
 
+// uarrow draws an arrow pointing upwards
 func uarrow(p *generate.Deck, x, y, w, h, aw, ah float64, color string, opacity float64) {
 	w2 := w / 2
 	aw2 := aw / 2
@@ -342,7 +353,7 @@ func main() {
 	// Colored text box
 	btext := map[string]string{"eat":"green", "sleep":"gray", "pray":"blue", "love":"red"}
 	boxcount := 0
-	bx := 20.0
+	bx := 50.0
 	by := 80.0
 	bw := 30.0
 	bh := 15.0
@@ -367,13 +378,11 @@ func main() {
 
 	// Diagram
 	deck.StartSlide()
-	deck.Rect(25, 50, 20, 15, "red")
-	deck.Rect(75, 50, 20, 15, "green")
+	boxtext(deck, 25, 50, 20, 15, "Urgent", "sans", 3, "red", "white")
+	boxtext(deck, 75, 50, 20, 15, "Important", "sans", 3, "green", "white")
 	rarrow(deck, 50, 50, 20, 2, 2, 5, "red", 40)
 	larrow(deck, 50, 50, 20, 2, 2, 5, "green", 40)
-	deck.TextMid(50, 40, "conflict", "sans", 3, "black")
-	deck.TextMid(25, 48, "Urgent", "sans", 3, "white")
-	deck.TextMid(75, 48, "Important", "sans", 3, "white")
 	deck.EndSlide()
+
 	deck.EndDeck()
 }
