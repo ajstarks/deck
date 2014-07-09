@@ -137,6 +137,8 @@ func (p *Deck) Text(x, y float64, s, font string, size float64, color string, op
 	t.Tdata = s
 	if len(opacity) > 0 {
 		t.Opacity = opacity[0]
+	} else {
+		t.Opacity = 100
 	}
 	p.text(t)
 }
@@ -153,6 +155,8 @@ func (p *Deck) TextMid(x, y float64, s, font string, size float64, color string,
 	t.Align = "center"
 	if len(opacity) > 0 {
 		t.Opacity = opacity[0]
+	} else {
+		t.Opacity = 100
 	}
 	p.text(t)
 }
@@ -169,6 +173,8 @@ func (p *Deck) TextEnd(x, y float64, s, font string, size float64, color string,
 	t.Align = "right"
 	if len(opacity) > 0 {
 		t.Opacity = opacity[0]
+	} else {
+		t.Opacity = 100
 	}
 	p.text(t)
 }
@@ -186,6 +192,8 @@ func (p *Deck) TextBlock(x, y float64, s, font string, size, margin float64, col
 	t.Type = "block"
 	if len(opacity) > 0 {
 		t.Opacity = opacity[0]
+	} else {
+		t.Opacity = 100
 	}
 	p.text(t)
 }
@@ -203,6 +211,8 @@ func (p *Deck) Code(x, y float64, s string, size, margin float64, color string, 
 	t.Type = "code"
 	if len(opacity) > 0 {
 		t.Opacity = opacity[0]
+	} else {
+		t.Opacity = 100
 	}
 	p.text(t)
 }
@@ -228,22 +238,26 @@ func (p *Deck) Square(x, y, w float64, color string, opacity ...float64) {
 	r.Color = color
 	if len(opacity) > 0 {
 		r.Opacity = opacity[0]
+	} else {
+		r.Opacity = 100
 	}
 	p.square(r)
 }
 
 // Circle makes a circle, centered at (x,y) with width w, at the specified color and optional opacity.
 func (p *Deck) Circle(x, y, w float64, color string, opacity ...float64) {
-	r := deck.Ellipse{}
-	r.Xp = x
-	r.Yp = y
-	r.Wp = w
-	r.Hr = 100
-	r.Color = color
+	e := deck.Ellipse{}
+	e.Xp = x
+	e.Yp = y
+	e.Wp = w
+	e.Hr = 100
+	e.Color = color
 	if len(opacity) > 0 {
-		r.Opacity = opacity[0]
+		e.Opacity = opacity[0]
+	} else {
+		e.Opacity = 100
 	}
-	p.circle(r)
+	p.circle(e)
 }
 
 // Rect makes a rectangle, centered at (x,y), with (w,h) dimensions, at the specified color and optional opacity.
@@ -256,22 +270,26 @@ func (p *Deck) Rect(x, y, w, h float64, color string, opacity ...float64) {
 	r.Color = color
 	if len(opacity) > 0 {
 		r.Opacity = opacity[0]
+	} else {
+		r.Opacity = 100
 	}
 	p.rect(r)
 }
 
 // Ellipse makes a ellipse graphic, centered at (x,y), with (w,h) dimensions, at the specified color and optional opacity.
 func (p *Deck) Ellipse(x, y, w, h float64, color string, opacity ...float64) {
-	r := deck.Ellipse{}
-	r.Xp = x
-	r.Yp = y
-	r.Wp = w
-	r.Hp = h
-	r.Color = color
+	e := deck.Ellipse{}
+	e.Xp = x
+	e.Yp = y
+	e.Wp = w
+	e.Hp = h
+	e.Color = color
 	if len(opacity) > 0 {
-		r.Opacity = opacity[0]
+		e.Opacity = opacity[0]
+	} else {
+		e.Opacity = 100
 	}
-	p.ellipse(r)
+	p.ellipse(e)
 }
 
 // Line makes a line from (x1,y1) to (x2, y2), with the specified color with optional opacity; thickness is size.
@@ -279,6 +297,8 @@ func (p *Deck) Line(x1, y1, x2, y2, size float64, color string, opacity ...float
 	l := deck.Line{Xp1: x1, Xp2: x2, Yp1: y1, Yp2: y2, Sp: size, Color: color}
 	if len(opacity) > 0 {
 		l.Opacity = opacity[0]
+	} else {
+		l.Opacity = 100
 	}
 	p.line(l)
 }
@@ -295,6 +315,8 @@ func (p *Deck) Arc(x, y, w, h, size, a1, a2 float64, color string, opacity ...fl
 	a.Color = color
 	if len(opacity) > 0 {
 		a.Opacity = opacity[0]
+	} else {
+		a.Opacity = 100
 	}
 	p.arc(a)
 }
@@ -304,6 +326,8 @@ func (p *Deck) Curve(x1, y1, x2, y2, x3, y3, size float64, color string, opacity
 	c := deck.Curve{Xp1: x1, Xp2: x2, Xp3: x3, Yp1: y1, Yp2: y2, Yp3: y3, Sp: size, Color: color}
 	if len(opacity) > 0 {
 		c.Opacity = opacity[0]
+	} else {
+		c.Opacity = 100
 	}
 	p.curve(c)
 }

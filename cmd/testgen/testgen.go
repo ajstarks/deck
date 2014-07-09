@@ -87,6 +87,11 @@ func fitlist(p *generate.Deck, x, y, size float64, list []string) {
 	}
 }
 
+func boxtext(p *generate.Deck, x, y, w, h float64, s, font string, fontsize float64, bg, fg string) {
+	p.Rect(x, y, w, h, bg)
+	p.TextMid(x, y-(fontsize/2), s, font, fontsize, fg)
+}
+
 func rarrow(p *generate.Deck, x, y, w, h, aw, ah float64, color string, opacity float64) {
 	xw := x - w
 	xa := x - aw
@@ -135,9 +140,10 @@ func main() {
 	deck.StartDeck()
 
 	// Text
+	fontnames := []string{"sans", "serif", "mono"}
 	deck.StartSlide()
 	for i := 0; i < n; i++ {
-		deck.TextMid(randp(100), randp(100), "hello", "sans", randp(10), randcolor(), randp(100))
+		deck.TextMid(randp(100), randp(100), "hello", fontnames[rand.Intn(3)] , randp(10), randcolor(), randp(100))
 	}
 	deck.EndSlide()
 
@@ -329,6 +335,32 @@ func main() {
 			uarrow(deck, x, y, w, h, aw, ah, randcolor(), randp(100))
 		} else {
 			darrow(deck, x, y, w, h, aw, ah, randcolor(), randp(100))
+		}
+	}
+	deck.EndSlide()
+
+	// Colored text box
+	btext := map[string]string{"eat":"green", "sleep":"gray", "pray":"blue", "love":"red"}
+	boxcount := 0
+	bx := 20.0
+	by := 80.0
+	bw := 30.0
+	bh := 15.0
+	fontsize := bw/10.0
+	var font string
+	deck.StartSlide()
+	for  s,color := range btext {
+		boxcount++
+		if boxcount%2 == 0 {
+			font = "sans"
+		} else {
+			font = "serif"
+		}
+		boxtext(deck, bx, by, bw, bh, s, font, fontsize, color, "white")
+		by -= bh  * 1.2
+		if by < bh/2 {
+			bx += bw * 1.5
+			y = 80.0
 		}
 	}
 	deck.EndSlide()
