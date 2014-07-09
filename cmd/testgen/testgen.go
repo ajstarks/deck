@@ -9,6 +9,10 @@ import (
 	"time"
 )
 
+type dimension struct {
+	x, y, w, h float64
+}
+
 const (
 	lorem    = `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
 	hellogo  = "package main\nimport \"fmt\"\nfunc main() {\n    fmt.Println(\"hello, world\")\n}"
@@ -94,49 +98,49 @@ func fitlist(p *generate.Deck, x, y, size float64, list []string) {
 }
 
 // boxtext makes a colored box with centered text
-func boxtext(p *generate.Deck, x, y, w, h float64, s, font string, fontsize float64, bg, fg string) {
-	p.Rect(x, y, w, h, bg)
-	p.TextMid(x, y-(fontsize/2), s, font, fontsize, fg)
+func (d *dimension) boxtext(p *generate.Deck, s, font string, fontsize float64, bg, fg string) {
+	p.Rect(d.x, d.y, d.w, d.h, bg)
+	p.TextMid(d.x, d.y-(fontsize/2), s, font, fontsize, fg)
 }
 
 // rarrow draws an arrow pointing to the right
-func rarrow(p *generate.Deck, x, y, w, h, aw, ah float64, color string, opacity float64) {
-	xw := x - w
-	xa := x - aw
-	h2 := h / 2
+func (d *dimension) rarrow(p *generate.Deck, aw, ah float64, color string, opacity float64) {
+	xw := d.x - d.w
+	xa := d.x - aw
+	h2 := d.h / 2
 	ah2 := ah / 2
-	px := []float64{xw, xa, xa, x, xa, xa, xw, xw}
-	py := []float64{y + h2, y + h2, y + ah2, y, y - ah2, y - h2, y - h2, y + h2}
+	px := []float64{xw, xa, xa, d.x, xa, xa, xw, xw}
+	py := []float64{d.y + h2, d.y + h2, d.y + ah2, d.y, d.y - ah2, d.y - h2, d.y - h2, d.y + h2}
 	p.Polygon(px, py, color, opacity)
 }
 
 // larrow draws an arrow pointing to the left
-func larrow(p *generate.Deck, x, y, w, h, aw, ah float64, color string, opacity float64) {
-	xw := x + w
-	xa := x + aw
-	h2 := h / 2
+func (d *dimension) larrow(p *generate.Deck, aw, ah float64, color string, opacity float64) {
+	xw := d.x + d.w
+	xa := d.x + aw
+	h2 := d.h / 2
 	ah2 := ah / 2
-	px := []float64{xw, xa, xa, x, xa, xa, xw, xw}
-	py := []float64{y + h2, y + h2, y + ah2, y, y - ah2, y - h2, y - h2, y + h2}
+	px := []float64{xw, xa, xa, d.x, xa, xa, xw, xw}
+	py := []float64{d.y + h2, d.y + h2, d.y + ah2, d.y, d.y - ah2, d.y - h2, d.y - h2, d.y + h2}
 	p.Polygon(px, py, color, opacity)
 }
 
-// darrow draws an arrow pointing down 
-func darrow(p *generate.Deck, x, y, w, h, aw, ah float64, color string, opacity float64) {
-	w2 := w / 2
+// darrow draws an arrow pointing down
+func (d *dimension) darrow(p *generate.Deck, aw, ah float64, color string, opacity float64) {
+	w2 := d.w / 2
 	aw2 := aw / 2
-	px := []float64{x, x + aw2, x + w2, x + w2, x - w2, x - w2, x - aw2, x}
-	py := []float64{y, y + ah, y + ah, y + h, y + h, y + ah, y + ah, y}
+	px := []float64{d.x, d.x + aw2, d.x + w2, d.x + w2, d.x - w2, d.x - w2, d.x - aw2, d.x}
+	py := []float64{d.y, d.y + ah, d.y + ah, d.y + d.h, d.y + d.h, d.y + ah, d.y + ah, d.y}
 	p.Polygon(px, py, color, opacity)
 
 }
 
 // uarrow draws an arrow pointing upwards
-func uarrow(p *generate.Deck, x, y, w, h, aw, ah float64, color string, opacity float64) {
-	w2 := w / 2
+func (d *dimension) uarrow(p *generate.Deck, aw, ah float64, color string, opacity float64) {
+	w2 := d.w / 2
 	aw2 := aw / 2
-	px := []float64{x, x - aw2, x - w2, x - w2, x + w2, x + w2, x + aw2, x}
-	py := []float64{y, y - ah, y - ah, y - h, y - h, y - ah, y - ah, y}
+	px := []float64{d.x, d.x - aw2, d.x - w2, d.x - w2, d.x + w2, d.x + w2, d.x + aw2, d.x}
+	py := []float64{d.y, d.y - ah, d.y - ah, d.y - d.h, d.y - d.h, d.y - ah, d.y - ah, d.y}
 	p.Polygon(px, py, color, opacity)
 }
 
@@ -154,7 +158,7 @@ func main() {
 	fontnames := []string{"sans", "serif", "mono"}
 	deck.StartSlide()
 	for i := 0; i < n; i++ {
-		deck.TextMid(randp(100), randp(100), "hello", fontnames[rand.Intn(3)] , randp(10), randcolor(), randp(100))
+		deck.TextMid(randp(100), randp(100), "hello", fontnames[rand.Intn(3)], randp(10), randcolor(), randp(100))
 	}
 	deck.EndSlide()
 
@@ -265,123 +269,131 @@ func main() {
 
 	// Left arrow
 	deck.StartSlide()
+	dim := &dimension{h: 3.0}
 	for i := 0; i < n; i++ {
-		x := randp(100)
-		y := randp(100)
-		w := randp(50)
-		h := 3.0
-		aw := h * 2
+		dim.x = randp(100)
+		dim.y = randp(100)
+		dim.w = randp(50)
+		aw := dim.h * 2
 		ah := aw * 0.9
-		larrow(deck, x, y, w, h, aw, ah, randcolor(), randp(100))
+		dim.larrow(deck, aw, ah, randcolor(), randp(100))
 	}
 	deck.EndSlide()
 
 	// Right arrow
 	deck.StartSlide()
 	for i := 0; i < n; i++ {
-		x := randp(100)
-		y := randp(100)
-		w := randp(50)
-		h := 3.0
-		aw := h * 2
+		dim.x = randp(100)
+		dim.y = randp(100)
+		dim.w = randp(50)
+		aw := dim.h * 2
 		ah := aw * 0.9
-		rarrow(deck, x, y, w, h, aw, ah, randcolor(), randp(100))
+		dim.rarrow(deck, aw, ah, randcolor(), randp(100))
 	}
 	deck.EndSlide()
 
 	// Up arrow
 	deck.StartSlide()
 	for i := 0; i < n; i++ {
-		x := randp(100)
-		y := randp(100)
-		w := 3.0
-		h := randp(50)
-		aw := w * 2
+		dim.x = randp(100)
+		dim.y = randp(100)
+		dim.w = 3.0
+		dim.h = randp(50)
+		aw := dim.w * 2
 		ah := aw * 0.9
-		uarrow(deck, x, y, w, h, aw, ah, randcolor(), randp(100))
+		dim.uarrow(deck, aw, ah, randcolor(), randp(100))
 	}
 	deck.EndSlide()
 
 	// Down arrow
+	dim.w = 3.0
 	deck.StartSlide()
 	for i := 0; i < n; i++ {
-		x := randp(100)
-		y := randp(100)
-		w := 3.0
-		h := randp(50)
-		aw := w * 2
+		dim.x = randp(100)
+		dim.y = randp(100)
+		dim.h = randp(50)
+		aw := dim.w * 2
 		ah := aw * 0.9
-		darrow(deck, x, y, w, h, aw, ah, randcolor(), randp(100))
+		dim.darrow(deck, aw, ah, randcolor(), randp(100))
 
 	}
 	deck.EndSlide()
 
 	// Left and right arrow
+	dim.h = 3.0
 	deck.StartSlide()
 	for i := 0; i < n; i++ {
-		x := randp(100)
-		y := randp(100)
-		w := randp(50)
-		h := 3.0
-		aw := h * 2
+		dim.x = randp(100)
+		dim.y = randp(100)
+		dim.w = randp(50)
+		aw := dim.h * 2
 		ah := aw * 0.9
 		if i%2 == 0 {
-			larrow(deck, x, y, w, h, aw, ah, randcolor(), randp(100))
+			dim.larrow(deck, aw, ah, randcolor(), randp(100))
 		} else {
-			rarrow(deck, x, y, w, h, aw, ah, randcolor(), randp(100))
+			dim.rarrow(deck, aw, ah, randcolor(), randp(100))
 		}
 	}
 	deck.EndSlide()
 
 	// Up and down arrow
+	dim.w = 3.0
 	deck.StartSlide()
 	for i := 0; i < n; i++ {
-		x := randp(100)
-		y := randp(100)
-		w := 3.0
-		h := randp(50)
-		aw := w * 2
+		dim.x = randp(100)
+		dim.y = randp(100)
+		dim.h = randp(50)
+		aw := dim.w * 2
 		ah := aw * 0.9
 		if i%2 == 0 {
-			uarrow(deck, x, y, w, h, aw, ah, randcolor(), randp(100))
+			dim.uarrow(deck, aw, ah, randcolor(), randp(100))
 		} else {
-			darrow(deck, x, y, w, h, aw, ah, randcolor(), randp(100))
+			dim.darrow(deck, aw, ah, randcolor(), randp(100))
 		}
 	}
 	deck.EndSlide()
 
 	// Colored text box
-	btext := map[string]string{"eat":"green", "sleep":"gray", "pray":"blue", "love":"red"}
+	btext := map[string]string{"eat": "green", "sleep": "gray", "pray": "blue", "love": "red"}
 	boxcount := 0
-	bx := 50.0
-	by := 80.0
-	bw := 30.0
-	bh := 15.0
-	fontsize := bw/10.0
+	dim.x = 50
+	dim.y = 80
+	dim.w = 30
+	dim.h = 15
+	fontsize := dim.w / 10.0
 	var font string
 	deck.StartSlide()
-	for  s,color := range btext {
+	for s, color := range btext {
 		boxcount++
 		if boxcount%2 == 0 {
 			font = "sans"
 		} else {
 			font = "serif"
 		}
-		boxtext(deck, bx, by, bw, bh, s, font, fontsize, color, "white")
-		by -= bh  * 1.2
-		if by < bh/2 {
-			bx += bw * 1.5
-			y = 80.0
+		dim.boxtext(deck, s, font, fontsize, color, "white")
+		dim.y -= dim.h * 1.2
+		if dim.y < dim.h/2 {
+			dim.x += dim.w * 1.5
+			dim.y = 80.0
 		}
 	}
 	deck.EndSlide()
 
 	// Diagram
 	deck.StartSlide()
-	boxtext(deck, 25, 50, 20, 15, "Urgent", "sans", 3, "red", "white")
-	boxtext(deck, 75, 50, 20, 15, "Important", "sans", 3, "green", "white")
-	rarrow(deck, 50, 50, 20, 2, 2, 5, "red", 40)
-	larrow(deck, 50, 50, 20, 2, 2, 5, "green", 40)
+	dim.x = 25
+	dim.y = 50
+	dim.w = 20
+	dim.h = 15
+	dim.boxtext(deck, "Urgent", "sans", 3, "red", "white")
+	dim.x = 75
+	dim.boxtext(deck, "Important", "sans", 3, "green", "white")
+	dim.x = 50
+	dim.y = 50
+	dim.w = 20
+	dim.h = 2
+	dim.rarrow(deck, 2, 5, "red", 40)
+	dim.larrow(deck, 2, 5, "green", 40)
 	deck.EndSlide()
 
 	deck.EndDeck()
