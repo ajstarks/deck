@@ -144,6 +144,29 @@ func (d *dimension) uarrow(p *generate.Deck, aw, ah float64, color string, opaci
 	p.Polygon(px, py, color, opacity)
 }
 
+// cube makes a cube with its front-facing bottom edge at x,y, lit from the top
+func cube(d *generate.Deck, x, y, w, h float64, color string) {
+	xc := make([]float64, 4)
+	yc := make([]float64, 4)
+
+	w50 := w / 2
+	h20 := h * .2
+	h40 := h20 * 2
+	yh := y + h
+
+	xc[0], xc[1], xc[2], xc[3] = x-w50, x, x+w50, x
+	yc[0], yc[1], yc[2], yc[3] = yh-h20, yh, yh-h20, yh-(h40)
+	d.Polygon(xc, yc, color, 20) // left face
+
+	xc[0], xc[1], xc[2], xc[3] = x-w50, x-w50, x, x
+	yc[0], yc[1], yc[2], yc[3] = y+h20, yh-h20, yh-h40, y
+	d.Polygon(xc, yc, color, 50) // right face
+
+	xc[0], xc[1], xc[2], xc[3] = x, x, x+w50, x+w50
+	yc[0], yc[1], yc[2], yc[3] = y, yh-h40, yh-h20, y+h20
+	d.Polygon(xc, yc, color, 70) // top face
+}
+
 // Test slide generation
 func main() {
 	rand.Seed(time.Now().Unix() % 1e9)
@@ -353,6 +376,19 @@ func main() {
 	}
 	deck.EndSlide()
 
+	// Left fat arrows
+	dim.h = 3.0
+	deck.StartSlide()
+	for i := 0; i < n; i++ {
+		dim.x = randp(100)
+		dim.y = randp(100)
+		dim.w = randp(10) // randp(50)
+		aw := dim.w / 10  // dim.h * 2
+		ah := dim.h / 3   // aw * 0.9
+		dim.larrow(deck, aw, ah, randcolor(), randp(100))
+	}
+	deck.EndSlide()
+
 	// Colored text box
 	btext := map[string]string{"eat": "green", "sleep": "gray", "pray": "blue", "love": "red"}
 	boxcount := 0
@@ -391,9 +427,15 @@ func main() {
 	dim.x = 50
 	dim.y = 50
 	dim.w = 20
-	dim.h = 2
+	dim.h = 15
 	dim.rarrow(deck, 2, 5, "red", 40)
 	dim.larrow(deck, 2, 5, "green", 40)
+	deck.EndSlide()
+
+	deck.StartSlide()
+	cube(deck, 20, 50, 20, 25, "black")
+	cube(deck, 50, 50, 20, 25, "gray")
+	cube(deck, 80, 50, 20, 25, "rgb(127,0,0)")
 	deck.EndSlide()
 
 	deck.EndDeck()
