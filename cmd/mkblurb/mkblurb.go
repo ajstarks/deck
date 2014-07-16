@@ -11,7 +11,7 @@ import (
 
 const slidefmt = "<deck>\n<slide bg=\"%s\" fg=\"%s\">\n<text xp=\"%g\" yp=\"%g\" sp=\"%g\" wp=\"%g\" font=\"%s\" type=\"block\">%s</text>\n</slide>\n</deck>\n"
 
-var xmlrepl *strings.Replacer = strings.NewReplacer(
+var xmlrepl  = strings.NewReplacer(
 	"<", "&lt;",
 	">", "&gt;",
 	"&", "&amp;",

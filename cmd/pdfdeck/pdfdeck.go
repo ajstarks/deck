@@ -45,7 +45,7 @@ var pagemap = map[string]PageDimen{
 }
 
 // unicodemap maps selected typographic glyphs from Unicode to values gofpdf accepts
-var unicodemap *strings.Replacer = strings.NewReplacer(
+var unicodemap = strings.NewReplacer(
 	"\u2018", "\x91",
 	"\u2019", "\x92",
 	"\u201c", "\x93",

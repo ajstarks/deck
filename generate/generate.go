@@ -1,4 +1,4 @@
-// package generate performs slide deck generation
+// Package generate performs slide deck generation
 package generate
 
 import (

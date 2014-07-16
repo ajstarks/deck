@@ -19,6 +19,7 @@ import (
 	"github.com/ajstarks/openvg"
 )
 
+// StartTime, firstrun, wintrans globals
 var StartTime = time.Now()
 var firstrun = 0
 var wintrans, _ = charset.TranslatorTo("windows-1252")
@@ -322,9 +323,8 @@ func fromUTF8(s string) string {
 	_, b, err := wintrans.Translate([]byte(s), true)
 	if err != nil {
 		return s
-	} else {
-		return string(b)
 	}
+	return string(b)
 }
 
 //showtext displays text

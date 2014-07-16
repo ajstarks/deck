@@ -26,6 +26,7 @@ type canvas struct {
 	Height int `xml:"height,attr"`
 }
 
+// Slide is the structure of an individual slide within a deck
 type Slide struct {
 	Bg       string    `xml:"bg,attr"`
 	Fg       string    `xml:"fg,attr"`
