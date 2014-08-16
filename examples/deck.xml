@@ -2,14 +2,17 @@
  <title>A Deck on Deck</title>
  <creator>Anthony Starks</creator>
  <subject>presentations, Go, markup, design</subject>
- <date>2014-07-01</date>
+ <date>2014-08-15</date>
  <description>Deck is a library for clients to make scalable presentations, using a standard markup language. 
  Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc. 
  Clients may be interactive or produce standard formats such as SVG or PDF.</description>
   <slide bg="white" fg="rgb(50,50,50)">
-    <text xp="5" yp="50" sp="20">Deck</text>
-    <image xp="75" yp="60" width="256" height="256" name="sdeck256.png" />
-    <text xp="90" yp="5" sp="3" align="right">a Go package for presentations</text>
+    <text xp="5" yp="45" sp="18">Deck</text>
+    <rect xp="75" yp="50" wp="40" hr="100" color="rgb(240,240,240)"/>
+    <rect xp="70" yp="55" wp="20" hr="56.2" color="rgb(127,0,0)"/>
+    <rect xp="80" yp="50" wp="20" hr="56.2" color="rgb(255,255,255)"/>
+    <rect xp="75" yp="45" wp="20" hr="56.2" color="rgb(127,127,127)"/>
+    <text xp="95" yp="5" sp="3" align="right">a Go package for presentations</text>
   </slide>
 
   <slide bg="white" fg="rgb(50,50,50)">
@@ -993,7 +996,10 @@ and the voice of the turtle is heard in our land.
   </slide>
   <slide bg="rgb(127,127,127)" fg="white">
     <text  xp="50" yp="85" sp="5" align="center" link="http://github.com/ajstarks/deck">github.com/ajstarks/deck</text>
-    <image xp="50" yp="50" width="270" height="270" name="sdeck256.png" />
+    <rect xp="50" yp="50" wp="30" hr="100" color="rgb(240,240,240)"/>
+    <rect xp="45" yp="55" wp="15" hr="56.2" color="rgb(127,0,0)"/>
+    <rect xp="55" yp="50" wp="15" hr="56.2" color="rgb(255,255,255)"/>
+    <rect xp="50" yp="45" wp="15" hr="56.2" color="rgb(127,127,127)"/>
     <text  xp="50" yp="10" sp="2.5" align="center" link="mailto:ajstarks@gmail.com">ajstarks@gmail.com</text>
     <text  xp="50" yp="4" sp="2.5" align="center" link="http://twitter.com/ajstarks">@ajstarks</text>
   </slide>
