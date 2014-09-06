@@ -2,7 +2,7 @@
  <title>A Deck on Deck</title>
  <creator>Anthony Starks</creator>
  <subject>presentations, Go, markup, design</subject>
- <date>2014-08-15</date>
+ <date>2014-09-06</date>
  <description>Deck is a library for clients to make scalable presentations, using a standard markup language. 
  Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc. 
  Clients may be interactive or produce standard formats such as SVG or PDF.</description>
@@ -284,6 +284,14 @@ func main() {
       <li>URL</li>
       </list>
   </slide>
+  
+  <slide bg="white" fg="rgb(50,50,50)">
+    <text xp="50" yp="90" sp="3" align="center">Scaling the canvas</text>
+  	<image xp="25" yp="50" width="400" height="300" name="l.png"/>
+  	<image xp="75" yp="50" width="300" height="400" name="p.png"/>
+  	<text xp="25" yp="10" sp="2" align="center">Landscape</text>
+  	<text xp="75" yp="10" sp="2" align="center">Portrait</text>
+  </slide>
 
   <slide bg="white" fg="rgb(50,50,50)">
     <text xp="50" yp="50" sp="5" align="center">Percent Grid</text>
@@ -396,49 +404,63 @@ func main() {
     <rect xp="85" yp="25" wp="30" hp="15" color="rgb(0,127,0)" opacity="20" />
   </slide>
   <slide bg="white" fg="rgb(50,50,50)">
-    <text xp="5" yp="95" sp="1.4" color="black" type="code">func main() {
-    benchmarks := []Bardata{
-        {"Macbook Air", 154.701},
-        {"MacBook Pro (2008)", 289.603},
-        {"BeagleBone Black", 2896.037},
-        {"Raspberry Pi", 5765.568},
-    }
-    ts := 2.5
-    hts := ts / 2
-    x := 10.0
-    bx1 := x + (ts * 12)
-    bx2 := bx1 + 50.0
-    y := 60.0
-    maxdata := 5800.0
-    linespacing := ts * 2.0
-    text(x, y+20, "Go 1.1.2 Build and Test Times", ts*2, "black")
-    for _, data := range benchmarks {
-        text(x, y, data.label, ts, "rgb(100,100,100)")
-        bv := vmap(data.value, 0, maxdata, bx1, bx2)
-        line(bx1, y+hts, bv, y+hts, ts, "lightgray")
-        text(bv+0.5, y+(hts/2), fmt.Sprintf("%.1f", data.value), hts, "rgb(127,0,0)")
-        y -= linespacing
-    }
-} </text>
-    <text xp="90" yp="5" sp="3" align="right">Generating a Barchart</text>
+    <text xp="5" yp="95" sp=".9" color="black" wp="70" type="code">package main
+
+import (
+   "fmt"
+   "github.com/ajstarks/deck/generate"
+   "os"
+)
+type Bardata struct {
+   label string
+   value float64
+}
+func vmap(value float64, low1 float64, high1 float64, low2 float64, high2 float64) float64 {
+   return low2 + (high2-low2)*(value-low1)/(high1-low1)
+}
+func main() {
+   benchmarks := []Bardata{
+      {"Macbook Air", 154.701}, {"MacBook Pro (2008)", 289.603}, {"BeagleBone Black", 2896.037}, {"Raspberry Pi", 5765.568},
+   }
+   maxdata := 5800.0
+   ts := 2.5
+   hts := ts / 2
+   x, y := 10.0, 60.0
+   bx1 := x + (ts * 12)
+   bx2 := bx1 + 50.0
+   linespacing := ts * 2.0
+   deck := generate.NewSlides(os.Stdout, 0, 0)
+   deck.StartDeck()
+   deck.StartSlide("rgb(255,255,255)")
+   deck.Text(x, y+20, "Go 1.1.2 Build and Test Times", "sans", ts*2, "black")
+   for _, data := range benchmarks {
+      deck.Text(x, y, data.label, "sans", ts, "rgb(100,100,100)")
+      bv := vmap(data.value, 0, maxdata, bx1, bx2)
+      deck.Line(bx1, y+hts, bv, y+hts, ts, "lightgray")
+      deck.Text(bv+0.5, y+(hts/2), fmt.Sprintf("%.1f", data.value), "sans", hts, "rgb(127,0,0)")
+      y -= linespacing
+   }
+   deck.EndSlide()
+   deck.EndDeck()
+}</text>
+    <text xp="30" yp="90" sp="3">Generating a Barchart</text>
   </slide>
-  <slide>
-<text xp="10.00" yp="80.00" sp="5.00" color="black">Go 1.1.2 Build and Test Times</text>
-<text xp="10.00" yp="60.00" sp="2.50" color="rgb(100,100,100)">Macbook Air</text>
-<line xp1="40.00" yp1="61.25" xp2="41.33" yp2="61.25" sp="2.50" color="lightgray"/>
-<text xp="41.83" yp="60.62" sp="1.25" color="rgb(127,0,0)">154.7</text>
-<text xp="10.00" yp="55.00" sp="2.50" color="rgb(100,100,100)">MacBook Pro (2008)</text>
-<line xp1="40.00" yp1="56.25" xp2="42.50" yp2="56.25" sp="2.50" color="lightgray"/>
-<text xp="43.00" yp="55.62" sp="1.25" color="rgb(127,0,0)">289.6</text>
-<text xp="10.00" yp="50.00" sp="2.50" color="rgb(100,100,100)">BeagleBone Black</text>
-<line xp1="40.00" yp1="51.25" xp2="64.97" yp2="51.25" sp="2.50" color="lightgray"/>
-<text xp="65.47" yp="50.62" sp="1.25" color="rgb(127,0,0)">2896.0</text>
-<text xp="10.00" yp="45.00" sp="2.50" color="rgb(100,100,100)">Raspberry Pi</text>
-<line xp1="40.00" yp1="46.25" xp2="89.70" yp2="46.25" sp="2.50" color="lightgray"/>
-<text xp="90.20" yp="45.62" sp="1.25" color="rgb(127,0,0)">5765.6</text>
-<text xp="10" yp="20" sp="1.3" type="code">$ (echo '&lt;deck&gt;&lt;slide&gt;'; go run deckbc.go; echo '&lt;/slide&gt;&lt;/deck&gt;')</text>
-</slide>
-  <slide>
+  <slide bg="rgb(255,255,255)">
+    <text xp="10.00" yp="80.00" sp="5.00" align="" wp="0.00" font="sans" opacity="100.00" color="black">Go 1.1.2 Build and Test Times</text>
+    <text xp="10.00" yp="60.00" sp="2.50" align="" wp="0.00" font="sans" opacity="100.00" color="rgb(100,100,100)">Macbook Air</text>
+    <line xp1="40.00" yp1="61.25" xp2="41.33" yp2="61.25" sp="2.50" opacity="100.00" color="lightgray" />
+    <text xp="41.83" yp="60.62" sp="1.25" align="" wp="0.00" font="sans" opacity="100.00" color="rgb(127,0,0)">154.7</text>
+    <text xp="10.00" yp="55.00" sp="2.50" align="" wp="0.00" font="sans" opacity="100.00" color="rgb(100,100,100)">MacBook Pro (2008)</text>
+    <line xp1="40.00" yp1="56.25" xp2="42.50" yp2="56.25" sp="2.50" opacity="100.00" color="lightgray" />
+    <text xp="43.00" yp="55.62" sp="1.25" align="" wp="0.00" font="sans" opacity="100.00" color="rgb(127,0,0)">289.6</text>
+    <text xp="10.00" yp="50.00" sp="2.50" align="" wp="0.00" font="sans" opacity="100.00" color="rgb(100,100,100)">BeagleBone Black</text>
+    <line xp1="40.00" yp1="51.25" xp2="64.97" yp2="51.25" sp="2.50" opacity="100.00" color="lightgray" />
+    <text xp="65.47" yp="50.62" sp="1.25" align="" wp="0.00" font="sans" opacity="100.00" color="rgb(127,0,0)">2896.0</text>
+    <text xp="10.00" yp="45.00" sp="2.50" align="" wp="0.00" font="sans" opacity="100.00" color="rgb(100,100,100)">Raspberry Pi</text>
+    <line xp1="40.00" yp1="46.25" xp2="89.70" yp2="46.25" sp="2.50" opacity="100.00" color="lightgray" />
+    <text xp="90.20" yp="45.62" sp="1.25" align="" wp="0.00" font="sans" opacity="100.00" color="rgb(127,0,0)">5765.6</text>
+  </slide>
+<slide>
     <image xp="12" yp="85" width="144" height="128" name="rpi-logo.jpg"/>
     <text  xp="25" yp="85" sp="2.5" font="mono" color="rgb(127,0,0)">go get github.com/ajstarks/deck/cmd/vgdeck</text>
     <image xp="12" yp="55" width="128" height="128" name="pdf-logo.jpg"/>
