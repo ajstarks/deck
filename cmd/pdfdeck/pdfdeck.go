@@ -570,6 +570,7 @@ func dodeck(files []string, pageconfig gofpdf.InitType, w, h float64, sflag bool
 	}
 }
 
+// includefile returns the contents of a file as string
 func includefile(filename string) string {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {

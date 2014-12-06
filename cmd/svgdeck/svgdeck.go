@@ -4,6 +4,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"math"
 	"os"
 	"path/filepath"
@@ -422,6 +423,7 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 		doline(doc, x1, y1, x2, y2, sw, line.Color, line.Opacity)
 	}
 	// for every text element...
+	var tdata string
 	for _, t := range slide.Text {
 		if t.Color == "" {
 			t.Color = slide.Fg
@@ -429,8 +431,13 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 		if t.Font == "" {
 			t.Font = "sans"
 		}
+		if t.File != "" {
+			tdata = includefile(t.File)
+		} else {
+			tdata = t.Tdata
+		}
 		x, y, fs = dimen(cw, ch, t.Xp, t.Yp, t.Sp)
-		dotext(doc, cw, x, y, fs, t.Wp, t.Tdata, t.Font, t.Color, t.Opacity, t.Align, t.Type)
+		dotext(doc, cw, x, y, fs, t.Wp, tdata, t.Font, t.Color, t.Opacity, t.Align, t.Type)
 	}
 	// for every list element...
 	for _, l := range slide.List {
@@ -478,6 +485,16 @@ func dodeck(files []string, sflag bool, pagewidth, pageheight int, pagesize, out
 			doslides(outname, filename, title, cw, ch, gp)
 		}
 	}
+}
+
+// includefile returns the contents of a file as string
+func includefile(filename string) string {
+        data, err := ioutil.ReadFile(filename)
+        if err != nil {
+                fmt.Fprintf(os.Stderr, "%v\n", err)
+                return ""
+        }
+        return string(data)
 }
 
 // for every file, make a deck
