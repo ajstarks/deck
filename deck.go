@@ -40,7 +40,7 @@ type Slide struct {
 	Rect     []Rect    `xml:"rect"`
 	Curve    []Curve   `xml:"curve"`
 	Arc      []Arc     `xml:"arc"`
-	Polygon []Polygon `xml:"polygon"`
+	Polygon  []Polygon `xml:"polygon"`
 }
 
 // CommonAttr are the common attributes for text and list
@@ -87,6 +87,7 @@ type List struct {
 type Text struct {
 	CommonAttr
 	Wp    float64 `xml:"wp,attr"`
+	File  string  `xml:"file,attr"`
 	Tdata string  `xml:",chardata"`
 }
 
@@ -149,13 +150,13 @@ type Arc struct {
 	Opacity float64 `xml:"opacity,attr"`
 }
 
-// Polygon defines a polygon, x and y coordinates are specified by 
-// strings of space-separated percentages: 
+// Polygon defines a polygon, x and y coordinates are specified by
+// strings of space-separated percentages:
 // <polygon xc="10 20 30" yc="30 40 50"/>
 type Polygon struct {
-	XC string `xml:"xc,attr"`
-	YC string `xml:"yc,attr"`
-	Color string `xml:"color,attr"`
+	XC      string  `xml:"xc,attr"`
+	YC      string  `xml:"yc,attr"`
+	Color   string  `xml:"color,attr"`
 	Opacity float64 `xml:"opacity,attr"`
 }
 

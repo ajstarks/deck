@@ -4,6 +4,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -455,6 +456,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 	}
 
 	// for every text element...
+	var tdata string
 	for _, t := range slide.Text {
 		if t.Color == "" {
 			t.Color = slide.Fg
@@ -464,7 +466,12 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		}
 		setopacity(doc, t.Opacity)
 		x, y, fs = dimen(cw, ch, t.Xp, t.Yp, t.Sp)
-		dotext(doc, cw, x, y, fs, t.Wp, t.Tdata, t.Font, t.Color, t.Align, t.Type, t.Link)
+		if t.File != "" {
+			tdata = includefile(t.File)
+		} else {
+			tdata = t.Tdata
+		}
+		dotext(doc, cw, x, y, fs, t.Wp, tdata, t.Font, t.Color, t.Align, t.Type, t.Link)
 	}
 	// for every list element...
 	for _, l := range slide.List {
@@ -561,6 +568,15 @@ func dodeck(files []string, pageconfig gofpdf.InitType, w, h float64, sflag bool
 			out.Close()
 		}
 	}
+}
+
+func includefile(filename string) string {
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return ""
+	}
+	return string(data)
 }
 
 // for every file, make a deck
