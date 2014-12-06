@@ -2,7 +2,7 @@
  <title>A Deck on Deck</title>
  <creator>Anthony Starks</creator>
  <subject>presentations, Go, markup, design</subject>
- <date>2014-09-06</date>
+ <date>2014-12-06</date>
  <description>Deck is a library for clients to make scalable presentations, using a standard markup language. 
  Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc. 
  Clients may be interactive or produce standard formats such as SVG or PDF.</description>
@@ -38,12 +38,7 @@
     <text xp="10" yp="60" sp="3" wp="60" color="rgb(0,0,127)" font="serif" type="block">
     A block of text, word-wrapped to a specified width. You may specify size, font, color, and opacity.
     </text>
-    <text xp="10" yp="33" sp="2" wp="50" type="code">package main
-
-import "fmt"
-func main() {
-    fmt.Println("Hello, World")
-}</text>
+    <text xp="10" yp="33" sp="2" wp="50" type="code" file="hw.go"/>
   </slide>
 
   <slide bg="white" fg="rgb(50,50,50)">
@@ -361,29 +356,8 @@ func main() {
   </slide>
 
   <slide bg="white" fg="rgb(50,50,50)">
-	
-	<text xp="5" yp="95" sp="1.4" type="code" color="black">package main
-import ( 
-    "log"  
-    "github.com/ajstarks/deck"
-)
-func main() {
-    presentation, err := deck.Read("deck.xml", 1024, 768) // open the deck
-    if err != nil {
-        log.Fatal(err)
-    }
-    for _, slide := range presentation.Slide {           // for every slide...
-        for _, t := range slide.Text {                   // process the text elements
-            x, y, size := deck.Dimen(presentation.Canvas, t.Xp, t.Yp, t.Sp)
-            slideText(x, y, size, t)
-        }
-        for _, l := range slide.List {                   // process the list elements
-            x, y, size := deck.Dimen(presentation.Canvas, l.Xp, l.Yp, l.Sp)
-            slideList(x, y, size, l)
-        }
-    }
-}</text>
-<text xp="90" yp="5" sp="3" align="right">A Deck Client</text>
+	<text xp="5" yp="95" sp="1.4" type="code" color="black" file="deckclient.go"/>
+	<text xp="90" yp="5" sp="3" align="right">A Deck Client</text>
   </slide>
 
   <slide>
@@ -404,45 +378,7 @@ func main() {
     <rect xp="85" yp="25" wp="30" hp="15" color="rgb(0,127,0)" opacity="20" />
   </slide>
   <slide bg="white" fg="rgb(50,50,50)">
-    <text xp="5" yp="95" sp=".9" color="black" wp="70" type="code">package main
-
-import (
-   "fmt"
-   "github.com/ajstarks/deck/generate"
-   "os"
-)
-type Bardata struct {
-   label string
-   value float64
-}
-func vmap(value float64, low1 float64, high1 float64, low2 float64, high2 float64) float64 {
-   return low2 + (high2-low2)*(value-low1)/(high1-low1)
-}
-func main() {
-   benchmarks := []Bardata{
-      {"Macbook Air", 154.701}, {"MacBook Pro (2008)", 289.603}, {"BeagleBone Black", 2896.037}, {"Raspberry Pi", 5765.568},
-   }
-   maxdata := 5800.0
-   ts := 2.5
-   hts := ts / 2
-   x, y := 10.0, 60.0
-   bx1 := x + (ts * 12)
-   bx2 := bx1 + 50.0
-   linespacing := ts * 2.0
-   deck := generate.NewSlides(os.Stdout, 0, 0)
-   deck.StartDeck()
-   deck.StartSlide("rgb(255,255,255)")
-   deck.Text(x, y+20, "Go 1.1.2 Build and Test Times", "sans", ts*2, "black")
-   for _, data := range benchmarks {
-      deck.Text(x, y, data.label, "sans", ts, "rgb(100,100,100)")
-      bv := vmap(data.value, 0, maxdata, bx1, bx2)
-      deck.Line(bx1, y+hts, bv, y+hts, ts, "lightgray")
-      deck.Text(bv+0.5, y+(hts/2), fmt.Sprintf("%.1f", data.value), "sans", hts, "rgb(127,0,0)")
-      y -= linespacing
-   }
-   deck.EndSlide()
-   deck.EndDeck()
-}</text>
+    <text xp="5" yp="95" sp=".9" color="black" wp="70" type="code" file="barchart.go"/>
     <text xp="30" yp="90" sp="3">Generating a Barchart</text>
   </slide>
   <slide bg="rgb(255,255,255)">
@@ -891,30 +827,7 @@ Gate C31C
     <text xp="25" yp="90" sp="2" align="center">Code</text>
     <text xp="75" yp="90" sp="2" align="center">Output</text>
     <image xp="75" yp="50" width="545" height="545" name="rotext.png"/>
-    <text xp="5" yp="80" sp="1.2" wp="50" type="code">package main 
-import (
-    "github.com/ajstarks/svgo"
-    "os"
-)
-
-func main() {
-    canvas := svg.New(os.Stdout)
-    width, height := 500, 500
-    a, ai, ti := 1.0, 0.03, 10.0
-
-    canvas.Start(width, height)
-    canvas.Rect(0, 0, width, height)
-    canvas.Gstyle("font-family:serif;font-size:144pt")
-
-    for t := 0.0; t &lt;= 360.0; t += ti {
-        canvas.TranslateRotate(width/2, height/2, t)
-        canvas.Text(0, 0, "i", canvas.RGBA(255, 255, 255, a))
-        canvas.Gend()
-        a -= ai
-    }
-    canvas.Gend()
-    canvas.End()
-}</text>
+    <text xp="5" yp="80" sp="1.2" wp="50" type="code" file="rotext.go"/>
   </slide>
   <slide bg="white" fg="black">
      <text xp="20" yp="70" sp="2" wp="50" font="serif" type="block">
