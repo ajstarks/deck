@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"code.google.com/p/go-charset/charset"
 	_ "code.google.com/p/go-charset/data"
+	"io/ioutil"
 	"flag"
 	"fmt"
 	"image"
@@ -607,7 +608,13 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 	// every text in the slide
 	const linespacing = 1.8
 
+	var tdata string
 	for _, t := range slide.Text {
+		if t.File != "" {
+			tdata = includefile(t.File)
+		} else {
+			tdata = t.Tdata
+		}
 		if t.Font == "" {
 			t.Font = "sans"
 		}
@@ -617,7 +624,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 			textopacity = openvg.VGfloat(t.Opacity / 100)
 		}
 		x, y, fs = dimen(d, t.Xp, t.Yp, t.Sp)
-		td := strings.Split(t.Tdata, "\n")
+		td := strings.Split(tdata, "\n")
 		if t.Type == "code" {
 			t.Font = "mono"
 			tdepth := ((fs * linespacing) * openvg.VGfloat(len(td))) + fs
@@ -630,7 +637,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 			openvg.FillColor(t.Color, textopacity)
 		}
 		if t.Type == "block" {
-			textwrap(x, y, pctwidth(t.Wp, cw, cw/2), t.Tdata, t.Font, fs, fs*linespacing, 0.3)
+			textwrap(x, y, pctwidth(t.Wp, cw, cw/2), tdata, t.Font, fs, fs*linespacing, 0.3)
 		} else {
 			// every text line
 			for _, txt := range td {
@@ -668,6 +675,16 @@ func textwrap(x, y, w openvg.VGfloat, s string, font string, fs, leading, factor
 			yp -= leading
 		}
 	}
+}
+
+// includefile returns a string from a named file
+func includefile(filename string) string {
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return ""
+	}
+	return string(data)
 }
 
 // readcmd reads interaction commands
