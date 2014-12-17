@@ -5,15 +5,15 @@ import (
 	"bufio"
 	"code.google.com/p/go-charset/charset"
 	_ "code.google.com/p/go-charset/data"
-	"io/ioutil"
 	"flag"
 	"fmt"
 	"image"
 	_ "image/jpeg"
 	_ "image/png"
+	"io/ioutil"
 	"os"
-	"strings"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/ajstarks/deck"
@@ -24,12 +24,13 @@ import (
 var StartTime = time.Now()
 var firstrun = 0
 var wintrans, _ = charset.TranslatorTo("windows-1252")
+var codemap = strings.NewReplacer("\t", "    ")
 
 // dodeck sets up the graphics environment and kicks off the interaction
 func dodeck(filename, searchterm string, pausetime time.Duration, slidenum, cw, ch int, gp float64) {
 	w, h := openvg.Init()
-	openvg.FillRGB(200,200,200,1)
-	openvg.Rect(0,0,openvg.VGfloat(w), openvg.VGfloat(h))
+	openvg.FillRGB(200, 200, 200, 1)
+	openvg.Rect(0, 0, openvg.VGfloat(w), openvg.VGfloat(h))
 	if cw > 0 {
 		w = cw
 	}
@@ -546,7 +547,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 			if err != nil {
 				py[i] = 0
 			} else {
-				py[i] = pct(y, ch) 
+				py[i] = pct(y, ch)
 			}
 		}
 		openvg.FillColor(poly.Color, openvg.VGfloat(poly.Opacity))
@@ -677,14 +678,14 @@ func textwrap(x, y, w openvg.VGfloat, s string, font string, fs, leading, factor
 	}
 }
 
-// includefile returns a string from a named file
+// includefile returns the contents of a file as string
 func includefile(filename string) string {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return ""
 	}
-	return string(data)
+	return codemap.Replace(string(data))
 }
 
 // readcmd reads interaction commands
