@@ -28,6 +28,8 @@ type PageDimen struct {
 // fontmap maps generic font names to specific implementation names
 var fontmap = map[string]string{}
 
+var codemap = strings.NewReplacer("\t", "    ")
+
 // pagemap defines page dimensions
 var pagemap = map[string]PageDimen{
 	"Letter": {792, 612, 1},
@@ -489,12 +491,12 @@ func dodeck(files []string, sflag bool, pagewidth, pageheight int, pagesize, out
 
 // includefile returns the contents of a file as string
 func includefile(filename string) string {
-        data, err := ioutil.ReadFile(filename)
-        if err != nil {
-                fmt.Fprintf(os.Stderr, "%v\n", err)
-                return ""
-        }
-        return string(data)
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return ""
+	}
+	return codemap.Replace(string(data))
 }
 
 // for every file, make a deck
