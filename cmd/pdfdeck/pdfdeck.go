@@ -45,23 +45,7 @@ var pagemap = map[string]PageDimen{
 	"A5":         {210, 148, mm2pt},
 }
 
-// unicodemap maps selected typographic glyphs from Unicode to values gofpdf accepts
-var unicodemap = strings.NewReplacer(
-	"\u2018", "\x91",
-	"\u2019", "\x92",
-	"\u201c", "\x93",
-	"\u201d", "\x94",
-	"\u2022", "\x95",
-	"\u2013", "\x96",
-	"\u2014", "\x97",
-	"\u2122", "\x99",
-	"\u20ac", "\x80",
-	"\u2026", "\x85",
-	"\u00b6", "\xb6",
-	"\u00a7", "\xa7",
-	"\u00a9", "\xa9",
-	"\u00ae", "\xae",
-	"\u00b0", "\xb0")
+var codemap = strings.NewReplacer("\t", "    ")
 
 // translate is the function that does unicode character replacement
 var translate func(string) string
@@ -236,12 +220,6 @@ func dotext(doc *gofpdf.Fpdf, cw, x, y, fs float64, wp float64, tdata, font, col
 			y += ls
 		}
 	}
-}
-
-// reptranslate converts selected unicode code points to font-mapped glyphs
-// using string replacement
-func reptranslate(s string) string {
-	return unicodemap.Replace(s)
 }
 
 // showtext places fully attributed text at the specified location
@@ -577,7 +555,7 @@ func includefile(filename string) string {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return ""
 	}
-	return string(data)
+	return codemap.Replace(string(data))
 }
 
 // for every file, make a deck
