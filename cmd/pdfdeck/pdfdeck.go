@@ -167,7 +167,6 @@ func doellipse(doc *gofpdf.Fpdf, x, y, w, h float64, color string) {
 }
 
 // dopoly draws a polygon
-
 func dopoly(doc *gofpdf.Fpdf, xc, yc, color string, cw, ch float64) {
 	xs := strings.Split(xc, " ")
 	ys := strings.Split(yc, " ")
@@ -487,6 +486,7 @@ func doslides(doc *gofpdf.Fpdf, pc gofpdf.InitType, filename, author, title stri
 	}
 	d.Canvas.Width = w
 	d.Canvas.Height = h
+	doc.SetDisplayMode("fullpage", "single") // optimal set for presentations
 	doc.SetCreator("pdfdeck", true)
 
 	// Document-supplied overrides command-line specified metadata
