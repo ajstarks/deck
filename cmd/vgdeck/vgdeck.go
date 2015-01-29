@@ -334,9 +334,9 @@ func showtext(x, y openvg.VGfloat, s, align, font string, fs openvg.VGfloat) {
 	t := fromUTF8(s)
 	fontsize := int(fs)
 	switch align {
-	case "center", "middle", "mid":
+	case "center", "middle", "mid", "c":
 		openvg.TextMid(x, y, t, font, fontsize)
-	case "right", "end":
+	case "right", "end", "e":
 		openvg.TextEnd(x, y, t, font, fontsize)
 	default:
 		openvg.Text(x, y, t, font, fontsize)

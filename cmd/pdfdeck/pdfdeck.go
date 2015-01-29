@@ -228,9 +228,9 @@ func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align,
 	t := translate(s)
 	tw := doc.GetStringWidth(t)
 	switch align {
-	case "center":
+	case "center", "middle", "mid", "c":
 		offset = (tw / 2)
-	case "right":
+	case "right", "end", "e":
 		offset = tw
 	}
 	doc.Text(x-offset, y, t)

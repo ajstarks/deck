@@ -189,11 +189,11 @@ func dotext(doc *svg.SVG, cw, x, y, fs int, wp float64, tdata, font, color strin
 // textalign returns the SVG text alignment operator
 func textalign(s string) string {
 	switch s {
-	case "center", "middle":
+	case "center", "middle", "mid", "c":
 		return "middle"
-	case "left", "start":
+	case "left", "start", "l":
 		return "start"
-	case "right", "end":
+	case "right", "end", "e":
 		return "end"
 	}
 	return "start"
