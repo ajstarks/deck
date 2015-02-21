@@ -1,4 +1,4 @@
-// vgdeck: slide decks for OpenVG
+// keyframe: take a snapshot (as a raw raster) of th specified slide
 package main
 
 import (
@@ -409,7 +409,7 @@ func includefile(filename string) string {
 }
 
 
-// for every file, make a deck
+// for every file, make a snapshot (<file>-slide-nnnn) 
 func main() {
 	var slidenum = flag.Int("slide", 0, "initial slide")
 	flag.Parse()
