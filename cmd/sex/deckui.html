@@ -57,6 +57,7 @@ function List(style) {
     			output += '<tr>';
     			if (listype == "deck") {
     				output += '<td><button id="play" onclick="Playlist(\''+data.decks[i].name+'\')">Play</button></td>';
+				output += '<td><img src="http://'+ srv + '/thumb/' + data.decks[i].name + '-kf.png"/></td>';
     				output += '<td><button id="stop" onclick="Stop()">Stop</button>';
     			}
     			output += '<td>' +  data.decks[i].name + '</td>';

@@ -59,6 +59,7 @@ func main() {
 		log.Fatal("Set Directory:", err)
 	}
 	http.Handle("/", http.HandlerFunc(info))
+	http.Handle("/thumb/", http.HandlerFunc(thumb))
 	http.Handle("/deck/", http.HandlerFunc(dodeck))
 	http.Handle("/upload/", http.HandlerFunc(upload))
 	http.Handle("/table/", http.HandlerFunc(table))
@@ -89,6 +90,7 @@ func info(w http.ResponseWriter, req *http.Request) {
 func dodeck(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	query := req.URL.Query()
 	dpath := strings.Split(req.URL.Path, "/")
 	if len(dpath) < 3 {
@@ -198,6 +200,8 @@ func dodeck(w http.ResponseWriter, req *http.Request) {
 func upload(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Deck")
 	if req.Method == "POST" || req.Method == "PUT" {
 		deckpath := validpath(req.Header.Get("Deck"))
 		if deckpath == "" {
@@ -235,6 +239,7 @@ func upload(w http.ResponseWriter, req *http.Request) {
 func media(w http.ResponseWriter, req *http.Request) {
 	requester := req.RemoteAddr
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	media := validpath(req.Header.Get("Media"))
 	method := req.Method
 	query := req.URL.Query()
@@ -277,6 +282,7 @@ func table(w http.ResponseWriter, req *http.Request) {
 		param = p[0]
 	}
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	if req.Method == "POST" {
 		defer req.Body.Close()
 		deckpath := validpath(req.Header.Get("Deck"))
@@ -396,6 +402,11 @@ func deckinfo(w http.ResponseWriter, data []os.FileInfo, pattern string) {
 	io.WriteString(w, "]}\n")
 }
 
+// thumb: show slide thumbnail 
+func thumb(w http.ResponseWriter, r *http.Request) {
+	log.Printf("thumb: %s", r.RequestURI)
+	http.ServeFile(w, r, r.RequestURI[1:]) 
+}
 // maketable creates a deck file from a tab separated list
 // that includes a specification in the first record
 func maketable(w io.Writer, r io.Reader, textsize float64) {
