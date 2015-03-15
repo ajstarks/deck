@@ -3,8 +3,6 @@ package main
 
 import (
 	"bufio"
-	"code.google.com/p/go-charset/charset"
-	_ "code.google.com/p/go-charset/data"
 	"flag"
 	"fmt"
 	"image"
@@ -16,8 +14,12 @@ import (
 	"strings"
 	"time"
 
+	"code.google.com/p/go-charset/charset"
+	_ "code.google.com/p/go-charset/data"
+
 	"github.com/ajstarks/deck"
 	"github.com/ajstarks/openvg"
+	"github.com/disintegration/gift"
 )
 
 // StartTime, firstrun, wintrans globals
@@ -88,7 +90,16 @@ func loadimage(d deck.Deck, m map[string]image.Image) {
 			openvg.Rect(0, 0, cw, ch)
 			openvg.FillColor(mfg)
 			openvg.TextMid(mx, my, fmt.Sprintf("Loading image %s %d from slide %d", i.Name, ni, ns), "sans", msize)
-			m[i.Name] = img
+			bounds := img.Bounds()
+			// if the specified dimensions are native use those, otherwise resize
+			if i.Width == (bounds.Max.X-bounds.Min.X) && i.Height == (bounds.Max.Y-bounds.Min.Y) {
+				m[i.Name] = img
+			} else {
+				g := gift.New(gift.Resize(i.Width, i.Height, gift.LanczosResampling))
+				resized := image.NewRGBA(g.Bounds(img.Bounds()))
+				g.Draw(resized, img)
+				m[i.Name] = resized
+			}
 			f.Close()
 			openvg.End()
 		}
@@ -379,7 +390,6 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		if ok {
 			openvg.Img(x-midx, y-midy, img)
 		}
-		// openvg.Image(x-midx, y-midy, im.Width, im.Height, im.Name)
 		if len(im.Caption) > 0 {
 			capfs := pctwidth(im.Sp, cw, cw/100)
 			if im.Font == "" {
