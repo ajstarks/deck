@@ -95,7 +95,7 @@ func loadimage(d deck.Deck, m map[string]image.Image) {
 			if i.Width == (bounds.Max.X-bounds.Min.X) && i.Height == (bounds.Max.Y-bounds.Min.Y) {
 				m[i.Name] = img
 			} else {
-				g := gift.New(gift.Resize(i.Width, i.Height, gift.LanczosResampling))
+				g := gift.New(gift.Resize(i.Width, i.Height, gift.BoxResampling))
 				resized := image.NewRGBA(g.Bounds(img.Bounds()))
 				g.Draw(resized, img)
 				m[i.Name] = resized
