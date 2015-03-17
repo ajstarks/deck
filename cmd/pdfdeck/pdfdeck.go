@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"strings"
 
-	"code.google.com/p/gofpdf"
 	"github.com/ajstarks/deck"
+	"github.com/jung-kurt/gofpdf"
 )
 
 const (
