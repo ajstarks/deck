@@ -14,22 +14,18 @@ import (
 	"strings"
 	"time"
 
-	"code.google.com/p/go-charset/charset"
-	_ "code.google.com/p/go-charset/data"
-
 	"github.com/ajstarks/deck"
 	"github.com/ajstarks/openvg"
 	"github.com/disintegration/gift"
 )
 
-// StartTime, firstrun, wintrans globals
 var StartTime = time.Now()
-var firstrun = 0
-var wintrans, _ = charset.TranslatorTo("windows-1252")
+var firstrun int
 var codemap = strings.NewReplacer("\t", "    ")
 
 // dodeck sets up the graphics environment and kicks off the interaction
 func dodeck(filename, searchterm string, pausetime time.Duration, slidenum, cw, ch int, gp float64) {
+	firstrun = 0
 	w, h := openvg.Init()
 	openvg.FillRGB(200, 200, 200, 1)
 	openvg.Rect(0, 0, openvg.VGfloat(w), openvg.VGfloat(h))
@@ -172,7 +168,7 @@ func interact(filename, searchterm string, w, h, slidenum int, gp float64) {
 			showslide(d, imap, n)
 
 		// next slide
-		case '+', 'n', '\n', ' ', '\t', 14: // +,n,newline,space,tab,Crtl-N
+		case '+', 'n', '\n', ' ', '\t', '=', 14: // +,n,newline,space,tab,equal,Crtl-N
 			n++
 			if n > lastslide {
 				n = 0
@@ -332,17 +328,10 @@ func showgrid(d deck.Deck, n int, p float64) {
 	}
 	openvg.End()
 }
-func fromUTF8(s string) string {
-	_, b, err := wintrans.Translate([]byte(s), true)
-	if err != nil {
-		return s
-	}
-	return string(b)
-}
 
 //showtext displays text
-func showtext(x, y openvg.VGfloat, s, align, font string, fs openvg.VGfloat) {
-	t := fromUTF8(s)
+func showtext(x, y openvg.VGfloat, t, align, font string, fs openvg.VGfloat) {
+	//t := s // fromUTF8(s)
 	fontsize := int(fs)
 	switch align {
 	case "center", "middle", "mid", "c":
