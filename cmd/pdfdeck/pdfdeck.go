@@ -565,7 +565,7 @@ func main() {
 		serifont = flag.String("serif", "times", "serif font")
 		monofont = flag.String("mono", "courier", "mono font")
 		pagesize = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
-		fontdir  = flag.String("fontdir", filepath.Join(os.Getenv("GOPATH"), "src/code.google.com/p/gofpdf/font"), "directory for fonts")
+		fontdir  = flag.String("fontdir", os.Getenv("DECKFONTS"), "directory for fonts")
 		outdir   = flag.String("outdir", ".", "output directory")
 		title    = flag.String("title", "", "document title")
 		author   = flag.String("author", "", "document author")
