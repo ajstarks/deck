@@ -3,30 +3,32 @@ package generate
 
 import (
 	"fmt"
-	"github.com/ajstarks/deck"
 	"io"
+
+	"github.com/ajstarks/deck"
 )
 
 const (
-	circlefmt  = `<ellipse xp="%.2f" yp="%.2f" wp="%.2f" hr="%.2f" opacity="%.2f" color="%s"/>`
-	squarefmt  = `<rect xp="%.2f" yp="%.2f" wp="%.2f" hr="%.2f" opacity="%.2f" color="%s"/>`
-	ellipsefmt = `<ellipse xp="%.2f" yp="%.2f" wp="%.2f" hp="%.2f" opacity="%.2f" color="%s"/>`
-	rectfmt    = `<rect xp="%.2f" yp="%.2f" wp="%.2f" hp="%.2f" opacity="%.2f" color="%s"/>`
-	arcfmt     = `<arc xp="%.2f" yp="%.2f" wp="%.2f" hp="%.2f" sp="%.2f" a1="%.2f" a2="%.2f" opacity="%.2f" color="%s"/>`
-	linefmt    = `<line xp1="%.2f" yp1="%.2f" xp2="%.2f" yp2="%.2f" sp="%.2f" opacity="%.2f" color="%s"/>`
-	curvefmt   = `<curve xp1="%.2f" yp1="%.2f" xp2="%.2f" yp2="%.2f" xp3="%.2f" yp3="%.2f" sp="%.2f" opacity="%.2f" color="%s"/>`
-	polygonfmt = `<polygon xc="%s" yc="%s" opacity="%.2f" color="%s"/>`
-	textfmt    = `<text xp="%.2f" yp="%.2f" sp="%.2f" align="%s" wp="%.2f" font="%s" opacity="%.2f" color="%s" type="%s">%s</text>`
-	imagefmt   = `<image xp="%.2f" yp="%.2f" width="%d" height="%d" name="%s"/>`
-	listfmt    = `<list type="%s" xp="%.2f" yp="%.2f" sp="%.2f" font="%s" color="%s">`
-	lifmt      = `<li>%s</li>`
-	closelist  = `</list>`
-	slidefmt   = `<slide>`
-	slidebg    = `<slide bg="%s">`
-	slidebgfg  = `<slide bg="%s" fg="%s">`
-	closeslide = `</slide>`
-	deckfmt    = `<deck><canvas width="%d" height="%d"/>`
-	closedeck  = `</deck>`
+	circlefmt   = `<ellipse xp="%.2f" yp="%.2f" wp="%.2f" hr="%.2f" opacity="%.2f" color="%s"/>`
+	squarefmt   = `<rect xp="%.2f" yp="%.2f" wp="%.2f" hr="%.2f" opacity="%.2f" color="%s"/>`
+	ellipsefmt  = `<ellipse xp="%.2f" yp="%.2f" wp="%.2f" hp="%.2f" opacity="%.2f" color="%s"/>`
+	rectfmt     = `<rect xp="%.2f" yp="%.2f" wp="%.2f" hp="%.2f" opacity="%.2f" color="%s"/>`
+	arcfmt      = `<arc xp="%.2f" yp="%.2f" wp="%.2f" hp="%.2f" sp="%.2f" a1="%.2f" a2="%.2f" opacity="%.2f" color="%s"/>`
+	linefmt     = `<line xp1="%.2f" yp1="%.2f" xp2="%.2f" yp2="%.2f" sp="%.2f" opacity="%.2f" color="%s"/>`
+	curvefmt    = `<curve xp1="%.2f" yp1="%.2f" xp2="%.2f" yp2="%.2f" xp3="%.2f" yp3="%.2f" sp="%.2f" opacity="%.2f" color="%s"/>`
+	polygonfmt  = `<polygon xc="%s" yc="%s" opacity="%.2f" color="%s"/>`
+	textfmt     = `<text xp="%.2f" yp="%.2f" sp="%.2f" align="%s" wp="%.2f" font="%s" opacity="%.2f" color="%s" type="%s">%s</text>`
+	textlinkfmt = `<text xp="%.2f" yp="%.2f" sp="%.2f" align="%s" wp="%.2f" font="%s" opacity="%.2f" color="%s" type="%s" link="%s">%s</text>`
+	imagefmt    = `<image xp="%.2f" yp="%.2f" width="%d" height="%d" name="%s"/>`
+	listfmt     = `<list type="%s" xp="%.2f" yp="%.2f" sp="%.2f" font="%s" color="%s">`
+	lifmt       = `<li>%s</li>`
+	closelist   = `</list>`
+	slidefmt    = `<slide>`
+	slidebg     = `<slide bg="%s">`
+	slidebgfg   = `<slide bg="%s" fg="%s">`
+	closeslide  = `</slide>`
+	deckfmt     = `<deck><canvas width="%d" height="%d"/>`
+	closedeck   = `</deck>`
 )
 
 // Deck is the generated deck structure.
@@ -110,6 +112,11 @@ func (p *Deck) polygon(poly deck.Polygon) {
 // text makes text markup from the deck text structure.
 func (p *Deck) text(t deck.Text) {
 	fmt.Fprintf(p.dest, textfmt, t.Xp, t.Yp, t.Sp, t.Align, t.Wp, t.Font, t.Opacity, t.Color, t.Type, t.Tdata)
+}
+
+// textlink makes text markup from the deck text structure, including a link
+func (p *Deck) textlink(t deck.Text) {
+	fmt.Fprintf(p.dest, textlinkfmt, t.Xp, t.Yp, t.Sp, t.Align, t.Wp, t.Font, t.Opacity, t.Color, t.Type, t.Link, t.Tdata)
 }
 
 // image makes image markup from the deck image structure.
@@ -196,6 +203,26 @@ func (p *Deck) TextBlock(x, y float64, s, font string, size, margin float64, col
 		t.Opacity = 100
 	}
 	p.text(t)
+}
+
+// TextLink places text aligned at (x,y) with a link
+func (p *Deck) TextLink(x, y float64, s, link, font string, size, margin float64, color string, opacity ...float64) {
+	t := deck.Text{}
+	t.Xp = x
+	t.Yp = y
+	t.Sp = size
+	t.Font = font
+	t.Wp = margin
+	t.Tdata = s
+	t.Color = color
+	t.Link = link
+	t.Type = "plain"
+	if len(opacity) > 0 {
+		t.Opacity = opacity[0]
+	} else {
+		t.Opacity = 100
+	}
+	p.textlink(t)
 }
 
 // Code makes a code block at (x,y), with specified size and color (opacity is optional),
