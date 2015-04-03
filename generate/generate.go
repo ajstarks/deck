@@ -206,13 +206,12 @@ func (p *Deck) TextBlock(x, y float64, s, font string, size, margin float64, col
 }
 
 // TextLink places text aligned at (x,y) with a link
-func (p *Deck) TextLink(x, y float64, s, link, font string, size, margin float64, color string, opacity ...float64) {
+func (p *Deck) TextLink(x, y float64, s, link, font string, size float64, color string, opacity ...float64) {
 	t := deck.Text{}
 	t.Xp = x
 	t.Yp = y
 	t.Sp = size
 	t.Font = font
-	t.Wp = margin
 	t.Tdata = s
 	t.Color = color
 	t.Link = link
