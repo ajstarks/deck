@@ -365,7 +365,15 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 	openvg.Start(d.Canvas.Width, d.Canvas.Height)
 	cw := openvg.VGfloat(d.Canvas.Width)
 	ch := openvg.VGfloat(d.Canvas.Height)
-	openvg.FillColor(slide.Bg)
+	if slide.Gradcolor1 != "" && slide.Gradcolor2 != "" {
+		oc := []openvg.Offcolor{
+			{0, openvg.Colorlookup(slide.Gradcolor1), 1},
+			{1, openvg.Colorlookup(slide.Gradcolor2), 1},
+		}
+		openvg.FillLinearGradient(0, ch, 0, 0, oc)
+	} else {
+		openvg.FillColor(slide.Bg)
+	}
 	openvg.Rect(0, 0, cw, ch)
 	var x, y, fs openvg.VGfloat
 
