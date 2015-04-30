@@ -5,6 +5,6 @@
 		<line xp1="50" yp1="80" xp2="50" yp2="20" sp=".25"/>
 		<line xp1="48" yp1="24" xp2="50" yp2="20" sp=".25"/>
 		<line xp1="52" yp1="24" xp2="50" yp2="20" sp=".25"/>
-		<ellipse xp="50" yp="80" wp="2" hr="100" color="gray"/> -->
+		<ellipse xp="50" yp="80" wp="2" hr="100" color="gray"/>
 	</slide>
 </deck>
