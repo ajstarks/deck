@@ -330,6 +330,17 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 	if len(slide.Bg) > 0 {
 		background(doc, cw, ch, slide.Bg)
 	}
+	// set gradient background, if specified
+	if len(slide.Gradcolor1) > 0 && len(slide.Gradcolor2) > 0 {
+		oc := []svg.Offcolor{
+			{0, slide.Gradcolor1, 1.0},
+			{100, slide.Gradcolor2, 1.0},
+		}
+		doc.Def()
+		doc.LinearGradient("slidegrad", 0, 0, 0, 100, oc)
+		doc.DefEnd()
+		doc.Rect(0, 0, cw, ch, "fill:url(#slidegrad)")
+	}
 	// set the default foreground
 	if slide.Fg == "" {
 		slide.Fg = "black"
