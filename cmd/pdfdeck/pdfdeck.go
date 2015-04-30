@@ -128,6 +128,13 @@ func background(doc *gofpdf.Fpdf, w, h float64, color string) {
 	dorect(doc, 0, 0, w, h, color)
 }
 
+// gradient sets the background color gradient
+func gradient(doc *gofpdf.Fpdf, w, h float64, gc1, gc2 string) {
+	r1, g1, b1 := colorlookup(gc1)
+	r2, g2, b2 := colorlookup(gc2)
+	doc.LinearGradient(0, 0, w, h, r1, g1, b1, r2, g2, b2, 0, 1, 0, 0)
+}
+
 // doline draws a line
 func doline(doc *gofpdf.Fpdf, xp1, yp1, xp2, yp2, sw float64, color string) {
 	r, g, b := colorlookup(color)
@@ -314,6 +321,10 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 	// set background, if specified
 	if len(slide.Bg) > 0 {
 		background(doc, cw, ch, slide.Bg)
+	}
+	// set gradient background, if specified. You need both colors
+	if len(slide.Gradcolor1) > 0 && len(slide.Gradcolor2) > 0 {
+		gradient(doc, cw, ch, slide.Gradcolor1, slide.Gradcolor2)
 	}
 	// set the default foreground
 	if slide.Fg == "" {

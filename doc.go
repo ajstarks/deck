@@ -11,7 +11,7 @@ Here are the elements of a deck:
 	deck: enclosing element
 	canvas: describe the dimensions of the drawing canvas, one per deck
 	metadata elements: title, creator, date, publisher, subject, description
-	slide: within a deck, any number of slides, specify the slide duration, background and text colors and duration.
+	slide: within a deck, any number of slides, specify the slide duration, gradient colors, background and text colors.
 
 within slides an number of:
 

@@ -28,19 +28,21 @@ type canvas struct {
 
 // Slide is the structure of an individual slide within a deck
 type Slide struct {
-	Bg       string    `xml:"bg,attr"`
-	Fg       string    `xml:"fg,attr"`
-	Duration string    `xml:"duration,attr"`
-	Note     string    `xml:"note"`
-	List     []List    `xml:"list"`
-	Text     []Text    `xml:"text"`
-	Image    []Image   `xml:"image"`
-	Ellipse  []Ellipse `xml:"ellipse"`
-	Line     []Line    `xml:"line"`
-	Rect     []Rect    `xml:"rect"`
-	Curve    []Curve   `xml:"curve"`
-	Arc      []Arc     `xml:"arc"`
-	Polygon  []Polygon `xml:"polygon"`
+	Bg         string    `xml:"bg,attr"`
+	Fg         string    `xml:"fg,attr"`
+	Gradcolor1 string    `xml:"gradcolor1,attr"`
+	Gradcolor2 string    `xml:"gradcolor2,attr"`
+	Duration   string    `xml:"duration,attr"`
+	Note       string    `xml:"note"`
+	List       []List    `xml:"list"`
+	Text       []Text    `xml:"text"`
+	Image      []Image   `xml:"image"`
+	Ellipse    []Ellipse `xml:"ellipse"`
+	Line       []Line    `xml:"line"`
+	Rect       []Rect    `xml:"rect"`
+	Curve      []Curve   `xml:"curve"`
+	Arc        []Arc     `xml:"arc"`
+	Polygon    []Polygon `xml:"polygon"`
 }
 
 // CommonAttr are the common attributes for text and list
