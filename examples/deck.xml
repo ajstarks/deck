@@ -2,7 +2,7 @@
  <title>A Deck on Deck</title>
  <creator>Anthony Starks</creator>
  <subject>presentations, Go, markup, design</subject>
- <date>2014-12-06</date>
+ <date>2015-06-23</date>
  <description>Deck is a library for clients to make scalable presentations, using a standard markup language. 
  Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc. 
  Clients may be interactive or produce standard formats such as SVG or PDF.</description>
@@ -615,7 +615,7 @@
      <text xp="10" yp="10" sp="5">Design Examples</text>
   </slide>
 
-  <slide bg="black" fg="white">
+  <slide fg="white" gradcolor1="black" gradcolor2="gray" >
      <ellipse xp="50" yp="0" wp="100" hr="100" color="rgb(44,77,232)"/>
      <text xp="50" yp="50" align="center" sp="10">hello, world</text>
   </slide> 

@@ -28,21 +28,22 @@ type canvas struct {
 
 // Slide is the structure of an individual slide within a deck
 type Slide struct {
-	Bg         string    `xml:"bg,attr"`
-	Fg         string    `xml:"fg,attr"`
-	Gradcolor1 string    `xml:"gradcolor1,attr"`
-	Gradcolor2 string    `xml:"gradcolor2,attr"`
-	Duration   string    `xml:"duration,attr"`
-	Note       string    `xml:"note"`
-	List       []List    `xml:"list"`
-	Text       []Text    `xml:"text"`
-	Image      []Image   `xml:"image"`
-	Ellipse    []Ellipse `xml:"ellipse"`
-	Line       []Line    `xml:"line"`
-	Rect       []Rect    `xml:"rect"`
-	Curve      []Curve   `xml:"curve"`
-	Arc        []Arc     `xml:"arc"`
-	Polygon    []Polygon `xml:"polygon"`
+	Bg          string    `xml:"bg,attr"`
+	Fg          string    `xml:"fg,attr"`
+	Gradcolor1  string    `xml:"gradcolor1,attr"`
+	Gradcolor2  string    `xml:"gradcolor2,attr"`
+	GradPercent float64   `xml:"gp,attr"`
+	Duration    string    `xml:"duration,attr"`
+	Note        string    `xml:"note"`
+	List        []List    `xml:"list"`
+	Text        []Text    `xml:"text"`
+	Image       []Image   `xml:"image"`
+	Ellipse     []Ellipse `xml:"ellipse"`
+	Line        []Line    `xml:"line"`
+	Rect        []Rect    `xml:"rect"`
+	Curve       []Curve   `xml:"curve"`
+	Arc         []Arc     `xml:"arc"`
+	Polygon     []Polygon `xml:"polygon"`
 }
 
 // CommonAttr are the common attributes for text and list
@@ -224,7 +225,7 @@ func Dump(d Deck) {
 		d.Title, d.Creator, d.Description, d.Date, d.Publisher, d.Subject)
 	fmt.Printf("Canvas = %v\n", d.Canvas)
 	for i, s := range d.Slide {
-		fmt.Printf("Slide [%d] = %+v %+v %+v\n", i, s.Bg, s.Fg, s.Duration)
+		fmt.Printf("Slide [%d] = %+v %+v %+v %+v %+v %+v\n", i, s.Bg, s.Fg, s.Duration, s.Gradcolor1, s.Gradcolor2, s.GradPercent)
 		for j, l := range s.List {
 			fmt.Printf("\tList [%d] = %+v\n", j, l)
 		}
