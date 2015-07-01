@@ -829,58 +829,7 @@ Gate C31C
     <image xp="75" yp="50" width="545" height="545" name="rotext.png"/>
     <text xp="5" yp="80" sp="1.2" wp="50" type="code" file="rotext.go"/>
   </slide>
-  <slide bg="white" fg="black">
-     <text xp="20" yp="70" sp="2" wp="50" font="serif" type="block">
-     A few months ago, I had a look at the brainchild of a few serious heavyweights working at Google.
-     Their project, the Go programming language, is a static typed, c lookalike, semicolon-less, 
-     self formatting, package managed, object oriented, easily parallelizable, 
-     cluster fuck of genius with an unique class inheritance system. It doesn't have one.</text>
-  </slide>
-
-  <slide bg="white" fg="black">
-    <text xp="20" yp="80" sp="3" color="maroon">The Go Programming Language</text>
-    <list xp="20" yp="70" sp="2" type="text" color="black">
-      <li>is a static typed,</li>
-      <li>c lookalike,</li>
-      <li>semicolon-less,</li>
-      <li>self formatting,</li>
-      <li>package managed,</li>
-      <li>object oriented,</li>
-      <li>easily parallelizable,</li>
-      <li>cluster fuck of genius</li>
-      <li>with an unique class inheritance system.</li>
-    </list>
-    <text xp="20" yp="5" sp="1" align="begin" color="gray" link="http://mackross.net/objc/2013/07/23/objective-c-lessons-from-go/">Andrew Mackenzie-Ross, OBJECTIVE-C LESSONS FROM GO</text>
-  </slide>
-
-  <slide bg="black" fg="white">
-    <text xp="20" yp="80" sp="3">The Go Programming Language</text>
-    <list xp="20" yp="70" sp="2" type="text">
-      <li>is a static typed,</li>
-      <li>c lookalike,</li>
-      <li>semicolon-less,</li>
-      <li>self formatting,</li>
-      <li>package managed,</li>
-      <li>object oriented,</li>
-      <li>easily parallelizable,</li>
-      <li>cluster fuck of genius</li>
-      <li>with an unique class inheritance system.</li>
-    </list>
-    <text xp="20" yp="5" sp="1" align="begin" color="gray" link="http://mackross.net/objc/2013/07/23/objective-c-lessons-from-go/">Andrew Mackenzie-Ross, OBJECTIVE-C LESSONS FROM GO</text>
-  </slide>
    
-  <slide bg="white" fg="rgb(50,50,50)">
-    <text xp="5" yp="80" sp="3">The Go Programming Language</text>
-    <line xp1="5" yp1="90" xp2="90" yp2="90" color="rgb(50,50,50)" sp="0.1"/> 
-    <list xp="5" yp="50" sp="2" type="text"> 
-     <li>is a static typed, c lookalike, semicolon-less, self formatting,</li>
-     <li>package managed, object oriented, easily parallelizable,</li>
-     <li>cluster fuck of genius with an unique class inheritance system.</li>
-    </list>
-     <text xp="5" yp="20" sp="2" color="maroon">It doesn't have one.</text>
-    <text xp="5" yp="5" sp="1" align="begin" color="gray">Andrew Mackenzie-Ross, OBJECTIVE-C LESSONS FROM GO</text>
-  </slide>
-  
   <slide bg="white" fg="black">
      <image xp="95" yp="10" width="75" height="100" name="doc.png"/>
      <text xp="20" yp="70" sp="3" wp="40" font="serif" type="block">So, the next time you're about to make a subclass, 
