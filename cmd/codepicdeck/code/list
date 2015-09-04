@@ -1,7 +1,6 @@
 hello.go
 concentric.go
 concentric2.go
-weave.go
 cgrid.go
 mondrian.go
 eclipse.go
@@ -23,8 +22,7 @@ lorem.go
 rotext.go
 rotate.go
 skewabc.go
-stars.go
-stars2.go
+star.go
 swoosh.go
 textpath.go
 d4h.go
