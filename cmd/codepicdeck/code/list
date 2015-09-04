@@ -1,5 +1,6 @@
 hello.go
 concentric.go
+concentric2.go
 weave.go
 cgrid.go
 mondrian.go
@@ -8,6 +9,7 @@ cloud.go
 color-clouds.go
 randarc.go
 randbox.go
+randspot.go
 colorhash.go
 therm.go
 sunearth.go
