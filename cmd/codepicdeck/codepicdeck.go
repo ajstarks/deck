@@ -1,7 +1,10 @@
+// codepicdeck: make code+pic slide decks
 package main
 
 import (
 	"fmt"
+	"image"
+	_ "image/png"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -9,12 +12,14 @@ import (
 	"github.com/ajstarks/deck/generate"
 )
 
+// expand tabs to spaces, and escape XML
 var codemap = strings.NewReplacer(
 	"\t", "    ",
 	"<", "&lt;",
 	">", "&gt;",
 	"&", "&amp;")
 
+// includefile returns the content of a file as a tab-expanded, XML-escaped string
 func includefile(filename string) string {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -22,6 +27,22 @@ func includefile(filename string) string {
 		return ""
 	}
 	return codemap.Replace(string(data))
+}
+
+// imagesize returns the dimensions (w,h) of an image file
+func imagesize(filename string) (int, int) {
+	f, err := os.Open(filename)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return 0, 0
+	}
+	defer f.Close()
+	img, _, err := image.DecodeConfig(f)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return 0, 0
+	}
+	return img.Width, img.Height
 }
 
 func main() {
@@ -39,14 +60,14 @@ func main() {
 			continue
 		}
 		imagefile := codefile[:i] + ".png"
+		imw, imh := imagesize(imagefile)
 		slide++
 		deck.StartSlide()
-		deck.Image(75, 68, 500, 500, imagefile)
+		deck.Image(75, 68, imw, imh, imagefile)
 		deck.Text(2.5, 95, includefile(codefile), "mono", 1.2, "black")
 		deck.TextEnd(90, 2.5, codefile, "sans", 2, "black")
 		deck.TextEnd(95, 2.5, fmt.Sprintf("[%d]", slide), "sans", 2, "gray")
 		deck.EndSlide()
 	}
 	deck.EndDeck()
-
 }
