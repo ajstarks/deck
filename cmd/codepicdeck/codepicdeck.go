@@ -2,6 +2,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"image"
 	_ "image/png"
@@ -45,21 +46,42 @@ func imagesize(filename string) (int, int) {
 	return img.Width, img.Height
 }
 
-func main() {
-	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "specify a code file")
-		return
+// index makes an image index slide
+func index(deck *generate.Deck, filenames []string, title string) {
+	deck.StartSlide()
+	x, y := 10.0, 90.0
+	for _, f := range filenames {
+		imagefile := swapext(f, ".go", ".png")
+		deck.Image(x, y, 75, 75, imagefile)
+		deck.TextMid(x, y-7, f, "sans", 1, "black")
+		x += 10.0
+		if x > 90 {
+			x = 10.0
+			y -= 20.0
+		}
 	}
-	deck := generate.NewSlides(os.Stdout, 0, 0)
-	deck.StartDeck()
+	deck.TextMid(50, 5, title, "sans", 3, "black")
+	deck.EndSlide()
+}
+
+// swapext swaps the specified file extensions
+func swapext(s, fromext, toext string) string {
+	i := strings.LastIndex(s, fromext)
+	if i < 0 {
+		return ""
+	}
+	return s[:i] + toext
+}
+
+// codepic makes a code and picture slides
+func codepic(deck *generate.Deck, filenames []string) {
 	slide := 0
-	for _, codefile := range os.Args[1:] {
-		i := strings.LastIndex(codefile, ".go")
-		if i < 0 {
+	for _, codefile := range filenames {
+		imagefile := swapext(codefile, ".go", ".png")
+		if len(imagefile) == 0 {
 			fmt.Fprintf(os.Stderr, "cannot get the basename for %s\n", codefile)
 			continue
 		}
-		imagefile := codefile[:i] + ".png"
 		imw, imh := imagesize(imagefile)
 		slide++
 		deck.StartSlide()
@@ -69,5 +91,17 @@ func main() {
 		deck.TextEnd(95, 2.5, fmt.Sprintf("[%d]", slide), "sans", 2, "gray")
 		deck.EndSlide()
 	}
+}
+
+func main() {
+	title := flag.String("title", "", "deck title (generates and index slide)")
+	flag.Parse()
+	files := flag.Args()
+	deck := generate.NewSlides(os.Stdout, 0, 0)
+	deck.StartDeck()
+	if len(*title) > 0 {
+		index(deck, files, *title)
+	}
+	codepic(deck, files)
 	deck.EndDeck()
 }
