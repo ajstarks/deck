@@ -1,4 +1,6 @@
 <deck><canvas width="0" height="0"/><slide>
+<image xp="10.00" yp="90.00" width="75" height="75" name="hello.png"/><text xp="10.00" yp="83.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">hello.go</text><image xp="20.00" yp="90.00" width="75" height="75" name="colorhash.png"/><text xp="20.00" yp="83.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">colorhash.go</text><image xp="30.00" yp="90.00" width="75" height="75" name="rl.png"/><text xp="30.00" yp="83.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">rl.go</text><image xp="40.00" yp="90.00" width="75" height="75" name="concentric.png"/><text xp="40.00" yp="83.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">concentric.go</text><image xp="50.00" yp="90.00" width="75" height="75" name="concentric2.png"/><text xp="50.00" yp="83.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">concentric2.go</text><image xp="60.00" yp="90.00" width="75" height="75" name="cgrid.png"/><text xp="60.00" yp="83.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">cgrid.go</text><image xp="70.00" yp="90.00" width="75" height="75" name="mondrian.png"/><text xp="70.00" yp="83.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">mondrian.go</text><image xp="80.00" yp="90.00" width="75" height="75" name="richter.png"/><text xp="80.00" yp="83.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">richter.go</text><image xp="90.00" yp="90.00" width="75" height="75" name="eclipse.png"/><text xp="90.00" yp="83.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">eclipse.go</text><image xp="10.00" yp="70.00" width="75" height="75" name="cloud.png"/><text xp="10.00" yp="63.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">cloud.go</text><image xp="20.00" yp="70.00" width="75" height="75" name="color-clouds.png"/><text xp="20.00" yp="63.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">color-clouds.go</text><image xp="30.00" yp="70.00" width="75" height="75" name="creepy.png"/><text xp="30.00" yp="63.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">creepy.go</text><image xp="40.00" yp="70.00" width="75" height="75" name="d4h.png"/><text xp="40.00" yp="63.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">d4h.go</text><image xp="50.00" yp="70.00" width="75" height="75" name="sunearth.png"/><text xp="50.00" yp="63.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">sunearth.go</text><image xp="60.00" yp="70.00" width="75" height="75" name="conception.png"/><text xp="60.00" yp="63.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">conception.go</text><image xp="70.00" yp="70.00" width="75" height="75" name="conception2.png"/><text xp="70.00" yp="63.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">conception2.go</text><image xp="80.00" yp="70.00" width="75" height="75" name="randbox.png"/><text xp="80.00" yp="63.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">randbox.go</text><image xp="90.00" yp="70.00" width="75" height="75" name="randspot.png"/><text xp="90.00" yp="63.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">randspot.go</text><image xp="10.00" yp="50.00" width="75" height="75" name="randarc.png"/><text xp="10.00" yp="43.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">randarc.go</text><image xp="20.00" yp="50.00" width="75" height="75" name="plotfunc.png"/><text xp="20.00" yp="43.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">plotfunc.go</text><image xp="30.00" yp="50.00" width="75" height="75" name="therm.png"/><text xp="30.00" yp="43.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">therm.go</text><image xp="40.00" yp="50.00" width="75" height="75" name="pattern.png"/><text xp="40.00" yp="43.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">pattern.go</text><image xp="50.00" yp="50.00" width="75" height="75" name="marker.png"/><text xp="50.00" yp="43.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">marker.go</text><image xp="60.00" yp="50.00" width="75" height="75" name="gradient.png"/><text xp="60.00" yp="43.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">gradient.go</text><image xp="70.00" yp="50.00" width="75" height="75" name="imfade.png"/><text xp="70.00" yp="43.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">imfade.go</text><image xp="80.00" yp="50.00" width="75" height="75" name="fontrange.png"/><text xp="80.00" yp="43.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">fontrange.go</text><image xp="90.00" yp="50.00" width="75" height="75" name="uni.png"/><text xp="90.00" yp="43.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">uni.go</text><image xp="10.00" yp="30.00" width="75" height="75" name="lorem.png"/><text xp="10.00" yp="23.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">lorem.go</text><image xp="20.00" yp="30.00" width="75" height="75" name="rotate.png"/><text xp="20.00" yp="23.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">rotate.go</text><image xp="30.00" yp="30.00" width="75" height="75" name="rotext.png"/><text xp="30.00" yp="23.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">rotext.go</text><image xp="40.00" yp="30.00" width="75" height="75" name="skewabc.png"/><text xp="40.00" yp="23.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">skewabc.go</text><image xp="50.00" yp="30.00" width="75" height="75" name="gear.png"/><text xp="50.00" yp="23.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">gear.go</text><image xp="60.00" yp="30.00" width="75" height="75" name="star.png"/><text xp="60.00" yp="23.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">star.go</text><image xp="70.00" yp="30.00" width="75" height="75" name="swoosh.png"/><text xp="70.00" yp="23.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">swoosh.go</text><image xp="80.00" yp="30.00" width="75" height="75" name="textpath.png"/><text xp="80.00" yp="23.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">textpath.go</text><image xp="90.00" yp="30.00" width="75" height="75" name="fe.png"/><text xp="90.00" yp="23.00" sp="1.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">fe.go</text><text xp="50.00" yp="5.00" sp="3.00" align="center" wp="0.00" font="sans" opacity="100.00" color="black" type="">SVGo Examples</text></slide>
+<slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="hello.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
 import (
@@ -22,6 +24,71 @@ func main() {
     canvas.End()
 }
 </text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">hello.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[1]</text></slide>
+<slide>
+<image xp="75.00" yp="68.00" width="500" height="500" name="colorhash.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+
+import (
+    "crypto/md5"
+    "os"
+
+    "github.com/ajstarks/svgo"
+)
+
+var (
+    canvas = svg.New(os.Stdout)
+    width  = 500
+    height = 500
+)
+
+func colorhash(s string) (int, int, int) {
+    hash := md5.New()
+    hash.Write([]byte(s))
+    v := hash.Sum(nil)
+    return int(v[0]), int(v[1]), int(v[2])
+}
+
+func main() {
+    name := "SVGo"
+    style := "fill:white;text-anchor:middle;font-size:72pt"
+    canvas.Start(width, height)
+    canvas.Rect(0, 0, width, height, canvas.RGB(colorhash(name)))
+    canvas.Text(width/2, height/2, name, style)
+    canvas.End()
+}
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">colorhash.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[2]</text></slide>
+<slide>
+<image xp="75.00" yp="68.00" width="500" height="500" name="rl.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+
+import (
+    "fmt"
+    "math/rand"
+    "os"
+    "time"
+
+    "github.com/ajstarks/svgo"
+)
+
+var (
+    canvas = svg.New(os.Stdout)
+    width  = 500
+    height = 500
+)
+
+func main() {
+    rand.Seed(time.Now().Unix())
+    canvas.Start(width, height)
+    canvas.Rect(0, 0, width, height)
+    canvas.Gstyle("stroke-width:10")
+    
+    for i := 0; i &lt; width; i++ {
+        r := rand.Intn(255)
+        canvas.Line(i, 0, rand.Intn(width), height,
+            fmt.Sprintf("stroke:rgb(%d,%d,%d); opacity:0.39", r, r, r))
+    }
+    canvas.Gend()
+    canvas.End()
+}
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">rl.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[3]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="concentric.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -47,7 +114,7 @@ func main() {
     }
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">concentric.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[2]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">concentric.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[4]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="concentric2.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -85,13 +152,14 @@ func main() {
     canvas.Gend()
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">concentric2.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[3]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">concentric2.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[5]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="cgrid.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
 import (
-    "github.com/ajstarks/svgo"
     "os"
+
+    "github.com/ajstarks/svgo"
 )
 
 var (
@@ -119,7 +187,7 @@ func main() {
     canvas.Gend()
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">cgrid.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[4]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">cgrid.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[6]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="mondrian.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -135,6 +203,7 @@ var (
     height = 500
 )
 
+// Piet Mondrian - Composition in Red, Blue, and Yellow
 func main() {
     w3 := width / 3
     w6 := w3 / 2
@@ -152,7 +221,42 @@ func main() {
     canvas.Rect(0, 0, width, height, "fill:none;stroke:black;stroke-width:12")
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">mondrian.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[5]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">mondrian.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[7]</text></slide>
+<slide>
+<image xp="75.00" yp="68.00" width="500" height="500" name="richter.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+
+import (
+    "math/rand"
+    "os"
+    "time"
+
+    "github.com/ajstarks/svgo"
+)
+
+var (
+    canvas = svg.New(os.Stdout)
+    width = 500
+    height = 500
+)
+
+// inspired by Gerhard Richter's 256 colors, 1974
+func main() {
+    rand.Seed(time.Now().Unix())
+    canvas.Start(width, height)
+    canvas.Rect(0, 0, width, height, "fill:white")
+    rw := 32
+    rh := 18
+    margin := 5
+    for i, x := 0, 20; i &lt; 16; i++ {
+        x += (rw + margin)
+        for j, y := 0, 20; j &lt; 16; j++ {
+            canvas.Rect(x, y, rw, rh, canvas.RGB(rand.Intn(255), rand.Intn(255), rand.Intn(255)))
+            y += (rh + margin)
+        }
+    }
+    canvas.End()
+}
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">richter.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[8]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="eclipse.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -179,7 +283,7 @@ func main() {
     }
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">eclipse.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[6]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">eclipse.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[9]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="cloud.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -212,7 +316,7 @@ func main() {
     cloud(width/2, height/2, 100, canvas.RGB(127, 127, 127))
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">cloud.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[7]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">cloud.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[10]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="color-clouds.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -256,162 +360,51 @@ func main() {
     }
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">color-clouds.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[8]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">color-clouds.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[11]</text></slide>
 <slide>
-<image xp="75.00" yp="68.00" width="500" height="500" name="randarc.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+<image xp="75.00" yp="68.00" width="500" height="500" name="creepy.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
 import (
-    "fmt"
-    "math/rand"
-    "os"
-    "time"
-
     "github.com/ajstarks/svgo"
+    "os"
 )
 
-var (
-    canvas = svg.New(os.Stdout)
-    width  = 500
-    height = 500
-)
+var canvas = svg.New(os.Stdout)
 
-func randarc(aw, ah, sw int, f1, f2 bool) {
-    colors := []string{"red", "green", "blue", "gray"}
-    afmt := "stroke:%s;stroke-opacity:%.2f;stroke-width:%dpx;fill:none"
-    begin, arclength := rand.Intn(aw), rand.Intn(aw)
-    end := begin + arclength
-    baseline := ah / 2
-    al, cl := arclength/2, len(colors)
-    canvas.Arc(begin, baseline, al, al, 0, f1, f2, end, baseline,
-        fmt.Sprintf(afmt, colors[rand.Intn(cl)], rand.Float64(), rand.Intn(sw)))
+func smile(x, y, r int) {
+    r2 := r * 2
+    r3 := r * 3
+    r4 := r * 4
+    rq := r / 4
+    gray := canvas.RGB(200, 200, 200)
+    red := canvas.RGB(127, 0, 0)
+    canvas.Roundrect(x-r2, y-r2, r*7, r*20, r2, r2, gray)
+    canvas.Circle(x, y, r, red)
+    canvas.Circle(x, y, rq, "fill:white")
+    canvas.Circle(x+r3, y, r)
+    canvas.Arc(x-r, y+r3, rq, rq, 0, true, false, x+r4, y+r3)
 }
 
 func main() {
-    rand.Seed(time.Now().Unix())
-    canvas.Start(width, height)
-    aw := width / 2
-    maxstroke := height / 10
-    for i := 0; i &lt; 20; i++ {
-        randarc(aw, height, maxstroke, false, true)
-        randarc(aw, height, maxstroke, false, false)
-    }
-    canvas.End()
-}
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">randarc.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[9]</text></slide>
-<slide>
-<image xp="75.00" yp="68.00" width="500" height="500" name="randbox.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
-
-import (
-    "math/rand"
-    "os"
-    "time"
-
-    "github.com/ajstarks/svgo"
-)
-
-var (
-    canvas = svg.New(os.Stdout)
-    width  = 500
-    height = 500
-)
-
-func main() {
-    canvas.Start(width, height)
-    rand.Seed(time.Now().Unix())
-    for i := 0; i &lt; 100; i++ {
-        fill := canvas.RGBA(
-            rand.Intn(255),
-            rand.Intn(255),
-            rand.Intn(255),
-            rand.Float64())
-        canvas.Rect(
-            rand.Intn(width),
-            rand.Intn(height),
-            rand.Intn(100),
-            rand.Intn(100),
-            fill)
-    }
-    canvas.End()
-}
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">randbox.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[10]</text></slide>
-<slide>
-<image xp="75.00" yp="68.00" width="500" height="500" name="randspot.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
-
-import (
-    "math/rand"
-    "os"
-    "time"
-
-    "github.com/ajstarks/svgo"
-)
-
-var (
-    canvas = svg.New(os.Stdout)
-    width  = 500
-    height = 500
-)
-
-func main() {
-    canvas.Start(width, height)
-    rand.Seed(time.Now().Unix())
-    for i := 0; i &lt; 100; i++ {
-        fill := canvas.RGBA(
-            rand.Intn(255),
-            rand.Intn(255),
-            rand.Intn(255),
-            rand.Float64())
-        canvas.Ellipse(
-            rand.Intn(width),
-            rand.Intn(height),
-            rand.Intn(100),
-            rand.Intn(100),
-            fill)
-    }
-    canvas.End()
-}
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">randspot.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[11]</text></slide>
-<slide>
-<image xp="75.00" yp="68.00" width="500" height="500" name="colorhash.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
-
-import (
-    "crypto/md5"
-    "os"
-
-    "github.com/ajstarks/svgo"
-)
-
-var (
-    canvas = svg.New(os.Stdout)
-    width  = 500
-    height = 500
-)
-
-func colorhash(s string) (int, int, int) {
-    hash := md5.New()
-    hash.Write([]byte(s))
-    v := hash.Sum(nil)
-    return int(v[0]), int(v[1]), int(v[2])
-}
-
-func main() {
-    name := "SVG is cool"
-    style := "font-family:sans-serif;fill:white;text-anchor:middle"
-    canvas.Start(width, height)
-    canvas.Gstyle(style)
-    canvas.Rect(0, 0, width, height, canvas.RGB(colorhash(name)))
-    canvas.Text(width/2, height/2, name, "font-size:36pt")
+    canvas.Start(500, 500)
+    canvas.Rect(0, 0, 500, 500, "fill:white")
+    smile(200, 100, 10)
+    canvas.Gtransform("rotate(30)")
+    smile(200, 100, 10)
+    canvas.Gend()
+    canvas.Gtransform("translate(50,0) scale(2,2)")
+    canvas.Gstyle("opacity:0.5")
+    smile(200, 100, 30)
+    canvas.Gend()
     canvas.Gend()
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">colorhash.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[12]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">creepy.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[12]</text></slide>
 <slide>
-<image xp="75.00" yp="68.00" width="500" height="500" name="therm.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+<image xp="75.00" yp="68.00" width="500" height="500" name="d4h.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
 import (
-    "fmt"
-    "math/rand"
     "os"
-    "time"
 
     "github.com/ajstarks/svgo"
 )
@@ -422,31 +415,31 @@ var (
     height = 500
 )
 
-func meter(x, y, w, h, value int, label string) {
-    corner := h / 2
-    inset := corner / 2
-    canvas.Text(x-10, y+h/2, label, "text-anchor:end;baseline-shift:-33%")
-    canvas.Roundrect(x, y, w, h, corner, corner, "fill:rgb(240,240,240)")
-    canvas.Roundrect(x+corner, y+inset, value, h-(inset*2), inset, inset, "fill:darkgray")
-    canvas.Circle(x+inset+value, y+corner, inset, "fill:red;fill-opacity:0.3")
-    canvas.Text(x+inset+value+inset+2, y+h/2, fmt.Sprintf("%-3d", value), "font-size:75%;text-anchor:start;baseline-shift:-33%")
+func dot(x, y, d int) {
+    canvas.Circle(x, y, d/2, "fill:rgb(128,0,128)")
 }
 
+// Composition from "Design for Hackers, pg. 129
 func main() {
-    rand.Seed(time.Now().Unix())
-    items := []string{"Cost", "Timing", "Sourcing", "Technology"}
-    mh, gutter := 50, 20
-    x, y := 100, 50
+    d1 := height
+    d2 := d1 / 4
+    d3 := (d2 * 3) / 4
+    d4 := (d3 * 3) / 4
+
+    coffset := height / 8
+    hoffset := height / (height / 10)
+    voffset := -width / 10
+
     canvas.Start(width, height)
-    canvas.Gstyle("font-family:sans-serif;font-size:12pt")
-    for _, data := range items {
-        meter(x, y, width-100, mh, rand.Intn(300), data)
-        y += mh + gutter
-    }
-    canvas.Gend()
+    canvas.Rect(0, 0, width, height, "fill:lightblue")
+    dot(width-coffset, height-coffset, d1)
+    dot(width/2, height/3, d2)
+    dot(width/4, height*2/3, d3)
+    dot(width/4+hoffset, height/3+voffset, d4)
+    canvas.Grid(0, 0, width, height, width/4, "stroke:red")
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">therm.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[13]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">d4h.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[13]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="sunearth.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -560,41 +553,282 @@ func main() {
 }
 </text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">conception2.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[16]</text></slide>
 <slide>
-<image xp="75.00" yp="68.00" width="500" height="500" name="gear.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+<image xp="75.00" yp="68.00" width="500" height="500" name="randbox.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+
+import (
+    "math/rand"
+    "os"
+    "time"
+
+    "github.com/ajstarks/svgo"
+)
+
+var (
+    canvas = svg.New(os.Stdout)
+    width  = 500
+    height = 500
+)
+
+func main() {
+    canvas.Start(width, height)
+    rand.Seed(time.Now().Unix())
+    for i := 0; i &lt; 100; i++ {
+        fill := canvas.RGBA(
+            rand.Intn(255),
+            rand.Intn(255),
+            rand.Intn(255),
+            rand.Float64())
+        canvas.Rect(
+            rand.Intn(width),
+            rand.Intn(height),
+            rand.Intn(100),
+            rand.Intn(100),
+            fill)
+    }
+    canvas.End()
+}
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">randbox.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[17]</text></slide>
+<slide>
+<image xp="75.00" yp="68.00" width="500" height="500" name="randspot.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+
+import (
+    "math/rand"
+    "os"
+    "time"
+
+    "github.com/ajstarks/svgo"
+)
+
+var (
+    canvas = svg.New(os.Stdout)
+    width  = 500
+    height = 500
+)
+
+func main() {
+    canvas.Start(width, height)
+    rand.Seed(time.Now().Unix())
+    for i := 0; i &lt; 100; i++ {
+        fill := canvas.RGBA(
+            rand.Intn(255),
+            rand.Intn(255),
+            rand.Intn(255),
+            rand.Float64())
+        canvas.Ellipse(
+            rand.Intn(width),
+            rand.Intn(height),
+            rand.Intn(100),
+            rand.Intn(100),
+            fill)
+    }
+    canvas.End()
+}
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">randspot.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[18]</text></slide>
+<slide>
+<image xp="75.00" yp="68.00" width="500" height="500" name="randarc.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
 import (
     "fmt"
+    "math/rand"
+    "os"
+    "time"
+
+    "github.com/ajstarks/svgo"
+)
+
+var (
+    canvas = svg.New(os.Stdout)
+    width  = 500
+    height = 500
+)
+
+func randarc(aw, ah, sw int, f1, f2 bool) {
+    colors := []string{"red", "green", "blue", "gray"}
+    afmt := "stroke:%s;stroke-opacity:%.2f;stroke-width:%dpx;fill:none"
+    begin, arclength := rand.Intn(aw), rand.Intn(aw)
+    end := begin + arclength
+    baseline := ah / 2
+    al, cl := arclength/2, len(colors)
+    canvas.Arc(begin, baseline, al, al, 0, f1, f2, end, baseline,
+        fmt.Sprintf(afmt, colors[rand.Intn(cl)], rand.Float64(), rand.Intn(sw)))
+}
+
+func main() {
+    rand.Seed(time.Now().Unix())
+    canvas.Start(width, height)
+    aw := width / 2
+    maxstroke := height / 10
+    for i := 0; i &lt; 20; i++ {
+        randarc(aw, height, maxstroke, false, true)
+        randarc(aw, height, maxstroke, false, false)
+    }
+    canvas.End()
+}
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">randarc.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[19]</text></slide>
+<slide>
+<image xp="75.00" yp="68.00" width="500" height="500" name="plotfunc.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+
+import (
+    "math"
     "os"
     "github.com/ajstarks/svgo"
 )
 
 var (
     canvas = svg.New(os.Stdout)
-    width = 500
+    width  = 500
     height = 500
 )
 
-func gear(x, y, w, h, n, l, m int, color string) {
-    canvas.Gstyle(fmt.Sprintf("fill:none;stroke:%s;stroke-width:%d", color, n/2))
-    canvas.Circle(x+w/2, y+h/2, n)
-    canvas.Circle(x+w/2, y+h/2, n/5, "fill:"+color)
-    ai := 360/ float64(m)
-    for a := 0.0; a &lt;= 360.0; a+=ai {
-        canvas.TranslateRotate(x+w/2, y+h/2, a)
-        canvas.Line(n-l, n-l, n+l, n+l)
+func vmap(value float64, l1 float64, h1 float64, 
+        l2 float64, h2 float64) float64 {
+    return l2 + (h2-l2)*(value-l1)/(h1-l1)
+}
+
+func plotfunc(left, top, w, h int, min, max, fmin, fmax, 
+        interval float64, f func(float64) float64, style ...string) {
+    canvas.Translate(0, top)
+    canvas.Rect(left, 0, w, h, "fill:white;stroke:gray")
+    for x := min; x &lt; max; x += interval {
+        dx := int(vmap(x, min, max, float64(left), float64(w+left)))
+        dy := int(vmap(f(x), fmin, fmax, 0, float64(h)))
+        canvas.Translate(0, (h - height))
+        canvas.Circle(dx, height-dy, 2, style...)
         canvas.Gend()
     }
     canvas.Gend()
 }
 
 func main() {
+    const TwoPi = 2 * math.Pi
     canvas.Start(width, height)
-    gear(0, 0, 250, 250, 60, 10, 8, "black")
-    gear(100, 160, 250, 250, 60, 10, 8, "red")
-    gear(300, 140, 100, 100, 20, 6, 8, "blue")
+    canvas.Rect(0, 0, width, height, "fill:rgb(240,240,240)")
+    plotfunc(80, 20,  360, 120, 0, 3*TwoPi, -1, 1, math.Pi/20, math.Sin)
+    plotfunc(80, 180, 360, 120, 0, 6*TwoPi, -1, 1, math.Pi/20, math.Cos, "fill:red")
+    plotfunc(80, 340, 360, 120, -3, 3, -2, 20, 0.2, math.Exp, "fill:green")
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">gear.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[17]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">plotfunc.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[20]</text></slide>
+<slide>
+<image xp="75.00" yp="68.00" width="500" height="500" name="therm.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+
+import (
+    "fmt"
+    "math/rand"
+    "os"
+    "time"
+
+    "github.com/ajstarks/svgo"
+)
+
+var (
+    canvas = svg.New(os.Stdout)
+    width  = 500
+    height = 500
+)
+
+func meter(x, y, w, h, value int, label string) {
+    corner := h / 2
+    inset := corner / 2
+    canvas.Text(x-10, y+h/2, label, "text-anchor:end;baseline-shift:-33%")
+    canvas.Roundrect(x, y, w, h, corner, corner, "fill:rgb(240,240,240)")
+    canvas.Roundrect(x+corner, y+inset, value, h-(inset*2), inset, inset, "fill:darkgray")
+    canvas.Circle(x+inset+value, y+corner, inset, "fill:red;fill-opacity:0.3")
+    canvas.Text(x+inset+value+inset+2, y+h/2, fmt.Sprintf("%-3d", value), "font-size:75%;text-anchor:start;baseline-shift:-33%")
+}
+
+func main() {
+    rand.Seed(time.Now().Unix())
+    items := []string{"Cost", "Timing", "Sourcing", "Technology"}
+    mh, gutter := 50, 20
+    x, y := 100, 50
+    canvas.Start(width, height)
+    canvas.Gstyle("font-family:sans-serif;font-size:12pt")
+    for _, data := range items {
+        meter(x, y, width-100, mh, rand.Intn(300), data)
+        y += mh + gutter
+    }
+    canvas.Gend()
+    canvas.End()
+}
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">therm.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[21]</text></slide>
+<slide>
+<image xp="75.00" yp="68.00" width="500" height="500" name="pattern.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+
+import (
+    "fmt"
+    "github.com/ajstarks/svgo"
+    "os"
+)
+var (
+    canvas = svg.New(os.Stdout)
+    width, height = 500, 500
+)
+
+func main() {
+    pct := 5
+    pw, ph := (width*pct)/100, (height*pct)/100
+    canvas.Start(width, height)
+
+    // define the pattern
+    canvas.Def()
+    canvas.Pattern("hatch", 0, 0, pw, ph, "user")
+    canvas.Gstyle("fill:none;stroke-width:1")
+    canvas.Path(fmt.Sprintf("M0,0 l%d,%d", pw, ph), "stroke:red")
+    canvas.Path(fmt.Sprintf("M%d,0 l-%d,%d", pw, pw, ph), "stroke:blue")
+    canvas.Gend()
+    canvas.PatternEnd()
+    canvas.DefEnd()
+
+    // use the pattern
+    canvas.Gstyle("stroke:black; stroke-width:2")
+    canvas.Circle(width/2, height/2, height/8, "fill:url(#hatch)")
+    canvas.CenterRect((width*4)/5, height/2, height/4, height/4, "fill:url(#hatch)")
+    canvas.Gend()
+    canvas.End()
+}
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">pattern.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[22]</text></slide>
+<slide>
+<image xp="75.00" yp="68.00" width="500" height="500" name="marker.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+
+import (
+    "github.com/ajstarks/svgo"
+    "os"
+)
+var (
+    canvas = svg.New(os.Stdout)
+    width = 500
+    height = 500
+)
+
+func main() {
+
+    canvas.Start(width, height)
+    canvas.Def()
+    canvas.Marker("dot", 10, 10, 16, 16)
+    canvas.Circle(10, 10, 6, "fill:black")
+    canvas.MarkerEnd()
+
+    canvas.Marker("box", 10, 10, 16, 16)
+    canvas.CenterRect(10, 10, 12, 12, "fill:green")
+    canvas.MarkerEnd()
+
+    canvas.Marker("arrow", 4, 12, 26, 26)
+    canvas.Path("M4,4 L4,22 L20,12 L4,4", "fill:blue")
+    canvas.MarkerEnd()
+    canvas.DefEnd()
+
+    x := []int{100, 250, 100, 150}
+    y := []int{100, 250, 400, 250}
+    canvas.Polyline(x, y,
+        `fill="none"`,
+        `stroke="red"`,
+        `marker-start="url(#dot)"`,
+        `marker-mid="url(#arrow)"`,
+        `marker-end="url(#box)"`)
+    canvas.End()
+}
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">marker.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[23]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="gradient.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -630,7 +864,7 @@ func main() {
     canvas.Ellipse(width-110, height-50, 100, 20, "fill:url(#lg)")
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">gradient.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[18]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">gradient.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[24]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="imfade.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -651,12 +885,12 @@ func main() {
     canvas.Start(width, height)
     opacity := 1.0
     for x := 0; x &lt; width; x += 100 {
-        canvas.Image(x, 0, 128, 128, "gophercolor128x128.png", fmt.Sprintf("opacity:%.2f", opacity))
+        canvas.Image(x, 100, 128, 128, "gophercolor128x128.png", fmt.Sprintf("opacity:%.2f", opacity))
         opacity -= 0.2
     }
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">imfade.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[19]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">imfade.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[25]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="fontrange.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -698,7 +932,51 @@ func main() {
     }
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">fontrange.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[20]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">fontrange.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[26]</text></slide>
+<slide>
+<image xp="75.00" yp="68.00" width="500" height="500" name="uni.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+
+import (
+    "fmt"
+    "os"
+
+    "github.com/ajstarks/svgo"
+)
+
+var (
+    canvas = svg.New(os.Stdout)
+    width  = 500
+    height = 500
+)
+
+func main() {
+    top, left, fontsize := 50, 100, 16
+    xoffset, yoffset := 26, 26
+    rows, cols := 16, 16
+    glyph := 0x2700
+    font := "Calibri"
+    stylefmt := "font-family:%s;font-size:%dpx;text-anchor:middle"
+    canvas.Start(width, height)
+    canvas.Gstyle(fmt.Sprintf(stylefmt, font, fontsize))
+    
+    x, y := left, top
+    for r := 0; r &lt; rows; r++ {
+        canvas.Text(x-yoffset, y, fmt.Sprintf("%X", glyph), "text-anchor:end;fill:gray")
+        for c := 0; c &lt; cols; c++ {
+            if r == 0 {
+                canvas.Text(x, y-yoffset, fmt.Sprintf("%02X", c), "fill:gray")
+            }
+            canvas.Text(x, y, string(glyph))
+            glyph++
+            x += xoffset
+        }
+        x = left
+        y += yoffset
+    }
+    canvas.Gend()
+    canvas.End()
+}
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">uni.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[27]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="lorem.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -739,7 +1017,36 @@ func main() {
     }
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">lorem.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[21]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">lorem.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[28]</text></slide>
+<slide>
+<image xp="75.00" yp="68.00" width="500" height="500" name="rotate.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+
+import (
+    "github.com/ajstarks/svgo"
+    "os"
+)
+
+var (
+    canvas = svg.New(os.Stdout)
+    width  = 500
+    height = 500
+)
+
+func tro() {
+    canvas.Rect(100, 100, 100, 100)
+    canvas.TranslateRotate(100, 100, 30)
+    canvas.Grid(0, 0, width, height, 50, "stroke:pink")
+    canvas.Rect(0, 0, 100, 100, "fill:red")
+    canvas.Gend()
+}
+
+func main() {
+    canvas.Start(width, height)
+    canvas.Grid(0, 0, width, height, 50, "stroke:lightsteelblue")
+    tro()
+    canvas.End()
+}
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">rotate.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[29]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="rotext.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -772,35 +1079,7 @@ func main() {
     canvas.Gend()
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">rotext.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[22]</text></slide>
-<slide>
-<image xp="75.00" yp="68.00" width="500" height="500" name="rotate.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
-
-import (
-    "os"
-    "github.com/ajstarks/svgo"
-)
-
-var (
-    canvas = svg.New(os.Stdout)
-    width = 500
-    height = 500
-)
-
-func tro() {
-    canvas.Rect(100, 100, 100, 100)
-    canvas.TranslateRotate(100, 100, 30)
-    canvas.Grid(0, 0, width, height, 50, "stroke:pink")
-    canvas.Rect(0, 0, 100, 100, "fill:red")
-    canvas.Gend()
-}
-
-func main() {
-    canvas.Start(width, height)
-    canvas.Grid(0, 0, width, height, 50, "stroke:lightsteelblue")
-    tro()
-    canvas.End()
-}</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">rotate.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[23]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">rotext.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[30]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="skewabc.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -835,15 +1114,50 @@ func main() {
     sky(300, -15, 100, 100, 30, "C")
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">skewabc.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[24]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">skewabc.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[31]</text></slide>
+<slide>
+<image xp="75.00" yp="68.00" width="500" height="500" name="gear.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+
+import (
+    "fmt"
+    "github.com/ajstarks/svgo"
+    "os"
+)
+
+var (
+    canvas = svg.New(os.Stdout)
+    width  = 500
+    height = 500
+)
+
+func gear(x, y, w, h, n, l, m int, color string) {
+    canvas.Gstyle(fmt.Sprintf("fill:none;stroke:%s;stroke-width:%d", color, n/2))
+    canvas.Circle(x+w/2, y+h/2, n)
+    canvas.Circle(x+w/2, y+h/2, n/5, "fill:"+color)
+    ai := 360 / float64(m)
+    for a := 0.0; a &lt;= 360.0; a += ai {
+        canvas.TranslateRotate(x+w/2, y+h/2, a)
+        canvas.Line(n-l, n-l, n+l, n+l)
+        canvas.Gend()
+    }
+    canvas.Gend()
+}
+
+func main() {
+    canvas.Start(width, height)
+    gear(0, 0, 250, 250, 60, 10, 8, "black")
+    gear(100, 160, 250, 250, 60, 10, 8, "red")
+    gear(300, 140, 100, 100, 20, 6, 8, "blue")
+    canvas.End()
+}
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">gear.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[32]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="star.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
 import (
+    "github.com/ajstarks/svgo"
     "math"
     "os"
-
-    "github.com/ajstarks/svgo"
 )
 
 var (
@@ -866,19 +1180,22 @@ func star(xp, yp, n int, inner, outer float64, style string) {
             yv[i] = int(math.Sin(angle*fi) * inner)
         }
     }
-    canvas.Translate(xp,yp);  canvas.Polygon(xv, yv, style); canvas.Gend()
+    canvas.Translate(xp, yp)
+    canvas.Polygon(xv, yv, style)
+    canvas.Gend()
 }
 
 func main() {
     canvas.Start(width, height)
     for x, op, i := 50, 1.0, 5; i &lt;= 10; i++ {
-        star(x, 200, i*2, 20, 40, canvas.RGBA(0,0,127,op))
-        star(x, 300, i, 20, 40, canvas.RGBA(127,0,127,op))
+        star(x, 200, i*2, 20, 40, canvas.RGBA(0, 0, 127, op))
+        star(x, 300, i, 20, 40, canvas.RGBA(127, 0, 127, op))
         x += 80
         op -= 0.15
     }
     canvas.End()
-}</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">star.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[25]</text></slide>
+}
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">star.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[33]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="swoosh.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -920,7 +1237,7 @@ func main() {
     showcurve(70, 200, 100, 425, 425, 125)
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">swoosh.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[26]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">swoosh.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[34]</text></slide>
 <slide>
 <image xp="75.00" yp="68.00" width="500" height="500" name="textpath.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
@@ -964,45 +1281,49 @@ func main() {
     canvas.Gend()
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">textpath.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[27]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">textpath.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[35]</text></slide>
 <slide>
-<image xp="75.00" yp="68.00" width="500" height="375" name="d4h.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
+<image xp="75.00" yp="68.00" width="430" height="376" name="fe.png"/><text xp="2.50" yp="95.00" sp="1.20" align="" wp="0.00" font="mono" opacity="100.00" color="black" type="">package main
 
 import (
+    "fmt"
     "os"
-
     "github.com/ajstarks/svgo"
 )
-
-var (
-    canvas = svg.New(os.Stdout)
-    width  = 500
-    height = 375
-)
-
-func dot(x, y, d int) {
-    canvas.Circle(x, y, d/2, "fill:rgb(128,0,128)")
-}
-
-// Composition from "Design for Hackers, pg. 129
+var canvas = svg.New(os.Stdout)
 func main() {
-    d1 := height
-    d2 := d1 / 4
-    d3 := (d2 * 3) / 4
-    d4 := (d3 * 3) / 4
+    gutter, nc  := 10, 2
+    iw, ih := 200, 112
+    pw, ph := (iw * nc) + gutter*(nc+1), (ih * 3) + gutter*4
+    canvas.Start(pw, ph)
     
-    coffset := height / 6
-    hoffset := height / (height / 10)
-    voffset := -width / 10
+    canvas.Def(); canvas.Filter("f0"); canvas.Saturate(1.0); canvas.Fend()
+    canvas.Filter("f1")
+    canvas.FeComponentTransfer()
+    canvas.FeFuncTable("G", []float64{0, 0.5, 0.6, 0.85, 1.0})
+    canvas.FeCompEnd()
+    canvas.Fend()
+    for i, b := 0, 0.0; b &lt; 20.0; b += 2.0 {
+        canvas.Filter(fmt.Sprintf("blur%d", i))
+        canvas.Blur(b)
+        canvas.Fend()
+        i++
+    }
+    canvas.DefEnd()
     
-    canvas.Start(width, height)
-    canvas.Rect(0, 0, width, height, "fill:lightblue")
-    dot(width-coffset, height-coffset, d1)
-    dot(width/2, height/3, d2)
-    dot(width/4, height*2/3, d3)
-    dot(width/4+hoffset, height/3+voffset, d4)
-    canvas.Grid(0, 0, width, height, width/4, "stroke:red")
+    x, y := gutter, gutter
+    canvas.Gstyle("text-anchor:middle;fill:white;font-family:sans-serif;font-size:24pt")
+    for i, f := range []string{"f0", "f1", "blur1", "blur2"} {
+        if i != 0 &amp;&amp; i%nc == 0 {
+            x = gutter
+            y += ih + gutter
+        }
+        canvas.Image(x, y, iw, ih, "maple.jpg", "filter:url(#"+f+")")
+        canvas.Text(x+iw/2, y+ih/2, f)
+        x += iw + gutter
+    }
+    canvas.Gend()
     canvas.End()
 }
-</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">d4h.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[28]</text></slide>
+</text><text xp="90.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="black" type="">fe.go</text><text xp="95.00" yp="2.50" sp="2.00" align="right" wp="0.00" font="sans" opacity="100.00" color="gray" type="">[36]</text></slide>
 </deck>
