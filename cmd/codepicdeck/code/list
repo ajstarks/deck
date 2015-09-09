@@ -4,6 +4,7 @@ rl.go
 concentric.go
 concentric2.go
 cgrid.go
+diag.go
 mondrian.go
 richter.go
 eclipse.go
@@ -17,12 +18,12 @@ conception2.go
 randbox.go
 randspot.go
 randarc.go
+recurse.go
 plotfunc.go
 therm.go
 pattern.go
 marker.go
 gradient.go
-imfade.go
 fontrange.go
 uni.go
 lorem.go
@@ -33,4 +34,5 @@ gear.go
 star.go
 swoosh.go
 textpath.go
+imfade.go
 fe.go
