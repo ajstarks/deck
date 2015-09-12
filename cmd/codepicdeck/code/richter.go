@@ -10,7 +10,7 @@ import (
 
 var (
 	canvas = svg.New(os.Stdout)
-	width = 500
+	width  = 500
 	height = 500
 )
 
@@ -18,16 +18,19 @@ var (
 func main() {
 	rand.Seed(time.Now().Unix())
 	canvas.Start(width, height)
-	canvas.Rect(0, 0, width, height, "fill:white")
-	rw := 32
-	rh := 18
-	margin := 5
-	for i, x := 0, 20; i < 16; i++ {
-		x += (rw + margin)
-		for j, y := 0, 20; j < 16; j++ {
-			canvas.Rect(x, y, rw, rh, canvas.RGB(rand.Intn(255), rand.Intn(255), rand.Intn(255)))
-			y += (rh + margin)
+	canvas.Rect(0, 0, width, height)
+	
+	w, h, gutter  := 24, 18, 5
+	rows, cols := 16, 16
+	top, left := 20, 20
+	
+	for r, x := 0, left; r < rows; r++ {
+		for c, y := 0, top; c < cols; c++ {
+			canvas.Rect(x, y, w, h, 
+				canvas.RGB(rand.Intn(255), rand.Intn(255), rand.Intn(255)))
+			y += (h + gutter)
 		}
+		x += (w + gutter)
 	}
 	canvas.End()
 }

@@ -22,7 +22,7 @@ func main() {
 	canvas.Gstyle("font-family:serif;font-size:244pt")
 	for t := 0.0; t <= 360.0; t += ti {
 		canvas.TranslateRotate(width/2, height/2, t)
-		canvas.Text(0, 0, "i", canvas.RGBA(255, 255, 255, a))
+		canvas.Text(0, 0, "s", canvas.RGBA(255, 255, 255, a))
 		canvas.Gend()
 		a -= ai
 	}
