@@ -3,7 +3,7 @@ package main
 import (
 	"math/rand"
 	"os"
-
+	"time"
 	"github.com/ajstarks/svgo"
 )
 
@@ -27,6 +27,7 @@ func female(x, y, w int) {
 }
 
 func main() {
+	rand.Seed(time.Now().Unix())
 	msize := 5
 	fsize := msize * 40
 	canvas.Start(width, height)
