@@ -16,8 +16,6 @@ var (
 func branch(x, y, r, level int) {
 	astyle := fmt.Sprintf("fill:none;stroke:rgb(0,130,164);stroke-width:%dpx", level*2)
 	canvas.Arc(x-r, y, r, r, 0, true, true, x+r, y, astyle)
-	canvas.Circle(x, y, level)
-
 	if level > 0 {
 		branch(x-r, y+r/2, r/2, level-1)
 		branch(x+r, y+r/2, r/2, level-1)

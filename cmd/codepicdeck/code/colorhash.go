@@ -21,13 +21,10 @@ func colorhash(s string) (int, int, int) {
 }
 
 func main() {
-	name := "SVG is cool"
-	style := "font-family:sans-serif;fill:white;text-anchor:middle"
-	r, g, b := colorhash(name)
+	name := "SVGo"
+	style := "fill:white;text-anchor:middle;font-size:72pt"
 	canvas.Start(width, height)
-	canvas.Gstyle(style)
-	canvas.Rect(0, 0, width, height, canvas.RGB(r, g, b))
-	canvas.Text(width/2, height/2, name, "font-size:36pt")
-	canvas.Gend()
+	canvas.Rect(0, 0, width, height, canvas.RGB(colorhash(name)))
+	canvas.Text(width/2, height/2, name, style)
 	canvas.End()
 }

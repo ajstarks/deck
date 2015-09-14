@@ -18,10 +18,11 @@ func main() {
 	canvas.Start(width, height)
 	rand.Seed(time.Now().Unix())
 	for i := 0; i < 100; i++ {
-		fill := canvas.RGB(
+		fill := canvas.RGBA(
 			rand.Intn(255),
 			rand.Intn(255),
-			rand.Intn(255))
+			rand.Intn(255),
+			rand.Float64())
 		canvas.Rect(
 			rand.Intn(width),
 			rand.Intn(height),

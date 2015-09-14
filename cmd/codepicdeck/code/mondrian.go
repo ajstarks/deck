@@ -12,6 +12,7 @@ var (
 	height = 500
 )
 
+// Piet Mondrian - Composition in Red, Blue, and Yellow
 func main() {
 	w3 := width / 3
 	w6 := w3 / 2

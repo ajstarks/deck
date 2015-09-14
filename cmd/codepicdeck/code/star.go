@@ -1,10 +1,9 @@
 package main
 
 import (
+	"github.com/ajstarks/svgo"
 	"math"
 	"os"
-
-	"github.com/ajstarks/svgo"
 )
 
 var (
@@ -27,14 +26,16 @@ func star(xp, yp, n int, inner, outer float64, style string) {
 			yv[i] = int(math.Sin(angle*fi) * inner)
 		}
 	}
-	canvas.Translate(xp,yp);  canvas.Polygon(xv, yv, style); canvas.Gend()
+	canvas.Translate(xp, yp)
+	canvas.Polygon(xv, yv, style)
+	canvas.Gend()
 }
 
 func main() {
 	canvas.Start(width, height)
 	for x, op, i := 50, 1.0, 5; i <= 10; i++ {
-		star(x, 200, i*2, 20, 40, canvas.RGBA(0,0,127,op))
-		star(x, 300, i, 20, 40, canvas.RGBA(127,0,127,op))
+		star(x, 200, i*2, 20, 40, canvas.RGBA(0, 0, 127, op))
+		star(x, 300, i, 20, 40, canvas.RGBA(127, 0, 127, op))
 		x += 80
 		op -= 0.15
 	}

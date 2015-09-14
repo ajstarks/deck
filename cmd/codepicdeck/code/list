@@ -19,6 +19,7 @@ randbox.go
 randspot.go
 randarc.go
 recurse.go
+clock.go
 plotfunc.go
 therm.go
 pattern.go
