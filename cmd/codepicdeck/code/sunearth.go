@@ -24,6 +24,6 @@ func main() {
 	earth := 4
 	sun := earth * 109
 	canvas.Circle(150, 50, earth, "fill:blue")
-	canvas.Circle(width, height, sun, "fill:rgb(255, 241, 231)")
+	canvas.Circle(width, height, sun, "fill:rgb(255, 248, 231)")
 	canvas.End()
 }
