@@ -14,11 +14,12 @@ var (
 
 func main() {
 	h2 := height / 2
+	r := width/20
 	canvas.Start(width, height)
 	canvas.Rect(0, 0, width, height)
 	for x, y := 50, h2; x < 450; x += 75 {
-		canvas.Ellipse(x, h2, 25, 25, "fill:white")
-		canvas.Ellipse(x, y, 25, 25, "fill:black")
+		canvas.Circle(x, h2, r+1, "fill:white")
+		canvas.Circle(x, y, r, "fill:black")
 		y += 10
 	}
 	canvas.End()

@@ -14,11 +14,11 @@ var (
 
 func main() {
 	canvas.Start(width, height)
-	canvas.Rect(0, 0, width, height)
+	canvas.Rect(0, 0, width, height, "fill:white")
 	r := height / 2
-	for g := 150; g < 255; g += 30 {
+	for g := 0; g < 250; g += 50 {
 		canvas.Circle(width/2, width/2, r, canvas.RGB(g, g, g))
-		r -= 60
+		r -= 50
 	}
 	canvas.End()
 }

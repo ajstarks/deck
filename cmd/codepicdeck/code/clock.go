@@ -34,9 +34,9 @@ func main() {
 	canvas.Text(w2, 25, fmt.Sprintf("%02d:%02d:%02d", h, m, s), "text-anchor:middle;font-size:12pt;fill:white")
 	canvas.Circle(w2, h2, facepct, canvas.RGB(100, 100, 100))
 	canvas.Gstyle("stroke:white;stroke-width:20;stroke-opacity:0.6;stroke-linecap:round")
-	canvas.Line(w2, h2, int(math.Cos(sec)*secpct)+w2, int(math.Sin(sec)*secpct)+w2, "stroke:red;stroke-width:5")
-	canvas.Line(w2, h2, int(math.Cos(min)*minpct)+w2, int(math.Sin(min)*minpct)+w2)
-	canvas.Line(w2, h2, int(math.Cos(hour)*hourpct)+w2, int(math.Sin(hour)*hourpct)+w2)
+	canvas.Line(w2, h2, int(math.Cos(sec)*secpct)+w2, int(math.Sin(sec)*secpct)+h2, "stroke:red;stroke-width:5")
+	canvas.Line(w2, h2, int(math.Cos(min)*minpct)+w2, int(math.Sin(min)*minpct)+h2)
+	canvas.Line(w2, h2, int(math.Cos(hour)*hourpct)+w2, int(math.Sin(hour)*hourpct)+h2)
 	canvas.Gend()
 	canvas.End()
 }
