@@ -8,11 +8,11 @@ import (
 )
 
 var (
-	canvas = svg.New(os.Stdout)
-	width  = 500
-	height = 500
+	canvas   = svg.New(os.Stdout)
+	width    = 500
+	height   = 500
 	maxlevel = 5
-	colors = []string{"red", "orange", "yellow", "green", "blue"}
+	colors   = []string{"red", "orange", "yellow", "green", "blue"}
 )
 
 func branch(x, y, r, level int) {

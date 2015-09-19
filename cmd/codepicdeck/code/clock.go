@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/ajstarks/svgo"
 	"math"
 	"os"
 	"time"
-	"github.com/ajstarks/svgo"
 )
 
 var (
@@ -18,6 +18,7 @@ func vmap(value float64, l1 float64, h1 float64,
 	l2 float64, h2 float64) float64 {
 	return l2 + (h2-l2)*(value-l1)/(h1-l1)
 }
+
 // See: Processing (Reas and Fry), pg. 247
 func main() {
 	w2, h2 := width/2, height/2

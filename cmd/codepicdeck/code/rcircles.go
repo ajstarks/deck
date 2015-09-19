@@ -11,7 +11,7 @@ var (
 	canvas = svg.New(os.Stdout)
 	width  = 500
 	height = 500
-	theta = 0.0
+	theta  = 0.0
 )
 
 func rcircles(depth int) {
@@ -31,7 +31,7 @@ func rcircles(depth int) {
 	canvas.Circle(0, 0, 2, fill)
 	for i := 0; i < 3; i++ {
 		deg := theta + (120 * (float64(i)))
-		canvas.TranslateRotate(0,1,deg)
+		canvas.TranslateRotate(0, 1, deg)
 		canvas.Scale(0.4)
 		rcircles(depth + 1)
 		fmt.Fprintf(os.Stderr, "theta = %.2f depth = %d, deg = %.2f\n", theta, depth, deg)

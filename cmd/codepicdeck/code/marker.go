@@ -1,12 +1,14 @@
 package main
 
 import (
-	"github.com/ajstarks/svgo"
 	"os"
+
+	"github.com/ajstarks/svgo"
 )
+
 var (
 	canvas = svg.New(os.Stdout)
-	width = 500
+	width  = 500
 	height = 500
 )
 

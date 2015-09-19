@@ -14,7 +14,7 @@ var (
 
 func main() {
 	h2 := height / 2
-	r := width/20
+	r := width / 20
 	canvas.Start(width, height)
 	canvas.Rect(0, 0, width, height)
 	for x, y := 50, h2; x < 450; x += 75 {

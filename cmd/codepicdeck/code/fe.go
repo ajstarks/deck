@@ -5,13 +5,14 @@ import (
 	"os"
 	"github.com/ajstarks/svgo"
 )
+
 var canvas = svg.New(os.Stdout)
+
 func main() {
-	gutter, nc  := 10, 2
+	gutter, nc := 10, 2
 	iw, ih := 200, 112
-	pw, ph := (iw * nc) + gutter*(nc+1), (ih * 3) + gutter*4
+	pw, ph := (iw*nc)+gutter*(nc+1), (ih*3)+gutter*4
 	canvas.Start(pw, ph)
-	
 	canvas.Def(); canvas.Filter("f0"); canvas.Saturate(1.0); canvas.Fend()
 	canvas.Filter("f1")
 	canvas.FeComponentTransfer()
@@ -25,7 +26,6 @@ func main() {
 		i++
 	}
 	canvas.DefEnd()
-	
 	x, y := gutter, gutter
 	canvas.Gstyle("text-anchor:middle;fill:white;font-family:sans-serif;font-size:24pt")
 	for i, f := range []string{"f0", "f1", "blur1", "blur2"} {

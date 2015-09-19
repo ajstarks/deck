@@ -8,6 +8,7 @@ diag.go
 mondrian.go
 richter.go
 eclipse.go
+pyramid.go
 cloud.go
 color-clouds.go
 creepy.go

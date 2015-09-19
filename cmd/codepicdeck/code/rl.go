@@ -20,7 +20,7 @@ func main() {
 	canvas.Start(width, height)
 	canvas.Rect(0, 0, width, height)
 	canvas.Gstyle("stroke-width:10")
-	
+
 	for i := 0; i < width; i++ {
 		r := rand.Intn(255)
 		canvas.Line(i, 0, rand.Intn(width), height,

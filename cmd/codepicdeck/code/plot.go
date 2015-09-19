@@ -5,11 +5,13 @@ import (
 	"math"
 	"os"
 )
+
 var (
 	canvas = svg.New(os.Stdout)
 	width  = 500
 	height = 500
 )
+
 func vmap(value float64, l1 float64, h1 float64, l2 float64, h2 float64) float64 {
 	return l2 + (h2-l2)*(value-l1)/(h1-l1)
 }

@@ -14,7 +14,7 @@ var (
 )
 
 func coord(x, y, size int, label string) {
-	tstyle := "text-anchor:middle:font-size:12pt"
+	tstyle := "text-anchor:middle;font-size:14pt"
 	offset := size + (size / 2)
 	canvas.Text(x, y-offset, fmt.Sprintf("%s (%d,%d)", label, x, y), tstyle)
 	canvas.Circle(x, y, size)

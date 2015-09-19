@@ -26,7 +26,7 @@ func (data *Measure) meter(x, y, w, h int) {
 	canvas.Roundrect(x+corner, y+inset, data.value, h-(inset*2), inset, inset, "fill:darkgray")
 	canvas.Circle(x+inset+data.value, y+corner, inset, "fill:red;fill-opacity:0.3")
 	canvas.Text(x+inset+data.value+inset+2, y+h/2, fmt.Sprintf("%-3d", data.value),
-		   "font-size:75%;text-anchor:start;baseline-shift:-33%")
+		"font-size:75%;text-anchor:start;baseline-shift:-33%")
 }
 
 func main() {

@@ -2,12 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/ajstarks/svgo"
 	"os"
+
+	"github.com/ajstarks/svgo"
 )
+
 var (
 	canvas = svg.New(os.Stdout)
-	width, height = 500, 500
+	width  = 500
+	height = 500
 )
 
 func main() {
@@ -24,8 +27,8 @@ func main() {
 	canvas.PatternEnd()
 	canvas.DefEnd()
 
-	x1 := width/2
-	x2 := (width*4)/5
+	x1 := width / 2
+	x2 := (width * 4) / 5
 	canvas.Gstyle("stroke:black; font-size: 72pt; text-anchor:middle; fill:url(#hatch)")
 	canvas.Circle(x1, height/2, height/8)
 	canvas.CenterRect(x2, height/2, height/4, height/4)
