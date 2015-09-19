@@ -60,7 +60,7 @@ func index(deck *generate.Deck, filenames []string, title string) {
 			y -= 20.0
 		}
 	}
-	deck.TextMid(50, 5, title, "sans", 3, "black")
+	deck.TextMid(50, 96, title, "sans", 2, "black")
 	deck.EndSlide()
 }
 
@@ -86,7 +86,7 @@ func codepic(deck *generate.Deck, filenames []string) {
 		slide++
 		deck.StartSlide()
 		deck.Image(75, 68, imw, imh, imagefile)
-		deck.Text(2.5, 95, includefile(codefile), "mono", 1.2, "black")
+		deck.Text(2.5, 96, includefile(codefile), "mono", 1.2, "black")
 		deck.TextEnd(90, 2.5, codefile, "sans", 2, "black")
 		deck.TextEnd(95, 2.5, fmt.Sprintf("[%d]", slide), "sans", 2, "gray")
 		deck.EndSlide()
@@ -94,12 +94,13 @@ func codepic(deck *generate.Deck, filenames []string) {
 }
 
 func main() {
-	title := flag.String("title", "", "deck title (generates and index slide)")
+	doindex := flag.Bool("index", true, "generates an index slide")
+	title := flag.String("title", "", "index title")
 	flag.Parse()
 	files := flag.Args()
 	deck := generate.NewSlides(os.Stdout, 0, 0)
 	deck.StartDeck()
-	if len(*title) > 0 {
+	if *doindex {
 		index(deck, files, *title)
 	}
 	codepic(deck, files)
