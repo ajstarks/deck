@@ -87,11 +87,17 @@ func loadimage(d deck.Deck, m map[string]image.Image) {
 			openvg.FillColor(mfg)
 			openvg.TextMid(mx, my, fmt.Sprintf("Loading image %s %d from slide %d", i.Name, ni, ns), "sans", msize)
 			bounds := img.Bounds()
+			iw := i.Width
+			ih := i.Height
+			if i.Scale > 0 {
+				iw = int(float64(iw) * (i.Scale / 100))
+				ih = int(float64(ih) * (i.Scale / 100))
+			}
 			// if the specified dimensions are native use those, otherwise resize
-			if i.Width == (bounds.Max.X-bounds.Min.X) && i.Height == (bounds.Max.Y-bounds.Min.Y) {
+			if iw == (bounds.Max.X-bounds.Min.X) && ih == (bounds.Max.Y-bounds.Min.Y) {
 				m[i.Name] = img
 			} else {
-				g := gift.New(gift.Resize(i.Width, i.Height, gift.BoxResampling))
+				g := gift.New(gift.Resize(iw, ih, gift.BoxResampling))
 				resized := image.NewRGBA(g.Bounds(img.Bounds()))
 				g.Draw(resized, img)
 				m[i.Name] = resized
@@ -321,6 +327,10 @@ func showgrid(d deck.Deck, n int, p float64) {
 		y := pct(im.Yp, h)
 		iw := openvg.VGfloat(im.Width)
 		ih := openvg.VGfloat(im.Height)
+		if im.Scale > 0 {
+			iw *= openvg.VGfloat(im.Scale / 100)
+			ih *= openvg.VGfloat(im.Scale / 100)
+		}
 		openvg.FillRGB(127, 0, 0, 0.3)
 		openvg.Circle(x, y, fs)
 		openvg.FillRGB(255, 0, 0, 0.1)
@@ -381,8 +391,14 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 	for _, im := range slide.Image {
 		x = pct(im.Xp, cw)
 		y = pct(im.Yp, ch)
-		midx := openvg.VGfloat(im.Width / 2)
-		midy := openvg.VGfloat(im.Height / 2)
+		imw := openvg.VGfloat(im.Width)
+		imh := openvg.VGfloat(im.Height)
+		if im.Scale > 0 {
+			imw *= openvg.VGfloat(im.Scale / 100)
+			imh *= openvg.VGfloat(im.Scale / 100)
+		}
+		midx := openvg.VGfloat(imw / 2)
+		midy := openvg.VGfloat(imh / 2)
 		img, ok := imap[im.Name]
 		if ok {
 			openvg.Img(x-midx, y-midy, img)
