@@ -4,6 +4,7 @@ package deck
 import (
 	"encoding/xml"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 )
@@ -27,6 +28,8 @@ type canvas struct {
 }
 
 // Slide is the structure of an individual slide within a deck
+// <slide bg="black" fg="rgb(255,255,255)" duration="2s" note="hello, world">
+// <slide gradcolor1="black" gradcolor2="white" gp="20" duration="2s" note="wassup">
 type Slide struct {
 	Bg          string    `xml:"bg,attr"`
 	Fg          string    `xml:"fg,attr"`
@@ -48,24 +51,24 @@ type Slide struct {
 
 // CommonAttr are the common attributes for text and list
 type CommonAttr struct {
-	Xp      float64 `xml:"xp,attr"`
-	Yp      float64 `xml:"yp,attr"`
-	Sp      float64 `xml:"sp,attr"`
-	Type    string  `xml:"type,attr"`
-	Align   string  `xml:"align,attr"`
-	Color   string  `xml:"color,attr"`
-	Opacity float64 `xml:"opacity,attr"`
-	Font    string  `xml:"font,attr"`
-	Link    string  `xml:"link,attr"`
+	Xp      float64 `xml:"xp,attr"`      // X coordinate
+	Yp      float64 `xml:"yp,attr"`      // Y coordinate
+	Sp      float64 `xml:"sp,attr"`      // size
+	Type    string  `xml:"type,attr"`    // type: block, plain, code, number, bullet
+	Align   string  `xml:"align,attr"`   // alignment: center, end, begin
+	Color   string  `xml:"color,attr"`   // item color
+	Opacity float64 `xml:"opacity,attr"` // opacity percentage
+	Font    string  `xml:"font,attr"`    // font type: i.e. sans, serif, mono
+	Link    string  `xml:"link,attr"`    // reference to other content (i.e. http:// or mailto:)
 }
 
 // Dimension describes a graphics object with width and height
 type Dimension struct {
 	CommonAttr
-	Wp float64 `xml:"wp,attr"`
-	Hp float64 `xml:"hp,attr"`
-	Hr float64 `xml:"hr,attr"`
-	Hw float64 `xml:"hw,attr"`
+	Wp float64 `xml:"wp,attr"` // width percentage
+	Hp float64 `xml:"hp,attr"` // height percentage
+	Hr float64 `xml:"hr,attr"` // height relative percentage
+	Hw float64 `xml:"hw,attr"` // height by width
 }
 
 // ListItem describes a list item
@@ -95,13 +98,14 @@ type Text struct {
 }
 
 // Image describes an image
-// <image xp="20" yp="30" width="256" height="256" name="picture.png" caption="Pretty picture/>
+// <image xp="20" yp="30" width="256" height="256" scale="50" name="picture.png" caption="Pretty picture"/>
 type Image struct {
 	CommonAttr
-	Width   int    `xml:"width,attr"`
-	Height  int    `xml:"height,attr"`
-	Name    string `xml:"name,attr"`
-	Caption string `xml:"caption,attr"`
+	Width   int     `xml:"width,attr"`   // image width
+	Height  int     `xml:"height,attr"`  // image height
+	Scale   float64 `xml:"scale,attr"`   // image scale percentage
+	Name    string  `xml:"name,attr"`    // image file name
+	Caption string  `xml:"caption,attr"` // image caption
 }
 
 // Ellipse describes a rectangle with x,y,w,h
@@ -119,13 +123,13 @@ type Rect struct {
 // Line defines a straight line
 // <line xp1="20" yp1="10" xp2="30" yp2="10"/>
 type Line struct {
-	Xp1     float64 `xml:"xp1,attr"`
-	Yp1     float64 `xml:"yp1,attr"`
-	Xp2     float64 `xml:"xp2,attr"`
-	Yp2     float64 `xml:"yp2,attr"`
-	Sp      float64 `xml:"sp,attr"`
-	Color   string  `xml:"color,attr"`
-	Opacity float64 `xml:"opacity,attr"`
+	Xp1     float64 `xml:"xp1,attr"`     // begin x coordinate
+	Yp1     float64 `xml:"yp1,attr"`     // begin y coordinate
+	Xp2     float64 `xml:"xp2,attr"`     // end x coordinate
+	Yp2     float64 `xml:"yp2,attr"`     // end y coordinate
+	Sp      float64 `xml:"sp,attr"`      // line thickness
+	Color   string  `xml:"color,attr"`   // line color
+	Opacity float64 `xml:"opacity,attr"` // line opacity (1-100)
 }
 
 // Curve defines a quadratic Bezier curve
@@ -163,14 +167,10 @@ type Polygon struct {
 	Opacity float64 `xml:"opacity,attr"`
 }
 
-// Read reads the deck description file
-func Read(filename string, w, h int) (Deck, error) {
+// ReadDeck reads the deck description file from a io.Reader
+func ReadDeck(r io.ReadCloser, w, h int) (Deck, error) {
 	var d Deck
-	r, err := os.Open(filename)
-	if err != nil {
-		return d, err
-	}
-	err = xml.NewDecoder(r).Decode(&d)
+	err := xml.NewDecoder(r).Decode(&d)
 	if d.Canvas.Width == 0 {
 		d.Canvas.Width = w
 	}
@@ -179,6 +179,27 @@ func Read(filename string, w, h int) (Deck, error) {
 	}
 	r.Close()
 	return d, err
+}
+
+// Read reads the deck description file
+func Read(filename string, w, h int) (Deck, error) {
+	var d Deck
+	r, err := os.Open(filename)
+	if err != nil {
+		return d, err
+	}
+	return ReadDeck(r, w, h)
+	/*
+		err = xml.NewDecoder(r).Decode(&d)
+		if d.Canvas.Width == 0 {
+			d.Canvas.Width = w
+		}
+		if d.Canvas.Height == 0 {
+			d.Canvas.Height = h
+		}
+		r.Close()
+		return d, err
+	*/
 }
 
 // Dimen computes the coordinates and size of an object
