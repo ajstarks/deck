@@ -17,7 +17,7 @@ import (
 const (
 	mm2pt       = 2.83464 // mm to pt conversion
 	linespacing = 1.4
-	listspacing = 1.4
+	listspacing = 2.0
 	fontfactor  = 1.0
 )
 
@@ -205,7 +205,7 @@ func dopoly(doc *gofpdf.Fpdf, xc, yc, color string, cw, ch float64) {
 }
 
 // dotext places text elements on the canvas according to type
-func dotext(doc *gofpdf.Fpdf, cw, x, y, fs float64, wp float64, tdata, font, color, align, ttype, tlink string) {
+func dotext(doc *gofpdf.Fpdf, cw, x, y, fs, wp, spacing float64, tdata, font, color, align, ttype, tlink string) {
 	var tw float64
 
 	td := strings.Split(tdata, "\n")
@@ -213,15 +213,15 @@ func dotext(doc *gofpdf.Fpdf, cw, x, y, fs float64, wp float64, tdata, font, col
 	doc.SetTextColor(red, green, blue)
 	if ttype == "code" {
 		font = "mono"
-		ch := float64(len(td)) * listspacing * fs
+		ch := float64(len(td)) * spacing * fs
 		tw = deck.Pwidth(wp, cw, cw-x-20)
 		dorect(doc, x-fs, y-fs, tw, ch, "rgb(240,240,240)")
 	}
 	if ttype == "block" {
 		tw = deck.Pwidth(wp, cw, cw/2)
-		textwrap(doc, x, y, tw, fs, fs*linespacing, translate(tdata), font, tlink)
+		textwrap(doc, x, y, tw, fs, fs*spacing, translate(tdata), font, tlink)
 	} else {
-		ls := listspacing * fs
+		ls := spacing * fs
 		for _, t := range td {
 			showtext(doc, x, y, t, fs, font, align, tlink)
 			y += ls
@@ -248,7 +248,7 @@ func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align,
 }
 
 // dolists places lists on the canvas
-func dolist(doc *gofpdf.Fpdf, x, y, fs float64, list []deck.ListItem, font, color, ltype string) {
+func dolist(doc *gofpdf.Fpdf, x, y, fs, spacing float64, list []deck.ListItem, font, color, ltype string) {
 	if font == "" {
 		font = "sans"
 	}
@@ -257,7 +257,7 @@ func dolist(doc *gofpdf.Fpdf, x, y, fs float64, list []deck.ListItem, font, colo
 	if ltype == "bullet" {
 		x += fs * 1.2
 	}
-	ls := 2.0 * fs
+	ls := spacing * fs
 	var t string
 	for i, tl := range list {
 		doc.SetFont(fontlookup(font), "", fs)
@@ -467,16 +467,22 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		} else {
 			tdata = t.Tdata
 		}
-		dotext(doc, cw, x, y, fs, t.Wp, tdata, t.Font, t.Color, t.Align, t.Type, t.Link)
+		if t.Lp == 0 {
+			t.Lp = linespacing
+		}
+		dotext(doc, cw, x, y, fs, t.Wp, t.Lp, tdata, t.Font, t.Color, t.Align, t.Type, t.Link)
 	}
 	// for every list element...
 	for _, l := range slide.List {
 		if l.Color == "" {
 			l.Color = slide.Fg
 		}
+		if l.Lp == 0 {
+			l.Lp = listspacing
+		}
 		setopacity(doc, l.Opacity)
 		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
-		dolist(doc, x, y, fs, l.Li, l.Font, l.Color, l.Type)
+		dolist(doc, x, y, fs, l.Lp, l.Li, l.Font, l.Color, l.Type)
 	}
 	// add a grid, if specified
 	if gp > 0 {

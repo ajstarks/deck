@@ -74,6 +74,7 @@ The list and text elements have common attributes:
 xp: horizontal percentage
 yp: vertical percentage
 sp: font size percentage
+lp: line spacing percentage
 type: "bullet", "number" (list), "block", "code" (text)
 align: "left", "middle", "end"
 color: SVG names ("maroon"), or RGB "rgb(127,0,0)"

@@ -58,6 +58,7 @@ The list, text, rect, and ellipse elements have common attributes:
 	xp: horizontal percentage
 	yp: vertical percentage
 	sp: font size percentage
+	lp: line spacing percentage
 	type: "bullet", "number" (list), "block", "code" (text)
 	align: "left", "middle", "end"
 	opacity: 0.0-1.0 (fully transparent - opaque)

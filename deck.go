@@ -54,6 +54,7 @@ type CommonAttr struct {
 	Xp      float64 `xml:"xp,attr"`      // X coordinate
 	Yp      float64 `xml:"yp,attr"`      // Y coordinate
 	Sp      float64 `xml:"sp,attr"`      // size
+	Lp      float64 `xml:"lp,attr"`      // linespacing (leading) percentage
 	Type    string  `xml:"type,attr"`    // type: block, plain, code, number, bullet
 	Align   string  `xml:"align,attr"`   // alignment: center, end, begin
 	Color   string  `xml:"color,attr"`   // item color
