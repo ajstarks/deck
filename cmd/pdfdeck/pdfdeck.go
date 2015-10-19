@@ -364,7 +364,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 			}
 			capr, capg, capb := colorlookup(im.Color)
 			doc.SetTextColor(capr, capg, capb)
-			showtext(doc, x, y+(midy)+(capsize*2), im.Caption, capsize, im.Font, im.Align, "")
+			showtext(doc, x, y+(midy)+(capsize*1.5), im.Caption, capsize, im.Font, im.Align, "")
 		}
 	}
 	// every graphic on the slide
