@@ -38,7 +38,7 @@
     <text xp="10" yp="60" sp="3" wp="60" color="rgb(0,0,127)" font="serif" type="block" lp="1.6">
     A block of text, word-wrapped to a specified width. You may specify the size, font, line spacing, color, and opacity.
     </text>
-    <text xp="10" yp="33" sp="2" wp="50" type="code" lp="1.6" file="hw.go"/>
+    <text xp="10" yp="33" sp="2" wp="50" type="code" lp="1.4" file="hw.go"/>
   </slide>
 
   <slide bg="white" fg="rgb(50,50,50)">
