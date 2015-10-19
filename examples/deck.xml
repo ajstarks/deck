@@ -2,7 +2,7 @@
  <title>A Deck on Deck</title>
  <creator>Anthony Starks</creator>
  <subject>presentations, Go, markup, design</subject>
- <date>2015-06-23</date>
+ <date>2015-10-18</date>
  <description>Deck is a library for clients to make scalable presentations, using a standard markup language. 
  Clients read deck files into the Deck structure, and traverse the structure for display, publication, etc. 
  Clients may be interactive or produce standard formats such as SVG or PDF.</description>
@@ -35,15 +35,15 @@
   <slide bg="white" fg="rgb(50,50,50)">
       <text xp="10" yp="90" sp="4">text element</text>
     <text xp="10" yp="70" sp="3" color="rgb(127,0,0)">Hello, World (plain text)</text>
-    <text xp="10" yp="60" sp="3" wp="60" color="rgb(0,0,127)" font="serif" type="block">
-    A block of text, word-wrapped to a specified width. You may specify size, font, color, and opacity.
+    <text xp="10" yp="60" sp="3" wp="60" color="rgb(0,0,127)" font="serif" type="block" lp="1.6">
+    A block of text, word-wrapped to a specified width. You may specify the size, font, line spacing, color, and opacity.
     </text>
-    <text xp="10" yp="33" sp="2" wp="50" type="code" file="hw.go"/>
+    <text xp="10" yp="33" sp="2" wp="50" type="code" lp="1.6" file="hw.go"/>
   </slide>
 
   <slide bg="white" fg="rgb(50,50,50)">
     <text xp="5" yp="90" sp="4">list element</text>
-    <list xp="5" yp="70" sp="3" font="sans" color="rgb(0,127,0)" type="bullet">
+    <list xp="5" yp="70" sp="3" font="sans" color="rgb(0,127,0)" lp="2.0" type="bullet">
       <li>Point A</li>
       <li>Point B</li>
       <li>Point C</li>
@@ -60,7 +60,7 @@
    &lt;li&gt;Point D&lt;/li&gt;
 &lt;/list&gt;</text>
 
-    <list xp="35" yp="70" sp="3" color="rgb(0,0,127)" font="serif">
+    <list xp="35" yp="70" sp="3" color="rgb(0,0,127)" lp="2.0" font="serif">
       <li>First item</li>
       <li>Second item</li>
       <li>The third item</li>
@@ -77,7 +77,7 @@
    &lt;li&gt;the last thing&lt;/li&gt;
 &lt;/list&gt;</text>
 
-    <list xp="70" yp="70" sp="3" font="mono" color="black" type="number">
+    <list xp="70" yp="70" sp="3" font="mono" color="black" lp="2.0" type="number">
        <li>This</li>
        <li>That</li>
        <li>The other</li>
@@ -714,19 +714,19 @@ Gate C31C
     </slide>
 
     <slide bg="black" fg="white">
-      <list xp="5" yp="80" sp="5.3">
+      <list xp="5" yp="80" sp="5.3" >
         <li>AAPL</li>
         <li>AMZN</li>
         <li>GOOG</li>
       </list>
 
-      <list xp="30" yp="80" sp="5.3">
+      <list xp="30" yp="80" sp="5.3" >
         <li>503.73</li>
         <li>274.03</li>
         <li>727.58</li>
       </list>
 
-      <list xp="55" yp="80" sp="5.3" color="rgb(171,50,50)">
+      <list xp="55" yp="80" sp="5.3" color="rgb(171,50,50)" >
         <li>-16.57 (3.18%)</li>
         <li color="rgb(136,195,38)">+6.09 (2.27%)</li>
         <li>-12.41 (1.68%)</li>
