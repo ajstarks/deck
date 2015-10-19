@@ -592,6 +592,9 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		} else {
 			offset = 0
 		}
+		if l.Lp == 0 {
+			l.Lp = blinespacing
+		}
 		if l.Opacity == 0 {
 			textopacity = 1
 		} else {
@@ -624,7 +627,7 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 				lifont = l.Font
 			}
 			showtext(x+offset, y, li, l.Align, lifont, fs)
-			y -= fs * blinespacing
+			y -= fs * openvg.VGfloat(l.Lp)
 		}
 	}
 	openvg.FillColor(slide.Fg)
@@ -647,13 +650,17 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		} else {
 			textopacity = openvg.VGfloat(t.Opacity / 100)
 		}
+		if t.Lp == 0 {
+			t.Lp = linespacing
+		}
 		x, y, fs = dimen(d, t.Xp, t.Yp, t.Sp)
 		td := strings.Split(tdata, "\n")
 		if t.Type == "code" {
+			ls := fs * openvg.VGfloat(t.Lp)
 			t.Font = "mono"
-			tdepth := ((fs * linespacing) * openvg.VGfloat(len(td))) + fs
+			tdepth := (ls * openvg.VGfloat(len(td))) + fs
 			openvg.FillColor("rgb(240,240,240)")
-			openvg.Rect(x-20, y-tdepth+(fs*linespacing), pctwidth(t.Wp, cw, cw-x-20), tdepth)
+			openvg.Rect(x-20, y-tdepth+(ls), pctwidth(t.Wp, cw, cw-x-20), tdepth)
 		}
 		if t.Color == "" {
 			openvg.FillColor(slide.Fg, textopacity)
@@ -661,12 +668,13 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 			openvg.FillColor(t.Color, textopacity)
 		}
 		if t.Type == "block" {
-			textwrap(x, y, pctwidth(t.Wp, cw, cw/2), tdata, t.Font, fs, fs*linespacing, 0.3)
+			textwrap(x, y, pctwidth(t.Wp, cw, cw/2), tdata, t.Font, fs, fs*openvg.VGfloat(t.Lp), 0.3)
 		} else {
 			// every text line
+			ls := fs * openvg.VGfloat(t.Lp)
 			for _, txt := range td {
 				showtext(x, y, txt, t.Align, t.Font, fs)
-				y -= (fs * linespacing)
+				y -= ls
 			}
 		}
 	}
