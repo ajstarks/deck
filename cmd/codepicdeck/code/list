@@ -38,3 +38,4 @@ swoosh.go
 textpath.go
 imfade.go
 fe.go
+artist.go
