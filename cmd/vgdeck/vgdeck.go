@@ -1,4 +1,6 @@
 // vgdeck: slide decks for OpenVG
+// +build linux,arm
+
 package main
 
 import (

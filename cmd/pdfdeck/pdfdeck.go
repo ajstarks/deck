@@ -319,10 +319,12 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 	cw := float64(d.Canvas.Width)
 	ch := float64(d.Canvas.Height)
 	slide := d.Slide[n]
-	// set background, if specified
-	if len(slide.Bg) > 0 {
-		background(doc, cw, ch, slide.Bg)
+	// set default background
+	if slide.Bg == "" {
+		slide.Bg = "white"
 	}
+	background(doc, cw, ch, slide.Bg)
+
 	if slide.GradPercent <= 0 || slide.GradPercent > 100 {
 		slide.GradPercent = 100
 	}
