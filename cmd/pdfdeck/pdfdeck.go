@@ -588,16 +588,17 @@ func includefile(filename string) string {
 // for every file, make a deck
 func main() {
 	var (
-		sansfont = flag.String("sans", "helvetica", "sans font")
-		serifont = flag.String("serif", "times", "serif font")
-		monofont = flag.String("mono", "courier", "mono font")
-		pagesize = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
-		fontdir  = flag.String("fontdir", os.Getenv("DECKFONTS"), "directory for fonts (defaults to DECKFONTS environment variable)")
-		outdir   = flag.String("outdir", ".", "output directory")
-		title    = flag.String("title", "", "document title")
-		author   = flag.String("author", "", "document author")
-		gridpct  = flag.Float64("grid", 0, "draw a percentage grid on each slide")
-		stdout   = flag.Bool("stdout", false, "output to standard output")
+		sansfont   = flag.String("sans", "helvetica", "sans font")
+		serifont   = flag.String("serif", "times", "serif font")
+		monofont   = flag.String("mono", "courier", "mono font")
+		symbolfont = flag.String("symbol", "zapfdingbats", "symbol font")
+		pagesize   = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
+		fontdir    = flag.String("fontdir", os.Getenv("DECKFONTS"), "directory for fonts (defaults to DECKFONTS environment variable)")
+		outdir     = flag.String("outdir", ".", "output directory")
+		title      = flag.String("title", "", "document title")
+		author     = flag.String("author", "", "document author")
+		gridpct    = flag.Float64("grid", 0, "draw a percentage grid on each slide")
+		stdout     = flag.Bool("stdout", false, "output to standard output")
 	)
 	flag.Parse()
 
@@ -624,5 +625,6 @@ func main() {
 	fontmap["sans"] = *sansfont
 	fontmap["serif"] = *serifont
 	fontmap["mono"] = *monofont
+	fontmap["symbol"] = *symbolfont
 	dodeck(flag.Args(), pageconfig, pw, ph, *stdout, *outdir, *author, *title, *gridpct)
 }

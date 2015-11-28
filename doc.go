@@ -63,7 +63,7 @@ The list, text, rect, and ellipse elements have common attributes:
 	align: "left", "middle", "end"
 	opacity: 0.0-1.0 (fully transparent - opaque)
 	color: SVG names ("maroon"), or RGB "rgb(127,0,0)"
-	font: "sans", "serif", "mono"
+	font: "sans", "serif", "mono", "symbol"
 	link: url
 
 Layout
