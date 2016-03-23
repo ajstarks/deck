@@ -340,9 +340,15 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 	for _, im := range slide.Image {
 		x, y, _ = dimen(cw, ch, im.Xp, im.Yp, 0)
 		fw, fh := float64(im.Width), float64(im.Height)
+		// scale the image by the specified percentage
 		if im.Scale > 0 {
 			fw *= (im.Scale / 100)
 			fh *= (im.Scale / 100)
+		}
+		// scale the image to fit the canvas width
+		if im.Autoscale == "on" && fw > cw {
+			fh *= (cw / fw)
+			fw = cw
 		}
 		midx := fw / 2
 		midy := fh / 2

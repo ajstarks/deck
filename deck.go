@@ -102,11 +102,12 @@ type Text struct {
 // <image xp="20" yp="30" width="256" height="256" scale="50" name="picture.png" caption="Pretty picture"/>
 type Image struct {
 	CommonAttr
-	Width   int     `xml:"width,attr"`   // image width
-	Height  int     `xml:"height,attr"`  // image height
-	Scale   float64 `xml:"scale,attr"`   // image scale percentage
-	Name    string  `xml:"name,attr"`    // image file name
-	Caption string  `xml:"caption,attr"` // image caption
+	Width     int     `xml:"width,attr"`     // image width
+	Height    int     `xml:"height,attr"`    // image height
+	Scale     float64 `xml:"scale,attr"`     // image scale percentage
+	Autoscale string  `xml:"autoscale,attr"` // scale the image to the canvas
+	Name      string  `xml:"name,attr"`      // image file name
+	Caption   string  `xml:"caption,attr"`   // image caption
 }
 
 // Ellipse describes a rectangle with x,y,w,h
