@@ -20,7 +20,7 @@ const (
 	textfmt     = `<text xp="%.2f" yp="%.2f" sp="%.2f" align="%s" wp="%.2f" font="%s" opacity="%.2f" color="%s" type="%s">%s</text>`
 	textlinkfmt = `<text xp="%.2f" yp="%.2f" sp="%.2f" align="%s" wp="%.2f" font="%s" opacity="%.2f" color="%s" type="%s" link="%s">%s</text>`
 	imagefmt    = `<image xp="%.2f" yp="%.2f" width="%d" height="%d" name="%s"/>`
-	listfmt     = `<list type="%s" xp="%.2f" yp="%.2f" sp="%.2f" font="%s" color="%s">`
+	listfmt     = `<list type="%s" xp="%.2f" yp="%.2f" sp="%.2f" lp="%.2f" wp="%.2f" font="%s" color="%s">`
 	lifmt       = `<li>%s</li>`
 	closelist   = `</list>`
 	slidefmt    = `<slide>`
@@ -126,7 +126,7 @@ func (p *Deck) image(pic deck.Image) {
 
 // list makes markup from the list deck structure.
 func (p *Deck) list(l deck.List, items []string, ltype, font, color string) {
-	fmt.Fprintf(p.dest, listfmt, ltype, l.Xp, l.Yp, l.Sp, l.Font, l.Color)
+	fmt.Fprintf(p.dest, listfmt, ltype, l.Xp, l.Yp, l.Sp, l.Lp, l.Wp, l.Font, l.Color)
 	for _, s := range items {
 		fmt.Fprintf(p.dest, lifmt, s)
 	}
@@ -243,12 +243,14 @@ func (p *Deck) Code(x, y float64, s string, size, margin float64, color string, 
 	p.text(t)
 }
 
-// List makes a plain, bullet, or plain list with the specified font, size and color.
-func (p *Deck) List(x, y, size float64, items []string, ltype, font, color string) {
+// List makes a plain, bullet, or plain list with the specified font, size and color, with optional spacing
+func (p *Deck) List(x, y, size, spacing, wrap float64, items []string, ltype, font, color string) {
 	l := deck.List{}
 	l.Xp = x
 	l.Yp = y
 	l.Sp = size
+	l.Lp = spacing
+	l.Wp = wrap
 	l.Font = font
 	l.Color = color
 	p.list(l, items, ltype, font, color)
