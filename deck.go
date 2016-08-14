@@ -87,6 +87,7 @@ type ListItem struct {
 // List describes the list element
 type List struct {
 	CommonAttr
+	Wp float64    `xml:"wp,attr"`
 	Li []ListItem `xml:"li"`
 }
 
