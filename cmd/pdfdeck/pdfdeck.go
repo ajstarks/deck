@@ -19,6 +19,7 @@ const (
 	linespacing = 1.4
 	listspacing = 2.0
 	fontfactor  = 1.0
+	listwrap    = 80.0
 )
 
 // PageDimen describes page dimensions
@@ -248,7 +249,8 @@ func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align,
 }
 
 // dolists places lists on the canvas
-func dolist(doc *gofpdf.Fpdf, x, y, fs, spacing float64, list []deck.ListItem, font, color, ltype string) {
+// dolist(doc, cw, x, y, fs, l.Lp, l.Wp, l.Li, l.Font, l.Color, l.Type)
+func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, spacing float64, list []deck.ListItem, font, color, ltype string) {
 	if font == "" {
 		font = "sans"
 	}
@@ -258,6 +260,8 @@ func dolist(doc *gofpdf.Fpdf, x, y, fs, spacing float64, list []deck.ListItem, f
 		x += fs * 1.2
 	}
 	ls := spacing * fs
+	tw := deck.Pwidth(lwidth, cw, cw/2)
+
 	var t string
 	for i, tl := range list {
 		doc.SetFont(fontlookup(font), "", fs)
@@ -277,17 +281,22 @@ func dolist(doc *gofpdf.Fpdf, x, y, fs, spacing float64, list []deck.ListItem, f
 		if len(tl.Font) > 0 {
 			doc.SetFont(fontlookup(tl.Font), "", fs)
 		}
-		doc.Text(x, y, translate(t))
+		//doc.Text(x, y, translate(t))
+		yw := textwrap(doc, x, y, tw, fs, ls, translate(t), font, "")
 		y += ls
+		if yw >= 1 {
+			y += ls
+		}
 	}
 }
 
 // textwrap draws text at location, wrapping at the specified width
-func textwrap(doc *gofpdf.Fpdf, x, y, w, fs, leading float64, s, font, link string) {
+func textwrap(doc *gofpdf.Fpdf, x, y, w, fs, leading float64, s, font, link string) int {
 	var factor = 0.3
 	if font == "mono" {
 		factor = 1.0
 	}
+	nbreak := 0
 	doc.SetFont(fontlookup(font), "", fs)
 	wordspacing := doc.GetStringWidth("M")
 	words := strings.FieldsFunc(s, whitespace)
@@ -301,11 +310,13 @@ func textwrap(doc *gofpdf.Fpdf, x, y, w, fs, leading float64, s, font, link stri
 		if xp > edge {
 			xp = x
 			yp += leading
+			nbreak++
 		}
 	}
 	if len(link) > 0 {
 		doc.LinkString(x, y-fs, edge, (yp-y)+fs, link)
 	}
+	return nbreak
 }
 
 // pdfslide makes a slide, one slide per PDF page
@@ -488,9 +499,12 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		if l.Lp == 0 {
 			l.Lp = listspacing
 		}
+		if l.Wp == 0 {
+			l.Wp = listwrap
+		}
 		setopacity(doc, l.Opacity)
 		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
-		dolist(doc, x, y, fs, l.Lp, l.Li, l.Font, l.Color, l.Type)
+		dolist(doc, cw, x, y, fs, l.Wp, l.Lp, l.Li, l.Font, l.Color, l.Type)
 	}
 	// add a grid, if specified
 	if gp > 0 {
