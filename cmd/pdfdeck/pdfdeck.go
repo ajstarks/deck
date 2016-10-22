@@ -285,7 +285,7 @@ func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, spacing float64, list []deck
 		yw := textwrap(doc, x, y, tw, fs, ls, translate(t), font, "")
 		y += ls
 		if yw >= 1 {
-			y += ls
+			y += ls * float64(yw)
 		}
 	}
 }
