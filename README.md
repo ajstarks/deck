@@ -196,6 +196,42 @@ pdfdeck deck.xml
 
 produces deck.pdf
 
+### DECKFONTS
+
+pdfdeck uses the DECKFONTS environment variable as the location of font files. pdfdeck can use TrueType fonts converted using 
+the makefont utility from the gofpdf package:
+
+```sh
+cd $HOME
+mkdir goimage
+git clone https://go.googlesource.com/image
+cd $DECKFONTS
+makefont -embed $HOME/goimage/image/font/gofont/ttfs/*.ttf
+Font file compressed: Go-Bold-Italic.z
+Font definition file successfully generated: Go-Bold-Italic.json
+Font file compressed: Go-Bold.z
+Font definition file successfully generated: Go-Bold.json
+Font file compressed: Go-Italic.z
+Font definition file successfully generated: Go-Italic.json
+Font file compressed: Go-Medium-Italic.z
+Font definition file successfully generated: Go-Medium-Italic.json
+Font file compressed: Go-Medium.z
+Font definition file successfully generated: Go-Medium.json
+Font file compressed: Go-Mono-Bold-Italic.z
+Font definition file successfully generated: Go-Mono-Bold-Italic.json
+Font file compressed: Go-Mono-Bold.z
+Font definition file successfully generated: Go-Mono-Bold.json
+Font file compressed: Go-Mono-Italic.z
+Font definition file successfully generated: Go-Mono-Italic.json
+Font file compressed: Go-Mono.z
+Font definition file successfully generated: Go-Mono.json
+Font file compressed: Go-Regular.z
+Font definition file successfully generated: Go-Regular.json
+...
+pdfdeck -sans Go-Regular -mono Go-Mono foo.xml
+```
+
+
 For SVG decks, install svgdeck:
 
 ```sh
@@ -205,7 +241,7 @@ go get github.com/ajstarks/deck/cmd/svgdeck
 This command:
 
 ```sh
-pdfdeck deck.xml
+svgdeck deck.xml
 ```
 
 produces one slide per SVG file, with each slide linked to the next.
