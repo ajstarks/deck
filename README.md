@@ -231,6 +231,12 @@ Font definition file successfully generated: Go-Regular.json
 pdfdeck -sans Go-Regular -mono Go-Mono foo.xml
 ```
 
+Note that the gofpdf package includes Times, Helvetica, Courier, and Zapf Dingbats in its font directory.
+you can also manually set the font directory via command line option:
+
+```sh
+pdfdeck -fontdir $GOPATH/src/github.com/jung-kurt/gofpdf/font foo.xml
+```
 
 For SVG decks, install svgdeck:
 
