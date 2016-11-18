@@ -19,7 +19,7 @@ const (
 	linespacing = 1.4
 	listspacing = 2.0
 	fontfactor  = 1.0
-	listwrap    = 80.0
+	listwrap    = 95.0
 )
 
 // PageDimen describes page dimensions
