@@ -164,26 +164,7 @@
 
   <slide bg="white" fg="rgb(50,50,50)">
     <text xp="95" yp="5" sp="3" align="right">Anatomy of a Deck</text>
-    <list  xp="20" yp="90" sp="1.4" font="mono">
-        <li>&lt;deck&gt;</li>
-        <li>  &lt;canvas width="1024" height="768" /&gt;</li>
-        <li>  &lt;slide bg="white" fg="black"&gt;</li>
-        <li>      &lt;image xp="70" yp="60" width="256" height="179" name="work.png" caption="Desk"/&gt;</li>
-        <li>      &lt;text  xp="20" yp="80" sp="3" link="http://goo.gl/Wm05Ex"&gt;Deck elements&lt;/text&gt;</li>
-        <li>      &lt;list  xp="20" yp="70" sp="2" type="bullet"&gt;</li>
-        <li>         &lt;li&gt;text, list, image&lt;/li&gt;</li>
-        <li>         &lt;li&gt;line, rect, ellipse&lt;/li&gt;</li>
-        <li>         &lt;li&gt;arc, curve, polygon&lt;/li&gt;</li>
-        <li>      &lt;/list&gt;</li>
-        <li>      &lt;line    xp1="20" yp1="10" xp2="30" yp2="10"/&gt;</li>
-        <li>      &lt;rect    xp="35"  yp="10" wp="4" hr="75" color="rgb(127,0,0)"/&gt;</li>
-        <li>      &lt;ellipse xp="45"  yp="10" wp="4" hr="75" color="rgb(0,127,0)"/&gt;</li>
-        <li>      &lt;arc     xp="55"  yp="10" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/&gt;</li>
-        <li>      &lt;curve   xp1="60" yp1="10" xp2="75" yp2="20" xp3="70" yp3="10" /&gt;</li>
-        <li>      &lt;polygon xc=75 75 80" yc="8 12 10" color="rgb(0,0,127)"/&gt;</li>
-        <li>  &lt;/slide&gt;</li>
-        <li>&lt;/deck&gt;</li>
-    </list>
+    <text xp="18" yp="90" sp="1.4" lp="2" file="exampledeck.xml" font="mono"/>
     <list xp="3" yp="90" sp="1.4" color="rgb(127,0,0)" >
         <li>Start the deck</li>
         <li>Set the canvas size</li>
