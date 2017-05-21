@@ -165,7 +165,7 @@
   <slide bg="white" fg="rgb(50,50,50)">
     <text xp="95" yp="5" sp="3" align="right">Anatomy of a Deck</text>
     <text xp="18" yp="90" sp="1.4" lp="2" file="exampledeck.xml" font="mono"/>
-    <list xp="3" yp="90" sp="1.4" color="rgb(127,0,0)" >
+    <list xp="3" yp="90" sp="1.4" lp="2" color="rgb(127,0,0)" >
         <li>Start the deck</li>
         <li>Set the canvas size</li>
         <li>Begin a slide</li>
