@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/ajstarks/deck/generate"
 	"math"
 	"math/rand"
 	"os"
 	"time"
+
+	"github.com/ajstarks/deck/generate"
 )
 
 type dimension struct {
@@ -79,7 +80,7 @@ func section(p *generate.Deck, name string, n int) {
 	default:
 		ltype = "plain"
 	}
-	p.List(x, 60, size/2, list, ltype, "sans", "")
+	p.List(x, 60, size/2, 0, 0, list, ltype, "sans", "")
 }
 
 // fitlist fits a list in a vertical range
@@ -204,7 +205,7 @@ func main() {
 	deck.StartSlide("rgb(180,180,180)")
 	deck.Code(35, 80, "$ edit hello.go", 2, 40, "rgb(0,0,127)")
 	deck.Code(35, 70, hellogo, 2, 40, "black")
-	deck.Code(35, 35, hellorun, 2, 40, "rgb(127,0,0)")
+	deck.Code(35, 39, hellorun, 2, 40, "rgb(127,0,0)")
 	deck.EndSlide()
 
 	// Fit text
@@ -434,7 +435,7 @@ func main() {
 
 	deck.StartSlide()
 	cube(deck, 20, 50, 20, 25, "black")
-	cube(deck, 50, 50, 20, 25, "gray")
+	cube(deck, 50, 20, 20, 50, "gray")
 	cube(deck, 80, 50, 20, 25, "rgb(127,0,0)")
 	deck.EndSlide()
 
