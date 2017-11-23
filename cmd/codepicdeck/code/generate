@@ -1,5 +1,7 @@
 #!/bin/bash
 # generate: make a code+pic document from a list of go files
+monofont="Go-Mono" # "FiraMono-Regular"
+sansfont="Go-Regular" # FiraSans-Regular"
 gofiles=`cat list`
 for i in $gofiles
 do
@@ -14,5 +16,5 @@ do
 		go run $i > $f.svg && svg2png $f.svg
 	fi
 done
-codepicdeck -title 'SVG Examples' $gofiles | 
-pdfdeck -pagesize 1200,900 -sans FiraSans-Regular -mono FiraMono-Regular -stdout /dev/stdin > svgplay.pdf 
+codepicdeck -title 'SVGo Examples' $gofiles | 
+pdfdeck -pagesize 1200,900 -sans $sansfont -mono $monofont -stdout /dev/stdin > svgplay.pdf 

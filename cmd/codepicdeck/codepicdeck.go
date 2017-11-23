@@ -49,14 +49,14 @@ func imagesize(filename string) (int, int) {
 // index makes an image index slide
 func index(deck *generate.Deck, filenames []string, title string) {
 	deck.StartSlide()
-	x, y := 10.0, 90.0
+	x, y := 5.0, 90.0
 	for _, f := range filenames {
 		imagefile := swapext(f, ".go", ".png")
-		deck.Image(x, y, 75, 75, imagefile)
+		deck.Image(x, y, 72, 72, imagefile)
 		deck.TextMid(x, y-7, f, "sans", 1, "black")
 		x += 10.0
-		if x > 90 {
-			x = 10.0
+		if x > 95 {
+			x = 5.0
 			y -= 20.0
 		}
 	}

@@ -5,9 +5,11 @@ concentric.go
 concentric2.go
 cgrid.go
 diag.go
+shining.go
 mondrian.go
 richter.go
 eclipse.go
+pacman.go
 pyramid.go
 cloud.go
 color-clouds.go
@@ -18,6 +20,8 @@ conception.go
 conception2.go
 randbox.go
 randspot.go
+cube.go
+schotter.go
 randarc.go
 recurse.go
 clock.go
@@ -34,8 +38,10 @@ rotext.go
 skewabc.go
 gear.go
 star.go
+starx.go
 swoosh.go
 textpath.go
 imfade.go
 fe.go
 artist.go
+go.go

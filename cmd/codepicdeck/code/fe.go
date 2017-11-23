@@ -2,18 +2,19 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"github.com/ajstarks/svgo"
+	"os"
 )
-
 var canvas = svg.New(os.Stdout)
-
 func main() {
 	gutter, nc := 10, 2
 	iw, ih := 200, 112
 	pw, ph := (iw*nc)+gutter*(nc+1), (ih*3)+gutter*4
 	canvas.Start(pw, ph)
-	canvas.Def(); canvas.Filter("f0"); canvas.Saturate(1.0); canvas.Fend()
+	canvas.Def()
+	canvas.Filter("f0")
+	canvas.Saturate(1.0)
+	canvas.Fend()
 	canvas.Filter("f1")
 	canvas.FeComponentTransfer()
 	canvas.FeFuncTable("G", []float64{0, 0.5, 0.6, 0.85, 1.0})
