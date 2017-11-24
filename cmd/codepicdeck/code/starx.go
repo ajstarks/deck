@@ -1,43 +1,43 @@
 package main
 
 import (
-	"fmt"
 	"github.com/ajstarks/svgo"
 	"math"
 	"os"
 )
+var canvas, width, height = svg.New(os.Stdout), 500, 500
 
-var (
-	canvas = svg.New(os.Stdout)
-	width  = 500
-	height = 500
-)
+func polar(cx, cy int, r, t float64) (int, int) {
+	return cx + int(r*math.Cos(t)), cy + int(r*math.Sin(t))
+}
 
-func star(xp, yp, n int, inner, outer float64, style string) {
-	xv, yv := make([]int, n*2), make([]int, n*2)
-	angle := math.Pi / float64(n)
+func star(x, y, n int, inner, outer float64, style string) {
+	xv, yv, t := make([]int, n*2), make([]int, n*2), math.Pi/float64(n)
 	for i := 0; i < n*2; i++ {
-		fi := float64(i)
 		if i%2 == 0 {
-			xv[i] = int(math.Cos(angle*fi) * outer)
-			yv[i] = int(math.Sin(angle*fi) * outer)
+			xv[i], yv[i] = polar(0, 0, outer, t*float64(i))
 		} else {
-			xv[i] = int(math.Cos(angle*fi) * inner)
-			yv[i] = int(math.Sin(angle*fi) * inner)
+			xv[i], yv[i] = polar(0, 0, inner, t*float64(i))
 		}
 	}
-	canvas.TranslateRotate(xp, yp, 54)
+	canvas.TranslateRotate(x, y, 54)
 	canvas.Polygon(xv, yv, style)
 	canvas.Gend()
 }
 
+func aline(x, y int, r, a1, a2 float64) {
+	x1, y1 := polar(x, y, r, a1)
+	x2, y2 := polar(x, y, r, a2)
+	canvas.Line(x1, y1, x2, y2, "stroke:maroon;stroke-width:10")
+}
+
 func main() {
-	x, y, size := width/2.0, height/2.0, width*30/100
-	textstyle := "%s;font-size:%dpx;font-family:sans-serif;text-anchor:middle"
+	x, y, p4, r := width/2, height/2, math.Pi/4, 65.0
 	canvas.Start(width, height)
 	canvas.Rect(0, 0, width, height, canvas.RGB(240, 240, 240))
 	canvas.Circle(x, y, width/2, canvas.RGB(255, 255, 255))
 	star(x, y, 5, 90, 240, canvas.RGB(200, 200, 200))
-	canvas.Text(x, y+size/3, "X", fmt.Sprintf(textstyle, canvas.RGB(127, 0, 0), size))
+	aline(x, y, r, p4, 5*p4)
+	aline(x, y, r, 3*p4, 7*p4)
 	canvas.End()
 }
