@@ -98,7 +98,7 @@
 
   <slide bg="white">
       <text xp="10" yp="90" sp="4">image element</text>
-      <image xp="50" yp="50" width="360" height="203" name="desert2.jpg"/>
+      <image xp="50" yp="50" width="360" height="203" name="desert2.jpg" link="https://www.flickr.com/photos/ajstarks/albums/72157620023323006"/>
       <text xp="50" yp="50" sp="3" align="center" color="black">x, y</text>
       <text xp="10" yp="50" sp="3" color="rgb(127,0,0)">height</text>
       <text xp="50" yp="25" sp="3" align="center" color="rgb(127,0,0)">width</text>
