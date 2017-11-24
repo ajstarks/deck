@@ -350,7 +350,11 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 		x, y, _ = dimen(cw, ch, im.Xp, im.Yp, 0)
 		midx := im.Width / 2
 		midy := im.Height / 2
-		doc.Image(x-midx, y-midy, im.Width, im.Height, im.Name)
+		if im.Link == "" {
+			doc.Image(x-midx, y-midy, im.Width, im.Height, im.Name)
+		} else {
+			doc.Image(x-midx, y-midy, im.Width, im.Height, im.Link)
+		}
 		if len(im.Caption) > 0 {
 			capsize := int(deck.Pwidth(im.Sp, float64(cw), float64(pct(2.0, cw))))
 			if im.Font == "" {

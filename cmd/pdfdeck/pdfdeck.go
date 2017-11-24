@@ -363,7 +363,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 		}
 		midx := fw / 2
 		midy := fh / 2
-		doc.Image(im.Name, x-midx, y-midy, fw, fh, false, "", 0, "")
+		doc.Image(im.Name, x-midx, y-midy, fw, fh, false, "", 0, im.Link)
 		if len(im.Caption) > 0 {
 			capsize := deck.Pwidth(im.Sp, cw, pct(2, cw))
 			if im.Font == "" {

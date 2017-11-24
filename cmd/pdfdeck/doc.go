@@ -10,7 +10,9 @@ the -grid percent option draws a grid scaled to the specifed percentage on each 
 
 the -fontdir option specifies the location of the font directory.
 
-the -sans, -serif, and -mono options specify fonts.
+the -sans, -serif, -symbol and -mono options specify fonts.
+
+the -stdout option outputs to standard output.
 
 the -outdir option specifies the directory where PDF files are written; defaults to the current directory.
 
