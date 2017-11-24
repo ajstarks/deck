@@ -19,7 +19,7 @@ const (
 	polygonfmt  = `<polygon xc="%s" yc="%s" opacity="%.2f" color="%s"/>`
 	textfmt     = `<text xp="%.2f" yp="%.2f" sp="%.2f" align="%s" wp="%.2f" font="%s" opacity="%.2f" color="%s" type="%s">%s</text>`
 	textlinkfmt = `<text xp="%.2f" yp="%.2f" sp="%.2f" align="%s" wp="%.2f" font="%s" opacity="%.2f" color="%s" type="%s" link="%s">%s</text>`
-	imagefmt    = `<image xp="%.2f" yp="%.2f" width="%d" height="%d" name="%s"/>`
+	imagefmt    = `<image xp="%.2f" yp="%.2f" width="%d" height="%d" name="%s" link="%s"/>`
 	listfmt     = `<list type="%s" xp="%.2f" yp="%.2f" sp="%.2f" lp="%.2f" wp="%.2f" font="%s" color="%s">`
 	lifmt       = `<li>%s</li>`
 	closelist   = `</list>`
@@ -121,7 +121,7 @@ func (p *Deck) textlink(t deck.Text) {
 
 // image makes image markup from the deck image structure.
 func (p *Deck) image(pic deck.Image) {
-	fmt.Fprintf(p.dest, imagefmt, pic.Xp, pic.Yp, pic.Width, pic.Height, pic.Name)
+	fmt.Fprintf(p.dest, imagefmt, pic.Xp, pic.Yp, pic.Width, pic.Height, pic.Name, pic.Link)
 }
 
 // list makes markup from the list deck structure.
@@ -387,9 +387,10 @@ func Polycoord(px, py []float64) (string, string) {
 }
 
 // Image places the named image centered at (x, y), with dimensions of (w, h).
-func (p *Deck) Image(x, y float64, w, h int, name string) {
+func (p *Deck) Image(x, y float64, w, h int, name, link string) {
 	i := deck.Image{Width: w, Height: h, Name: name}
 	i.Xp = x
 	i.Yp = y
+	i.CommonAttr.Link = link
 	p.image(i)
 }
