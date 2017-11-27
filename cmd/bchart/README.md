@@ -20,16 +20,20 @@ For example:
 	deck-gofont.pdf	1044627
 
 
-bchart is useful in pipeline:
+bchart is useful in pipelines: (generate a list of filenames and sizes, sort and label, then make a PDF)
 
-	ls -l *.pdf | awk 'BEGIN { print "# PDF File Sizes" } NF > 5 { print $NF "\t" $5 }' | sort -nr -k2 | bchart > f.xml && pdfdeck f.xml
+	ls -l *.pdf | awk '{ print $NF "\t" $5 }' | 
+	(echo "# PDF File Size"; sort -nr -k2) | 
+	bchart -textsize 1.5 > f.xml && pdfdeck f.xml
+
+![pdfsize][bchart.png]
 
  The command line options are:
 
-	  -color barcolor (default "rgb(175,175,175)")
-	  -datafmt data format (default "%.1f")
-	  -dmin zero minimum
-	  -dot draw a line and dot instead of a solid bar
-	  -left left margin (default 20)
-	  -textsize text size (default 1.2)
-	  -top top of the chart (default 90)
+	-color barcolor (default "rgb(175,175,175)")
+	-datafmt data format (default "%.1f")
+	-dmin data minimum instead of zero
+	-dot draw a line and dot instead of a solid bar
+	-left n - left margin (default 20)
+	-textsize n - text size (default 1.2)
+	-top n  - top of the chart (default 90)
