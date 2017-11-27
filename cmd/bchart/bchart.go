@@ -101,7 +101,7 @@ func main() {
 	flag.Float64Var(&ts, "textsize", 1.2, "text size")
 	flag.Float64Var(&left, "left", 20.0, "left margin")
 	flag.Float64Var(&top, "top", 90.0, "top")
-	flag.BoolVar(&dot, "dot", false, "dot")
+	flag.BoolVar(&dot, "dot", false, "dot and line")
 	flag.BoolVar(&datamin, "dmin", false, "zero minimum")
 	flag.StringVar(&datacolor, "color", "rgb(175,175,175)", "bar color")
 	flag.StringVar(&datafmt, "datafmt", "%.1f", "data format")
