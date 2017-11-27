@@ -131,7 +131,7 @@ func main() {
 		} else {
 			deck.Line(left, y+hts, bv, y+hts, ts, datacolor)
 		}
-		deck.Text(bv+hts, y+(hts/2), fmt.Sprintf(datafmt, data.value), "mono", hts, valuecolor)
+		deck.Text(bv+hts, y+(hts/2), fmt.Sprintf(datafmt, data.value), "mono", ts*0.65, valuecolor)
 		y -= linespacing
 	}
 	deck.EndSlide()
