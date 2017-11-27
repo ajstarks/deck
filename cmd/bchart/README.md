@@ -26,7 +26,7 @@ bchart is useful in pipelines: (generate a list of filenames and sizes, sort and
 	(echo "# PDF File Size"; sort -nr -k2) | 
 	bchart -textsize 1.5 > f.xml && pdfdeck f.xml
 
-![pdfsize][bchart.png]
+![pdfsize](bchart.png)
 
  The command line options are:
 
