@@ -116,7 +116,7 @@ func main() {
 	flag.Float64Var(&top, "top", 90.0, "top")
 	flag.BoolVar(&dot, "dot", false, "dot")
 	flag.BoolVar(&datamin, "dmin", false, "zero minimum")
-	flag.StringVar(&datacolor, "color", "rgb(175,175,175)", "bar color")
+	flag.StringVar(&datacolor, "color", "lightsteelblue", "bar color")
 	flag.StringVar(&datafmt, "datafmt", "%.1f", "data format")
 	flag.Parse()
 
