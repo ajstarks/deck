@@ -107,22 +107,24 @@ func main() {
 		valuecolor   = "rgb(127,0,0)"
 	)
 	var (
-		ts, left, top      float64
-		dot, datamin       bool
-		datacolor, datafmt string
+		ts, left, right, top, ls float64
+		dot, datamin             bool
+		datacolor, datafmt       string
 	)
 	flag.Float64Var(&ts, "textsize", 1.5, "text size")
 	flag.Float64Var(&left, "left", 20.0, "left margin")
+	flag.Float64Var(&right, "right", 100-left, "right margin")
+	flag.Float64Var(&ls, "ls", 2.4, "ls")
 	flag.Float64Var(&top, "top", 90.0, "top")
 	flag.BoolVar(&dot, "dot", false, "dot")
 	flag.BoolVar(&datamin, "dmin", false, "zero minimum")
-	flag.StringVar(&datacolor, "color", "lightsteelblue", "bar color")
+	flag.StringVar(&datacolor, "color", "lightsteelblue", "data color")
 	flag.StringVar(&datafmt, "datafmt", "%.1f", "data format")
 	flag.Parse()
 
 	hts := ts / 2
-	right := 100 - left
-	linespacing := ts * 2.4
+	mts := ts * 0.75
+	linespacing := ts * ls
 
 	bardata, mindata, maxdata, title := getdata(os.Stdin)
 	if !datamin {
@@ -141,12 +143,12 @@ func main() {
 		deck.TextEnd(left-hts, y, data.label, "sans", ts, labelcolor)
 		bv := vmap(data.value, mindata, maxdata, left, right)
 		if dot {
-			dottedline(deck, left, y+hts, bv-left, ts/5, 1, 0.5, dotlinecolor)
-			deck.Circle(bv, y+hts, hts, datacolor)
+			dottedline(deck, left, y+hts, bv-left, ts/5, 1, 0.25, dotlinecolor)
+			deck.Circle(bv, y+hts, mts, datacolor)
 		} else {
 			deck.Line(left, y+hts, bv, y+hts, ts, datacolor)
 		}
-		deck.Text(bv+hts, y+(hts/2), fmt.Sprintf(datafmt, data.value), "mono", ts*0.75, valuecolor)
+		deck.Text(bv+hts, y+(hts/2), fmt.Sprintf(datafmt, data.value), "mono", mts, valuecolor)
 		y -= linespacing
 	}
 	deck.EndSlide()
