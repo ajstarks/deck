@@ -137,14 +137,16 @@ func makeplot(deck *generate.Deck, r io.ReadCloser) {
 	}
 
 	// Begin the slide with a centered title (if specified)
-	deck.StartSlide(bgcolor)
 	linespacing := ts * ls
+	spacing := ts * 1.5
+
+	deck.StartSlide(bgcolor)
 	if len(title) > 0 {
-		deck.TextMid(left+((right-left)/2), top+(linespacing*1.5), title, "sans", ts*1.5, titlecolor)
+		deck.TextMid(left+((right-left)/2), top+(linespacing*1.5), title, "sans", spacing, titlecolor)
 	}
 
 	if showaxis {
-		yaxis(deck, left-ts*1.5, mindata, maxdata, 2.0)
+		yaxis(deck, left-spacing-(dw*0.5), mindata, maxdata, 2.0)
 	}
 
 	// for every name, value pair, make the draw the chart elements

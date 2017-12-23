@@ -41,10 +41,10 @@ The command line options are:
 	-yaxis    show a y axis (default false)
 	
 	
-	-top     top of the plot (default 80)
-	-bottom  bottom of the plot (default 30)
-	-left    left margin (default 20)
-	-right   right margin (default 80)
+	-top      top of the plot (default 80)
+	-bottom   bottom of the plot (default 30)
+	-left     left margin (default 20)
+	-right    right margin (default 80)
 	
 	
 	-barwidth barwidth (default computed from the number of data points)
