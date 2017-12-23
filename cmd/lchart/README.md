@@ -31,25 +31,25 @@ showing data values, and every data label.
 
 The command line options are:
 
--dmim     data minimum (default false, min=0)
--bar      show bars (default true)
--connect  connect data points (default false)
--dot      show dot plot (default false)
--grid     show gridlines on the y axis (default false)
--val      show values (default true)
--vol      show volume plot (default false)
--yaxis    show a y axis (default false)
-
-
--top     top of the plot (default 80)
--bottom  bottom of the plot (default 30)
--left    left margin (default 20)
--right   right margin (default 80)
-
-
--barwidth barwidth (default computed from the number of data points)
--ls       linespacing (default 2.4)
--textsize text size (default 1.5)
--xlabel   x axis label interval (default 1)
--color    data color (default "lightsteelblue")
--datafmt  data format for values (default "%.1f")
+	-dmim     data minimum (default false, min=0)
+	-bar      show bars (default true)
+	-connect  connect data points (default false)
+	-dot      show dot plot (default false)
+	-grid     show gridlines on the y axis (default false)
+	-val      show values (default true)
+	-vol      show volume plot (default false)
+	-yaxis    show a y axis (default false)
+	
+	
+	-top     top of the plot (default 80)
+	-bottom  bottom of the plot (default 30)
+	-left    left margin (default 20)
+	-right   right margin (default 80)
+	
+	
+	-barwidth barwidth (default computed from the number of data points)
+	-ls       linespacing (default 2.4)
+	-textsize text size (default 1.5)
+	-xlabel   x axis label interval (default 1)
+	-color    data color (default "lightsteelblue")
+	-datafmt  data format for values (default "%.1f")
