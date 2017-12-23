@@ -94,7 +94,7 @@ func axislabel(deck *generate.Deck, x, y, min, max float64) {
 	yf := vmap(y, min, max, bottom, top)
 	deck.TextEnd(x, yf, fmt.Sprintf("%0.f", y), "sans", ts*0.75, "black")
 	if showgrid {
-		deck.Line(x, yf, right, yf, 0.1, "lightgray")
+		deck.Line(left, yf, right, yf, 0.1, "lightgray")
 	}
 }
 
@@ -144,7 +144,7 @@ func makeplot(deck *generate.Deck, r io.ReadCloser) {
 	}
 
 	if showaxis {
-		yaxis(deck, left-(dw*0.75), mindata, maxdata, 2.0)
+		yaxis(deck, left-ts*1.5, mindata, maxdata, 2.0)
 	}
 
 	// for every name, value pair, make the draw the chart elements
