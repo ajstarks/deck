@@ -1,4 +1,4 @@
-# lchart - linecharts for deck
+# lchart - charts for deck
 
 ```lchart``` generates deck markup for  bar, line, dot, and volume charts, reading data from the standard input file, or specified files.
 
