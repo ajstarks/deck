@@ -21,7 +21,7 @@ type LineData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw                                      float64
+	ts, left, right, top, bottom, ls, barw, umin, umax                          float64
 	xint                                                                        int
 	showdot, datamin, showvolume, showbar, showval, connect, showaxis, showgrid bool
 	datacolor, datafmt                                                          string
@@ -116,6 +116,15 @@ func makeplot(deck *generate.Deck, r io.ReadCloser) {
 	if !datamin {
 		mindata = 0
 	}
+
+	if umin >= 0 {
+		mindata = umin
+	}
+
+	if umax >= 0 && umax > mindata {
+		maxdata = umax
+	}
+
 	l := len(linedata)
 	dlen := float64(l - 1)
 
@@ -195,6 +204,8 @@ func main() {
 	flag.Float64Var(&bottom, "bottom", 30.0, "bottom of the plot")
 	flag.Float64Var(&ls, "ls", 2.4, "ls")
 	flag.Float64Var(&barw, "barwidth", 0, "barwidth")
+	flag.Float64Var(&umin, "min", -1, "minimum")
+	flag.Float64Var(&umax, "max", -1, "maximum")
 
 	flag.BoolVar(&showbar, "bar", true, "show bar")
 	flag.BoolVar(&showdot, "dot", false, "show dot")
