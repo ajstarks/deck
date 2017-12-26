@@ -1,4 +1,4 @@
-// lchart - make line charts in the deck format
+// lchart - make charts in the deck format
 package main
 
 import (
@@ -119,7 +119,7 @@ func yaxis(deck *generate.Deck, x, min, max, steps float64) {
 	axislabel(deck, x, yp, min, max)
 }
 
-// hbar makes horizontal bar charts
+// hbar makes horizontal bar charts using input from a Reader
 func hchart(deck *generate.Deck, r io.ReadCloser) {
 	hts := ts / 2
 	mts := ts * 0.75
@@ -151,7 +151,8 @@ func hchart(deck *generate.Deck, r io.ReadCloser) {
 	deck.EndSlide()
 }
 
-// makeplot makes the plot using input from the reader
+// vchart  makes the plot using input from a Reader
+// the types of charts are bar (column), dot, line, and volume
 func vchart(deck *generate.Deck, r io.ReadCloser) {
 	linedata, mindata, maxdata, title := getdata(r)
 	if !datamin {
@@ -237,6 +238,8 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 	deck.EndSlide()
 }
 
+// chart makes charts according to the orientation (h for horizontal bars
+// anthing else line, bar, dot or volume charts
 func chart(deck *generate.Deck, r io.ReadCloser, orientation string) {
 	if orientation == "h" {
 		hchart(deck, r)
