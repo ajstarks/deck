@@ -112,6 +112,10 @@ here are some variations.
 
 ![vol](vol.png)
 
+	$ lchart lchart -datafmt %0.2f -bar=f -dot  -connect  
+
+![dot-connect](dot-connect.png)
+
 	$ lchart -bar=f -connect AAPL.d # line chart
 
 ![connect](connect.png)
