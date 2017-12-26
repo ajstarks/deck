@@ -24,7 +24,7 @@ var (
 	ts, left, right, top, bottom, ls, barw, umin, umax                          float64
 	xint                                                                        int
 	showdot, datamin, showvolume, showbar, showval, connect, showaxis, showgrid bool
-	datacolor, datafmt                                                          string
+	datacolor, datafmt, layout                                                  string
 )
 
 const (
@@ -89,6 +89,15 @@ func dottedvline(deck *generate.Deck, x, y1, y2, dotsize, step float64, color st
 	}
 }
 
+// dottedhline makes a dotted horizontal line, using circles,
+// with specified step and separation
+func dottedhline(d *generate.Deck, x, y, width, height, step, space float64, color string) {
+	for xp := x; xp < x+width; xp += step {
+		d.Circle(xp, y, height, color)
+		xp += space
+	}
+}
+
 // axislabel constructs the axis label
 func axislabel(deck *generate.Deck, x, y, min, max float64) {
 	yf := vmap(y, min, max, bottom, top)
@@ -110,8 +119,40 @@ func yaxis(deck *generate.Deck, x, min, max, steps float64) {
 	axislabel(deck, x, yp, min, max)
 }
 
+// hbar makes horizontal bar charts
+func hchart(deck *generate.Deck, r io.ReadCloser) {
+	hts := ts / 2
+	mts := ts * 0.75
+	linespacing := ts * ls
+
+	bardata, mindata, maxdata, title := getdata(r)
+	if !datamin {
+		mindata = 0
+	}
+	deck.StartSlide(bgcolor)
+	if len(title) > 0 {
+		deck.TextMid(50, top+(linespacing*1.5), title, "sans", ts*1.5, titlecolor)
+	}
+
+	// for every name, value pair, make the chart
+	y := top
+	for _, data := range bardata {
+		deck.TextEnd(left-hts, y, data.label, "sans", ts, labelcolor)
+		bv := vmap(data.value, mindata, maxdata, left, right)
+		if showdot {
+			dottedhline(deck, left, y+hts, bv-left, ts/5, 1, 0.25, dotlinecolor)
+			deck.Circle(bv, y+hts, mts, datacolor)
+		} else {
+			deck.Line(left, y+hts, bv, y+hts, ts, datacolor)
+		}
+		deck.Text(bv+hts, y+(hts/2), fmt.Sprintf(datafmt, data.value), "mono", mts, valuecolor)
+		y -= linespacing
+	}
+	deck.EndSlide()
+}
+
 // makeplot makes the plot using input from the reader
-func makeplot(deck *generate.Deck, r io.ReadCloser) {
+func vchart(deck *generate.Deck, r io.ReadCloser) {
 	linedata, mindata, maxdata, title := getdata(r)
 	if !datamin {
 		mindata = 0
@@ -181,7 +222,8 @@ func makeplot(deck *generate.Deck, r io.ReadCloser) {
 		if showval {
 			deck.TextMid(x, y+ts, fmt.Sprintf(datafmt, data.value), "sans", ts*0.75, valuecolor)
 		}
-		if xint > 0 && i%xint == 0 {
+		// show x label every xinit times, always show the first and last
+		if xint > 0 && (i%xint == 0 || i == (l-1)) {
 			deck.TextMid(x, bottom-(ts*2), data.label, "sans", ts*0.8, labelcolor)
 		}
 		px = x
@@ -193,6 +235,14 @@ func makeplot(deck *generate.Deck, r io.ReadCloser) {
 		deck.Polygon(xvol, yvol, datacolor, 50)
 	}
 	deck.EndSlide()
+}
+
+func chart(deck *generate.Deck, r io.ReadCloser, orientation string) {
+	if orientation == "h" {
+		hchart(deck, r)
+	} else {
+		vchart(deck, r)
+	}
 }
 
 func main() {
@@ -218,6 +268,7 @@ func main() {
 
 	flag.IntVar(&xint, "xlabel", 1, "x axis label interval")
 
+	flag.StringVar(&layout, "layout", "v", "chart orientation (h=horizontal, v=vertical)")
 	flag.StringVar(&datacolor, "color", "lightsteelblue", "data color")
 	flag.StringVar(&datafmt, "datafmt", "%.1f", "data format")
 	flag.Parse()
@@ -233,10 +284,10 @@ func main() {
 				fmt.Fprintf(os.Stderr, "%v\n", err)
 				continue
 			}
-			makeplot(deck, r)
+			chart(deck, r, layout)
 		}
 	} else {
-		makeplot(deck, os.Stdin)
+		chart(deck, os.Stdin, layout)
 	}
 	deck.EndDeck()
 }
