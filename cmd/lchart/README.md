@@ -87,62 +87,62 @@ here are some variations.
 
 	$ lchart AAPL.d
 
-![no-args.png](no-args.png)
+![no-args.png](images/no-args.png)
 
 	$ lchart -xlabel=2 -left 30 -right 70 -top 70 -bottom 40 -yaxis=f
 
-![pos](pos.png)
+![pos](images/pos.png)
 
 	$ lchart -color gray AAPL.d # change the "data color"
 
-![bar-gray](bar-gray.png)
+![bar-gray](images/bar-gray.png)
 
 	$ lchart -grid AAPL.d # add a y axis grid
 
-![bar-grid](bar-grid.png)
+![bar-grid](images/bar-grid.png)
 
 	$ lchart -grid -barwidth=1 AAPL.d # adjust the bar width
 
-![barwidth](barwidth.png)
+![barwidth](images/barwidth.png)
 
 	$ lchart -bar=f -dot AAPL.d # no bars, dot plot
 
-![dot](dot.png)
+![dot](images/dot.png)
 
 	$ lchart -bar=f -vol AAPL.d # no bars, volume plot
 
-![vol](vol.png)
+![vol](images/vol.png)
 
 	$ lchart lchart -datafmt %0.2f -bar=f -dot  -connect  
 
-![dot-connect](dot-connect.png)
+![dot-connect](images/dot-connect.png)
 
 	$ lchart -bar=f -connect AAPL.d # line chart
 
-![connect](connect.png)
+![connect](images/connect.png)
 
 	$ lchart -bar=f -connect -yaxis=f -val=f AAPL.d # only show line and x axis
 
-![connect-no-axis-no-val](connect-no-axis-no-val.png)
+![connect-no-axis-no-val](images/connect-no-axis-no-val.png)
 
 	$ lchart -bar=f -connect -vol -dot # combine line, volume, and dot
 
-![vol-dot](vol-dot.png)
+![vol-dot](images/vol-dot.png)
 
 	$ lchart -bar=f -connect -vol -dot -yaxis=f # as above, removing the y-axis
 
-![vol-dot-no-axis](vol-dot-no-axis.png)
+![vol-dot-no-axis](images/vol-dot-no-axis.png)
 
 	$ lchart -bar=f -connect -vol -dot -grid 
 
-![connect-dot-vol-val-grid](connect-dot-vol-val-grid.png)
+![connect-dot-vol-val-grid](images/connect-dot-vol-val-grid.png)
 
 	$ lchart -layout=h AAPL.d
 
-![hlayout](hlayout.png)
+![hlayout](images/hlayout.png)
 
 	$ sort -k2 -nr pdf.d | lchart -left 20 -layout h -datafmt %0.f
 
-![sorted-bar](sorted-hbar.png)
+![sorted-bar](images/sorted-hbar.png)
 
 
