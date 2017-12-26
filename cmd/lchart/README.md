@@ -1,6 +1,6 @@
 # lchart - charts for deck
 
-```lchart``` generates deck markup for  bar, line, dot, and volume charts, reading data from the standard input file or specified files. Each input source generates a slide in the deck.
+```lchart``` generates deck markup for  bar, line, dot, and volume charts, reading data from the standard input or specified files. Each input source generates a slide in the deck.
 
 The input data format a tab-separated list of ```label,data``` pairs where label is an arbitrary string, 
 and data is intepreted as a floating point value. A line beginning with "#" is parsed as a title, 
@@ -22,7 +22,7 @@ deck markup on the standard input and produces PDF on the standard output).
 
     $ lchart foo.d bar.d baz.d > fbb.xml && pdfdeck fbb.xml && open fbb.pdf
 	$ lchart -min=0 -max=700 -datafmt %0.2f -connect -bar=f -vol -dot [A-Z]*.d | pdi > allvol.pdf
-    $ ls -lS | awk 'BEGIN {print "# File Size"} NR > 1 {print $NF "\t" $5}' | lchart | pdi > fs.pdf
+    $ ls -lS | awk 'BEGIN {print "# File Size"} NR > 1 {print $NF "\t" $5}' | lchart -layout h | pdi > fs.pdf
 
 With no options, ```lchart``` makes a bar graph with yaxis labels, shows data values and every data label.
 
@@ -42,6 +42,7 @@ The command line options are:
 	-min        set the minimum value
 	-max        set the maximum value
 
+	-layout     chart layout ("h" for horizontal bar chart)
 	-bar        show bars (default true)
 	-connect    connect data points (default false)
 	-dot        show dot plot (default false)
@@ -135,5 +136,13 @@ here are some variations.
 	$ lchart -bar=f -connect -vol -dot -grid 
 
 ![connect-dot-vol-val-grid](connect-dot-vol-val-grid.png)
+
+	$ lchart -layout=h AAPL.d
+
+![hlayout](hlayout.png)
+
+	$ sort -k2 -nr pdf.d | lchart -left 20 -layout h -datafmt %0.f
+
+![sorted-bar](sorted-hbar.png)
 
 
