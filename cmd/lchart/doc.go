@@ -1,64 +1,65 @@
 /*
- lchart reads data from the standard input file, or specified files, expecting a tab-separated list of text,data pairs
- where text is an arbitrary string, and data is intepreted as a floating point value.
- A line beginning with "#" is parsed as a title, with the title text beginning after the "#".
+lchart generates deck markup for  bar, line, dot, and volume charts,
+reading data from the standard input or specified files. Each input source generates a slide in the deck.
 
- For example:
+The input data format a tab-separated list of label,data pairs where label is an arbitrary string,
+and data is intepreted as a floating point value. A line beginning with "#" is parsed as a title,
+with the title text beginning after the "#".
 
-	# PDF File Sizes
-	casino.pdf	410907
-	countdown.pdf	157784
-	deck-12x8.pdf	837831
-	deck-dejavu.pdf	1601595
-	deck-fira-4x3.pdf	1196167
-	deck-fira.pdf	1195517
-	deck-gg.pdf	978688
-	deck-gofont.pdf	1044627
+For example:
+
+	# GOOG Stock Volume (Millions of Shares)
+	2017-01-01	33.1916
+	2017-02-01	25.6825
+	2017-03-01	33.8351
+	2017-04-01	25.1619
+	2017-05-01	32.1801
 
 
- The command line options are:
 
-   -bar
-     	show bar (default true)
-   -barwidth float
-     	barwidth
-   -bottom float
-     	bottom of the plot (default 30)
-   -color string
-     	data color (default "lightsteelblue")
-   -connect
-     	connected line plot
-   -datafmt string
-     	data format (default "%.1f")
-   -dmin
-     	zero minimum
-   -dot
-     	show dot
-   -grid
-     	show grid
-   -layout string
-     	chart orientation (h=horizontal, v=vertical) (default "v")
-   -left float
-     	left margin (default 10)
-   -ls float
-     	ls (default 2.4)
-   -max float
-     	maximum (default -1)
-   -min float
-     	minimum (default -1)
-   -right float
-     	right margin (default 90)
-   -textsize float
-     	text size (default 1.5)
-   -top float
-     	top of the plot (default 80)
-   -val
-     	show values (default true)
-   -vol
-     	show volume
-   -xlabel int
-     	x axis label interval (default 1)
-   -yaxis
-     	show y axis (default true)
+Typically lchart generates input for deck clients like pdfdeck, or pdi (shell script for pdfdeck which reads
+deck markup on the standard input and produces PDF on the standard output).
+
+    $ lchart foo.d bar.d baz.d > fbb.xml && pdfdeck fbb.xml && open fbb.pdf
+    $ lchart -min=0 -max=700 -datafmt %0.2f -connect -bar=f -vol -dot [A-Z]*.d | pdi > allvol.pdf
+    $ ls -lS | awk 'BEGIN {print "# File Size"} NR > 1 {print $NF "\t" $5}' | lchart -layout h | pdi > fs.pdf
+
+With no options, lchart makes a bar graph with yaxis labels, shows data values and every data label.
+
+The plot is positioned and scaled on the deck canvas with the
+-top, -bottom, -left, and -right flags.
+These flag values represent percentages on the deck canvas.
+
+The  -bar, -connect, -dot, -grid, -val, -vol, and -yaxis
+flags toggle the visibility of plot components.
+
+
+The command line options are:
+
+-dmim       data minimum (default false, min=0)
+-min        set the minimum value
+-max        set the maximum value
+
+-layout     chart layout ("h" for horizontal bar chart)
+-bar        show bars (default true)
+-connect    connect data points (default false)
+-dot        show dot plot (default false)
+-grid       show gridlines on the y axis (default false)
+-val        show values (default true)
+-vol        show volume plot (default false)
+-yaxis      show a y axis (default false)
+
+-top        top of the plot (default 80)
+-bottom     bottom of the plot (default 30)
+-left       left margin (default 20)
+-right      right margin (default 80)
+
+
+-barwidth   barwidth (default computed from the number of data points)
+-ls         linespacing (default 2.4)
+-textsize   text size (default 1.5)
+-xlabel     x axis label interval (default 1)
+-color      data color (default "lightsteelblue")
+-datafmt    data format for values (default "%.1f")
 */
 package main
