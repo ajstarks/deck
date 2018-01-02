@@ -21,10 +21,10 @@ type LineData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax                          float64
-	xint                                                                        int
-	showdot, datamin, showvolume, showbar, showval, connect, showaxis, showgrid bool
-	datacolor, datafmt, layout                                                  string
+	ts, left, right, top, bottom, ls, barw, umin, umax                                                 float64
+	xint                                                                                               int
+	showdot, datamin, showvolume, showbar, showval, connect, showaxis, showgrid, showtitle, standalone bool
+	datacolor, datafmt, layout, chartitle                                                              string
 )
 
 const (
@@ -191,8 +191,15 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 	linespacing := ts * ls
 	spacing := ts * 1.5
 
-	deck.StartSlide(bgcolor)
-	if len(title) > 0 {
+	if !standalone {
+		deck.StartSlide(bgcolor)
+	}
+
+	if len(chartitle) > 0 {
+		title = chartitle
+	}
+
+	if len(title) > 0 && showtitle {
 		deck.TextMid(left+((right-left)/2), top+(linespacing*1.5), title, "sans", spacing, titlecolor)
 	}
 
@@ -235,7 +242,9 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		yvol = append(yvol, bottom)
 		deck.Polygon(xvol, yvol, datacolor, 50)
 	}
-	deck.EndSlide()
+	if !standalone {
+		deck.EndSlide()
+	}
 }
 
 // chart makes charts according to the orientation (h for horizontal bars
@@ -260,17 +269,19 @@ func main() {
 	flag.Float64Var(&umin, "min", -1, "minimum")
 	flag.Float64Var(&umax, "max", -1, "maximum")
 
-	flag.BoolVar(&showbar, "bar", true, "show bar")
-	flag.BoolVar(&showdot, "dot", false, "show dot")
-	flag.BoolVar(&showvolume, "vol", false, "show volume")
+	flag.BoolVar(&showbar, "bar", true, "show a bar chart")
+	flag.BoolVar(&showdot, "dot", false, "show a dot chart")
+	flag.BoolVar(&showvolume, "vol", false, "show a volume chart")
+	flag.BoolVar(&connect, "line", false, "show a line chart")
 	flag.BoolVar(&datamin, "dmin", false, "zero minimum")
 	flag.BoolVar(&showval, "val", true, "show values")
 	flag.BoolVar(&showaxis, "yaxis", true, "show y axis")
+	flag.BoolVar(&showtitle, "title", true, "show title")
 	flag.BoolVar(&showgrid, "grid", false, "show grid")
-	flag.BoolVar(&connect, "connect", false, "connected line plot")
+	flag.BoolVar(&standalone, "standalone", false, "only generate internal markup")
+	flag.IntVar(&xint, "xlabel", 1, "x axis label interval (show every n labels, 0 to show no labels)")
 
-	flag.IntVar(&xint, "xlabel", 1, "x axis label interval")
-
+	flag.StringVar(&chartitle, "chartitle", "", "specify the title (overiding title in the data)")
 	flag.StringVar(&layout, "layout", "v", "chart orientation (h=horizontal, v=vertical)")
 	flag.StringVar(&datacolor, "color", "lightsteelblue", "data color")
 	flag.StringVar(&datafmt, "datafmt", "%.1f", "data format")
@@ -279,7 +290,9 @@ func main() {
 	// start the deck, for every file name make a slide.
 	// if no files, read from standard input.
 	deck := generate.NewSlides(os.Stdout, 0, 0)
-	deck.StartDeck()
+	if !standalone {
+		deck.StartDeck()
+	}
 	if len(flag.Args()) > 0 {
 		for _, file := range flag.Args() {
 			r, err := os.Open(file)
@@ -292,5 +305,7 @@ func main() {
 	} else {
 		chart(deck, os.Stdin, layout)
 	}
-	deck.EndDeck()
+	if !standalone {
+		deck.EndDeck()
+	}
 }
