@@ -27,9 +27,10 @@ The command line options are:
 	-dot         show dot plot (default false)
 	-grid        show gridlines on the y axis (default false)
 	-val         show values (default true)
+	-valpos      value position (t=top, b=bottom, m=middle) (default "t")
 	-vol         show volume plot (default false)
 	-yaxis       show a y axis (default false)
-	-standalone  only generate internal markup
+	-standalone  only generate internal markup (default false)
 	-title       show title (default true)
 	-chartitle   specify the title (overiding title in the data)
 
@@ -43,6 +44,7 @@ The command line options are:
 	-textsize    text size (default 1.5)
 	-xlabel      x axis label interval (default 1, 0 to supress all labels)
 	-color       data color (default "lightsteelblue")
+	-vcolor      value color (default "rgb(127,0,0)")
 	-datafmt     data format for values (default "%.1f")
 */
 package main

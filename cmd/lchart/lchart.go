@@ -18,13 +18,14 @@ import (
 type LineData struct {
 	label string
 	value float64
+	note  string
 }
 
 var (
 	ts, left, right, top, bottom, ls, barw, umin, umax                                                 float64
 	xint                                                                                               int
 	showdot, datamin, showvolume, showbar, showval, connect, showaxis, showgrid, showtitle, standalone bool
-	datacolor, datafmt, layout, chartitle                                                              string
+	datacolor, datafmt, layout, chartitle, valpos, valuecolor                                          string
 )
 
 const (
@@ -32,7 +33,6 @@ const (
 	titlecolor   = "black"
 	labelcolor   = "rgb(75,75,75)"
 	dotlinecolor = "lightgray"
-	valuecolor   = "rgb(127,0,0)"
 )
 
 // vmap maps one range into another
@@ -62,8 +62,13 @@ func getdata(r io.ReadCloser) ([]LineData, float64, float64, string) {
 			continue
 		}
 		fields := strings.Split(t, "\t")
-		if len(fields) != 2 {
+		if len(fields) < 2 {
 			continue
+		}
+		if len(fields) == 3 {
+			d.note = fields[2]
+		} else {
+			d.note = ""
 		}
 		d.label = fields[0]
 		d.value, err = strconv.ParseFloat(fields[1], 64)
@@ -130,7 +135,12 @@ func hchart(deck *generate.Deck, r io.ReadCloser) {
 		mindata = 0
 	}
 	deck.StartSlide(bgcolor)
-	if len(title) > 0 {
+
+	if len(chartitle) > 0 {
+		title = chartitle
+	}
+
+	if len(title) > 0 && showtitle {
 		deck.TextMid(50, top+(linespacing*1.5), title, "sans", ts*1.5, titlecolor)
 	}
 
@@ -228,7 +238,19 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			deck.Line(x, bottom, x, y, dw, datacolor)
 		}
 		if showval {
-			deck.TextMid(x, y+ts, fmt.Sprintf(datafmt, data.value), "sans", ts*0.75, valuecolor)
+			yv := y + ts
+			switch valpos {
+			case "t":
+				yv = y + ts
+			case "b":
+				yv = bottom + ts
+			case "m":
+				yv = y - ((y - bottom) / 2)
+			}
+			deck.TextMid(x, yv, fmt.Sprintf(datafmt, data.value), "sans", ts*0.75, valuecolor)
+		}
+		if len(data.note) > 0 {
+			deck.TextMid(x, y, data.note, "serif", ts*0.6, labelcolor)
 		}
 		// show x label every xinit times, always show the first and last
 		if xint > 0 && (i%xint == 0 || i == (l-1)) {
@@ -283,7 +305,9 @@ func main() {
 
 	flag.StringVar(&chartitle, "chartitle", "", "specify the title (overiding title in the data)")
 	flag.StringVar(&layout, "layout", "v", "chart orientation (h=horizontal, v=vertical)")
+	flag.StringVar(&valpos, "valpos", "t", "value position (t=top, b=bottom, m=middle)")
 	flag.StringVar(&datacolor, "color", "lightsteelblue", "data color")
+	flag.StringVar(&valuecolor, "vcolor", "rgb(127,0,0)", "value color")
 	flag.StringVar(&datafmt, "datafmt", "%.1f", "data format")
 	flag.Parse()
 
