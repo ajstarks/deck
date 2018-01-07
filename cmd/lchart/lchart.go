@@ -22,14 +22,13 @@ type LineData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax                                                 float64
-	xint                                                                                               int
-	showdot, datamin, showvolume, showbar, showval, connect, showaxis, showgrid, showtitle, standalone bool
-	datacolor, datafmt, layout, chartitle, valpos, valuecolor                                          string
+	ts, left, right, top, bottom, ls, barw, umin, umax                                                       float64
+	xint                                                                                                     int
+	showdot, datamin, showvolume, showbar, showval, connect, hbar, showaxis, showgrid, showtitle, standalone bool
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor                                               string
 )
 
 const (
-	bgcolor      = "white"
 	titlecolor   = "black"
 	labelcolor   = "rgb(75,75,75)"
 	dotlinecolor = "lightgray"
@@ -271,8 +270,8 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 
 // chart makes charts according to the orientation (h for horizontal bars
 // anthing else line, bar, dot or volume charts
-func chart(deck *generate.Deck, r io.ReadCloser, orientation string) {
-	if orientation == "h" {
+func chart(deck *generate.Deck, r io.ReadCloser) {
+	if hbar {
 		hchart(deck, r)
 	} else {
 		vchart(deck, r)
@@ -296,6 +295,7 @@ func main() {
 	flag.BoolVar(&showvolume, "vol", false, "show a volume chart")
 	flag.BoolVar(&connect, "line", false, "show a line chart")
 	flag.BoolVar(&datamin, "dmin", false, "zero minimum")
+	flag.BoolVar(&hbar, "hbar", false, "horizontal bar")
 	flag.BoolVar(&showval, "val", true, "show values")
 	flag.BoolVar(&showaxis, "yaxis", true, "show y axis")
 	flag.BoolVar(&showtitle, "title", true, "show title")
@@ -304,10 +304,10 @@ func main() {
 	flag.IntVar(&xint, "xlabel", 1, "x axis label interval (show every n labels, 0 to show no labels)")
 
 	flag.StringVar(&chartitle, "chartitle", "", "specify the title (overiding title in the data)")
-	flag.StringVar(&layout, "layout", "v", "chart orientation (h=horizontal, v=vertical)")
 	flag.StringVar(&valpos, "valpos", "t", "value position (t=top, b=bottom, m=middle)")
 	flag.StringVar(&datacolor, "color", "lightsteelblue", "data color")
 	flag.StringVar(&valuecolor, "vcolor", "rgb(127,0,0)", "value color")
+	flag.StringVar(&bgcolor, "bgcolor", "white", "background color")
 	flag.StringVar(&datafmt, "datafmt", "%.1f", "data format")
 	flag.Parse()
 
@@ -324,10 +324,10 @@ func main() {
 				fmt.Fprintf(os.Stderr, "%v\n", err)
 				continue
 			}
-			chart(deck, r, layout)
+			chart(deck, r)
 		}
 	} else {
-		chart(deck, os.Stdin, layout)
+		chart(deck, os.Stdin)
 	}
 	if !standalone {
 		deck.EndDeck()

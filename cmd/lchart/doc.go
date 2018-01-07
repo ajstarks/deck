@@ -4,14 +4,14 @@ Unless specified otherwise, each input source generates a slide in the deck.
 
 The input data format a tab-separated list of label,data pairs where label is an arbitrary string,
 and data is intepreted as a floating point value. A line beginning with "#" is parsed as a title,
-with the title text beginning after the "#".
+with the title text beginning after the "#". A third column specifies an annotation.
 
 Here is an example input data file:
 
  	# GOOG Stock Volume (Millions of Shares)
  	2017-01-01	33.1916
  	2017-02-01	25.6825
- 	2017-03-01	33.8351
+ 	2017-03-01	33.8351	Peak value
  	2017-04-01	25.1619
  	2017-05-01	32.1801
 
@@ -21,8 +21,8 @@ The command line options are:
 	-min         set the minimum value
 	-max         set the maximum value
 
-	-layout      chart layout ("h" for horizontal bar chart)
 	-bar         show bars (default true)
+	-hbar        horizontal chart layout (default false)
 	-line        show line chart (default false)
 	-dot         show dot plot (default false)
 	-grid        show gridlines on the y axis (default false)

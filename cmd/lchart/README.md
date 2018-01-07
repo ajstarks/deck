@@ -39,7 +39,7 @@ The command line options are:
 	-min         set the minimum value
 	-max         set the maximum value
 
-	-layout      chart layout ("h" for horizontal bar chart)
+	-hbar        horizontal chart layout (default false)
 	-bar         show bars (default true)
 	-line        show line chart (default false)
 	-dot         show dot plot (default false)
