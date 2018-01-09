@@ -123,6 +123,18 @@ func yaxis(deck *generate.Deck, x, min, max, steps float64) {
 	axislabel(deck, x, yp, min, max)
 }
 
+// dformat returns the string representation of a float64
+// according to the datafmt flag value.
+// if there is no fractional portion of the float64, override the flag and
+// return the string with no decimals.
+func dformat(x float64) string {
+	frac := x - float64(int(x))
+	if frac == 0 {
+		return fmt.Sprintf("%0.f", x)
+	}
+	return fmt.Sprintf(datafmt, x)
+}
+
 // hbar makes horizontal bar charts using input from a Reader
 func hchart(deck *generate.Deck, r io.ReadCloser) {
 	hts := ts / 2
@@ -154,7 +166,7 @@ func hchart(deck *generate.Deck, r io.ReadCloser) {
 		} else {
 			deck.Line(left, y+hts, bv, y+hts, ts, datacolor)
 		}
-		deck.Text(bv+hts, y+(hts/2), fmt.Sprintf(datafmt, data.value), "mono", mts, valuecolor)
+		deck.Text(bv+hts, y+(hts/2), dformat(data.value), "mono", mts, valuecolor)
 		y -= linespacing
 	}
 	deck.EndSlide()
@@ -246,7 +258,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			case "m":
 				yv = y - ((y - bottom) / 2)
 			}
-			deck.TextMid(x, yv, fmt.Sprintf(datafmt, data.value), "sans", ts*0.75, valuecolor)
+			deck.TextMid(x, yv, dformat(data.value), "sans", ts*0.75, valuecolor)
 		}
 		if len(data.note) > 0 {
 			deck.TextMid(x, y, data.note, "serif", ts*0.6, labelcolor)
