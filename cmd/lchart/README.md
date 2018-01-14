@@ -48,6 +48,7 @@ The command line options are:
 	-valpos      value position (t=top, b=bottom, m=middle) (default "t")
 	-vol         show volume plot (default false)
 	-yaxis       show a y axis (default false)
+	-yrange      specify the y axis labels (min,max,step)
 	-standalone  only generate internal markup (default false)
 	-title       show title (default true)
 	-chartitle   specify the title (overiding title in the data)

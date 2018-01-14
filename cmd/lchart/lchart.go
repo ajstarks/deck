@@ -25,7 +25,7 @@ var (
 	ts, left, right, top, bottom, ls, barw, umin, umax                                                       float64
 	xint                                                                                                     int
 	showdot, datamin, showvolume, showbar, showval, connect, hbar, showaxis, showgrid, showtitle, standalone bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor                                               string
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr                                         string
 )
 
 const (
@@ -102,25 +102,44 @@ func dottedhline(d *generate.Deck, x, y, width, height, step, space float64, col
 	}
 }
 
-// axislabel constructs the axis label
-func axislabel(deck *generate.Deck, x, y, min, max float64) {
-	yf := vmap(y, min, max, bottom, top)
-	deck.TextEnd(x, yf, fmt.Sprintf("%0.f", y), "sans", ts*0.75, "black")
-	if showgrid {
-		deck.Line(left, yf, right, yf, 0.1, "lightgray")
+// yrange parses the min, max, step for axis labels from user input
+func yrange(s string) (float64, float64, float64) {
+	var min, max, step float64
+	n, err := fmt.Sscanf(s, "%f,%f,%f", &min, &max, &step)
+	if n != 3 || err != nil {
+		return 0, 0, 0
 	}
+	return min, max, step
 }
 
-// yaxis draws the yaxis (labels with optional grid)
-func yaxis(deck *generate.Deck, x, min, max, steps float64) {
+// cyrange computes "optimal" min, max, step for axis labels
+// rounding the max to the appropriate number, given the number of labels
+func cyrange(min, max float64, n int) (float64, float64, float64) {
 	l := math.Log10(max)
 	p := math.Pow10(int(l))
-	div := p / steps
-	var yp float64
-	for yp = min; yp <= max; yp += div {
-		axislabel(deck, x, yp, min, max)
+	pl := math.Ceil(max / p)
+	ymax := pl * p
+	return min, ymax, ymax / float64(n)
+}
+
+// yaxis constructs y axis labels
+func yaxis(deck *generate.Deck, x, dmin, dmax float64) {
+	var axismin, axismax, step float64
+	if yaxr == "" {
+		axismin, axismax, step = cyrange(dmin, dmax, 5)
+	} else {
+		axismin, axismax, step = yrange(yaxr)
 	}
-	axislabel(deck, x, yp, min, max)
+	if step <= 0 {
+		return
+	}
+	for y := axismin; y <= axismax; y += step {
+		yp := vmap(y, dmin, dmax, bottom, top)
+		deck.TextEnd(x, yp, fmt.Sprintf("%0.f", y), "sans", ts*0.75, "black")
+		if showgrid {
+			deck.Line(left, yp, right, yp, 0.1, "lightgray")
+		}
+	}
 }
 
 // dformat returns the string representation of a float64
@@ -225,7 +244,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 	}
 
 	if showaxis {
-		yaxis(deck, left-spacing-(dw*0.5), mindata, maxdata, 2.0)
+		yaxis(deck, left-spacing-(dw*0.5), mindata, maxdata)
 	}
 
 	// for every name, value pair, make the draw the chart elements
@@ -321,6 +340,7 @@ func main() {
 	flag.StringVar(&valuecolor, "vcolor", "rgb(127,0,0)", "value color")
 	flag.StringVar(&bgcolor, "bgcolor", "white", "background color")
 	flag.StringVar(&datafmt, "datafmt", "%.1f", "data format")
+	flag.StringVar(&yaxr, "yrange", "", "y-axis range (min,max,step)")
 	flag.Parse()
 
 	// start the deck, for every file name make a slide.
