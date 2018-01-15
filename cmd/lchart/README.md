@@ -62,6 +62,7 @@ The command line options are:
 	-ls          linespacing (default 2.4)
 	-textsize    text size (default 1.5)
 	-xlabel      x axis label interval (default 1, 0 to supress all labels)
+	-xlast       show the last x label
 	-color       data color (default "lightsteelblue")
 	-vcolor      value color (default "rgb(127,0,0)")
 	-datafmt     data format for values (default "%.1f")

@@ -22,10 +22,10 @@ type LineData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax                                                       float64
-	xint                                                                                                     int
-	showdot, datamin, showvolume, showbar, showval, connect, hbar, showaxis, showgrid, showtitle, standalone bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr                                         string
+	ts, left, right, top, bottom, ls, barw, umin, umax                                                                  float64
+	xint                                                                                                                int
+	showdot, datamin, showvolume, showbar, showval, showxlast, connect, hbar, showaxis, showgrid, showtitle, standalone bool
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr                                                    string
 )
 
 const (
@@ -283,7 +283,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			deck.TextMid(x, y, data.note, "serif", ts*0.6, labelcolor)
 		}
 		// show x label every xinit times, always show the first and last
-		if xint > 0 && (i%xint == 0 || i == (l-1)) {
+		if xint > 0 && (i%xint == 0 || (showxlast && i == l-1)) {
 			deck.TextMid(x, bottom-(ts*2), data.label, "sans", ts*0.8, labelcolor)
 		}
 		px = x
@@ -332,6 +332,7 @@ func main() {
 	flag.BoolVar(&showtitle, "title", true, "show title")
 	flag.BoolVar(&showgrid, "grid", false, "show grid")
 	flag.BoolVar(&standalone, "standalone", false, "only generate internal markup")
+	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
 	flag.IntVar(&xint, "xlabel", 1, "x axis label interval (show every n labels, 0 to show no labels)")
 
 	flag.StringVar(&chartitle, "chartitle", "", "specify the title (overiding title in the data)")
