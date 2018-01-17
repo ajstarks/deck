@@ -56,6 +56,9 @@ func getdata(r io.ReadCloser) ([]LineData, float64, float64, string) {
 	// compute min and max values
 	for scanner.Scan() {
 		t := scanner.Text()
+		if len(t) == 0 {
+			continue
+		}
 		if t[0] == '#' && len(t) > 2 {
 			title = strings.TrimSpace(t[1:])
 			continue
