@@ -49,7 +49,7 @@ The command line options are:
 	-vol         show volume plot (default false)
 	-yaxis       show a y axis (default false)
 	-yrange      specify the y axis labels (min,max,step)
-	-standalone  only generate internal markup (default false)
+	-standalone  generate full markup (default true)
 	-title       show title (default true)
 	-chartitle   specify the title (overiding title in the data)
 	

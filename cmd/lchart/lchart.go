@@ -14,8 +14,8 @@ import (
 	"github.com/ajstarks/deck/generate"
 )
 
-// LineData defines the name,value pairs
-type LineData struct {
+// ChartData defines the name,value pairs
+type ChartData struct {
 	label string
 	value float64
 	note  string
@@ -24,7 +24,7 @@ type LineData struct {
 var (
 	ts, left, right, top, bottom, ls, barw, umin, umax                                                                  float64
 	xint                                                                                                                int
-	showdot, datamin, showvolume, showbar, showval, showxlast, connect, hbar, showaxis, showgrid, showtitle, standalone bool
+	showdot, datamin, showvolume, showbar, showval, showxlast, connect, hbar, showaxis, showgrid, showtitle, fullmarkup bool
 	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr                                                    string
 )
 
@@ -39,12 +39,12 @@ func vmap(value float64, low1 float64, high1 float64, low2 float64, high2 float6
 	return low2 + (high2-low2)*(value-low1)/(high1-low1)
 }
 
-// getdata name,value pairs, with optional comments,
+// getdata reads name,value pairs, with optional comments,
 // returning a slice with the data, allong with min, max and title
-func getdata(r io.ReadCloser) ([]LineData, float64, float64, string) {
+func getdata(r io.ReadCloser) ([]ChartData, float64, float64, string) {
 	var (
-		data []LineData
-		d    LineData
+		data []ChartData
+		d    ChartData
 		err  error
 	)
 
@@ -56,10 +56,10 @@ func getdata(r io.ReadCloser) ([]LineData, float64, float64, string) {
 	// compute min and max values
 	for scanner.Scan() {
 		t := scanner.Text()
-		if len(t) == 0 {
+		if len(t) == 0 { // skip blank lines
 			continue
 		}
-		if t[0] == '#' && len(t) > 2 {
+		if t[0] == '#' && len(t) > 2 { // process titles
 			title = strings.TrimSpace(t[1:])
 			continue
 		}
@@ -89,7 +89,8 @@ func getdata(r io.ReadCloser) ([]LineData, float64, float64, string) {
 	return data, minval, maxval, title
 }
 
-// dottedvline makes dotted vertical line
+// dottedvline makes dotted vertical line, using circles,
+// with specified step
 func dottedvline(deck *generate.Deck, x, y1, y2, dotsize, step float64, color string) {
 	for y := y1; y <= y2; y += step {
 		deck.Circle(x, y, dotsize, color)
@@ -105,7 +106,7 @@ func dottedhline(d *generate.Deck, x, y, width, height, step, space float64, col
 	}
 }
 
-// yrange parses the min, max, step for axis labels from user input
+// yrange parses the min, max, step for axis labels
 func yrange(s string) (float64, float64, float64) {
 	var min, max, step float64
 	n, err := fmt.Sscanf(s, "%f,%f,%f", &min, &max, &step)
@@ -194,10 +195,10 @@ func hchart(deck *generate.Deck, r io.ReadCloser) {
 	deck.EndSlide()
 }
 
-// vchart  makes the plot using input from a Reader
+// vchart makes charts using input from a Reader
 // the types of charts are bar (column), dot, line, and volume
 func vchart(deck *generate.Deck, r io.ReadCloser) {
-	linedata, mindata, maxdata, title := getdata(r)
+	chartdata, mindata, maxdata, title := getdata(r)
 	if !datamin {
 		mindata = 0
 	}
@@ -210,7 +211,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		maxdata = umax
 	}
 
-	l := len(linedata)
+	l := len(chartdata)
 	dlen := float64(l - 1)
 
 	// define the width of bars
@@ -230,11 +231,10 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		yvol[l+1] = bottom
 	}
 
-	// Begin the slide with a centered title (if specified)
 	linespacing := ts * ls
 	spacing := ts * 1.5
 
-	if !standalone {
+	if fullmarkup {
 		deck.StartSlide(bgcolor)
 	}
 
@@ -250,9 +250,9 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		yaxis(deck, left-spacing-(dw*0.5), mindata, maxdata)
 	}
 
-	// for every name, value pair, make the draw the chart elements
+	// for every name, value pair, make the chart elements
 	var px, py float64
-	for i, data := range linedata {
+	for i, data := range chartdata {
 		x := vmap(float64(i), 0, dlen, left, right)
 		y := vmap(data.value, mindata, maxdata, bottom, top)
 
@@ -297,13 +297,13 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		yvol = append(yvol, bottom)
 		deck.Polygon(xvol, yvol, datacolor, 50)
 	}
-	if !standalone {
+	if fullmarkup {
 		deck.EndSlide()
 	}
 }
 
-// chart makes charts according to the orientation (h for horizontal bars
-// anthing else line, bar, dot or volume charts
+// chart makes charts according to the orientation:
+// horizontal bar or line, bar, dot or volume charts
 func chart(deck *generate.Deck, r io.ReadCloser) {
 	if hbar {
 		hchart(deck, r)
@@ -313,7 +313,7 @@ func chart(deck *generate.Deck, r io.ReadCloser) {
 }
 
 func main() {
-	// command line parameters
+	// command line options
 	flag.Float64Var(&ts, "textsize", 1.5, "text size")
 	flag.Float64Var(&left, "left", 10.0, "left margin")
 	flag.Float64Var(&right, "right", 100-left, "right margin")
@@ -334,7 +334,7 @@ func main() {
 	flag.BoolVar(&showaxis, "yaxis", true, "show y axis")
 	flag.BoolVar(&showtitle, "title", true, "show title")
 	flag.BoolVar(&showgrid, "grid", false, "show grid")
-	flag.BoolVar(&standalone, "standalone", false, "only generate internal markup")
+	flag.BoolVar(&fullmarkup, "standalone", true, "generate full markup")
 	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
 	flag.IntVar(&xint, "xlabel", 1, "x axis label interval (show every n labels, 0 to show no labels)")
 
@@ -350,7 +350,7 @@ func main() {
 	// start the deck, for every file name make a slide.
 	// if no files, read from standard input.
 	deck := generate.NewSlides(os.Stdout, 0, 0)
-	if !standalone {
+	if fullmarkup {
 		deck.StartDeck()
 	}
 	if len(flag.Args()) > 0 {
@@ -365,7 +365,7 @@ func main() {
 	} else {
 		chart(deck, os.Stdin)
 	}
-	if !standalone {
+	if fullmarkup {
 		deck.EndDeck()
 	}
 }

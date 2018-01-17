@@ -31,7 +31,7 @@ The command line options are:
 	-vol         show volume plot (default false)
 	-yaxis       show a y axis (default false)
 	-yrange      define the y axis range (min,max,step)
-	-standalone  only generate internal markup (default false)
+	-standalone  generate full markup (default true)
 	-title       show title (default true)
 	-chartitle   specify the title (overiding title in the data)
 
