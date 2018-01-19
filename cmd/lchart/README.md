@@ -1,6 +1,7 @@
 # lchart - charts for deck
 
-```lchart``` generates deck markup for  bar, line, dot, and volume charts, reading data from the standard input or specified files. Unless specified otherwise, each input source generates a slide in the deck.
+```lchart``` generates deck markup for  bar, line, dot, and volume charts, reading data from the standard input or specified files. 
+Unless specified otherwise, each input source generates a slide in the deck.
 
 The input data format a tab-separated list of ```label,data``` pairs where label is an arbitrary string, 
 and data is intepreted as a floating point value. A line beginning with "#" is parsed as a title, 
@@ -20,20 +21,27 @@ Typically ```lchart``` generates input for deck clients like ```pdfdeck```, or `
 deck markup on the standard input and produces PDF on the standard output).
 
     $ lchart foo.d bar.d baz.d > fbb.xml && pdfdeck fbb.xml && open fbb.pdf
-	$ lchart -min=0 -max=700 -datafmt %0.2f -connect -bar=f -vol -dot [A-Z]*.d | pdi > allvol.pdf
-    $ ls -lS | awk 'BEGIN {print "# File Size"} NR > 1 {print $NF "\t" $5}' | lchart -layout h | pdi > fs.pdf
+	$ lchart -min=0 -max=700 -datafmt %0.2f -line -bar=f -vol -dot [A-Z]*.d | pdi > allvol.pdf
+    $ ls -lS | awk 'BEGIN {print "# File Size"} NR > 1 {print $NF "\t" $5}' | lchart -hbar | pdi > fs.pdf
+
+## Defaults
 
 With no options, ```lchart``` makes a bar graph with yaxis labels, showing data values and every data label.
+The the y-axis has five labels, with the minimum at 0, and the maximum rounded up to appropriate scale. Values are shown with one decimal point. Integer input is displayed as such.
+
+## Placement
 
 The plot is positioned and scaled on the deck canvas with the 
 ```-top```, ```-bottom```, ```-left```, and ```-right``` flags. 
 These flag values represent percentages on the deck canvas.
 
+## Chart elements
+
 The  ```-bar```, ```-line```, ```-dot```, ```-grid```, ```-title``` ```-val```, ```-vol```, and ```-yaxis``` 
 flags toggle the visibility of plot components.  
 
 
-The command line options are:
+## Command line options
 
 	-dmim        data minimum (default false, min=0)
 	-min         set the minimum value
@@ -47,9 +55,9 @@ The command line options are:
 	-val         show values (default true)
 	-valpos      value position (t=top, b=bottom, m=middle) (default "t")
 	-vol         show volume plot (default false)
-	-yaxis       show a y axis (default false)
+	-yaxis       show a y axis (default true)
 	-yrange      specify the y axis labels (min,max,step)
-	-standalone  generate full markup (default true)
+	-standalone  only generate internal markup (default false)
 	-title       show title (default true)
 	-chartitle   specify the title (overiding title in the data)
 	
@@ -90,9 +98,13 @@ here are some variations.
 
 	$ lchart AAPL.d
 
-![no-args.png](images/no-args.png)
+![no-args](images/no-args.png)
 
-	$ lchart -xlabel=2 -left 30 -right 70 -top 70 -bottom 40 -yaxis=f
+	$ lchart -yrange=0,700,100 AAPL.d
+
+![yrange](images/yrange.png)
+
+	$ lchart -xlabel=2 -left 30 -right 70 -top 70 -bottom 40 -yaxis=f AAPL.d
 
 ![pos](images/pos.png)
 
@@ -116,35 +128,35 @@ here are some variations.
 
 ![vol](images/vol.png)
 
-	$ lchart lchart -datafmt %0.2f -bar=f -dot  -connect  
+	$ lchart lchart -datafmt %0.2f -bar=f -dot -line AAPL.d
 
-![dot-connect](images/dot-connect.png)
+![dot-line](images/dot-connect.png)
 
-	$ lchart -bar=f -connect AAPL.d # line chart
+	$ lchart -bar=f -line AAPL.d # line chart
 
 ![connect](images/connect.png)
 
-	$ lchart -bar=f -connect -yaxis=f -val=f AAPL.d # only show line and x axis
+	$ lchart -bar=f -line -yaxis=f -val=f AAPL.d # only show line and x axis
 
 ![connect-no-axis-no-val](images/connect-no-axis-no-val.png)
 
-	$ lchart -bar=f -connect -vol -dot # combine line, volume, and dot
+	$ lchart -bar=f -line -vol -dot AAPL.d # combine line, volume, and dot
 
 ![vol-dot](images/vol-dot.png)
 
-	$ lchart -bar=f -connect -vol -dot -yaxis=f # as above, removing the y-axis
+	$ lchart -bar=f -line -vol -dot -yaxis=f AAPL.d # as above, removing the y-axis
 
 ![vol-dot-no-axis](images/vol-dot-no-axis.png)
 
-	$ lchart -bar=f -connect -vol -dot -grid 
+	$ lchart -bar=f -line -vol -dot -grid AAPL.d
 
 ![connect-dot-vol-val-grid](images/connect-dot-vol-val-grid.png)
 
-	$ lchart -layout=h AAPL.d
+	$ lchart -hbar AAPL.d
 
 ![hlayout](images/hlayout.png)
 
-	$ sort -k2 -nr pdf.d | lchart -left 20 -layout h -datafmt %0.f
+	$ sort -k2 -nr pdf.d | lchart -left 20 -hbar
 
 ![sorted-bar](images/sorted-hbar.png)
 

@@ -29,7 +29,7 @@ The command line options are:
 	-val         show values (default true)
 	-valpos      value position (t=top, b=bottom, m=middle) (default "t")
 	-vol         show volume plot (default false)
-	-yaxis       show a y axis (default false)
+	-yaxis       show a y axis (default true)
 	-yrange      define the y axis range (min,max,step)
 	-standalone  generate full markup (default true)
 	-title       show title (default true)
