@@ -3,9 +3,13 @@
 ```lchart``` generates deck markup for  bar, line, dot, and volume charts, reading data from the standard input or specified files. 
 Unless specified otherwise, each input source generates a slide in the deck.
 
-The input data format a tab-separated list of ```label,data``` pairs where label is an arbitrary string, 
-and data is intepreted as a floating point value. A line beginning with "#" is parsed as a title, 
+The input data format a tab-separated or CSV formatted list of ```label,data``` pairs where label is an arbitrary string, 
+and data is intepreted as a floating point value. 
+
+For tab-separated data, a line beginning with "#" is parsed as a title, 
 with the title text beginning after the "#".  If a third column is present, it serves as an annotation.
+
+For CSV files, lines beginning with "title" are parsed as the title, with the second field the text of the title.
 
 Here is an example input data file:
 
@@ -15,7 +19,14 @@ Here is an example input data file:
 	2017-03-01	33.8351	Peak
 	2017-04-01	25.1619
 	2017-05-01	32.1801
+
 	
+	#,GOOG Stock Volume (Millions of Shares)
+	2017-01-01,33.1916
+	2017-02-01,25.6825
+	2017-03-01,33.8351,Peak
+	2017-04-01,25.1619
+	2017-05-01,32.1801
 
 Typically ```lchart``` generates input for deck clients like ```pdfdeck```, or ```pdi``` (shell script for pdfdeck which reads
 deck markup on the standard input and produces PDF on the standard output).
