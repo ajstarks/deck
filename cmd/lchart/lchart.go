@@ -3,6 +3,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/csv"
 	"flag"
 	"fmt"
 	"io"
@@ -22,10 +23,10 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax                                                                  float64
-	xint                                                                                                                int
-	showdot, datamin, showvolume, showbar, showval, showxlast, connect, hbar, showaxis, showgrid, showtitle, fullmarkup bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr                                                    string
+	ts, left, right, top, bottom, ls, barw, umin, umax                                                                           float64
+	xint                                                                                                                         int
+	readcsv, showdot, datamin, showvolume, showbar, showval, showxlast, connect, hbar, showaxis, showgrid, showtitle, fullmarkup bool
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr                                                             string
 )
 
 const (
@@ -39,9 +40,73 @@ func vmap(value float64, low1 float64, high1 float64, low2 float64, high2 float6
 	return low2 + (high2-low2)*(value-low1)/(high1-low1)
 }
 
-// getdata reads name,value pairs, with optional comments,
-// returning a slice with the data, allong with min, max and title
+// getdata reads imput from a Reader, either tab-separated or CSV
 func getdata(r io.ReadCloser) ([]ChartData, float64, float64, string) {
+	var min, max float64
+	var title string
+	var data []ChartData
+	if readcsv {
+		data, min, max, title = csvdata(r)
+	} else {
+		data, min, max, title = tsvdata(r)
+	}
+	return data, min, max, title
+}
+
+// csvdata reads CSV structured name,value pairs, with optional comments,
+// returning a slice with the data, allong with min, max and title
+func csvdata(r io.ReadCloser) ([]ChartData, float64, float64, string) {
+	var (
+		data []ChartData
+		d    ChartData
+		err  error
+	)
+	input := csv.NewReader(r)
+	maxval := -1.0
+	minval := 1e308
+	title := ""
+	for {
+		fields, csverr := input.Read()
+		if csverr == io.EOF {
+			break
+		}
+		if csverr != nil {
+			fmt.Fprintf(os.Stderr, "%v %v\n", csverr, fields)
+			continue
+		}
+
+		if len(fields) < 2 {
+			continue
+		}
+		if fields[0] == "title" {
+			title = fields[1]
+			continue
+		}
+		if len(fields) == 3 {
+			d.note = fields[2]
+		} else {
+			d.note = ""
+		}
+		d.label = fields[0]
+		d.value, err = strconv.ParseFloat(fields[1], 64)
+		if err != nil {
+			d.value = 0
+		}
+		if d.value > maxval {
+			maxval = d.value
+		}
+		if d.value < minval {
+			minval = d.value
+		}
+		data = append(data, d)
+	}
+	r.Close()
+	return data, minval, maxval, title
+}
+
+// tsvdata reads tab-delimited name,value pairs, with optional comments,
+// returning a slice with the data, allong with min, max and title
+func tsvdata(r io.ReadCloser) ([]ChartData, float64, float64, string) {
 	var (
 		data []ChartData
 		d    ChartData
@@ -336,6 +401,7 @@ func main() {
 	flag.BoolVar(&showgrid, "grid", false, "show grid")
 	flag.BoolVar(&fullmarkup, "standalone", true, "generate full markup")
 	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
+	flag.BoolVar(&readcsv, "csv", false, "read CSV data")
 	flag.IntVar(&xint, "xlabel", 1, "x axis label interval (show every n labels, 0 to show no labels)")
 
 	flag.StringVar(&chartitle, "chartitle", "", "specify the title (overiding title in the data)")
