@@ -78,7 +78,7 @@ func csvdata(r io.ReadCloser) ([]ChartData, float64, float64, string) {
 		if len(fields) < 2 {
 			continue
 		}
-		if fields[0] == "title" {
+		if fields[0] == "#" {
 			title = fields[1]
 			continue
 		}
