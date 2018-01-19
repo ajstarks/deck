@@ -57,6 +57,7 @@ flags toggle the visibility of plot components.
 	-dmim        data minimum (default false, min=0)
 	-min         set the minimum value
 	-max         set the maximum value
+	-csv         read CSV files (default false)
 
 	-hbar        horizontal chart layout (default false)
 	-bar         show bars (default true)

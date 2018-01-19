@@ -20,6 +20,7 @@ The command line options are:
 	-dmim        data minimum (default false, min=0)
 	-min         set the minimum value
 	-max         set the maximum value
+	-csv         read CSV files (default false)
 
 	-bar         show bars (default true)
 	-hbar        horizontal chart layout (default false)
