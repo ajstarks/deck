@@ -21,6 +21,7 @@ The command line options are:
 	-min         set the minimum value
 	-max         set the maximum value
 	-csv         read CSV files (default false)
+	-csvcol      specify the columns to use for label,value
 
 	-bar         show bars (default true)
 	-hbar        horizontal chart layout (default false)

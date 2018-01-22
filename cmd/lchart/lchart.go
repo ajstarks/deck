@@ -26,18 +26,43 @@ var (
 	ts, left, right, top, bottom, ls, barw, umin, umax                                                                           float64
 	xint                                                                                                                         int
 	readcsv, showdot, datamin, showvolume, showbar, showval, showxlast, connect, hbar, showaxis, showgrid, showtitle, fullmarkup bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr                                                             string
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols                                                    string
 )
 
 const (
 	titlecolor   = "black"
 	labelcolor   = "rgb(75,75,75)"
 	dotlinecolor = "lightgray"
+	largest      = math.MaxFloat64
+	smallest     = -math.MaxFloat64
 )
 
 // vmap maps one range into another
 func vmap(value float64, low1 float64, high1 float64, low2 float64, high2 float64) float64 {
 	return low2 + (high2-low2)*(value-low1)/(high1-low1)
+}
+
+// getheader returns the indicies of the comma-separated list of fields
+// by default or on error, return 0, 1
+// For example given this header:
+// First,Second,Third,Sum
+// First,Sum returns 0,3 and First,Third returns 0,2
+func getheader(s []string, lv string) (int, int) {
+	li := 0
+	vi := 1
+	cv := strings.Split(lv, ",")
+	if len(cv) != 2 {
+		return li, vi
+	}
+	for i, p := range s {
+		if p == cv[0] {
+			li = i
+		}
+		if p == cv[1] {
+			vi = i
+		}
+	}
+	return li, vi
 }
 
 // getdata reads imput from a Reader, either tab-separated or CSV
@@ -62,10 +87,14 @@ func csvdata(r io.ReadCloser) ([]ChartData, float64, float64, string) {
 		err  error
 	)
 	input := csv.NewReader(r)
-	maxval := -1.0
-	minval := 1e308
+	maxval := smallest
+	minval := largest
 	title := ""
+	n := 0
+	li := 0
+	vi := 1
 	for {
+		n++
 		fields, csverr := input.Read()
 		if csverr == io.EOF {
 			break
@@ -87,8 +116,14 @@ func csvdata(r io.ReadCloser) ([]ChartData, float64, float64, string) {
 		} else {
 			d.note = ""
 		}
-		d.label = fields[0]
-		d.value, err = strconv.ParseFloat(fields[1], 64)
+		if n == 1 && len(csvcols) > 0 { // column header is assumed to be the first row
+			li, vi = getheader(fields, csvcols)
+			title = fields[vi]
+			continue
+		}
+
+		d.label = fields[li]
+		d.value, err = strconv.ParseFloat(fields[vi], 64)
 		if err != nil {
 			d.value = 0
 		}
@@ -113,8 +148,8 @@ func tsvdata(r io.ReadCloser) ([]ChartData, float64, float64, string) {
 		err  error
 	)
 
-	maxval := -1.0
-	minval := 1e308
+	maxval := smallest
+	minval := largest
 	title := ""
 	scanner := bufio.NewScanner(r)
 	// read a line, parse into name, value pairs
@@ -350,7 +385,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		if len(data.note) > 0 {
 			deck.TextMid(x, y, data.note, "serif", ts*0.6, labelcolor)
 		}
-		// show x label every xinit times, always show the first and last
+		// show x label every xinit times, show the last, if specified
 		if xint > 0 && (i%xint == 0 || (showxlast && i == l-1)) {
 			deck.TextMid(x, bottom-(ts*2), data.label, "sans", ts*0.8, labelcolor)
 		}
@@ -405,6 +440,7 @@ func main() {
 	flag.IntVar(&xint, "xlabel", 1, "x axis label interval (show every n labels, 0 to show no labels)")
 
 	flag.StringVar(&chartitle, "chartitle", "", "specify the title (overiding title in the data)")
+	flag.StringVar(&csvcols, "csvcol", "", "label,value from the CSV header")
 	flag.StringVar(&valpos, "valpos", "t", "value position (t=top, b=bottom, m=middle)")
 	flag.StringVar(&datacolor, "color", "lightsteelblue", "data color")
 	flag.StringVar(&valuecolor, "vcolor", "rgb(127,0,0)", "value color")

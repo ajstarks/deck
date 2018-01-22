@@ -58,6 +58,7 @@ flags toggle the visibility of plot components.
 	-min         set the minimum value
 	-max         set the maximum value
 	-csv         read CSV files (default false)
+	-csvcol      specify the columns to use for label,value
 
 	-hbar        horizontal chart layout (default false)
 	-bar         show bars (default true)
