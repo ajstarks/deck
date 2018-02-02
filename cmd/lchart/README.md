@@ -1,6 +1,6 @@
 # lchart - charts for deck
 
-```lchart``` generates deck markup for  bar, line, dot, and volume charts, reading data from the standard input or specified files. 
+```lchart``` generates deck markup for  bar, line, dot, volume, donut and proportional charts, reading data from the standard input or specified files. 
 Unless specified otherwise, each input source generates a slide in the deck.
 
 The input data format a tab-separated or CSV formatted list of ```label,data``` pairs where label is an arbitrary string, 
@@ -68,6 +68,8 @@ flags toggle the visibility of plot components.
 	-val         show values (default true)
 	-valpos      value position (t=top, b=bottom, m=middle) (default "t")
 	-vol         show volume plot (default false)
+	-pmap        show proportional map (default false)
+	-donut       show a donut chart (default false)
 	-yaxis       show a y axis (default true)
 	-yrange      specify the y axis labels (min,max,step)
 	-standalone  only generate internal markup (default false)
@@ -78,6 +80,10 @@ flags toggle the visibility of plot components.
 	-bottom      bottom of the plot (default 30)
 	-left        left margin (default 20)
 	-right       right margin (default 80)
+	-x           x location of the donut chart (default 50)
+	-y           y location of the donut chart (default 50)
+	-psize       diameter of the donut (default 30)
+	-pwidth      width of the donut or proportional map (defualt 3)
 	
 	-barwidth    barwidth (default computed from the number of data points)
 	-ls          linespacing (default 2.4)
@@ -172,5 +178,26 @@ here are some variations.
 	$ sort -k2 -nr pdf.d | lchart -left 20 -hbar
 
 ![sorted-bar](images/sorted-hbar.png)
+
+Using this for input in ``browser.d``
+
+	# Browser Market Share Dec 2016-Dec 2017
+	Chrome	53.72
+	Safari	14.47
+	Other	9.36
+	UC	8.28
+	Firefox	6.23
+	IE	3.99
+	Opera	3.95
+
+Here is how to show proportional data:
+	
+	$ lchart -donut -color=std -pwidth=5 browser.d 
+	
+![donut](images/donut.png)
+
+	$ lchart -pmap -pwidth=5 -textsize=1 browser.d
+
+![pmap](images/pmap.png)
 
 

@@ -23,11 +23,21 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax                                                                           float64
-	xint                                                                                                                         int
-	readcsv, showdot, datamin, showvolume, showbar, showval, showxlast, connect, hbar, showaxis, showgrid, showtitle, fullmarkup bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols                                                    string
+	ts, left, right, top, bottom, ls, barw, umin, umax, dx, dy, psize, pwidth                                                                         float64
+	xint                                                                                                                                              int
+	readcsv, showdot, datamin, showvolume, showbar, showval, showxlast, connect, hbar, showaxis, showgrid, showtitle, fullmarkup, showdonut, showpmap bool
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols                                                                         string
 )
+
+var blue7 = []string{
+	"rgb(8,69,148)",
+	"rgb(33,113,181)",
+	"rgb(66,146,198)",
+	"rgb(107,174,214)",
+	"rgb(158,202,225)",
+	"rgb(198,219,239)",
+	"rgb(239,243,255)",
+}
 
 const (
 	titlecolor   = "black"
@@ -36,6 +46,50 @@ const (
 	largest      = math.MaxFloat64
 	smallest     = -math.MaxFloat64
 )
+
+func cmdflags() {
+	// command line options
+	flag.Float64Var(&ts, "textsize", 1.5, "text size")
+	flag.Float64Var(&left, "left", 10.0, "left margin")
+	flag.Float64Var(&right, "right", 100-left, "right margin")
+	flag.Float64Var(&top, "top", 80.0, "top of the plot")
+	flag.Float64Var(&bottom, "bottom", 30.0, "bottom of the plot")
+	flag.Float64Var(&ls, "ls", 2.4, "ls")
+	flag.Float64Var(&barw, "barwidth", 0, "barwidth")
+	flag.Float64Var(&umin, "min", -1, "minimum")
+	flag.Float64Var(&umax, "max", -1, "maximum")
+	flag.Float64Var(&dx, "x", 50.0, "x location")
+	flag.Float64Var(&dy, "y", 50.0, "y location")
+	flag.Float64Var(&psize, "psize", 30.0, "size of the donut")
+	flag.Float64Var(&pwidth, "pwidth", 3.0, "width of the pmap/donut")
+
+	flag.BoolVar(&showbar, "bar", true, "show a bar chart")
+	flag.BoolVar(&showdot, "dot", false, "show a dot chart")
+	flag.BoolVar(&showvolume, "vol", false, "show a volume chart")
+	flag.BoolVar(&showdonut, "donut", false, "show a donut chart")
+	flag.BoolVar(&showpmap, "pmap", false, "show a proportional map")
+	flag.BoolVar(&connect, "line", false, "show a line chart")
+	flag.BoolVar(&datamin, "dmin", false, "zero minimum")
+	flag.BoolVar(&hbar, "hbar", false, "horizontal bar")
+	flag.BoolVar(&showval, "val", true, "show values")
+	flag.BoolVar(&showaxis, "yaxis", true, "show y axis")
+	flag.BoolVar(&showtitle, "title", true, "show title")
+	flag.BoolVar(&showgrid, "grid", false, "show grid")
+	flag.BoolVar(&fullmarkup, "standalone", true, "generate full markup")
+	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
+	flag.BoolVar(&readcsv, "csv", false, "read CSV data")
+	flag.IntVar(&xint, "xlabel", 1, "x axis label interval (show every n labels, 0 to show no labels)")
+
+	flag.StringVar(&chartitle, "chartitle", "", "specify the title (overiding title in the data)")
+	flag.StringVar(&csvcols, "csvcol", "", "label,value from the CSV header")
+	flag.StringVar(&valpos, "valpos", "t", "value position (t=top, b=bottom, m=middle)")
+	flag.StringVar(&datacolor, "color", "lightsteelblue", "data color")
+	flag.StringVar(&valuecolor, "vcolor", "rgb(127,0,0)", "value color")
+	flag.StringVar(&bgcolor, "bgcolor", "white", "background color")
+	flag.StringVar(&datafmt, "datafmt", "%.1f", "data format")
+	flag.StringVar(&yaxr, "yrange", "", "y-axis range (min,max,step)")
+	flag.Parse()
+}
 
 // vmap maps one range into another
 func vmap(value float64, low1 float64, high1 float64, low2 float64, high2 float64) float64 {
@@ -258,6 +312,98 @@ func dformat(x float64) string {
 	return fmt.Sprintf(datafmt, x)
 }
 
+// pct computs the percentage of a range of values
+func pct(data []ChartData) []float64 {
+	sum := 0.0
+	for _, d := range data {
+		sum += d.value
+	}
+
+	p := make([]float64, len(data))
+	for i, d := range data {
+		p[i] = (d.value / sum) * 100
+	}
+	return p
+}
+
+// polar converts polar to Cartesian coordinates
+func polar(x, y, r, t float64) (float64, float64) {
+	px := x + r*math.Cos(t)
+	py := y + r*math.Sin(t)
+	return px, py
+}
+
+// pmap draws a porpotional map
+func pmap(deck *generate.Deck, data []ChartData, title string) {
+	x := left
+	pl := (right - left)
+	bl := pl / 100.0
+	hspace := 0.10
+	var ty float64
+	if len(title) > 0 {
+		deck.TextMid(x+pl/2, top+(pwidth*1.2), title, "sans", ts*2, "black")
+	}
+	for i, p := range pct(data) {
+		bx := (p * bl)
+		if p < 3 || len(data[i].label) > 10 {
+			ty = top + pwidth*1.5
+			deck.Line(x+(bx/2), ty-(ts*1.5), x+(bx/2), top, 0.1, dotlinecolor)
+		} else {
+			ty = top
+		}
+		deck.TextMid(x+(bx/2), ty, data[i].label, "sans", ts, "black")
+		deck.TextMid(x+(bx/2), ty-(ts*1.5), fmt.Sprintf(datafmt+"%%", p), "mono", ts, "black")
+		deck.Line(x, top, bx+x, top, pwidth, datacolor, p)
+		x += bx - hspace
+	}
+}
+
+// donut makes a donut chart
+func donut(deck *generate.Deck, data []ChartData, title string) {
+	a1 := 0.0
+	var bcolor string
+	var op float64
+	if len(title) > 0 {
+		deck.TextMid(dx, dy+(psize*1.2), title, "sans", ts*2, "black")
+	}
+	for i, p := range pct(data) {
+		angle := (p / 100) * 360.0
+		a2 := a1 + angle
+		mid := (a1 + a2) / 2
+		// use either the standard color (cycling through a list) or define color based in value
+		if datacolor == "std" {
+			bcolor = blue7[i%len(blue7)]
+			op = 100
+		} else {
+			bcolor = datacolor
+			op = p
+		}
+		deck.Arc(dx, dy, psize, psize, pwidth, a1, a2, bcolor, op)
+		tx, ty := polar(dx, dy, psize*.85, mid*(math.Pi/180))
+		deck.TextMid(tx, ty, fmt.Sprintf("%s "+datafmt+"%%", data[i].label, p), "sans", ts, "black")
+		a1 = a2
+	}
+}
+
+// pchart draws proportional data, either a pmap or donut using input from a Reader
+func pchart(deck *generate.Deck, r io.ReadCloser) {
+	data, _, _, title := getdata(r)
+	if len(chartitle) > 0 {
+		title = chartitle
+	}
+	if fullmarkup {
+		deck.StartSlide()
+	}
+	if showdonut {
+		donut(deck, data, title)
+	} else {
+		pmap(deck, data, title)
+	}
+	if fullmarkup {
+		deck.EndSlide()
+	}
+}
+
 // hbar makes horizontal bar charts using input from a Reader
 func hchart(deck *generate.Deck, r io.ReadCloser) {
 	hts := ts / 2
@@ -403,54 +549,23 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 }
 
 // chart makes charts according to the orientation:
-// horizontal bar or line, bar, dot or volume charts
+// horizontal bar or line, bar, dot, or donut volume charts
 func chart(deck *generate.Deck, r io.ReadCloser) {
-	if hbar {
+	switch {
+	case hbar:
 		hchart(deck, r)
-	} else {
+	case showdonut, showpmap:
+		pchart(deck, r)
+	default:
 		vchart(deck, r)
 	}
 }
 
 func main() {
-	// command line options
-	flag.Float64Var(&ts, "textsize", 1.5, "text size")
-	flag.Float64Var(&left, "left", 10.0, "left margin")
-	flag.Float64Var(&right, "right", 100-left, "right margin")
-	flag.Float64Var(&top, "top", 80.0, "top of the plot")
-	flag.Float64Var(&bottom, "bottom", 30.0, "bottom of the plot")
-	flag.Float64Var(&ls, "ls", 2.4, "ls")
-	flag.Float64Var(&barw, "barwidth", 0, "barwidth")
-	flag.Float64Var(&umin, "min", -1, "minimum")
-	flag.Float64Var(&umax, "max", -1, "maximum")
-
-	flag.BoolVar(&showbar, "bar", true, "show a bar chart")
-	flag.BoolVar(&showdot, "dot", false, "show a dot chart")
-	flag.BoolVar(&showvolume, "vol", false, "show a volume chart")
-	flag.BoolVar(&connect, "line", false, "show a line chart")
-	flag.BoolVar(&datamin, "dmin", false, "zero minimum")
-	flag.BoolVar(&hbar, "hbar", false, "horizontal bar")
-	flag.BoolVar(&showval, "val", true, "show values")
-	flag.BoolVar(&showaxis, "yaxis", true, "show y axis")
-	flag.BoolVar(&showtitle, "title", true, "show title")
-	flag.BoolVar(&showgrid, "grid", false, "show grid")
-	flag.BoolVar(&fullmarkup, "standalone", true, "generate full markup")
-	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
-	flag.BoolVar(&readcsv, "csv", false, "read CSV data")
-	flag.IntVar(&xint, "xlabel", 1, "x axis label interval (show every n labels, 0 to show no labels)")
-
-	flag.StringVar(&chartitle, "chartitle", "", "specify the title (overiding title in the data)")
-	flag.StringVar(&csvcols, "csvcol", "", "label,value from the CSV header")
-	flag.StringVar(&valpos, "valpos", "t", "value position (t=top, b=bottom, m=middle)")
-	flag.StringVar(&datacolor, "color", "lightsteelblue", "data color")
-	flag.StringVar(&valuecolor, "vcolor", "rgb(127,0,0)", "value color")
-	flag.StringVar(&bgcolor, "bgcolor", "white", "background color")
-	flag.StringVar(&datafmt, "datafmt", "%.1f", "data format")
-	flag.StringVar(&yaxr, "yrange", "", "y-axis range (min,max,step)")
-	flag.Parse()
+	cmdflags()
 
 	// start the deck, for every file name make a slide.
-	// if no files, read from standard input.
+	// Read from standard input, if no files are specified.
 	deck := generate.NewSlides(os.Stdout, 0, 0)
 	if fullmarkup {
 		deck.StartDeck()
