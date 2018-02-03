@@ -28,7 +28,7 @@ Example CSV file:
 	2017-04-01,25.1619
 	2017-05-01,32.1801
 
-Typically ```lchart``` generates input for deck clients like ```pdfdeck```, or ```pdi``` (shell script for pdfdeck which reads
+Typically ```lchart``` generates input for deck clients like ```pdfdeck```, or ```pdi``` (a shell script which reads
 deck markup on the standard input and produces PDF on the standard output).
 
     $ lchart foo.d bar.d baz.d > fbb.xml && pdfdeck fbb.xml && open fbb.pdf
@@ -38,17 +38,18 @@ deck markup on the standard input and produces PDF on the standard output).
 ## Defaults
 
 With no options, ```lchart``` makes a bar graph with yaxis labels, showing data values and every data label.
-The the y-axis has five labels, with the minimum at 0, and the maximum rounded up to appropriate scale. Values are shown with one decimal point. Integer input is displayed as such.
+The the y-axis has five labels, with the minimum at 0, and the maximum rounded up to appropriate scale. 
+Values are shown with one decimal point. Integer input is displayed as such.
 
 ## Placement
 
 The plot is positioned and scaled on the deck canvas with the 
-```-top```, ```-bottom```, ```-left```, and ```-right``` flags. 
+```-top```, ```-bottom```, ```-left```, ```-right```, ```-x``` and ```-y``` flags. 
 These flag values represent percentages on the deck canvas.
 
-## Chart elements
+## Chart types and elements
 
-The  ```-bar```, ```-line```, ```-dot```, ```-grid```, ```-title``` ```-val```, ```-vol```, and ```-yaxis``` 
+The  ```-bar```, ```-line```, ```-dot```, ```-grid```, ```-title``` ```-val```, ```-vol```, ```-pmap```, ```-donut``` and ```-yaxis``` 
 flags toggle the visibility of plot components.  
 
 
@@ -97,7 +98,7 @@ flags toggle the visibility of plot components.
 
 ## Usage examples
 
-Given this input in the file ```AAPL.d```
+Given the data in ```AAPL.d```
 
 	# AAPL Volume
 	2017-01-01	563.122
@@ -179,7 +180,7 @@ here are some variations.
 
 ![sorted-bar](images/sorted-hbar.png)
 
-Using this for input in ``browser.d``
+Using this data in ``browser.d``:
 
 	# Browser Market Share Dec 2016-Dec 2017
 	Chrome	53.72
@@ -199,5 +200,3 @@ Here is how to show proportional data:
 	$ lchart -pmap -pwidth=5 -textsize=1 browser.d
 
 ![pmap](images/pmap.png)
-
-
