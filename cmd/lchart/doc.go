@@ -35,7 +35,7 @@ The command line options are:
 	-donut       show a donut chart (default false)
 	-yaxis       show a y axis (default true)
 	-yrange      define the y axis range (min,max,step)
-	-standalone  generate full markup (default true)
+	-fulldeck    generate full markup (default true)
 	-title       show title (default true)
 	-chartitle   specify the title (overiding title in the data)
 
@@ -46,8 +46,8 @@ The command line options are:
 	-x           x location of the donut chart (default 50)
 	-y           y location of the donut chart (default 50)
 	-psize       diameter of the donut (default 30)
-	-pwidth      width of the donut or proportional map (defualt 3)
-
+	
+	-pwidth      width of the donut or proportional map (default 3)
 	-barwidth    barwidth (default computed from the number of data points)
 	-ls          linespacing (default 2.4)
 	-textsize    text size (default 1.5)

@@ -23,10 +23,10 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, dx, dy, psize, pwidth                                                                         float64
-	xint                                                                                                                                              int
-	readcsv, showdot, datamin, showvolume, showbar, showval, showxlast, connect, hbar, showaxis, showgrid, showtitle, fullmarkup, showdonut, showpmap bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols                                                                         string
+	ts, left, right, top, bottom, ls, barw, umin, umax, dx, dy, psize, pwidth                                                                       float64
+	xint                                                                                                                                            int
+	readcsv, showdot, datamin, showvolume, showbar, showval, showxlast, connect, hbar, showaxis, showgrid, showtitle, fulldeck, showdonut, showpmap bool
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols                                                                       string
 )
 
 var blue7 = []string{
@@ -75,7 +75,7 @@ func cmdflags() {
 	flag.BoolVar(&showaxis, "yaxis", true, "show y axis")
 	flag.BoolVar(&showtitle, "title", true, "show title")
 	flag.BoolVar(&showgrid, "grid", false, "show grid")
-	flag.BoolVar(&fullmarkup, "standalone", true, "generate full markup")
+	flag.BoolVar(&fulldeck, "fulldeck", true, "generate full markup")
 	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
 	flag.BoolVar(&readcsv, "csv", false, "read CSV data")
 	flag.IntVar(&xint, "xlabel", 1, "x axis label interval (show every n labels, 0 to show no labels)")
@@ -391,7 +391,7 @@ func pchart(deck *generate.Deck, r io.ReadCloser) {
 	if len(chartitle) > 0 {
 		title = chartitle
 	}
-	if fullmarkup {
+	if fulldeck {
 		deck.StartSlide()
 	}
 	if showdonut {
@@ -399,7 +399,7 @@ func pchart(deck *generate.Deck, r io.ReadCloser) {
 	} else {
 		pmap(deck, data, title)
 	}
-	if fullmarkup {
+	if fulldeck {
 		deck.EndSlide()
 	}
 }
@@ -480,7 +480,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 	linespacing := ts * ls
 	spacing := ts * 1.5
 
-	if fullmarkup {
+	if fulldeck {
 		deck.StartSlide(bgcolor)
 	}
 
@@ -543,7 +543,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		yvol = append(yvol, bottom)
 		deck.Polygon(xvol, yvol, datacolor, 50)
 	}
-	if fullmarkup {
+	if fulldeck {
 		deck.EndSlide()
 	}
 }
@@ -567,7 +567,7 @@ func main() {
 	// start the deck, for every file name make a slide.
 	// Read from standard input, if no files are specified.
 	deck := generate.NewSlides(os.Stdout, 0, 0)
-	if fullmarkup {
+	if fulldeck {
 		deck.StartDeck()
 	}
 	if len(flag.Args()) > 0 {
@@ -582,7 +582,7 @@ func main() {
 	} else {
 		chart(deck, os.Stdin)
 	}
-	if fullmarkup {
+	if fulldeck {
 		deck.EndDeck()
 	}
 }

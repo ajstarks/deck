@@ -28,7 +28,7 @@ Example CSV file:
 	2017-04-01,25.1619
 	2017-05-01,32.1801
 
-Typically ```lchart``` generates input for deck clients like ```pdfdeck```, or ```pdi``` (a shell script which reads
+Typically ```lchart``` generates input for deck clients like ```pdfdeck```, or ```pdi``` (shell script for pdfdeck which reads
 deck markup on the standard input and produces PDF on the standard output).
 
     $ lchart foo.d bar.d baz.d > fbb.xml && pdfdeck fbb.xml && open fbb.pdf
@@ -38,19 +38,18 @@ deck markup on the standard input and produces PDF on the standard output).
 ## Defaults
 
 With no options, ```lchart``` makes a bar graph with yaxis labels, showing data values and every data label.
-The the y-axis has five labels, with the minimum at 0, and the maximum rounded up to appropriate scale. 
-Values are shown with one decimal point. Integer input is displayed as such.
+The the y-axis has five labels, with the minimum at 0, and the maximum rounded up to appropriate scale. Values are shown with one decimal point. Integer input is displayed as such.
 
 ## Placement
 
 The plot is positioned and scaled on the deck canvas with the 
-```-top```, ```-bottom```, ```-left```, ```-right```, ```-x``` and ```-y``` flags. 
+```-top```, ```-bottom```, ```-left```, and ```-right```, ```-x```, and ```-y``` flags. 
 These flag values represent percentages on the deck canvas.
 
 ## Chart types and elements
 
-The  ```-bar```, ```-line```, ```-dot```, ```-grid```, ```-title``` ```-val```, ```-vol```, ```-pmap```, ```-donut``` and ```-yaxis``` 
-flags toggle the visibility of plot components.  
+The  ```-bar```, ```-hbar```, ```-line```, ```-dot```, ```-vol```, ```-pmap```, and ```-donut``` flags specify the chart types.
+The ```-grid```, ```-title```, ```-val```,  and ```-yaxis``` flags toggle the visibility of plot components.  
 
 
 ## Command line options
@@ -73,7 +72,7 @@ flags toggle the visibility of plot components.
 	-donut       show a donut chart (default false)
 	-yaxis       show a y axis (default true)
 	-yrange      specify the y axis labels (min,max,step)
-	-standalone  only generate internal markup (default false)
+	-fulldeck    generate full deck markup (default true)
 	-title       show title (default true)
 	-chartitle   specify the title (overiding title in the data)
 	
@@ -83,9 +82,9 @@ flags toggle the visibility of plot components.
 	-right       right margin (default 80)
 	-x           x location of the donut chart (default 50)
 	-y           y location of the donut chart (default 50)
-	-psize       diameter of the donut (default 30)
-	-pwidth      width of the donut or proportional map (defualt 3)
 	
+	-psize       diameter of the donut (default 30)
+	-pwidth      width of the donut or proportional map (default 3)
 	-barwidth    barwidth (default computed from the number of data points)
 	-ls          linespacing (default 2.4)
 	-textsize    text size (default 1.5)
@@ -98,7 +97,7 @@ flags toggle the visibility of plot components.
 
 ## Usage examples
 
-Given the data in ```AAPL.d```
+Using this data in ```AAPL.d```
 
 	# AAPL Volume
 	2017-01-01	563.122
@@ -180,7 +179,7 @@ here are some variations.
 
 ![sorted-bar](images/sorted-hbar.png)
 
-Using this data in ``browser.d``:
+Using this data in ``browser.d``
 
 	# Browser Market Share Dec 2016-Dec 2017
 	Chrome	53.72
@@ -200,3 +199,5 @@ Here is how to show proportional data:
 	$ lchart -pmap -pwidth=5 -textsize=1 browser.d
 
 ![pmap](images/pmap.png)
+
+
