@@ -39,11 +39,16 @@ var blue7 = []string{
 	"rgb(239,243,255)",
 }
 
+var xmlmap = strings.NewReplacer(
+	"&", "&amp;",
+	"<", "&lt;",
+	">", "&gt;")
+
 const (
 	titlecolor   = "black"
 	labelcolor   = "rgb(75,75,75)"
 	dotlinecolor = "lightgray"
-	wbop         = 15.0
+	wbop         = 20.0
 	largest      = math.MaxFloat64
 	smallest     = -math.MaxFloat64
 )
@@ -91,6 +96,10 @@ func cmdflags() {
 	flag.StringVar(&datafmt, "datafmt", "%.1f", "data format")
 	flag.StringVar(&yaxr, "yrange", "", "y-axis range (min,max,step)")
 	flag.Parse()
+}
+
+func xmlesc(s string) string {
+	return xmlmap.Replace(s)
 }
 
 // vmap maps one range into another
@@ -224,11 +233,11 @@ func tsvdata(r io.ReadCloser) ([]ChartData, float64, float64, string) {
 			continue
 		}
 		if len(fields) == 3 {
-			d.note = fields[2]
+			d.note = xmlesc(fields[2])
 		} else {
 			d.note = ""
 		}
-		d.label = fields[0]
+		d.label = xmlesc(fields[0])
 		d.value, err = strconv.ParseFloat(fields[1], 64)
 		if err != nil {
 			d.value = 0
@@ -242,7 +251,7 @@ func tsvdata(r io.ReadCloser) ([]ChartData, float64, float64, string) {
 		data = append(data, d)
 	}
 	r.Close()
-	return data, minval, maxval, title
+	return data, minval, maxval, xmlesc(title)
 }
 
 // dottedvline makes dotted vertical line, using circles,
@@ -383,6 +392,7 @@ func donut(deck *generate.Deck, data []ChartData, title string) {
 		deck.Arc(dx, dy, psize, psize, pwidth, a1, a2, bcolor, op)
 		tx, ty := polar(dx, dy, psize*.85, mid*(math.Pi/180))
 		deck.TextMid(tx, ty, fmt.Sprintf("%s "+datafmt+"%%", data[i].label, p), "sans", ts, "black")
+		deck.TextMid(tx, ty-ts*1.5, fmt.Sprintf(dformat(data[i].value)), "sans", ts, "gray")
 		a1 = a2
 	}
 }
@@ -391,7 +401,7 @@ func donut(deck *generate.Deck, data []ChartData, title string) {
 func pchart(deck *generate.Deck, r io.ReadCloser) {
 	data, _, _, title := getdata(r)
 	if len(chartitle) > 0 {
-		title = chartitle
+		title = xmlesc(chartitle)
 	}
 	if fulldeck {
 		deck.StartSlide()
@@ -419,7 +429,7 @@ func wbchart(deck *generate.Deck, r io.ReadCloser) {
 	deck.StartSlide(bgcolor)
 
 	if len(chartitle) > 0 {
-		title = chartitle
+		title = xmlesc(chartitle)
 	}
 
 	if len(title) > 0 && showtitle {
@@ -451,7 +461,7 @@ func hchart(deck *generate.Deck, r io.ReadCloser) {
 	deck.StartSlide(bgcolor)
 
 	if len(chartitle) > 0 {
-		title = chartitle
+		title = xmlesc(chartitle)
 	}
 
 	if len(title) > 0 && showtitle {
@@ -519,7 +529,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 	}
 
 	if len(chartitle) > 0 {
-		title = chartitle
+		title = xmlesc(chartitle)
 	}
 
 	if len(title) > 0 && showtitle {
@@ -554,7 +564,11 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			yv := y + ts
 			switch valpos {
 			case "t":
-				yv = y + ts
+				if data.value < 0 {
+					yv = y - ts
+				} else {
+					yv = y + ts
+				}
 			case "b":
 				yv = bottom + ts
 			case "m":
