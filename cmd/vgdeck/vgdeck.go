@@ -95,6 +95,10 @@ func loadimage(d deck.Deck, m map[string]image.Image) {
 				iw = int(float64(iw) * (i.Scale / 100))
 				ih = int(float64(ih) * (i.Scale / 100))
 			}
+			if i.Autoscale == "on" && iw < w {
+				ih = int((float64(cw) / float64(iw)) * float64(ih))
+				iw = w
+			}
 			// if the specified dimensions are native use those, otherwise resize
 			if iw == (bounds.Max.X-bounds.Min.X) && ih == (bounds.Max.Y-bounds.Min.Y) {
 				m[i.Name] = img
@@ -444,12 +448,11 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 		}
 		x1, y1, sw := dimen(d, line.Xp1, line.Yp1, line.Sp)
 		x2, y2, _ := dimen(d, line.Xp2, line.Yp2, 0)
-		openvg.StrokeColor(line.Color, openvg.VGfloat(strokeopacity))
 		if sw == 0 {
 			sw = defaultSw
 		}
 		openvg.StrokeWidth(openvg.VGfloat(sw))
-		openvg.StrokeColor(line.Color)
+		openvg.StrokeColor(line.Color, openvg.VGfloat(strokeopacity))
 		openvg.Line(x1, y1, x2, y2)
 		openvg.StrokeWidth(0)
 	}
