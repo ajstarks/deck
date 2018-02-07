@@ -60,8 +60,9 @@ The ```-grid```, ```-title```, ```-val```,  and ```-yaxis``` flags toggle the vi
 	-csv         read CSV files (default false)
 	-csvcol      specify the columns to use for label,value
 
-	-hbar        horizontal chart layout (default false)
 	-bar         show bars (default true)
+	-wbar        show "word" bar chart (default false)
+	-hbar        horizontal chart layout (default false)
 	-line        show line chart (default false)
 	-dot         show dot plot (default false)
 	-grid        show gridlines on the y axis (default false)
@@ -189,8 +190,10 @@ Using this data in ``browser.d``
 	Firefox	6.23
 	IE	3.99
 	Opera	3.95
-
-Here is how to show proportional data:
+	
+	$ lchart -wbar browser.d
+	
+![wbar](images/wbar.png)
 	
 	$ lchart -donut -color=std -pwidth=5 browser.d 
 	

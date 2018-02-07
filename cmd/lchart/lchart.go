@@ -23,10 +23,10 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, dx, dy, psize, pwidth                                                                       float64
-	xint                                                                                                                                            int
-	readcsv, showdot, datamin, showvolume, showbar, showval, showxlast, connect, hbar, showaxis, showgrid, showtitle, fulldeck, showdonut, showpmap bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols                                                                       string
+	ts, left, right, top, bottom, ls, barw, umin, umax, dx, dy, psize, pwidth                                                                             float64
+	xint                                                                                                                                                  int
+	readcsv, showdot, datamin, showvolume, showbar, showval, showxlast, connect, hbar, wbar, showaxis, showgrid, showtitle, fulldeck, showdonut, showpmap bool
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols                                                                             string
 )
 
 var blue7 = []string{
@@ -43,6 +43,7 @@ const (
 	titlecolor   = "black"
 	labelcolor   = "rgb(75,75,75)"
 	dotlinecolor = "lightgray"
+	wbop         = 15.0
 	largest      = math.MaxFloat64
 	smallest     = -math.MaxFloat64
 )
@@ -78,6 +79,7 @@ func cmdflags() {
 	flag.BoolVar(&fulldeck, "fulldeck", true, "generate full markup")
 	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
 	flag.BoolVar(&readcsv, "csv", false, "read CSV data")
+	flag.BoolVar(&wbar, "wbar", false, "show word bar")
 	flag.IntVar(&xint, "xlabel", 1, "x axis label interval (show every n labels, 0 to show no labels)")
 
 	flag.StringVar(&chartitle, "chartitle", "", "specify the title (overiding title in the data)")
@@ -404,6 +406,38 @@ func pchart(deck *generate.Deck, r io.ReadCloser) {
 	}
 }
 
+// wbchart makes a word bar chart
+func wbchart(deck *generate.Deck, r io.ReadCloser) {
+	hts := ts / 2
+	mts := ts * 0.75
+	linespacing := ts * ls
+
+	bardata, mindata, maxdata, title := getdata(r)
+	if !datamin {
+		mindata = 0
+	}
+	deck.StartSlide(bgcolor)
+
+	if len(chartitle) > 0 {
+		title = chartitle
+	}
+
+	if len(title) > 0 && showtitle {
+		deck.TextMid(50, top+(linespacing*1.5), title, "sans", ts*1.5, titlecolor)
+	}
+
+	// for every name, value pair, make the chart
+	y := top
+	for _, data := range bardata {
+		deck.Text(left+hts, y, data.label, "sans", ts, labelcolor)
+		bv := vmap(data.value, mindata, maxdata, left, right)
+		deck.Line(left+hts, y+hts, bv, y+hts, ts*1.5, datacolor, wbop)
+		deck.TextEnd(left, y+(hts/2), dformat(data.value), "mono", mts, valuecolor)
+		y -= linespacing
+	}
+	deck.EndSlide()
+}
+
 // hbar makes horizontal bar charts using input from a Reader
 func hchart(deck *generate.Deck, r io.ReadCloser) {
 	hts := ts / 2
@@ -554,6 +588,8 @@ func chart(deck *generate.Deck, r io.ReadCloser) {
 	switch {
 	case hbar:
 		hchart(deck, r)
+	case wbar:
+		wbchart(deck, r)
 	case showdonut, showpmap:
 		pchart(deck, r)
 	default:

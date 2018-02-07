@@ -25,6 +25,7 @@ The command line options are:
 
 	-bar         show bars (default true)
 	-hbar        horizontal chart layout (default false)
+	-wbar        show "word" bar chart (default false)
 	-line        show line chart (default false)
 	-dot         show dot plot (default false)
 	-grid        show gridlines on the y axis (default false)
@@ -46,7 +47,7 @@ The command line options are:
 	-x           x location of the donut chart (default 50)
 	-y           y location of the donut chart (default 50)
 	-psize       diameter of the donut (default 30)
-	
+
 	-pwidth      width of the donut or proportional map (default 3)
 	-barwidth    barwidth (default computed from the number of data points)
 	-ls          linespacing (default 2.4)
