@@ -177,7 +177,7 @@ func csvdata(r io.ReadCloser) ([]ChartData, float64, float64, string) {
 			continue
 		}
 		if len(fields) == 3 {
-			d.note = fields[2]
+			d.note = xmlesc(fields[2])
 		} else {
 			d.note = ""
 		}
@@ -187,7 +187,7 @@ func csvdata(r io.ReadCloser) ([]ChartData, float64, float64, string) {
 			continue
 		}
 
-		d.label = fields[li]
+		d.label = xmlesc(fields[li])
 		d.value, err = strconv.ParseFloat(fields[vi], 64)
 		if err != nil {
 			d.value = 0
@@ -201,7 +201,7 @@ func csvdata(r io.ReadCloser) ([]ChartData, float64, float64, string) {
 		data = append(data, d)
 	}
 	r.Close()
-	return data, minval, maxval, title
+	return data, minval, maxval, xmlesc(title)
 }
 
 // tsvdata reads tab-delimited name,value pairs, with optional comments,
