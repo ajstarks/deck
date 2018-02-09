@@ -191,7 +191,7 @@ Using this data in ``browser.d``
 	IE	3.99
 	Opera	3.95
 
-
+here are views of proportional data:
 	
 	$ lchart -wbar browser.d
 	
