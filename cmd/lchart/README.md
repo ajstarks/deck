@@ -190,6 +190,8 @@ Using this data in ``browser.d``
 	Firefox	6.23
 	IE	3.99
 	Opera	3.95
+
+
 	
 	$ lchart -wbar browser.d
 	
