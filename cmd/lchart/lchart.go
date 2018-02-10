@@ -23,10 +23,12 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, dx, dy, psize, pwidth                                                                             float64
-	xint                                                                                                                                                  int
-	readcsv, showdot, datamin, showvolume, showbar, showval, showxlast, connect, hbar, wbar, showaxis, showgrid, showtitle, fulldeck, showdonut, showpmap bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols                                                                             string
+	ts, left, right, top, bottom, ls, barw, umin, umax, dx, dy, psize, pwidth float64
+	xint                                                                      int
+	readcsv, showdot, datamin, showvolume, showscatter,
+	showbar, showval, showxlast, showline, showhbar, wbar, showaxis,
+	showgrid, showtitle, fulldeck, showdonut, showpmap bool
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols string
 )
 
 var blue7 = []string{
@@ -48,7 +50,7 @@ const (
 	titlecolor   = "black"
 	labelcolor   = "rgb(75,75,75)"
 	dotlinecolor = "lightgray"
-	wbop         = 20.0
+	wbop         = 30.0
 	largest      = math.MaxFloat64
 	smallest     = -math.MaxFloat64
 )
@@ -74,17 +76,18 @@ func cmdflags() {
 	flag.BoolVar(&showvolume, "vol", false, "show a volume chart")
 	flag.BoolVar(&showdonut, "donut", false, "show a donut chart")
 	flag.BoolVar(&showpmap, "pmap", false, "show a proportional map")
-	flag.BoolVar(&connect, "line", false, "show a line chart")
-	flag.BoolVar(&datamin, "dmin", false, "zero minimum")
-	flag.BoolVar(&hbar, "hbar", false, "horizontal bar")
-	flag.BoolVar(&showval, "val", true, "show values")
-	flag.BoolVar(&showaxis, "yaxis", true, "show y axis")
+	flag.BoolVar(&showline, "line", false, "show a line chart")
+	flag.BoolVar(&showhbar, "hbar", false, "show a horizontal bar chart")
+	flag.BoolVar(&showval, "val", true, "show data values")
+	flag.BoolVar(&showaxis, "yaxis", false, "show y axis")
 	flag.BoolVar(&showtitle, "title", true, "show title")
-	flag.BoolVar(&showgrid, "grid", false, "show grid")
-	flag.BoolVar(&fulldeck, "fulldeck", true, "generate full markup")
+	flag.BoolVar(&showgrid, "grid", false, "show y axis grid")
+	flag.BoolVar(&showscatter, "scatter", false, "show scatter chart")
 	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
+	flag.BoolVar(&fulldeck, "fulldeck", true, "generate full markup")
+	flag.BoolVar(&datamin, "dmin", false, "zero minimum")
 	flag.BoolVar(&readcsv, "csv", false, "read CSV data")
-	flag.BoolVar(&wbar, "wbar", false, "show word bar")
+	flag.BoolVar(&wbar, "wbar", false, "show word bar chart")
 	flag.IntVar(&xint, "xlabel", 1, "x axis label interval (show every n labels, 0 to show no labels)")
 
 	flag.StringVar(&chartitle, "chartitle", "", "specify the title (overiding title in the data)")
@@ -352,7 +355,7 @@ func pmap(deck *generate.Deck, data []ChartData, title string) {
 	hspace := 0.10
 	var ty float64
 	if len(title) > 0 {
-		deck.TextMid(x+pl/2, top+(pwidth*1.2), title, "sans", ts*2, "black")
+		deck.TextMid(x+pl/2, top+(pwidth*1.2), title, "sans", ts*1.5, "black")
 	}
 	for i, p := range pct(data) {
 		bx := (p * bl)
@@ -426,7 +429,9 @@ func wbchart(deck *generate.Deck, r io.ReadCloser) {
 	if !datamin {
 		mindata = 0
 	}
-	deck.StartSlide(bgcolor)
+	if fulldeck {
+		deck.StartSlide(bgcolor)
+	}
 
 	if len(chartitle) > 0 {
 		title = xmlesc(chartitle)
@@ -445,10 +450,12 @@ func wbchart(deck *generate.Deck, r io.ReadCloser) {
 		deck.TextEnd(left, y+(hts/2), dformat(data.value), "mono", mts, valuecolor)
 		y -= linespacing
 	}
-	deck.EndSlide()
+	if fulldeck {
+		deck.EndSlide()
+	}
 }
 
-// hbar makes horizontal bar charts using input from a Reader
+// hchart makes horizontal bar charts using input from a Reader
 func hchart(deck *generate.Deck, r io.ReadCloser) {
 	hts := ts / 2
 	mts := ts * 0.75
@@ -458,7 +465,9 @@ func hchart(deck *generate.Deck, r io.ReadCloser) {
 	if !datamin {
 		mindata = 0
 	}
-	deck.StartSlide(bgcolor)
+	if fulldeck {
+		deck.StartSlide(bgcolor)
+	}
 
 	if len(chartitle) > 0 {
 		title = xmlesc(chartitle)
@@ -482,7 +491,9 @@ func hchart(deck *generate.Deck, r io.ReadCloser) {
 		deck.Text(bv+hts, y+(hts/2), dformat(data.value), "mono", mts, valuecolor)
 		y -= linespacing
 	}
-	deck.EndSlide()
+	if fulldeck {
+		deck.EndSlide()
+	}
 }
 
 // vchart makes charts using input from a Reader
@@ -534,6 +545,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 
 	if len(title) > 0 && showtitle {
 		deck.TextMid(left+((right-left)/2), top+(linespacing*1.5), title, "sans", spacing, titlecolor)
+
 	}
 
 	if showaxis {
@@ -550,12 +562,15 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			xvol = append(xvol, x)
 			yvol = append(yvol, y)
 		}
-		if connect && i > 0 {
+		if showline && i > 0 {
 			deck.Line(px, py, x, y, 0.2, datacolor)
 		}
 		if showdot {
 			dottedvline(deck, x, bottom, y, ts/6, 1, dotlinecolor)
 			deck.Circle(x, y, ts*.6, datacolor)
+		}
+		if showscatter {
+			deck.Circle(x, y, ts*.3, datacolor)
 		}
 		if showbar {
 			deck.Line(x, bottom, x, y, dw, datacolor)
@@ -577,7 +592,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			deck.TextMid(x, yv, dformat(data.value), "sans", ts*0.75, valuecolor)
 		}
 		if len(data.note) > 0 {
-			deck.TextMid(x, y, data.note, "serif", ts*0.6, labelcolor)
+			deck.TextMid(x, y+0.1, data.note, "serif", ts*0.6, labelcolor)
 		}
 		// show x label every xinit times, show the last, if specified
 		if xint > 0 && (i%xint == 0 || (showxlast && i == l-1)) {
@@ -600,7 +615,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 // horizontal bar or line, bar, dot, or donut volume charts
 func chart(deck *generate.Deck, r io.ReadCloser) {
 	switch {
-	case hbar:
+	case showhbar:
 		hchart(deck, r)
 	case wbar:
 		wbchart(deck, r)

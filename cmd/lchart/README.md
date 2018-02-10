@@ -1,6 +1,6 @@
 # lchart - charts for deck
 
-```lchart``` generates deck markup for  bar, line, dot, volume, donut and proportional charts, reading data from the standard input or specified files. 
+```lchart``` generates deck markup for  bar, line, scatter, dot, volume, donut and proportional charts, reading data from the standard input or specified files. 
 Unless specified otherwise, each input source generates a slide in the deck.
 
 The input data format a tab-separated or CSV formatted list of ```label,data``` pairs where label is an arbitrary string, 
@@ -37,8 +37,7 @@ deck markup on the standard input and produces PDF on the standard output).
 
 ## Defaults
 
-With no options, ```lchart``` makes a bar graph with yaxis labels, showing data values and every data label.
-The the y-axis has five labels, with the minimum at 0, and the maximum rounded up to appropriate scale. Values are shown with one decimal point. Integer input is displayed as such.
+With no options, ```lchart``` makes a bar graph, showing data values and every data label.
 
 ## Placement
 
@@ -48,8 +47,8 @@ These flag values represent percentages on the deck canvas.
 
 ## Chart types and elements
 
-The  ```-bar```, ```-hbar```, ```-line```, ```-dot```, ```-vol```, ```-pmap```, and ```-donut``` flags specify the chart types.
-The ```-grid```, ```-title```, ```-val```,  and ```-yaxis``` flags toggle the visibility of plot components.  
+The  ```-bar```, ```-hbar```, ```-line```, ```-dot```, ```-scatter```, ```-vol```, ```-pmap```, and ```-donut``` flags specify the chart types.
+The ```-grid```, ```-title```, ```-val```,  and ```-yaxis``` flags control the visibility of plot components.  
 
 
 ## Command line options
@@ -63,6 +62,7 @@ The ```-grid```, ```-title```, ```-val```,  and ```-yaxis``` flags toggle the vi
 	-bar         show bars (default true)
 	-wbar        show "word" bar chart (default false)
 	-hbar        horizontal chart layout (default false)
+	-scatter     show a scatter chart (default false)
 	-line        show line chart (default false)
 	-dot         show dot plot (default false)
 	-grid        show gridlines on the y axis (default false)
@@ -71,7 +71,7 @@ The ```-grid```, ```-title```, ```-val```,  and ```-yaxis``` flags toggle the vi
 	-vol         show volume plot (default false)
 	-pmap        show proportional map (default false)
 	-donut       show a donut chart (default false)
-	-yaxis       show a y axis (default true)
+	-yaxis       show a y axis (default false)
 	-yrange      specify the y axis labels (min,max,step)
 	-fulldeck    generate full deck markup (default true)
 	-title       show title (default true)
@@ -204,5 +204,4 @@ here are views of proportional data:
 	$ lchart -pmap -pwidth=5 -textsize=1 browser.d
 
 ![pmap](images/pmap.png)
-
 

@@ -25,6 +25,7 @@ The command line options are:
 
 	-bar         show bars (default true)
 	-hbar        horizontal chart layout (default false)
+	-scatter     show scatter chart (default false)
 	-wbar        show "word" bar chart (default false)
 	-line        show line chart (default false)
 	-dot         show dot plot (default false)
@@ -34,7 +35,7 @@ The command line options are:
 	-vol         show volume plot (default false)
 	-pmap        show proportional map (default false)
 	-donut       show a donut chart (default false)
-	-yaxis       show a y axis (default true)
+	-yaxis       show a y axis (default false)
 	-yrange      define the y axis range (min,max,step)
 	-fulldeck    generate full markup (default true)
 	-title       show title (default true)
