@@ -6,7 +6,7 @@ Unless specified otherwise, each input source generates a slide in the deck.
 The input data format a tab-separated or CSV formatted list of ```label,data``` pairs where label is an arbitrary string, 
 and data is intepreted as a floating point value. 
 
-Lines beginning with "#" is parsed as a title, 
+A line beginning with "#" is parsed as a title, 
 with the title text beginning after the "#".  If a third column is present, it serves as an annotation.
 
 
@@ -47,8 +47,11 @@ These flag values represent percentages on the deck canvas.
 
 ## Chart types and elements
 
-The ```-bar```, ```-hbar```, ```-line```, ```-dot```, ```-scatter```, ```-vol```, ```-pmap```, and ```-donut``` flags specify the chart types.
-The ```-grid```, ```-title```, ```-val```, and ```-yaxis``` flags control the visibility of plot components. 
+The ```-bar```, ```-hbar```, ```-line```, ```-dot```, ```-scatter```, ```-vol```, ```-pmap```, and ```-donut``` 
+flags specify the chart types.
+
+The ```-grid```, ```-title```, ```-val```, and ```-yaxis``` 
+flags control the visibility of plot components. 
 
 
 ## Command line options
@@ -59,7 +62,7 @@ The ```-grid```, ```-title```, ```-val```, and ```-yaxis``` flags control the vi
 	-csv         read CSV files (default false)
 	-csvcol      specify the columns to use for label,value
 
-	-bar         show bars (default true)
+	-bar         show bar chart (default true)
 	-wbar        show "word" bar chart (default false)
 	-hbar        horizontal chart layout (default false)
 	-scatter     show a scatter chart (default false)
@@ -71,7 +74,7 @@ The ```-grid```, ```-title```, ```-val```, and ```-yaxis``` flags control the vi
 	-vol         show volume plot (default false)
 	-pmap        show proportional map (default false)
 	-donut       show a donut chart (default false)
-	-yaxis       show a y axis (default false)
+	-yaxis       show a y axis (default true)
 	-yrange      specify the y axis labels (min,max,step)
 	-fulldeck    generate full deck markup (default true)
 	-title       show title (default true)
@@ -96,7 +99,7 @@ The ```-grid```, ```-title```, ```-val```, and ```-yaxis``` flags control the vi
 	-datafmt     data format for values (default "%.1f")
 
 
-## Usage examples
+## Examples
 
 Using this data in ```AAPL.d```
 
@@ -120,7 +123,7 @@ here are some variations.
 
 ![no-args](images/no-args.png)
 
-	$ dchart -yrange=0,700,100 AAPL.d
+	$ dchart -yrange=0,700,50 AAPL.d
 
 ![yrange](images/yrange.png)
 
@@ -128,7 +131,7 @@ here are some variations.
 
 ![pos](images/pos.png)
 
-	$ dchart -color gray AAPL.d # change the "data color"
+	$ dchart -color gray AAPL.d
 
 ![bar-gray](images/bar-gray.png)
 
@@ -160,9 +163,16 @@ here are some variations.
 
 ![connect-no-axis-no-val](images/connect-no-axis-no-val.png)
 
+
+	$ dchart -scatter -val=f -bar=f -yaxis=f AAPL.d
+
+![scatter](images/scatter.png)
+
+
 	$ dchart -bar=f -line -vol -dot AAPL.d # combine line, volume, and dot
 
 ![vol-dot](images/vol-dot.png)
+
 
 	$ dchart -bar=f -line -vol -dot -yaxis=f AAPL.d # as above, removing the y-axis
 

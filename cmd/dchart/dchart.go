@@ -23,11 +23,11 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, dx, dy, psize, pwidth float64
+	showdot, showvolume, showscatter, showbar, showval, showdonut, showpmap   bool
+	showxlast, showline, showhbar, wbar, showaxis, showgrid, showtitle        bool
+	readcsv, datamin, fulldeck                                                bool
 	xint                                                                      int
-	readcsv, showdot, datamin, showvolume, showscatter,
-	showbar, showval, showxlast, showline, showhbar, wbar, showaxis,
-	showgrid, showtitle, fulldeck, showdonut, showpmap bool
+	ts, left, right, top, bottom, ls, barw, umin, umax, dx, dy, psize, pwidth float64
 	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols string
 )
 
@@ -55,8 +55,8 @@ const (
 	smallest     = -math.MaxFloat64
 )
 
+// cmdflag defines command line options
 func cmdflags() {
-	// command line options
 	flag.Float64Var(&ts, "textsize", 1.5, "text size")
 	flag.Float64Var(&left, "left", 10.0, "left margin")
 	flag.Float64Var(&right, "right", 100-left, "right margin")
@@ -79,7 +79,7 @@ func cmdflags() {
 	flag.BoolVar(&showline, "line", false, "show a line chart")
 	flag.BoolVar(&showhbar, "hbar", false, "show a horizontal bar chart")
 	flag.BoolVar(&showval, "val", true, "show data values")
-	flag.BoolVar(&showaxis, "yaxis", false, "show y axis")
+	flag.BoolVar(&showaxis, "yaxis", true, "show y axis")
 	flag.BoolVar(&showtitle, "title", true, "show title")
 	flag.BoolVar(&showgrid, "grid", false, "show y axis grid")
 	flag.BoolVar(&showscatter, "scatter", false, "show scatter chart")
@@ -101,6 +101,7 @@ func cmdflags() {
 	flag.Parse()
 }
 
+// xmlesc performs XML escaping on a string
 func xmlesc(s string) string {
 	return xmlmap.Replace(s)
 }
@@ -570,7 +571,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			deck.Circle(x, y, ts*.6, datacolor)
 		}
 		if showscatter {
-			deck.Circle(x, y, ts*.3, datacolor)
+			deck.Circle(x, y, ts*.6, datacolor)
 		}
 		if showbar {
 			deck.Line(x, bottom, x, y, dw, datacolor)
