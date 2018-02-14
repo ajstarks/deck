@@ -33,6 +33,7 @@ The command line options are:
 	-val         show values (default true)
 	-valpos      value position (t=top, b=bottom, m=middle) (default "t")
 	-vol         show volume plot (default false)
+	-pgrid       show a proportional grid (default false)
 	-pmap        show proportional map (default false)
 	-donut       show a donut chart (default false)
 	-yaxis       show a y axis (default true)

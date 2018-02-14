@@ -1,4 +1,4 @@
-// dchart - make charts in the deck format
+// lchart - make charts in the deck format
 package main
 
 import (
@@ -23,11 +23,11 @@ type ChartData struct {
 }
 
 var (
-	showdot, showvolume, showscatter, showbar, showval, showdonut, showpmap   bool
-	showxlast, showline, showhbar, wbar, showaxis, showgrid, showtitle        bool
-	readcsv, datamin, fulldeck                                                bool
-	xint                                                                      int
 	ts, left, right, top, bottom, ls, barw, umin, umax, dx, dy, psize, pwidth float64
+	xint                                                                      int
+	readcsv, showdot, datamin, showvolume, showscatter                        bool
+	showbar, showval, showxlast, showline, showhbar, wbar, showaxis           bool
+	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid             bool
 	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols string
 )
 
@@ -55,8 +55,8 @@ const (
 	smallest     = -math.MaxFloat64
 )
 
-// cmdflag defines command line options
 func cmdflags() {
+	// command line options
 	flag.Float64Var(&ts, "textsize", 1.5, "text size")
 	flag.Float64Var(&left, "left", 10.0, "left margin")
 	flag.Float64Var(&right, "right", 100-left, "right margin")
@@ -79,10 +79,11 @@ func cmdflags() {
 	flag.BoolVar(&showline, "line", false, "show a line chart")
 	flag.BoolVar(&showhbar, "hbar", false, "show a horizontal bar chart")
 	flag.BoolVar(&showval, "val", true, "show data values")
-	flag.BoolVar(&showaxis, "yaxis", true, "show y axis")
+	flag.BoolVar(&showaxis, "yaxis", false, "show y axis")
 	flag.BoolVar(&showtitle, "title", true, "show title")
 	flag.BoolVar(&showgrid, "grid", false, "show y axis grid")
 	flag.BoolVar(&showscatter, "scatter", false, "show scatter chart")
+	flag.BoolVar(&showpgrid, "pgrid", false, "show proportional grid")
 	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
 	flag.BoolVar(&fulldeck, "fulldeck", true, "generate full markup")
 	flag.BoolVar(&datamin, "dmin", false, "zero minimum")
@@ -101,7 +102,7 @@ func cmdflags() {
 	flag.Parse()
 }
 
-// xmlesc performs XML escaping on a string
+// xmlesc escapes XML
 func xmlesc(s string) string {
 	return xmlmap.Replace(s)
 }
@@ -341,6 +342,57 @@ func pct(data []ChartData) []float64 {
 	return p
 }
 
+// pgrid makes a proportional grid with the specified rows and columns
+func pgrid(deck *generate.Deck, data []ChartData, title string, rows, cols int) {
+	// sanity checks
+	if rows*cols != 100 {
+		return
+	}
+
+	sum := 0.0
+	for _, d := range data {
+		sum += d.value
+	}
+	pct := make([]float64, len(data))
+	for i, d := range data {
+		pct[i] = math.Floor((d.value / sum) * 100)
+	}
+
+	// encode the data in a string vector
+	chars := make([]string, 100)
+	cb := 0
+	for k := 0; k < len(data); k++ {
+		for l := 0; l < int(pct[k]); l++ {
+			chars[cb] = data[k].note
+			cb++
+		}
+	}
+
+	// make rows and cols
+	n := 0
+	y := dy
+	for i := 0; i < rows; i++ {
+		x := dx
+		for j := 0; j < cols; j++ {
+			if n >= 100 {
+				break
+			}
+			deck.Circle(x, y, ts, chars[n])
+			n++
+			x += ls
+		}
+		y -= ls
+	}
+
+	// title and legend
+	deck.Text(dx-ts/2, dy+ts*2, title, "sans", ts*1.5, "black")
+	for _, d := range data {
+		y -= ls
+		deck.Circle(dx, y, ts, d.note)
+		deck.Text(dx+ts, y-(ts/2), d.label, "sans", ts, "black")
+	}
+}
+
 // polar converts polar to Cartesian coordinates
 func polar(x, y, r, t float64) (float64, float64) {
 	px := x + r*math.Cos(t)
@@ -408,12 +460,15 @@ func pchart(deck *generate.Deck, r io.ReadCloser) {
 		title = xmlesc(chartitle)
 	}
 	if fulldeck {
-		deck.StartSlide()
+		deck.StartSlide(bgcolor)
 	}
-	if showdonut {
+	switch {
+	case showdonut:
 		donut(deck, data, title)
-	} else {
+	case showpmap:
 		pmap(deck, data, title)
+	case showpgrid:
+		pgrid(deck, data, title, 10, 10)
 	}
 	if fulldeck {
 		deck.EndSlide()
@@ -571,7 +626,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			deck.Circle(x, y, ts*.6, datacolor)
 		}
 		if showscatter {
-			deck.Circle(x, y, ts*.6, datacolor)
+			deck.Circle(x, y, ts*.3, datacolor)
 		}
 		if showbar {
 			deck.Line(x, bottom, x, y, dw, datacolor)
@@ -620,7 +675,7 @@ func chart(deck *generate.Deck, r io.ReadCloser) {
 		hchart(deck, r)
 	case wbar:
 		wbchart(deck, r)
-	case showdonut, showpmap:
+	case showdonut, showpmap, showpgrid:
 		pchart(deck, r)
 	default:
 		vchart(deck, r)
@@ -628,10 +683,10 @@ func chart(deck *generate.Deck, r io.ReadCloser) {
 }
 
 func main() {
-	cmdflags()
-
+	// process command line options,
 	// start the deck, for every file name make a slide.
 	// Read from standard input, if no files are specified.
+	cmdflags()
 	deck := generate.NewSlides(os.Stdout, 0, 0)
 	if fulldeck {
 		deck.StartDeck()

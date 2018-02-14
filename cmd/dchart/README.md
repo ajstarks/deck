@@ -47,7 +47,8 @@ These flag values represent percentages on the deck canvas.
 
 ## Chart types and elements
 
-The ```-bar```, ```-hbar```, ```-line```, ```-dot```, ```-scatter```, ```-vol```, ```-pmap```, and ```-donut``` 
+The ```-bar```, ```-hbar```, ```-line```, ```-dot```, ```-scatter```, ```-vol```, 
+```-pgrid```, ```-pmap```, and ```-donut``` 
 flags specify the chart types.
 
 The ```-grid```, ```-title```, ```-val```, and ```-yaxis``` 
@@ -72,6 +73,7 @@ flags control the visibility of plot components.
 	-val         show values (default true)
 	-valpos      value position (t=top, b=bottom, m=middle) (default "t")
 	-vol         show volume plot (default false)
+	-pgrid       show a proportional grid (default false)
 	-pmap        show proportional map (default false)
 	-donut       show a donut chart (default false)
 	-yaxis       show a y axis (default true)
@@ -199,7 +201,7 @@ Using this data in ``browser.d``
 	UC	8.28
 	Firefox	6.23
 	IE	3.99
-	Opera	3.95
+	Opera	3.9
 
 here are views of proportional data:
 	
@@ -214,4 +216,18 @@ here are views of proportional data:
 	$ dchart -pmap -pwidth=5 -textsize=1 browser.d
 
 ![pmap](images/pmap.png)
+
+Using this data in incar.d:
+
+	# US Incarceration Rate
+	White	39	white
+	Hispanic	19	burlywood
+	Black	40	black
+	Other	2	gray
+
+the note field may be used to specify the color
+
+	$ dchart -x 10 -y 80 -ls 3 -bgcolor steelblue -pgrid prison.d  incar.d
+
+![pgrid](images/pgrid.png)
 
