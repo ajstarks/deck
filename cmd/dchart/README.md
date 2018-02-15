@@ -67,15 +67,16 @@ flags control the visibility of plot components.
 	-wbar        show "word" bar chart (default false)
 	-hbar        horizontal chart layout (default false)
 	-scatter     show a scatter chart (default false)
-	-line        show line chart (default false)
 	-dot         show dot plot (default false)
-	-grid        show gridlines on the y axis (default false)
-	-val         show values (default true)
-	-valpos      value position (t=top, b=bottom, m=middle) (default "t")
+	-line        show line chart (default false)
 	-vol         show volume plot (default false)
 	-pgrid       show a proportional grid (default false)
 	-pmap        show proportional map (default false)
 	-donut       show a donut chart (default false)
+
+	-grid        show gridlines on the y axis (default false)
+	-val         show values (default true)
+	-valpos      value position (t=top, b=bottom, m=middle) (default "t")
 	-yaxis       show a y axis (default true)
 	-yrange      specify the y axis labels (min,max,step)
 	-fulldeck    generate full deck markup (default true)
@@ -227,7 +228,7 @@ Using this data in incar.d:
 
 the note field may be used to specify the color
 
-	$ dchart -x 10 -y 80 -ls 3 -bgcolor steelblue -pgrid prison.d  incar.d
+	$ dchart -x 10 -y 80 -ls 3 -bgcolor steelblue -pgrid  incar.d
 
 ![pgrid](images/pgrid.png)
 
