@@ -46,8 +46,6 @@ The command line options are:
 	-bottom      bottom of the plot (default 30)
 	-left        left margin (default 20)
 	-right       right margin (default 80)
-	-x           x location of the donut chart (default 50)
-	-y           y location of the donut chart (default 50)
 	-psize       diameter of the donut (default 30)
 
 	-pwidth      width of the donut or proportional map (default 3)

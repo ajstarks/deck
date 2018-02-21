@@ -28,7 +28,7 @@ Example CSV file:
 	2017-04-01,25.1619
 	2017-05-01,32.1801
 
-Typically ```dchart``` generates input for deck clients like ```pdfdeck```, or ```pdi``` (shell script for pdfdeck which reads
+Typically ```dchart``` generates input for deck clients like ```pdfdeck```, or ```pdi``` (a shell script for pdfdeck which reads
 deck markup on the standard input and produces PDF on the standard output).
 
 	$ dchart foo.d bar.d baz.d > fbb.xml && pdfdeck fbb.xml && open fbb.pdf
@@ -42,7 +42,7 @@ With no options, ```dchart``` makes a bar graph, showing data values and every d
 ## Placement
 
 The plot is positioned and scaled on the deck canvas with the 
-```-top```, ```-bottom```, ```-left```, and ```-right```, ```-x```, and ```-y``` flags. 
+```-top```, ```-bottom```, ```-left```, and ```-right``` flags. 
 These flag values represent percentages on the deck canvas.
 
 ## Chart types and elements
@@ -87,11 +87,9 @@ flags control the visibility of plot components.
 	-bottom      bottom of the plot (default 30)
 	-left        left margin (default 20)
 	-right       right margin (default 80)
-	-x           x location of the donut chart (default 50)
-	-y           y location of the donut chart (default 50)
 	
 	-psize       diameter of the donut (default 30)
-	-pwidth      width of the donut or proportional map (default 3)
+	-pwidth      width of the donut or proportional map (default 3 time textsize)
 	-barwidth    barwidth (default computed from the number of data points)
 	-ls          linespacing (default 2.4)
 	-textsize    text size (default 1.5)
@@ -228,7 +226,7 @@ Using this data in incar.d:
 
 the note field may be used to specify the color
 
-	$ dchart -x 10 -y 80 -ls 3 -bgcolor steelblue -pgrid  incar.d
+	$ dchart -ls 3 -bgcolor lightsteelblue -pgrid incar.d
 
 ![pgrid](images/pgrid.png)
 

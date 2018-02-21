@@ -23,8 +23,8 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, dx, dy, psize, pwidth float64
-	xint                                                                      int
+	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth         float64
+	xint, pmlen                                                               int
 	readcsv, showdot, datamin, showvolume, showscatter                        bool
 	showbar, showval, showxlast, showline, showhbar, wbar, showaxis           bool
 	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid             bool
@@ -66,10 +66,8 @@ func cmdflags() {
 	flag.Float64Var(&barw, "barwidth", 0, "barwidth")
 	flag.Float64Var(&umin, "min", -1, "minimum")
 	flag.Float64Var(&umax, "max", -1, "maximum")
-	flag.Float64Var(&dx, "x", 50.0, "x location")
-	flag.Float64Var(&dy, "y", 50.0, "y location")
 	flag.Float64Var(&psize, "psize", 30.0, "size of the donut")
-	flag.Float64Var(&pwidth, "pwidth", 3.0, "width of the pmap/donut")
+	flag.Float64Var(&pwidth, "pwidth", ts*3, "width of the pmap/donut")
 
 	flag.BoolVar(&showbar, "bar", true, "show a bar chart")
 	flag.BoolVar(&showdot, "dot", false, "show a dot chart")
@@ -90,6 +88,7 @@ func cmdflags() {
 	flag.BoolVar(&readcsv, "csv", false, "read CSV data")
 	flag.BoolVar(&wbar, "wbar", false, "show word bar chart")
 	flag.IntVar(&xint, "xlabel", 1, "x axis label interval (show every n labels, 0 to show no labels)")
+	flag.IntVar(&pmlen, "pmlen", 20, "pmap label length")
 
 	flag.StringVar(&chartitle, "chartitle", "", "specify the title (overiding title in the data)")
 	flag.StringVar(&csvcols, "csvcol", "", "label,value from the CSV header")
@@ -328,7 +327,7 @@ func dformat(x float64) string {
 	return fmt.Sprintf(datafmt, x)
 }
 
-// pct computs the percentage of a range of values
+// pct computes the percentage of a range of values
 func pct(data []ChartData) []float64 {
 	sum := 0.0
 	for _, d := range data {
@@ -370,9 +369,9 @@ func pgrid(deck *generate.Deck, data []ChartData, title string, rows, cols int) 
 
 	// make rows and cols
 	n := 0
-	y := dy
+	y := top
 	for i := 0; i < rows; i++ {
-		x := dx
+		x := left
 		for j := 0; j < cols; j++ {
 			if n >= 100 {
 				break
@@ -385,11 +384,15 @@ func pgrid(deck *generate.Deck, data []ChartData, title string, rows, cols int) 
 	}
 
 	// title and legend
-	deck.Text(dx-ts/2, dy+ts*2, title, "sans", ts*1.5, "black")
-	for _, d := range data {
-		y -= ls
-		deck.Circle(dx, y, ts, d.note)
-		deck.Text(dx+ts, y-(ts/2), d.label, "sans", ts, "black")
+	if len(title) > 0 && showtitle {
+		deck.Text(left-ts/2, top+ts*2, title, "sans", ts*1.5, "black")
+	}
+	cx := (float64(cols-1) * ls) + ls/2
+	for i, d := range data {
+		y -= ls * 1.2
+		deck.Circle(left, y, ts, d.note)
+		deck.Text(left+ts, y-(ts/2), d.label+" ("+dformat(pct[i])+"%)", "sans", ts, "black")
+		deck.TextEnd(left+cx, y-(ts/2), dformat(d.value), "sans", ts, valuecolor)
 	}
 }
 
@@ -407,48 +410,62 @@ func pmap(deck *generate.Deck, data []ChartData, title string) {
 	bl := pl / 100.0
 	hspace := 0.10
 	var ty float64
-	if len(title) > 0 {
+	var textcolor string
+	if len(title) > 0 && showtitle {
 		deck.TextMid(x+pl/2, top+(pwidth*1.2), title, "sans", ts*1.5, "black")
 	}
 	for i, p := range pct(data) {
 		bx := (p * bl)
-		if p < 3 || len(data[i].label) > 10 {
-			ty = top + pwidth*1.5
-			deck.Line(x+(bx/2), ty-(ts*1.5), x+(bx/2), top, 0.1, dotlinecolor)
+		if p < 3 || len(data[i].label) > pmlen {
+			ty = top - pwidth*1.5
+			deck.Line(x+(bx/2), ty+(ts*1.5), x+(bx/2), top, 0.1, dotlinecolor)
 		} else {
 			ty = top
 		}
-		deck.TextMid(x+(bx/2), ty, data[i].label, "sans", ts, "black")
-		deck.TextMid(x+(bx/2), ty-(ts*1.5), fmt.Sprintf(datafmt+"%%", p), "mono", ts, "black")
-		deck.Line(x, top, bx+x, top, pwidth, datacolor, p)
+		linecolor, lineop := stdcolor(i, datacolor, p)
+		deck.Line(x, top, bx+x, top, pwidth, linecolor, lineop)
+		if lineop == 100 {
+			textcolor = "white"
+		} else {
+			textcolor = "black"
+		}
+		deck.TextMid(x+(bx/2), ty, data[i].label, "sans", ts, textcolor)
+		deck.TextMid(x+(bx/2), ty-(ts*1.5), fmt.Sprintf(datafmt+"%%", p), "mono", ts, textcolor)
+		if showval {
+			deck.TextMid(x+(bx/2), ty-(pwidth/2)-(ts*2), dformat(data[i].value), "mono", ts, valuecolor)
+		}
 		x += bx - hspace
 	}
+}
+
+// stdcolor uses either the standard color (cycling through a list) or specified color and opacity
+func stdcolor(i int, color string, op float64) (string, float64) {
+	if color == "std" {
+		return blue7[i%len(blue7)], 100
+	}
+	return color, op
 }
 
 // donut makes a donut chart
 func donut(deck *generate.Deck, data []ChartData, title string) {
 	a1 := 0.0
-	var bcolor string
-	var op float64
-	if len(title) > 0 {
+	dx := left + (psize / 2)
+	dy := top - (psize / 2)
+	if len(title) > 0 && showtitle {
 		deck.TextMid(dx, dy+(psize*1.2), title, "sans", ts*2, "black")
 	}
 	for i, p := range pct(data) {
 		angle := (p / 100) * 360.0
 		a2 := a1 + angle
 		mid := (a1 + a2) / 2
-		// use either the standard color (cycling through a list) or define color based in value
-		if datacolor == "std" {
-			bcolor = blue7[i%len(blue7)]
-			op = 100
-		} else {
-			bcolor = datacolor
-			op = p
-		}
+
+		bcolor, op := stdcolor(i, datacolor, p)
 		deck.Arc(dx, dy, psize, psize, pwidth, a1, a2, bcolor, op)
 		tx, ty := polar(dx, dy, psize*.85, mid*(math.Pi/180))
 		deck.TextMid(tx, ty, fmt.Sprintf("%s "+datafmt+"%%", data[i].label, p), "sans", ts, "black")
-		deck.TextMid(tx, ty-ts*1.5, fmt.Sprintf(dformat(data[i].value)), "sans", ts, "gray")
+		if showval {
+			deck.TextMid(tx, ty-ts*1.5, fmt.Sprintf(dformat(data[i].value)), "sans", ts, valuecolor)
+		}
 		a1 = a2
 	}
 }
