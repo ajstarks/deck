@@ -384,7 +384,7 @@ func pgrid(deck *generate.Deck, data []ChartData, title string, rows, cols int) 
 	}
 
 	// title and legend
-	if len(title) > 0 {
+	if len(title) > 0 && showtitle {
 		deck.Text(left-ts/2, top+ts*2, title, "sans", ts*1.5, "black")
 	}
 	cx := (float64(cols-1) * ls) + ls/2
