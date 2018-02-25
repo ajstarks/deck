@@ -327,7 +327,7 @@ func dformat(x float64) string {
 	return fmt.Sprintf(datafmt, x)
 }
 
-// pct computes the percentage of a range of values
+// pct computs the percentage of a range of values
 func pct(data []ChartData) []float64 {
 	sum := 0.0
 	for _, d := range data {
@@ -384,7 +384,7 @@ func pgrid(deck *generate.Deck, data []ChartData, title string, rows, cols int) 
 	}
 
 	// title and legend
-	if len(title) > 0 && showtitle {
+	if len(title) > 0 {
 		deck.Text(left-ts/2, top+ts*2, title, "sans", ts*1.5, "black")
 	}
 	cx := (float64(cols-1) * ls) + ls/2
@@ -392,7 +392,9 @@ func pgrid(deck *generate.Deck, data []ChartData, title string, rows, cols int) 
 		y -= ls * 1.2
 		deck.Circle(left, y, ts, d.note)
 		deck.Text(left+ts, y-(ts/2), d.label+" ("+dformat(pct[i])+"%)", "sans", ts, "black")
-		deck.TextEnd(left+cx, y-(ts/2), dformat(d.value), "sans", ts, valuecolor)
+		if showval {
+			deck.TextEnd(left+cx, y-(ts/2), dformat(d.value), "sans", ts, valuecolor)
+		}
 	}
 }
 
@@ -452,7 +454,7 @@ func donut(deck *generate.Deck, data []ChartData, title string) {
 	dx := left + (psize / 2)
 	dy := top - (psize / 2)
 	if len(title) > 0 && showtitle {
-		deck.TextMid(dx, dy+(psize*1.2), title, "sans", ts*2, "black")
+		deck.TextMid(dx, dy+(psize*1.2), title, "sans", ts*1.5, "black")
 	}
 	for i, p := range pct(data) {
 		angle := (p / 100) * 360.0
@@ -511,7 +513,7 @@ func wbchart(deck *generate.Deck, r io.ReadCloser) {
 	}
 
 	if len(title) > 0 && showtitle {
-		deck.TextMid(50, top+(linespacing*1.5), title, "sans", ts*1.5, titlecolor)
+		deck.Text(left, top+(linespacing*1.5), title, "sans", ts*1.5, titlecolor)
 	}
 
 	// for every name, value pair, make the chart
@@ -643,7 +645,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			deck.Circle(x, y, ts*.6, datacolor)
 		}
 		if showscatter {
-			deck.Circle(x, y, ts*.3, datacolor)
+			deck.Circle(x, y, ts*.6, datacolor)
 		}
 		if showbar {
 			deck.Line(x, bottom, x, y, dw, datacolor)
