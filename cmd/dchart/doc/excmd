@@ -1,0 +1,31 @@
+ #!/bin/sh
+ dchart -fulldeck=f   AAPL.d > ex01.xml
+ dchart -fulldeck=f  -yrange=0,700,50 AAPL.d > ex02.xml
+ dchart -fulldeck=f  -xlabel=2 -left 30 -right 70 -top 70 -bottom 40 -yaxis=f AAPL.d > ex03.xml
+ dchart -fulldeck=f  -color gray AAPL.d > ex04.xml
+ dchart -fulldeck=f  -grid AAPL.d  > ex05.xml
+ dchart -fulldeck=f  -grid -barwidth=1 AAPL.d  > ex06.xml
+ dchart -fulldeck=f  -bar=f -dot AAPL.d  > ex07.xml
+ dchart -fulldeck=f  -bar=f -vol AAPL.d  > ex08.xml
+ dchart -fulldeck=f  -datafmt %0.2f -bar=f -dot -line AAPL.d > ex09.xml
+ dchart -fulldeck=f  -bar=f -line AAPL.d  > ex10.xml
+ dchart -fulldeck=f  -scatter -val=f -bar=f -yaxis=f AAPL.d > ex11.xml
+ dchart -fulldeck=f  -bar=f -line -yaxis=f -val=f AAPL.d  > ex12.xml
+ dchart -fulldeck=f  -bar=f -line -vol -dot AAPL.d  > ex13.xml
+ dchart -fulldeck=f  -bar=f -line -vol -dot -yaxis=f AAPL.d  > ex14.xml
+ dchart -fulldeck=f  -bar=f -line -vol -dot -grid AAPL.d > ex15.xml
+ dchart -fulldeck=f  -hbar -left=30 AAPL.d > ex16.xml
+ dchart -fulldeck=f  -wbar browser.d > ex17.xml
+ dchart -fulldeck=f  -left=35 -donut -color=std -pwidth=5 browser.d  > ex18.xml
+ dchart -fulldeck=f  -pmap -pwidth=5 -textsize=1 browser.d > ex19.xml
+ dchart -fulldeck=f  -left 35 -top 80 -ls 3 -bgcolor lightsteelblue -pgrid -val=f incar.d > ex20.xml
+ (
+ echo '<deck>'
+ for i in `seq 01 20`
+ do
+ 	echo '<slide>'
+ 	cat $i
+ 	echo '</slide>'
+ done
+ echo '</deck>'
+ )
