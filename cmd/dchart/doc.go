@@ -41,11 +41,14 @@ The command line options are:
 	-fulldeck    generate full markup (default true)
 	-title       show title (default true)
 	-chartitle   specify the title (overiding title in the data)
+	-hline       horizontal line with optional label (value,label)
 
 	-top         top of the plot (default 80)
 	-bottom      bottom of the plot (default 30)
 	-left        left margin (default 20)
 	-right       right margin (default 80)
+	-x           x location of the donut chart (default 50)
+	-y           y location of the donut chart (default 50)
 	-psize       diameter of the donut (default 30)
 
 	-pwidth      width of the donut or proportional map (default 3)

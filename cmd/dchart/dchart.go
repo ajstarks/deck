@@ -23,12 +23,12 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth         float64
-	xint, pmlen                                                               int
-	readcsv, showdot, datamin, showvolume, showscatter                        bool
-	showbar, showval, showxlast, showline, showhbar, wbar, showaxis           bool
-	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid             bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols string
+	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth                float64
+	xint, pmlen                                                                      int
+	readcsv, showdot, datamin, showvolume, showscatter                               bool
+	showbar, showval, showxlast, showline, showhbar, wbar, showaxis                  bool
+	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid                    bool
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols, hline string
 )
 
 var blue7 = []string{
@@ -98,6 +98,8 @@ func cmdflags() {
 	flag.StringVar(&bgcolor, "bgcolor", "white", "background color")
 	flag.StringVar(&datafmt, "datafmt", "%.1f", "data format")
 	flag.StringVar(&yaxr, "yrange", "", "y-axis range (min,max,step)")
+	flag.StringVar(&hline, "hline", "", "horizontal line value,label")
+
 	flag.Parse()
 }
 
@@ -625,6 +627,17 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 
 	if showaxis {
 		yaxis(deck, left-spacing-(dw*0.5), mindata, maxdata)
+	}
+
+	if len(hline) > 0 {
+		var hl float64
+		var hs string
+		fmt.Sscanf(hline, "%f,%s", &hl, &hs)
+		hy := vmap(hl, mindata, maxdata, bottom, top)
+		deck.Line(left, hy, right, hy, 0.1, valuecolor, 50)
+		if len(hs) > 0 {
+			deck.Text(right+ts/2, hy-ts/4, hs, "serif", ts*0.75, labelcolor)
+		}
 	}
 
 	// for every name, value pair, make the chart elements

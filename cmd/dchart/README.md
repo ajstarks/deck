@@ -82,6 +82,7 @@ flags control the visibility of plot components.
 	-fulldeck    generate full deck markup (default true)
 	-title       show title (default true)
 	-chartitle   specify the title (overiding title in the data)
+	-hline       horizontal line with optional label (value,label)
 	
 	-top         top of the plot (default 80)
 	-bottom      bottom of the plot (default 30)
@@ -219,14 +220,13 @@ here are views of proportional data:
 Using this data in incar.d:
 
 	# US Incarceration Rate
-	White	39	white
+	White	39	antiquewhite
 	Hispanic	19	burlywood
-	Black	40	black
+	Black	40	sienna
 	Other	2	gray
 
 the note field may be used to specify the color
 
-	$ dchart -ls 3 -bgcolor lightsteelblue -pgrid incar.d
+	$ dchart -ls 3 -val=f -pgrid incar.d
 
 ![pgrid](images/pgrid.png)
-
