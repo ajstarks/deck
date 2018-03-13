@@ -23,6 +23,8 @@ the -title options adds title metadata.
 the -pagesize option specifies the page dimensions (Letter, Legal, Tabloid, A2, A3, A4, A5, ArchA, Index, 4R, Widescreen).
 Specifying w,h sets an arbitrary dimension, for example -pagesize 1600,900.
 
+the -pages option specifies the range (default all) of pages to be rendered.
+
 
 the -stdout option specified that output goes to the standard output file.
 */

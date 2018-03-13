@@ -51,6 +51,23 @@ var codemap = strings.NewReplacer("\t", "    ")
 // translate is the function that does unicode character replacement
 var translate func(string) string
 
+// pagerange returns the begin and end using a "-" string
+func pagerange(s string) (int, int) {
+	p := strings.Split(s, "-")
+	if len(p) != 2 {
+		return 0, 0
+	}
+	b, berr := strconv.Atoi(p[0])
+	e, err := strconv.Atoi(p[1])
+	if berr != nil || err != nil {
+		return 0, 0
+	}
+	if b > e {
+		return 0, 0
+	}
+	return b, e
+}
+
 // pct converts percentages to canvas measures
 func pct(p, m float64) float64 {
 	return (p / 100.0) * m
@@ -320,10 +337,11 @@ func textwrap(doc *gofpdf.Fpdf, x, y, w, fs, leading float64, s, font, link stri
 }
 
 // pdfslide makes a slide, one slide per PDF page
-func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
-	if n < 0 || n > len(d.Slide)-1 {
+func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) {
+	if n < 0 || n > len(d.Slide)-1 || !showslide {
 		return
 	}
+
 	var x, y, fs float64
 
 	doc.AddPage()
@@ -513,7 +531,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64) {
 }
 
 // doslides reads the deck file, making the PDF version
-func doslides(doc *gofpdf.Fpdf, pc gofpdf.InitType, filename, author, title string, gp float64) {
+func doslides(doc *gofpdf.Fpdf, pc gofpdf.InitType, filename, author, title string, gp float64, begin, end int) {
 	var d deck.Deck
 	var err error
 
@@ -557,19 +575,19 @@ func doslides(doc *gofpdf.Fpdf, pc gofpdf.InitType, filename, author, title stri
 		doc.SetSubject(d.Subject, true)
 	}
 	for i := 0; i < len(d.Slide); i++ {
-		pdfslide(doc, d, i, gp)
+		pdfslide(doc, d, i, gp, (i+1 >= begin && i+1 <= end))
 	}
 }
 
 // dodeck turns deck input files into PDFs
 // if the sflag is set, all output goes to the standard output file,
 // otherwise, PDFs are written the destination directory, to filenames based on the input name.
-func dodeck(files []string, pageconfig gofpdf.InitType, w, h float64, sflag bool, outdir, author, title string, gp float64) {
+func dodeck(files []string, pageconfig gofpdf.InitType, w, h float64, sflag bool, outdir, author, title string, gp float64, begin, end int) {
 	pc := &pageconfig
 	if sflag { // combined output to standard output
 		doc := gofpdf.NewCustom(pc)
 		for _, filename := range files {
-			doslides(doc, pageconfig, filename, author, title, gp)
+			doslides(doc, pageconfig, filename, author, title, gp, begin, end)
 		}
 		err := doc.Output(os.Stdout)
 		if err != nil {
@@ -584,7 +602,7 @@ func dodeck(files []string, pageconfig gofpdf.InitType, w, h float64, sflag bool
 				continue
 			}
 			doc := gofpdf.NewCustom(pc)
-			doslides(doc, pageconfig, filename, author, title, gp)
+			doslides(doc, pageconfig, filename, author, title, gp, begin, end)
 			err = doc.Output(out)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
@@ -619,11 +637,13 @@ func main() {
 		author     = flag.String("author", "", "document author")
 		gridpct    = flag.Float64("grid", 0, "draw a percentage grid on each slide")
 		stdout     = flag.Bool("stdout", false, "output to standard output")
+		pr         = flag.String("pages", "1-1000000", "page range (first-last)")
 	)
 	flag.Parse()
 
 	var pw, ph float64
 	nd, err := fmt.Sscanf(*pagesize, "%g,%g", &pw, &ph)
+	begin, end := pagerange(*pr)
 	if nd != 2 || err != nil {
 		pw, ph = 0.0, 0.0
 	}
@@ -646,5 +666,5 @@ func main() {
 	fontmap["serif"] = *serifont
 	fontmap["mono"] = *monofont
 	fontmap["symbol"] = *symbolfont
-	dodeck(flag.Args(), pageconfig, pw, ph, *stdout, *outdir, *author, *title, *gridpct)
+	dodeck(flag.Args(), pageconfig, pw, ph, *stdout, *outdir, *author, *title, *gridpct, begin, end)
 }
