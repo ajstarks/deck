@@ -187,22 +187,14 @@ func ReadDeck(r io.ReadCloser, w, h int) (Deck, error) {
 // Read reads the deck description file
 func Read(filename string, w, h int) (Deck, error) {
 	var d Deck
+	if filename == "-" {
+		return ReadDeck(os.Stdin, w, h)
+	}
 	r, err := os.Open(filename)
 	if err != nil {
 		return d, err
 	}
 	return ReadDeck(r, w, h)
-	/*
-		err = xml.NewDecoder(r).Decode(&d)
-		if d.Canvas.Width == 0 {
-			d.Canvas.Width = w
-		}
-		if d.Canvas.Height == 0 {
-			d.Canvas.Height = h
-		}
-		r.Close()
-		return d, err
-	*/
 }
 
 // Dimen computes the coordinates and size of an object
