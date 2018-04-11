@@ -426,7 +426,7 @@ func pmap(deck *generate.Deck, data []ChartData, title string) {
 		} else {
 			ty = top
 		}
-		linecolor, lineop := stdcolor(i, datacolor, p)
+		linecolor, lineop := stdcolor(i, data[i].note, datacolor, p)
 		deck.Line(x, top, bx+x, top, pwidth, linecolor, lineop)
 		if lineop == 100 {
 			textcolor = "white"
@@ -443,9 +443,12 @@ func pmap(deck *generate.Deck, data []ChartData, title string) {
 }
 
 // stdcolor uses either the standard color (cycling through a list) or specified color and opacity
-func stdcolor(i int, color string, op float64) (string, float64) {
+func stdcolor(i int, dcolor, color string, op float64) (string, float64) {
 	if color == "std" {
 		return blue7[i%len(blue7)], 100
+	}
+	if len(dcolor) > 0 {
+		return dcolor, 40
 	}
 	return color, op
 }
@@ -463,7 +466,7 @@ func donut(deck *generate.Deck, data []ChartData, title string) {
 		a2 := a1 + angle
 		mid := (a1 + a2) / 2
 
-		bcolor, op := stdcolor(i, datacolor, p)
+		bcolor, op := stdcolor(i, data[i].note, datacolor, p)
 		deck.Arc(dx, dy, psize, psize, pwidth, a1, a2, bcolor, op)
 		tx, ty := polar(dx, dy, psize*.85, mid*(math.Pi/180))
 		deck.TextMid(tx, ty, fmt.Sprintf("%s "+datafmt+"%%", data[i].label, p), "sans", ts, "black")
