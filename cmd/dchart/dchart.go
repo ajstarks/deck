@@ -608,7 +608,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		yvol = make([]float64, l+2)
 		xvol[0] = left
 		yvol[0] = bottom
-		xvol[l+1] = left
+		xvol[l+1] = right
 		yvol[l+1] = bottom
 	}
 
@@ -650,8 +650,8 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		y := vmap(data.value, mindata, maxdata, bottom, top)
 
 		if showvolume {
-			xvol = append(xvol, x)
-			yvol = append(yvol, y)
+			xvol[i+1] = x
+			yvol[i+1] = y
 		}
 		if showline && i > 0 {
 			deck.Line(px, py, x, y, 0.2, datacolor)
@@ -693,8 +693,6 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		py = y
 	}
 	if showvolume {
-		xvol = append(xvol, right)
-		yvol = append(yvol, bottom)
 		deck.Polygon(xvol, yvol, datacolor, 50)
 	}
 	if fulldeck {
