@@ -527,7 +527,9 @@ func wbchart(deck *generate.Deck, r io.ReadCloser) {
 		deck.Text(left+hts, y, data.label, "sans", ts, labelcolor)
 		bv := vmap(data.value, mindata, maxdata, left, right)
 		deck.Line(left+hts, y+hts, bv, y+hts, ts*1.5, datacolor, wbop)
-		deck.TextEnd(left, y+(hts/2), dformat(data.value), "mono", mts, valuecolor)
+		if showval {
+			deck.TextEnd(left, y+(hts/2), dformat(data.value), "mono", mts, valuecolor)
+		}
 		y -= linespacing
 	}
 	if fulldeck {
@@ -568,7 +570,9 @@ func hchart(deck *generate.Deck, r io.ReadCloser) {
 		} else {
 			deck.Line(left, y+hts, bv, y+hts, ts, datacolor)
 		}
-		deck.Text(bv+hts, y+(hts/2), dformat(data.value), "mono", mts, valuecolor)
+		if showval {
+			deck.Text(bv+hts, y+(hts/2), dformat(data.value), "mono", mts, valuecolor)
+		}
 		y -= linespacing
 	}
 	if fulldeck {
