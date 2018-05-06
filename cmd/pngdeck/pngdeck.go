@@ -242,7 +242,7 @@ func dotext(doc *gg.Context, cw, x, y, fs, wp, spacing float64, tdata, font, col
 
 	td := strings.Split(tdata, "\n")
 	red, green, blue := colorlookup(color)
-	
+
 	if ttype == "code" {
 		font = "mono"
 		ch := float64(len(td)) * spacing * fs
@@ -271,7 +271,7 @@ func whitespace(r rune) bool {
 func loadfont(doc *gg.Context, s string, size float64) {
 	f, err := gg.LoadFontFace(fontlookup(s), size)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "ggdeck %v\n", err)
+		fmt.Fprintf(os.Stderr, "pngdeck %v\n", err)
 		return
 	}
 	doc.SetFontFace(f)
@@ -401,10 +401,10 @@ func ggslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, de
 			ih = int((float64(d.Canvas.Width) / float64(iw)) * float64(ih))
 			iw = d.Canvas.Width
 		}
-		
+
 		img, err := gg.LoadImage(im.Name)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "ggdeck: cannot load %s (%v)\n", im.Name, err)
+			fmt.Fprintf(os.Stderr, "pngdeck: slide %d (%v)\n", n+1, err)
 			return
 		}
 		bounds := img.Bounds()
@@ -563,12 +563,9 @@ func ggslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, de
 func doslides(outname, filename string, w, h int, gp float64, begin, end int) {
 	var d deck.Deck
 	var err error
-	for _, v := range fontmap {
-		gg.LoadFontFace(v+".ttf", 0)
-	}
 	d, err = deck.Read(filename, w, h)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "ggdeck: %v\n", err)
+		fmt.Fprintf(os.Stderr, "pngdeck: %v\n", err)
 		return
 	}
 	d.Canvas.Width = w
