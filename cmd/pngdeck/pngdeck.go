@@ -1,3 +1,4 @@
+// pngdeck: render deck markup into a series of PNG images
 package main
 
 import (
@@ -102,7 +103,7 @@ func grid(doc *gg.Context, w, h float64, color string, percent float64) {
 	ph := h * (percent / 100)
 	r, g, b := colorlookup(color)
 	doc.SetRGB255(r, g, b)
-	doc.SetLineWidth(1)
+	doc.SetLineWidth(0.25)
 	fs := pct(1, w)
 	for x, pl := 0.0, 0.0; x <= w; x += pw {
 		doc.DrawLine(x, 0, x, h)
@@ -164,7 +165,7 @@ func doline(doc *gg.Context, xp1, yp1, xp2, yp2, sw float64, color string, opaci
 	r, g, b := colorlookup(color)
 	doc.SetLineWidth(sw)
 	doc.SetRGBA255(r, g, b, setop(opacity))
-	doc.SetLineCapSquare()
+	doc.SetLineCapButt()
 	doc.DrawLine(xp1, yp1, xp2, yp2)
 	doc.Stroke()
 }
@@ -174,6 +175,7 @@ func doarc(doc *gg.Context, x, y, w, h, a1, a2, sw float64, color string, opacit
 	r, g, b := colorlookup(color)
 	doc.SetLineWidth(sw)
 	doc.SetRGBA255(r, g, b, setop(opacity))
+	doc.SetLineCapButt()
 	doc.DrawEllipticalArc(x, y, w, h, gg.Radians(360-a1), gg.Radians(360-a2))
 	doc.Stroke()
 }
@@ -182,6 +184,7 @@ func doarc(doc *gg.Context, x, y, w, h, a1, a2, sw float64, color string, opacit
 func docurve(doc *gg.Context, xp1, yp1, xp2, yp2, xp3, yp3, sw float64, color string, opacity float64) {
 	r, g, b := colorlookup(color)
 	doc.SetLineWidth(sw)
+	doc.SetLineCapButt()
 	doc.SetRGBA255(r, g, b, setop(opacity))
 	doc.MoveTo(xp1, yp1)
 	doc.QuadraticTo(xp2, yp2, xp3, yp3)
@@ -205,7 +208,7 @@ func doellipse(doc *gg.Context, x, y, w, h float64, color string, opacity float6
 }
 
 // dopoly draws a polygon
-func dopoly(doc *gg.Context, xc, yc, color string, cw, ch float64, opacity float64) {
+func dopoly(doc *gg.Context, xc, yc string, cw, ch float64, color string, opacity float64) {
 	xs := strings.Split(xc, " ")
 	ys := strings.Split(yc, " ")
 	if len(xs) != len(ys) {
@@ -237,7 +240,7 @@ func dopoly(doc *gg.Context, xc, yc, color string, cw, ch float64, opacity float
 }
 
 // dotext places text elements on the canvas according to type
-func dotext(doc *gg.Context, cw, x, y, fs, wp, spacing float64, tdata, font, color string, opacity float64, align, ttype string) {
+func dotext(doc *gg.Context, cw, x, y, fs, wp, spacing float64, tdata, font, align, ttype, color string, opacity float64) {
 	var tw float64
 
 	td := strings.Split(tdata, "\n")
@@ -319,8 +322,7 @@ func showtext(doc *gg.Context, x, y float64, s string, fs float64, font, align s
 }
 
 // dolists places lists on the canvas
-// dolist(doc, cw, x, y, fs, l.Lp, l.Wp, l.Li, l.Font, l.Color, l.Type)
-func dolist(doc *gg.Context, cw, x, y, fs, lwidth, spacing float64, list []deck.ListItem, font, color string, opacity float64, ltype string) {
+func dolist(doc *gg.Context, cw, x, y, fs, lwidth, spacing float64, list []deck.ListItem, font, ltype, color string, opacity float64) {
 	if font == "" {
 		font = "sans"
 	}
@@ -359,8 +361,8 @@ func dolist(doc *gg.Context, cw, x, y, fs, lwidth, spacing float64, list []deck.
 	}
 }
 
-// ggslide makes a slide, one slide per generated PNG
-func ggslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, dest string) {
+// pngslide makes a slide, one slide per generated PNG
+func pngslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, dest string) {
 	if n < 0 || n > len(d.Slide)-1 || !showslide {
 		return
 	}
@@ -515,7 +517,7 @@ func ggslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, de
 		if poly.Color == "" {
 			poly.Color = defaultColor
 		}
-		dopoly(doc, poly.XC, poly.YC, poly.Color, cw, ch, poly.Opacity)
+		dopoly(doc, poly.XC, poly.YC, cw, ch, poly.Color, poly.Opacity)
 	}
 
 	// for every text element...
@@ -536,7 +538,7 @@ func ggslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, de
 		if t.Lp == 0 {
 			t.Lp = linespacing
 		}
-		dotext(doc, cw, x, y, fs, t.Wp, t.Lp, tdata, t.Font, t.Color, t.Opacity, t.Align, t.Type)
+		dotext(doc, cw, x, y, fs, t.Wp, t.Lp, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity)
 	}
 	// for every list element...
 	for _, l := range slide.List {
@@ -550,7 +552,7 @@ func ggslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, de
 			l.Wp = listwrap
 		}
 		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
-		dolist(doc, cw, x, y, fs, l.Wp, l.Lp, l.Li, l.Font, l.Color, l.Opacity, l.Type)
+		dolist(doc, cw, x, y, fs, l.Wp, l.Lp, l.Li, l.Font, l.Type, l.Color, l.Opacity)
 	}
 	// add a grid, if specified
 	if gp > 0 {
@@ -572,8 +574,7 @@ func doslides(outname, filename string, w, h int, gp float64, begin, end int) {
 	d.Canvas.Height = h
 
 	for i := 0; i < len(d.Slide); i++ {
-		doc := gg.NewContext(w, h)
-		ggslide(doc, d, i, gp, (i+1 >= begin && i+1 <= end), outname)
+		pngslide(gg.NewContext(w, h), d, i, gp, (i+1 >= begin && i+1 <= end), outname)
 	}
 }
 
