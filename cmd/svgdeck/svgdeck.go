@@ -11,12 +11,12 @@ import (
 	"strings"
 
 	"github.com/ajstarks/deck"
-	"github.com/ajstarks/svgo"
+	"github.com/ajstarks/svgo/float"
 )
 
 const (
 	mm2pt   = 2.83464 // mm to pt conversion
-	namefmt = "%s-%03d.svg"
+	namefmt = "%s-%05d.svg"
 )
 
 // PageDimen describes page dimensions
@@ -28,25 +28,31 @@ type PageDimen struct {
 // fontmap maps generic font names to specific implementation names
 var fontmap = map[string]string{}
 
-var codemap = strings.NewReplacer("\t", "    ")
-
 // pagemap defines page dimensions
 var pagemap = map[string]PageDimen{
-	"Letter": {792, 612, 1},
-	"Legal":  {1008, 612, 1},
-	"A3":     {420, 297, mm2pt},
-	"A4":     {297, 210, mm2pt},
-	"A5":     {210, 148, mm2pt},
+	"Letter":     {792, 612, 1},
+	"Legal":      {1008, 612, 1},
+	"Tabloid":    {1224, 792, 1},
+	"ArchA":      {864, 648, 1},
+	"Widescreen": {1152, 648, 1},
+	"4R":         {432, 288, 1},
+	"Index":      {360, 216, 1},
+	"A2":         {420, 594, mm2pt},
+	"A3":         {420, 297, mm2pt},
+	"A4":         {297, 210, mm2pt},
+	"A5":         {210, 148, mm2pt},
 }
 
+var codemap = strings.NewReplacer("\t", "    ")
+
 // grid makes a labeled grid
-func grid(doc *svg.SVG, w, h int, color string, percent float64) {
-	pw := int(float64(w) * (percent / 100))
-	ph := int(float64(h) * (percent / 100))
+func grid(doc *svg.SVG, w, h float64, color string, percent float64) {
+	pw := w * (percent / 100)
+	ph := h * (percent / 100)
 	fs := pct(1, w)
 	pl := 0.0
-	doc.Gstyle(fmt.Sprintf("fill:%s;font-family:%s;font-size:%d;text-anchor:center", color, fontlookup("sans"), fs))
-	for x := 0; x <= w; x += pw {
+	doc.Gstyle(fmt.Sprintf("fill:%s;font-family:%s;font-size:%.2f;text-anchor:center", color, fontlookup("sans"), fs))
+	for x := 0.0; x <= w; x += pw {
 		doc.Line(x, 0, x, h, "stroke-width:0.5; stroke:"+color)
 		if pl > 0 {
 			doc.Text(x, h-fs, fmt.Sprintf("%.0f", pl))
@@ -54,7 +60,7 @@ func grid(doc *svg.SVG, w, h int, color string, percent float64) {
 		pl += percent
 	}
 	pl = 0.0
-	for y := 0; y <= h; y += ph {
+	for y := 0.0; y <= h; y += ph {
 		doc.Line(0, y, w, y, "stroke-width:0.5; stroke:"+color)
 		if pl < 100 {
 			doc.Text(fs, y+(fs/3), fmt.Sprintf("%.0f", 100-pl))
@@ -65,8 +71,8 @@ func grid(doc *svg.SVG, w, h int, color string, percent float64) {
 }
 
 // pct converts percentages to canvas measures
-func pct(p float64, m int) int {
-	return int((p / 100.0) * float64(m))
+func pct(p float64, m float64) float64 {
+	return ((p / 100.0) * m)
 }
 
 // radians converts degrees to radians
@@ -75,18 +81,14 @@ func radians(deg float64) float64 {
 }
 
 // polar returns the euclidian corrdinates from polar coordinates
-func polar(x, y, r, angle int) (int, int) {
-	fr := float64(r)
-	fa := float64(angle)
-	fx := float64(x)
-	fy := float64(y)
-	px := (fr * math.Cos(radians(fa))) + fx
-	py := (fr * math.Sin(radians(fa))) + fy
-	return int(px), int(py)
+func polar(x, y, r, angle float64) (float64, float64) {
+	px := (r * math.Cos(radians(angle))) + x
+	py := (r * math.Sin(radians(angle))) + y
+	return px, py
 }
 
 // dimen returns canvas dimensions from percentages
-func dimen(w, h int, xp, yp, sp float64) (int, int, int) {
+func dimen(w, h float64, xp, yp, sp float64) (float64, float64, float64) {
 	return pct(xp, w), pct(100-yp, h), pct(sp, w)
 }
 
@@ -121,53 +123,53 @@ func fontlookup(s string) string {
 }
 
 // bullet draws a bullet
-func bullet(doc *svg.SVG, x, y, size int, color string) {
+func bullet(doc *svg.SVG, x, y, size float64, color string) {
 	rs := size / 2
 	doc.Circle(x-size, y-(rs*2)/3, rs/2, "fill:"+color)
 	// dorect(doc, x-size, y-rs-(rs/2), rs, rs, color, 0)
 }
 
 // background places a colored rectangle
-func background(doc *svg.SVG, w, h int, color string) {
+func background(doc *svg.SVG, w, h float64, color string) {
 	dorect(doc, 0, 0, w, h, color, 0)
 }
 
 // doline draws a line
-func doline(doc *svg.SVG, xp1, yp1, xp2, yp2, sw int, color string, opacity float64) {
-	doc.Line(xp1, yp1, xp2, yp2, fmt.Sprintf("strokewidth:%d;stroke:%s;stroke-opacity:%.2f", sw, color, setop(opacity)))
+func doline(doc *svg.SVG, xp1, yp1, xp2, yp2, sw float64, color string, opacity float64) {
+	doc.Line(xp1, yp1, xp2, yp2, fmt.Sprintf("strokewidth:%.2f;stroke:%s;stroke-opacity:%.2f", sw, color, setop(opacity)))
 }
 
 // doarc draws a line
-func doarc(doc *svg.SVG, x, y, w, h, a1, a2, sw int, color string, opacity float64) {
+func doarc(doc *svg.SVG, x, y, w, h, a1, a2, sw float64, color string, opacity float64) {
 	sx, sy := polar(x, y, w, -a1)
 	ex, ey := polar(x, y, h, -a2)
-	doc.Arc(sx, sy, w, h, 0, false, false, ex, ey, fmt.Sprintf("fill:none;strokewidth:%d;stroke:%s;stroke-opacity:%.2f", sw, color, setop(opacity)))
+	doc.Arc(sx, sy, w, h, 0, false, false, ex, ey, fmt.Sprintf("fill:none;strokewidth:%.2f;stroke:%s;stroke-opacity:%.2f", sw, color, setop(opacity)))
 }
 
 // docurve draws a bezier curve
-func docurve(doc *svg.SVG, xp1, yp1, xp2, yp2, xp3, yp3, sw int, color string, opacity float64) {
-	doc.Qbez(xp1, yp1, xp2, yp2, xp3, yp3, fmt.Sprintf("fill:none;strokewidth:%d;stroke:%s;stroke-opacity:%.2f", sw, color, setop(opacity)))
+func docurve(doc *svg.SVG, xp1, yp1, xp2, yp2, xp3, yp3, sw float64, color string, opacity float64) {
+	doc.Qbez(xp1, yp1, xp2, yp2, xp3, yp3, fmt.Sprintf("fill:none;strokewidth:%.2f;stroke:%s;stroke-opacity:%.2f", sw, color, setop(opacity)))
 }
 
 // dorect draws a rectangle
-func dorect(doc *svg.SVG, x, y, w, h int, color string, opacity float64) {
+func dorect(doc *svg.SVG, x, y, w, h float64, color string, opacity float64) {
 	doc.Rect(x, y, w, h, fmt.Sprintf("fill:%s;fill-opacity:%.2f", color, setop(opacity)))
 }
 
 // doellipse draws a rectangle
-func doellipse(doc *svg.SVG, x, y, w, h int, color string, opacity float64) {
+func doellipse(doc *svg.SVG, x, y, w, h float64, color string, opacity float64) {
 	doc.Ellipse(x, y, w, h, fmt.Sprintf("fill:%s;fill-opacity:%.2f", color, setop(opacity)))
 }
 
 // dotext places text elements on the canvas according to type
-func dotext(doc *svg.SVG, cw, x, y, fs int, wp float64, tdata, font, color string, opacity float64, align, ttype string) {
-	var tw int
+func dotext(doc *svg.SVG, cw, x, y, fs, wp float64, tdata, font, color string, opacity float64, align, ttype string) {
+	var tw float64
 	const emsperpixel = 10
 	ls := fs + ((fs * 4) / 10)
 	td := strings.Split(tdata, "\n")
 	if ttype == "code" {
 		font = "mono"
-		ch := len(td) * ls
+		ch := float64(len(td)) * ls
 		tw = cw - x - 20
 		dorect(doc, x-fs, y-fs, tw, ch, "rgb(240,240,240)", opacity)
 	}
@@ -175,7 +177,7 @@ func dotext(doc *svg.SVG, cw, x, y, fs int, wp float64, tdata, font, color strin
 		if wp == 0 {
 			tw = 50
 		} else {
-			tw = int((float64(cw) * (wp / 100.0)) / emsperpixel)
+			tw = (cw * (wp / 100.0)) / emsperpixel
 		}
 		textwrap(doc, x, y, tw, fs, ls, tdata, font, color, opacity)
 	} else {
@@ -200,16 +202,16 @@ func textalign(s string) string {
 }
 
 // showtext places fully attributed text at the specified location
-func showtext(doc *svg.SVG, x, y int, s string, fs int, font, color, align string) {
-	doc.Text(x, y, s, `xml:space="preserve"`, fmt.Sprintf("fill:%s;font-size:%dpx;font-family:%s;text-anchor:%s", color, fs, fontlookup(font), textalign(align)))
+func showtext(doc *svg.SVG, x, y float64, s string, fs float64, font, color, align string) {
+	doc.Text(x, y, s, `xml:space="preserve"`, fmt.Sprintf("fill:%s;font-size:%.2fpx;font-family:%s;text-anchor:%s", color, fs, fontlookup(font), textalign(align)))
 }
 
 // dolists places lists on the canvas
-func dolist(doc *svg.SVG, x, y, fs int, tlist []deck.ListItem, font, color string, opacity float64, ltype string) {
+func dolist(doc *svg.SVG, x, y, fs float64, tlist []deck.ListItem, font, color string, opacity float64, ltype string) {
 	if font == "" {
 		font = "sans"
 	}
-	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%dpx", setop(opacity), color, fontlookup(font), fs))
+	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%.2fpx", setop(opacity), color, fontlookup(font), fs))
 	if ltype == "bullet" {
 		x += fs
 	}
@@ -242,15 +244,15 @@ func dolist(doc *svg.SVG, x, y, fs int, tlist []deck.ListItem, font, color strin
 }
 
 // textwrap draws text at location, wrapping at the specified width
-func textwrap(doc *svg.SVG, x, y, w, fs int, leading int, s, font, color string, opacity float64) {
-	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%dpx", setop(opacity), color, fontlookup(font), fs))
+func textwrap(doc *svg.SVG, x, y, w, fs float64, leading float64, s, font, color string, opacity float64) {
+	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%.2fpx", setop(opacity), color, fontlookup(font), fs))
 	words := strings.FieldsFunc(s, whitespace)
 	xp := x
 	yp := y
 	var line string
 	for _, s := range words {
 		line += s + " "
-		if len(line) > w {
+		if float64(len(line)) > w {
 			doc.Text(xp, yp, line)
 			yp += leading
 			line = ""
@@ -263,17 +265,17 @@ func textwrap(doc *svg.SVG, x, y, w, fs int, leading int, s, font, color string,
 }
 
 // doslides reads the deck file, making the SVG version
-func doslides(outname, filename, title string, width, height int, gp float64) {
+func doslides(outname, filename, title string, width, height float64, gp float64) {
 	var d deck.Deck
 	var err error
 
-	d, err = deck.Read(filename, width, height)
+	d, err = deck.Read(filename, int(width), int(height))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "svgdeck: %v\n", err)
 		return
 	}
-	d.Canvas.Width = width
-	d.Canvas.Height = height
+	d.Canvas.Width = int(width)
+	d.Canvas.Height = int(height)
 
 	if outname == "" {
 		doc := svg.New(os.Stdout)
@@ -286,7 +288,7 @@ func doslides(outname, filename, title string, width, height int, gp float64) {
 	}
 
 	for i := 0; i < len(d.Slide); i++ {
-		out, err := os.Create(fmt.Sprintf(namefmt, outname, i))
+		out, err := os.Create(fmt.Sprintf(namefmt, outname, i+1))
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "svgdeck: %v\n", err)
 			continue
@@ -304,10 +306,10 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 	if n < 0 || n > len(d.Slide)-1 {
 		return
 	}
-	var x, y, fs int
+	var x, y, fs float64
 
-	cw := d.Canvas.Width
-	ch := d.Canvas.Height
+	cw := float64(d.Canvas.Width)
+	ch := float64(d.Canvas.Height)
 	slide := d.Slide[n]
 
 	// insert navigation links:
@@ -348,15 +350,23 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 	// for every image on the slide...
 	for _, im := range slide.Image {
 		x, y, _ = dimen(cw, ch, im.Xp, im.Yp, 0)
-		midx := im.Width / 2
-		midy := im.Height / 2
-		if im.Link == "" {
-			doc.Image(x-midx, y-midy, im.Width, im.Height, im.Name)
-		} else {
-			doc.Image(x-midx, y-midy, im.Width, im.Height, im.Link)
+		iw, ih := float64(im.Width), float64(im.Height)
+
+		if im.Scale > 0 {
+			iw *= (im.Scale / 100)
+			ih *= (im.Scale / 100)
 		}
+		// scale the image to fit the canvas width
+		if im.Autoscale == "on" && iw < cw {
+			ih = (cw / iw) * ih
+			iw = cw
+		}
+
+		midx := iw / 2
+		midy := ih / 2
+		doc.Image(x-midx, y-midy, int(iw), int(ih), im.Name)
 		if len(im.Caption) > 0 {
-			capsize := int(deck.Pwidth(im.Sp, float64(cw), float64(pct(2.0, cw))))
+			capsize := deck.Pwidth(im.Sp, float64(cw), float64(pct(2.0, cw)))
 			if im.Font == "" {
 				im.Font = "sans"
 			}
@@ -374,7 +384,7 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 	// rect
 	for _, rect := range slide.Rect {
 		x, y, _ := dimen(cw, ch, rect.Xp, rect.Yp, 0)
-		var w, h int
+		var w, h float64
 		w = pct(rect.Wp, cw)
 		if rect.Hr == 0 {
 			h = pct(rect.Hp, ch)
@@ -389,7 +399,7 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 	// ellipse
 	for _, ellipse := range slide.Ellipse {
 		x, y, _ := dimen(cw, ch, ellipse.Xp, ellipse.Yp, 0)
-		var w, h int
+		var w, h float64
 		w = pct(ellipse.Wp, cw)
 		if ellipse.Hr == 0 {
 			h = pct(ellipse.Hp, ch)
@@ -425,7 +435,7 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 		if sw == 0 {
 			sw = 2.0
 		}
-		doarc(doc, x, y, w/2, h/2, int(arc.A1), int(arc.A2), sw, arc.Color, arc.Opacity)
+		doarc(doc, x, y, w/2, h/2, arc.A1, arc.A2, sw, arc.Color, arc.Opacity)
 	}
 	// line
 	for _, line := range slide.Line {
@@ -477,29 +487,16 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 // dodeck turns deck input files into SVG
 // if the sflag is set, all output goes to the standard output file,
 // otherwise, SVG is written the destination directory, to filenames based on the input name.
-func dodeck(files []string, sflag bool, pagewidth, pageheight int, pagesize, outdir, title string, gp float64) {
-	var cw, ch int
-
-	if pagesize == "" {
-		cw = pagewidth
-		ch = pageheight
-	} else {
-		p, ok := pagemap[pagesize]
-		if !ok {
-			p = pagemap["Letter"]
-		}
-		cw = int(p.width * p.unit)
-		ch = int(p.height * p.unit)
-	}
+func dodeck(files []string, sflag bool, pw, ph float64, outdir, title string, gp float64) {
 	if sflag { // combined output to standard output
 		for _, filename := range files {
-			doslides("", filename, title, cw, ch, gp)
+			doslides("", filename, title, pw, ph, gp)
 		}
 	} else { // output to individual files
 		for _, filename := range files {
 			base := strings.Split(filepath.Base(filename), ".xml")
 			outname := filepath.Join(outdir, base[0])
-			doslides(outname, filename, title, cw, ch, gp)
+			doslides(outname, filename, title, pw, ph, gp)
 		}
 	}
 }
@@ -517,20 +514,31 @@ func includefile(filename string) string {
 // for every file, make a deck
 func main() {
 	var (
-		sansfont   = flag.String("sans", "Helvetica", "sans font")
-		serifont   = flag.String("serif", "Times-Roman", "serif font")
-		monofont   = flag.String("mono", "Courier", "mono font")
-		outdir     = flag.String("outdir", ".", "output directory")
-		stdout     = flag.Bool("stdout", false, "output to standard output")
-		pagesize   = flag.String("pagesize", "", "page size (Letter, A3, A4, A5)")
-		title      = flag.String("title", "", "document title")
-		pagewidth  = flag.Int("pagewidth", 1024, "page width")
-		pageheight = flag.Int("pageheight", 768, "page height")
-		gridpct    = flag.Float64("grid", 0, "place percentage grid on each slide")
+		sansfont = flag.String("sans", "Helvetica", "sans font")
+		serifont = flag.String("serif", "Times-Roman", "serif font")
+		monofont = flag.String("mono", "Courier", "mono font")
+		outdir   = flag.String("outdir", ".", "output directory")
+		stdout   = flag.Bool("stdout", false, "output to standard output")
+		pagesize = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
+		title    = flag.String("title", "", "document title")
+		gridpct  = flag.Float64("grid", 0, "place percentage grid on each slide")
 	)
 	flag.Parse()
+	var pw, ph float64
+	nd, err := fmt.Sscanf(*pagesize, "%g,%g", &pw, &ph)
+	if nd != 2 || err != nil {
+		pw, ph = 0, 0
+	}
+	if pw == 0 && ph == 0 {
+		p, ok := pagemap[*pagesize]
+		if !ok {
+			p = pagemap["Letter"]
+		}
+		pw = (p.width * p.unit)
+		ph = (p.height * p.unit)
+	}
 	fontmap["sans"] = *sansfont
 	fontmap["serif"] = *serifont
 	fontmap["mono"] = *monofont
-	dodeck(flag.Args(), *stdout, *pagewidth, *pageheight, *pagesize, *outdir, *title, *gridpct)
+	dodeck(flag.Args(), *stdout, pw, ph, *outdir, *title, *gridpct)
 }
