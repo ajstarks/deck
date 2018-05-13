@@ -52,6 +52,23 @@ var pagemap = map[string]PageDimen{
 
 var codemap = strings.NewReplacer("\t", "    ")
 
+// pagerange returns the begin and end using a "-" string
+func pagerange(s string) (int, int) {
+	p := strings.Split(s, "-")
+	if len(p) != 2 {
+		return 0, 0
+	}
+	b, berr := strconv.Atoi(p[0])
+	e, err := strconv.Atoi(p[1])
+	if berr != nil || err != nil {
+		return 0, 0
+	}
+	if b > e {
+		return 0, 0
+	}
+	return b, e
+}
+
 // grid makes a labeled grid
 func grid(doc *svg.SVG, w, h float64, color string, percent float64) {
 	pw := w * (percent / 100)
@@ -321,7 +338,7 @@ func textwrap(doc *svg.SVG, x, y, w, fs float64, leading float64, s, font, color
 }
 
 // doslides reads the deck file, making the SVG version
-func doslides(outname, filename, title string, width, height float64, gp float64) {
+func doslides(outname, filename, title string, width, height float64, gp float64, begin, end int) {
 	var d deck.Deck
 	var err error
 
@@ -333,39 +350,27 @@ func doslides(outname, filename, title string, width, height float64, gp float64
 	d.Canvas.Width = int(width)
 	d.Canvas.Height = int(height)
 
-	if outname == "" {
-		doc := svg.New(os.Stdout)
-		for i := 0; i < len(d.Slide); i++ {
-			doc.Start(width, height)
-			svgslide(doc, d, i, gp, outname, title)
-			doc.End()
-		}
-		return
-	}
-
 	for i := 0; i < len(d.Slide); i++ {
-		out, err := os.Create(fmt.Sprintf(namefmt, outname, i+1))
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "svgdeck: %v\n", err)
-			continue
+		if i+1 >= begin && i+1 <= end {
+			out, err := os.Create(fmt.Sprintf(namefmt, outname, i+1))
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "svgdeck: %v\n", err)
+				continue
+			}
+			svgslide(svg.New(out), d, i, width, height, gp, outname, title)
+			out.Close()
 		}
-		doc := svg.New(out)
-		doc.Start(width, height)
-		svgslide(doc, d, i, gp, outname, title)
-		doc.End()
-		out.Close()
 	}
 }
 
 // svgslide makes one slide per SVG page
-func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title string) {
+func svgslide(doc *svg.SVG, d deck.Deck, n int, cw, ch, gp float64, outname, title string) {
 	if n < 0 || n > len(d.Slide)-1 {
 		return
 	}
 	var x, y, fs float64
 
-	cw := float64(d.Canvas.Width)
-	ch := float64(d.Canvas.Height)
+	doc.Start(cw, ch)
 	slide := d.Slide[n]
 
 	// insert navigation links:
@@ -553,22 +558,18 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 	if len(outname) > 0 {
 		doc.LinkEnd()
 	}
+	doc.End()
 }
 
 // dodeck turns deck input files into SVG
 // if the sflag is set, all output goes to the standard output file,
 // otherwise, SVG is written the destination directory, to filenames based on the input name.
-func dodeck(files []string, sflag bool, pw, ph float64, outdir, title string, gp float64) {
-	if sflag { // combined output to standard output
-		for _, filename := range files {
-			doslides("", filename, title, pw, ph, gp)
-		}
-	} else { // output to individual files
-		for _, filename := range files {
-			base := strings.Split(filepath.Base(filename), ".xml")
-			outname := filepath.Join(outdir, base[0])
-			doslides(outname, filename, title, pw, ph, gp)
-		}
+func dodeck(files []string, pw, ph float64, outdir, title string, gp float64, begin, end int) {
+	// output to individual files
+	for _, filename := range files {
+		base := strings.Split(filepath.Base(filename), ".xml")
+		outname := filepath.Join(outdir, base[0])
+		doslides(outname, filename, title, pw, ph, gp, begin, end)
 	}
 }
 
@@ -579,12 +580,13 @@ func main() {
 		serifont = flag.String("serif", "Times-Roman", "serif font")
 		monofont = flag.String("mono", "Courier", "mono font")
 		outdir   = flag.String("outdir", ".", "output directory")
-		stdout   = flag.Bool("stdout", false, "output to standard output")
 		pagesize = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
 		title    = flag.String("title", "", "document title")
 		gridpct  = flag.Float64("grid", 0, "place percentage grid on each slide")
+		pr       = flag.String("pages", "1-1000000", "page range (first-last)")
 	)
 	flag.Parse()
+	begin, end := pagerange(*pr)
 	var pw, ph float64
 	nd, err := fmt.Sscanf(*pagesize, "%g,%g", &pw, &ph)
 	if nd != 2 || err != nil {
@@ -601,5 +603,5 @@ func main() {
 	fontmap["sans"] = *sansfont
 	fontmap["serif"] = *serifont
 	fontmap["mono"] = *monofont
-	dodeck(flag.Args(), *stdout, pw, ph, *outdir, *title, *gridpct)
+	dodeck(flag.Args(), pw, ph, *outdir, *title, *gridpct, begin, end)
 }
