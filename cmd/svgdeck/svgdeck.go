@@ -8,6 +8,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/ajstarks/deck"
@@ -15,8 +16,10 @@ import (
 )
 
 const (
-	mm2pt   = 2.83464 // mm to pt conversion
-	namefmt = "%s-%05d.svg"
+	mm2pt     = 2.83464 // mm to pt conversion
+	namefmt   = "%s-%05d.svg"
+	strokefmt = "stroke-width:%.2fpx;stroke:%s;stroke-opacity:%.2f"
+	fillfmt   = "fill:%s;fill-opacity:%.2f"
 )
 
 // PageDimen describes page dimensions
@@ -53,7 +56,7 @@ func grid(doc *svg.SVG, w, h float64, color string, percent float64) {
 	pl := 0.0
 	doc.Gstyle(fmt.Sprintf("fill:%s;font-family:%s;font-size:%.2f;text-anchor:center", color, fontlookup("sans"), fs))
 	for x := 0.0; x <= w; x += pw {
-		doc.Line(x, 0, x, h, "stroke-width:0.5; stroke:"+color)
+		doc.Line(x, 0, x, h, "stroke-width:0.5px; stroke:"+color)
 		if pl > 0 {
 			doc.Text(x, h-fs, fmt.Sprintf("%.0f", pl))
 		}
@@ -61,7 +64,7 @@ func grid(doc *svg.SVG, w, h float64, color string, percent float64) {
 	}
 	pl = 0.0
 	for y := 0.0; y <= h; y += ph {
-		doc.Line(0, y, w, y, "stroke-width:0.5; stroke:"+color)
+		doc.Line(0, y, w, y, "stroke-width:0.5px; stroke:"+color)
 		if pl < 100 {
 			doc.Text(fs, y+(fs/3), fmt.Sprintf("%.0f", 100-pl))
 		}
@@ -122,11 +125,30 @@ func fontlookup(s string) string {
 	return "sans"
 }
 
+// includefile returns the contents of a file as string
+func includefile(filename string) string {
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return ""
+	}
+	return codemap.Replace(string(data))
+}
+
+// strokeop stroke a color at the specified opacity
+func strokeop(sw float64, color string, opacity float64) string {
+	return fmt.Sprintf(strokefmt, sw, color, setop(opacity))
+}
+
+// fillop fills with the specified color and opacity
+func fillop(color string, opacity float64) string {
+	return fmt.Sprintf(fillfmt, color, setop(opacity))
+}
+
 // bullet draws a bullet
 func bullet(doc *svg.SVG, x, y, size float64, color string) {
 	rs := size / 2
 	doc.Circle(x-size, y-(rs*2)/3, rs/2, "fill:"+color)
-	// dorect(doc, x-size, y-rs-(rs/2), rs, rs, color, 0)
 }
 
 // background places a colored rectangle
@@ -136,35 +158,65 @@ func background(doc *svg.SVG, w, h float64, color string) {
 
 // doline draws a line
 func doline(doc *svg.SVG, xp1, yp1, xp2, yp2, sw float64, color string, opacity float64) {
-	doc.Line(xp1, yp1, xp2, yp2, fmt.Sprintf("strokewidth:%.2f;stroke:%s;stroke-opacity:%.2f", sw, color, setop(opacity)))
+	doc.Line(xp1, yp1, xp2, yp2, strokeop(sw, color, opacity))
 }
 
 // doarc draws a line
 func doarc(doc *svg.SVG, x, y, w, h, a1, a2, sw float64, color string, opacity float64) {
 	sx, sy := polar(x, y, w, -a1)
 	ex, ey := polar(x, y, h, -a2)
-	doc.Arc(sx, sy, w, h, 0, false, false, ex, ey, fmt.Sprintf("fill:none;strokewidth:%.2f;stroke:%s;stroke-opacity:%.2f", sw, color, setop(opacity)))
+	large := a2-a1 >= 180
+	doc.Arc(sx, sy, w, h, 0, large, false, ex, ey, "fill:none;"+strokeop(sw, color, opacity))
 }
 
 // docurve draws a bezier curve
 func docurve(doc *svg.SVG, xp1, yp1, xp2, yp2, xp3, yp3, sw float64, color string, opacity float64) {
-	doc.Qbez(xp1, yp1, xp2, yp2, xp3, yp3, fmt.Sprintf("fill:none;strokewidth:%.2f;stroke:%s;stroke-opacity:%.2f", sw, color, setop(opacity)))
+	doc.Qbez(xp1, yp1, xp2, yp2, xp3, yp3, "fill:none;"+strokeop(sw, color, opacity))
 }
 
 // dorect draws a rectangle
 func dorect(doc *svg.SVG, x, y, w, h float64, color string, opacity float64) {
-	doc.Rect(x, y, w, h, fmt.Sprintf("fill:%s;fill-opacity:%.2f", color, setop(opacity)))
+	doc.Rect(x, y, w, h, fillop(color, opacity))
 }
 
 // doellipse draws a rectangle
 func doellipse(doc *svg.SVG, x, y, w, h float64, color string, opacity float64) {
-	doc.Ellipse(x, y, w, h, fmt.Sprintf("fill:%s;fill-opacity:%.2f", color, setop(opacity)))
+	doc.Ellipse(x, y, w, h, fillop(color, opacity))
+}
+
+// dopoly draws a polygon
+func dopoly(doc *svg.SVG, xc, yc string, cw, ch float64, color string, opacity float64) {
+	xs := strings.Split(xc, " ")
+	ys := strings.Split(yc, " ")
+	if len(xs) != len(ys) {
+		return
+	}
+	if len(xs) < 3 || len(ys) < 3 {
+		return
+	}
+	px := make([]float64, len(xs))
+	py := make([]float64, len(xs))
+	for i := 0; i < len(xs); i++ {
+		x, err := strconv.ParseFloat(xs[i], 64)
+		if err != nil {
+			px[i] = 0
+		} else {
+			px[i] = pct(x, cw)
+		}
+		y, err := strconv.ParseFloat(ys[i], 64)
+		if err != nil {
+			py[i] = 0
+		} else {
+			py[i] = pct(100-y, ch)
+		}
+	}
+	doc.Polygon(px, py, fillop(color, opacity))
 }
 
 // dotext places text elements on the canvas according to type
 func dotext(doc *svg.SVG, cw, x, y, fs, wp float64, tdata, font, color string, opacity float64, align, ttype string) {
 	var tw float64
-	const emsperpixel = 10
+	const emsperpixel = 14
 	ls := fs + ((fs * 4) / 10)
 	td := strings.Split(tdata, "\n")
 	if ttype == "code" {
@@ -318,9 +370,9 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 	if len(outname) > 0 {
 		var link int
 		if n < len(d.Slide)-1 {
-			link = n + 1
+			link = n + 2
 		} else {
-			link = 0
+			link = 1
 		}
 		doc.Link(fmt.Sprintf(namefmt, outname, link), fmt.Sprintf("Link to slide %03d", link))
 	}
@@ -449,6 +501,12 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 		}
 		doline(doc, x1, y1, x2, y2, sw, line.Color, line.Opacity)
 	}
+	for _, poly := range slide.Polygon {
+		if poly.Color == "" {
+			poly.Color = defaultColor
+		}
+		dopoly(doc, poly.XC, poly.YC, cw, ch, poly.Color, poly.Opacity)
+	}
 	// for every text element...
 	var tdata string
 	for _, t := range slide.Text {
@@ -499,16 +557,6 @@ func dodeck(files []string, sflag bool, pw, ph float64, outdir, title string, gp
 			doslides(outname, filename, title, pw, ph, gp)
 		}
 	}
-}
-
-// includefile returns the contents of a file as string
-func includefile(filename string) string {
-	data, err := ioutil.ReadFile(filename)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return ""
-	}
-	return codemap.Replace(string(data))
 }
 
 // for every file, make a deck
