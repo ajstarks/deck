@@ -16,10 +16,14 @@ import (
 )
 
 const (
-	mm2pt     = 2.83464 // mm to pt conversion
-	namefmt   = "%s-%05d.svg"
-	strokefmt = "stroke-width:%.2fpx;stroke:%s;stroke-opacity:%.2f"
-	fillfmt   = "fill:%s;fill-opacity:%.2f"
+	mm2pt       = 2.83464 // mm to pt conversion
+	linespacing = 1.4
+	listspacing = 2.0
+	fontfactor  = 1.0
+	listwrap    = 95.0
+	namefmt     = "%s-%05d.svg"
+	strokefmt   = "stroke-width:%.2fpx;stroke:%s;stroke-opacity:%.2f"
+	fillfmt     = "fill:%s;fill-opacity:%.2f"
 )
 
 // PageDimen describes page dimensions
@@ -214,10 +218,10 @@ func dopoly(doc *svg.SVG, xc, yc string, cw, ch float64, color string, opacity f
 }
 
 // dotext places text elements on the canvas according to type
-func dotext(doc *svg.SVG, cw, x, y, fs, wp float64, tdata, font, color string, opacity float64, align, ttype string) {
+func dotext(doc *svg.SVG, cw, x, y, fs, wp, ls float64, tdata, font, align, ttype, color string, opacity float64) {
 	var tw float64
 	const emsperpixel = 14
-	ls := fs + ((fs * 4) / 10)
+	ls *= fs
 	td := strings.Split(tdata, "\n")
 	if ttype == "code" {
 		font = "mono"
@@ -259,7 +263,7 @@ func showtext(doc *svg.SVG, x, y float64, s string, fs float64, font, color, ali
 }
 
 // dolists places lists on the canvas
-func dolist(doc *svg.SVG, x, y, fs float64, tlist []deck.ListItem, font, color string, opacity float64, ltype string) {
+func dolist(doc *svg.SVG, x, y, fs, lwidth, spacing float64, tlist []deck.ListItem, font, ltype, color string, opacity float64) {
 	if font == "" {
 		font = "sans"
 	}
@@ -267,7 +271,7 @@ func dolist(doc *svg.SVG, x, y, fs float64, tlist []deck.ListItem, font, color s
 	if ltype == "bullet" {
 		x += fs
 	}
-	ls := fs * 2
+	ls := spacing * fs
 	var t string
 	for i, tl := range tlist {
 		if ltype == "number" {
@@ -521,16 +525,25 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, gp float64, outname, title strin
 		} else {
 			tdata = t.Tdata
 		}
+		if t.Lp == 0 {
+			t.Lp = linespacing
+		}
 		x, y, fs = dimen(cw, ch, t.Xp, t.Yp, t.Sp)
-		dotext(doc, cw, x, y, fs, t.Wp, tdata, t.Font, t.Color, t.Opacity, t.Align, t.Type)
+		dotext(doc, cw, x, y, fs, t.Wp, t.Lp, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity)
 	}
 	// for every list element...
 	for _, l := range slide.List {
 		if l.Color == "" {
 			l.Color = slide.Fg
 		}
+		if l.Lp == 0 {
+			l.Lp = listspacing
+		}
+		if l.Wp == 0 {
+			l.Wp = listwrap
+		}
 		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
-		dolist(doc, x, y, fs, l.Li, l.Font, l.Color, l.Opacity, l.Type)
+		dolist(doc, x, y, fs, l.Wp, l.Lp, l.Li, l.Font, l.Type, l.Color, l.Opacity)
 	}
 	// add a grid, if specified
 	if gp > 0 {
