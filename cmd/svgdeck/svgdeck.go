@@ -237,7 +237,6 @@ func dopoly(doc *svg.SVG, xc, yc string, cw, ch float64, color string, opacity f
 // dotext places text elements on the canvas according to type
 func dotext(doc *svg.SVG, cw, x, y, fs, wp, ls float64, tdata, font, align, ttype, color string, opacity float64) {
 	var tw float64
-	const emsperpixel = 14
 	ls *= fs
 	td := strings.Split(tdata, "\n")
 	if ttype == "code" {
@@ -248,9 +247,9 @@ func dotext(doc *svg.SVG, cw, x, y, fs, wp, ls float64, tdata, font, align, ttyp
 	}
 	if ttype == "block" {
 		if wp == 0 {
-			tw = 50
+			tw = cw / 2
 		} else {
-			tw = (cw * (wp / 100.0)) / emsperpixel
+			tw = (cw * (wp / 100.0))
 		}
 		textwrap(doc, x, y, tw, fs, ls, tdata, font, color, opacity)
 	} else {
@@ -322,10 +321,11 @@ func textwrap(doc *svg.SVG, x, y, w, fs float64, leading float64, s, font, color
 	words := strings.FieldsFunc(s, whitespace)
 	xp := x
 	yp := y
+	//fmt.Fprintf(os.Stderr, "x=%.2f y=%.2f w=%.2f fs=%.2f leading=%.2f\n", x, y, w, fs, leading)
 	var line string
 	for _, s := range words {
 		line += s + " "
-		if float64(len(line)) > w {
+		if fs*float64(len(line))*0.65 > (w + x) {
 			doc.Text(xp, yp, line)
 			yp += leading
 			line = ""
@@ -562,8 +562,7 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, cw, ch, gp float64, outname, tit
 }
 
 // dodeck turns deck input files into SVG
-// if the sflag is set, all output goes to the standard output file,
-// otherwise, SVG is written the destination directory, to filenames based on the input name.
+// SVG is written the destination directory, to filenames based on the input name.
 func dodeck(files []string, pw, ph float64, outdir, title string, gp float64, begin, end int) {
 	// output to individual files
 	for _, filename := range files {
