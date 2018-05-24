@@ -224,7 +224,7 @@ func main() {
 	deck.StartSlide("gray")
 	y := 50.0
 	for x := 20.0; x < 90.0; x += 20.0 {
-		deck.Image(x, y, 100, 100, "sm.png")
+		deck.Image(x, y, 100, 100, "sm.png", "")
 	}
 	deck.EndSlide()
 
