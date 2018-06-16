@@ -343,6 +343,8 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) 
 	}
 
 	var x, y, fs float64
+	var imgopt gofpdf.ImageOptions
+	imgopt.AllowNegativePosition = true
 
 	doc.AddPage()
 	cw := float64(d.Canvas.Width)
@@ -381,7 +383,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) 
 		}
 		midx := fw / 2
 		midy := fh / 2
-		doc.Image(im.Name, x-midx, y-midy, fw, fh, false, "", 0, im.Link)
+		doc.ImageOptions(im.Name, x-midx, y-midy, fw, fh, false, imgopt, 0, im.Link)
 		if len(im.Caption) > 0 {
 			capsize := deck.Pwidth(im.Sp, cw, pct(2, cw))
 			if im.Font == "" {
