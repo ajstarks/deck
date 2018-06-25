@@ -27,7 +27,7 @@ var (
 	xint, pmlen                                                                      int
 	readcsv, showdot, datamin, showvolume, showscatter                               bool
 	showbar, showval, showxlast, showline, showhbar, wbar, showaxis                  bool
-	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid                    bool
+	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial        bool
 	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols, hline string
 )
 
@@ -53,6 +53,9 @@ const (
 	wbop         = 30.0
 	largest      = math.MaxFloat64
 	smallest     = -math.MaxFloat64
+	topclock     = math.Pi / 2
+	fullcircle   = math.Pi * 2
+	transparency = 50.0
 )
 
 func cmdflags() {
@@ -66,8 +69,8 @@ func cmdflags() {
 	flag.Float64Var(&barw, "barwidth", 0, "barwidth")
 	flag.Float64Var(&umin, "min", -1, "minimum")
 	flag.Float64Var(&umax, "max", -1, "maximum")
-	flag.Float64Var(&psize, "psize", 30.0, "size of the donut")
-	flag.Float64Var(&pwidth, "pwidth", ts*3, "width of the pmap/donut")
+	flag.Float64Var(&psize, "psize", 40.0, "size of the donut")
+	flag.Float64Var(&pwidth, "pwidth", ts*3, "width of the pmap/donut/radial")
 
 	flag.BoolVar(&showbar, "bar", true, "show a bar chart")
 	flag.BoolVar(&showdot, "dot", false, "show a dot chart")
@@ -81,6 +84,7 @@ func cmdflags() {
 	flag.BoolVar(&showtitle, "title", true, "show title")
 	flag.BoolVar(&showgrid, "grid", false, "show y axis grid")
 	flag.BoolVar(&showscatter, "scatter", false, "show scatter chart")
+	flag.BoolVar(&showradial, "radial", false, "show a radial chart")
 	flag.BoolVar(&showpgrid, "pgrid", false, "show proportional grid")
 	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
 	flag.BoolVar(&fulldeck, "fulldeck", true, "generate full markup")
@@ -387,7 +391,7 @@ func pgrid(deck *generate.Deck, data []ChartData, title string, rows, cols int) 
 
 	// title and legend
 	if len(title) > 0 && showtitle {
-		deck.Text(left-ts/2, top+ts*2, title, "sans", ts*1.5, "black")
+		deck.Text(left-ts/2, top+ts*2, title, "sans", ts*1.5, titlecolor)
 	}
 	cx := (float64(cols-1) * ls) + ls/2
 	for i, d := range data {
@@ -407,6 +411,33 @@ func polar(x, y, r, t float64) (float64, float64) {
 	return px, py
 }
 
+// radial draws a radial plot
+func radial(deck *generate.Deck, data []ChartData, title string, maxd float64) {
+	dx := left
+	dy := top
+	if len(title) > 0 && showtitle {
+		deck.TextMid(dx, dy, title, "sans", ts*1.2, titlecolor)
+	}
+	t := topclock
+	step := fullcircle / float64(len(data))
+	var color string
+	for _, d := range data {
+		px, py := polar(dx, dy, pwidth, t)
+		cv := vmap(d.value, 0, maxd, 0, psize)
+		if len(d.note) > 0 {
+			color = d.note
+		} else {
+			color = datacolor
+		}
+		deck.TextMid(px, py+ts, d.label, "mono", ts, "black")
+		if showval {
+			deck.TextMid(px, py-ts/3, dformat(d.value), "mono", ts, valuecolor)
+		}
+		deck.Circle(px, py, cv, color, transparency)
+		t -= step
+	}
+}
+
 // pmap draws a porpotional map
 func pmap(deck *generate.Deck, data []ChartData, title string) {
 	x := left
@@ -416,7 +447,7 @@ func pmap(deck *generate.Deck, data []ChartData, title string) {
 	var ty float64
 	var textcolor string
 	if len(title) > 0 && showtitle {
-		deck.TextMid(x+pl/2, top+(pwidth*1.2), title, "sans", ts*1.5, "black")
+		deck.TextMid(x+pl/2, top+(pwidth*1.2), title, "sans", ts*1.5, titlecolor)
 	}
 	for i, p := range pct(data) {
 		bx := (p * bl)
@@ -459,7 +490,7 @@ func donut(deck *generate.Deck, data []ChartData, title string) {
 	dx := left + (psize / 2)
 	dy := top - (psize / 2)
 	if len(title) > 0 && showtitle {
-		deck.TextMid(dx, dy+(psize*1.2), title, "sans", ts*1.5, "black")
+		deck.TextMid(dx, dy+(psize*1.2), title, "sans", ts*1.5, titlecolor)
 	}
 	for i, p := range pct(data) {
 		angle := (p / 100) * 360.0
@@ -477,9 +508,9 @@ func donut(deck *generate.Deck, data []ChartData, title string) {
 	}
 }
 
-// pchart draws proportional data, either a pmap or donut using input from a Reader
+// pchart draws proportional data, either a pmap, pgrid, radial or donut using input from a Reader
 func pchart(deck *generate.Deck, r io.ReadCloser) {
-	data, _, _, title := getdata(r)
+	data, _, maxdata, title := getdata(r)
 	if len(chartitle) > 0 {
 		title = xmlesc(chartitle)
 	}
@@ -493,6 +524,8 @@ func pchart(deck *generate.Deck, r io.ReadCloser) {
 		pmap(deck, data, title)
 	case showpgrid:
 		pgrid(deck, data, title, 10, 10)
+	case showradial:
+		radial(deck, data, title, maxdata)
 	}
 	if fulldeck {
 		deck.EndSlide()
@@ -697,7 +730,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		py = y
 	}
 	if showvolume {
-		deck.Polygon(xvol, yvol, datacolor, 50)
+		deck.Polygon(xvol, yvol, datacolor, transparency)
 	}
 	if fulldeck {
 		deck.EndSlide()
@@ -712,7 +745,7 @@ func chart(deck *generate.Deck, r io.ReadCloser) {
 		hchart(deck, r)
 	case wbar:
 		wbchart(deck, r)
-	case showdonut, showpmap, showpgrid:
+	case showdonut, showpmap, showpgrid, showradial:
 		pchart(deck, r)
 	default:
 		vchart(deck, r)
