@@ -36,6 +36,7 @@ The command line options are:
 	-pgrid       show a proportional grid (default false)
 	-pmap        show proportional map (default false)
 	-donut       show a donut chart (default false)
+	-radial      show a radial chart (default false)
 	-yaxis       show a y axis (default true)
 	-yrange      define the y axis range (min,max,step)
 	-fulldeck    generate full markup (default true)

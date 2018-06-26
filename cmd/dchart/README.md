@@ -73,6 +73,7 @@ flags control the visibility of plot components.
 	-pgrid       show a proportional grid (default false)
 	-pmap        show proportional map (default false)
 	-donut       show a donut chart (default false)
+	-radial      show a radial chart (default false)
 
 	-grid        show gridlines on the y axis (default false)
 	-val         show values (default true)
@@ -230,3 +231,20 @@ the note field may be used to specify the color
 	$ dchart -ls 3 -val=f -pgrid incar.d
 
 ![pgrid](images/pgrid.png)
+
+Using this data in count.d:
+
+	# Count Of Things
+	One	10	red
+	Two	20	green
+	Three	30	blue
+	Four	40	purple
+	Five	50	yellow
+	Six	60	black
+	Seven	70	brown
+	Eight	80	silver
+	Nine	90	orange
+	Ten	100	pink
+
+![radial](images/radial.png)
+
