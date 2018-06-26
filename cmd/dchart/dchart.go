@@ -27,7 +27,7 @@ var (
 	xint, pmlen                                                                      int
 	readcsv, showdot, datamin, showvolume, showscatter                               bool
 	showbar, showval, showxlast, showline, showhbar, wbar, showaxis                  bool
-	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial        bool
+	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes        bool
 	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols, hline string
 )
 
@@ -85,6 +85,7 @@ func cmdflags() {
 	flag.BoolVar(&showgrid, "grid", false, "show y axis grid")
 	flag.BoolVar(&showscatter, "scatter", false, "show scatter chart")
 	flag.BoolVar(&showradial, "radial", false, "show a radial chart")
+	flag.BoolVar(&showspokes, "spokes", false, "show spokes on radial charts")
 	flag.BoolVar(&showpgrid, "pgrid", false, "show proportional grid")
 	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
 	flag.BoolVar(&fulldeck, "fulldeck", true, "generate full markup")
@@ -411,6 +412,20 @@ func polar(x, y, r, t float64) (float64, float64) {
 	return px, py
 }
 
+
+// spokes draws the points and lines like spokes on a wheel
+func spokes(deck *generate.Deck, cx, cy, r, spokesize float64, n int, color string) {
+	t := topclock
+	step := fullcircle / float64(n)
+	for i := 0; i < n; i++ {
+		px, py := polar(cx, cy, r, t)
+		deck.Line(cx, cy, px, py, spokesize, "lightgray")
+		deck.Circle(px, py, ts*.6, color)
+		t -= step
+	}
+}
+
+
 // radial draws a radial plot
 func radial(deck *generate.Deck, data []ChartData, title string, maxd float64) {
 	dx := left
@@ -429,11 +444,16 @@ func radial(deck *generate.Deck, data []ChartData, title string, maxd float64) {
 		} else {
 			color = datacolor
 		}
-		deck.TextMid(px, py+ts, d.label, "mono", ts, "black")
+		deck.TextMid(px, py+ts, d.label, "sans", ts, "black")
 		if showval {
 			deck.TextMid(px, py-ts/3, dformat(d.value), "mono", ts, valuecolor)
 		}
-		deck.Circle(px, py, cv, color, transparency)
+		
+		if showspokes {
+			spokes(deck, px, py, cv/2, 0.05, int(d.value), color)
+		} else {
+			deck.Circle(px, py, cv, color, transparency)
+		}
 		t -= step
 	}
 }
