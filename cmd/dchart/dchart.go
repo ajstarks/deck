@@ -23,12 +23,12 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth                float64
-	xint, pmlen                                                                      int
-	readcsv, showdot, datamin, showvolume, showscatter                               bool
-	showbar, showval, showxlast, showline, showhbar, wbar, showaxis                  bool
-	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes        bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols, hline string
+	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth                     float64
+	xint, pmlen                                                                           int
+	readcsv, showdot, datamin, showvolume, showscatter                                    bool
+	showbar, showval, showxlast, showline, showhbar, wbar, showaxis                       bool
+	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes bool
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols, hline      string
 )
 
 var blue7 = []string{
@@ -412,7 +412,6 @@ func polar(x, y, r, t float64) (float64, float64) {
 	return px, py
 }
 
-
 // spokes draws the points and lines like spokes on a wheel
 func spokes(deck *generate.Deck, cx, cy, r, spokesize float64, n int, color string) {
 	t := topclock
@@ -420,37 +419,39 @@ func spokes(deck *generate.Deck, cx, cy, r, spokesize float64, n int, color stri
 	for i := 0; i < n; i++ {
 		px, py := polar(cx, cy, r, t)
 		deck.Line(cx, cy, px, py, spokesize, "lightgray")
-		deck.Circle(px, py, ts*.6, color)
+		deck.Circle(px, py, 0.5, color)
 		t -= step
 	}
 }
-
 
 // radial draws a radial plot
 func radial(deck *generate.Deck, data []ChartData, title string, maxd float64) {
 	dx := left
 	dy := top
 	if len(title) > 0 && showtitle {
-		deck.TextMid(dx, dy, title, "sans", ts*1.2, titlecolor)
+		deck.TextMid(dx, dy, title, "sans", ts*1.5, titlecolor)
+	}
+	if umax > 0 {
+		maxd = umax
 	}
 	t := topclock
+	deck.Circle(dx, dy, pwidth*2, "silver", 10)
 	step := fullcircle / float64(len(data))
 	var color string
 	for _, d := range data {
 		px, py := polar(dx, dy, pwidth, t)
-		cv := vmap(d.value, 0, maxd, 0, psize)
+		cv := vmap(d.value, 0, maxd, 2, psize)
 		if len(d.note) > 0 {
 			color = d.note
 		} else {
 			color = datacolor
 		}
-		deck.TextMid(px, py+ts, d.label, "sans", ts, "black")
+		deck.TextMid(px, py+(psize/2)+ts/2, d.label, "sans", ts/2, "black")
 		if showval {
 			deck.TextMid(px, py-ts/3, dformat(d.value), "mono", ts, valuecolor)
 		}
-		
 		if showspokes {
-			spokes(deck, px, py, cv/2, 0.05, int(d.value), color)
+			spokes(deck, px, py, psize/2, 0.2, int(d.value), color)
 		} else {
 			deck.Circle(px, py, cv, color, transparency)
 		}

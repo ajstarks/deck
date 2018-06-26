@@ -74,6 +74,7 @@ flags control the visibility of plot components.
 	-pmap        show proportional map (default false)
 	-donut       show a donut chart (default false)
 	-radial      show a radial chart (default false)
+	-spokes      show a radial chart with spokes (default false)
 
 	-grid        show gridlines on the y axis (default false)
 	-val         show values (default true)
