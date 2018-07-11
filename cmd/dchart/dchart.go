@@ -61,8 +61,8 @@ const (
 func cmdflags() {
 	// command line options
 	flag.Float64Var(&ts, "textsize", 1.5, "text size")
-	flag.Float64Var(&left, "left", 10.0, "left margin")
-	flag.Float64Var(&right, "right", 100-left, "right margin")
+	flag.Float64Var(&left, "left", -1.0, "left margin") // default set to out of bounds because different charts need individual defaults
+	flag.Float64Var(&right, "right", 90.0, "right margin")
 	flag.Float64Var(&top, "top", 80.0, "top of the plot")
 	flag.Float64Var(&bottom, "bottom", 30.0, "bottom of the plot")
 	flag.Float64Var(&ls, "ls", 2.4, "ls")
@@ -351,6 +351,11 @@ func pct(data []ChartData) []float64 {
 // pgrid makes a proportional grid with the specified rows and columns
 func pgrid(deck *generate.Deck, data []ChartData, title string, rows, cols int) {
 	// sanity checks
+
+	if left < 0 {
+		left = 30.0
+	}
+
 	if rows*cols != 100 {
 		return
 	}
@@ -426,6 +431,11 @@ func spokes(deck *generate.Deck, cx, cy, r, spokesize float64, n int, color stri
 
 // radial draws a radial plot
 func radial(deck *generate.Deck, data []ChartData, title string, maxd float64) {
+
+	if left < 0 {
+		left = 50.0
+	}
+
 	dx := left
 	dy := top
 	if len(title) > 0 && showtitle {
@@ -451,7 +461,7 @@ func radial(deck *generate.Deck, data []ChartData, title string, maxd float64) {
 			deck.TextMid(px, py-ts/3, dformat(d.value), "mono", ts, valuecolor)
 		}
 		if showspokes {
-			spokes(deck, px, py, psize/2, 0.2, int(d.value), color)
+			spokes(deck, px, py, psize/2, 0.05, int(d.value), color)
 		} else {
 			deck.Circle(px, py, cv, color, transparency)
 		}
@@ -461,6 +471,9 @@ func radial(deck *generate.Deck, data []ChartData, title string, maxd float64) {
 
 // pmap draws a porpotional map
 func pmap(deck *generate.Deck, data []ChartData, title string) {
+	if left < 0 {
+		left = 20.0
+	}
 	x := left
 	pl := (right - left)
 	bl := pl / 100.0
@@ -468,7 +481,7 @@ func pmap(deck *generate.Deck, data []ChartData, title string) {
 	var ty float64
 	var textcolor string
 	if len(title) > 0 && showtitle {
-		deck.TextMid(x+pl/2, top+(pwidth*1.2), title, "sans", ts*1.5, titlecolor)
+		deck.TextMid(x+pl/2, top+(pwidth*2), title, "sans", ts*1.5, titlecolor)
 	}
 	for i, p := range pct(data) {
 		bx := (p * bl)
@@ -485,11 +498,13 @@ func pmap(deck *generate.Deck, data []ChartData, title string) {
 		} else {
 			textcolor = "black"
 		}
-		deck.TextMid(x+(bx/2), ty, data[i].label, "sans", ts, textcolor)
-		deck.TextMid(x+(bx/2), ty-(ts*1.5), fmt.Sprintf(datafmt+"%%", p), "mono", ts, textcolor)
+
+		deck.TextMid(x+(bx/2), ty+(pwidth), data[i].label, "sans", ts*0.75, textcolor)
 		if showval {
-			deck.TextMid(x+(bx/2), ty-(pwidth/2)-(ts*2), dformat(data[i].value), "mono", ts, valuecolor)
+			deck.TextMid(x+(bx/2), ty-pwidth, dformat(data[i].value), "mono", ts/2, valuecolor)
 		}
+		deck.TextMid(x+(bx/2), ty-(ts/2), fmt.Sprintf(datafmt+"%%", p), "sans", ts, textcolor)
+
 		x += bx - hspace
 	}
 }
@@ -507,15 +522,18 @@ func stdcolor(i int, dcolor, color string, op float64) (string, float64) {
 
 // donut makes a donut chart
 func donut(deck *generate.Deck, data []ChartData, title string) {
-	a1 := 0.0
-	dx := left + (psize / 2)
+	if left < 0 {
+		left = 50.0
+	}
+	a1 := 90.0
+	dx := left // + (psize / 2)
 	dy := top - (psize / 2)
 	if len(title) > 0 && showtitle {
 		deck.TextMid(dx, dy+(psize*1.2), title, "sans", ts*1.5, titlecolor)
 	}
 	for i, p := range pct(data) {
 		angle := (p / 100) * 360.0
-		a2 := a1 + angle
+		a2 := a1 - angle
 		mid := (a1 + a2) / 2
 
 		bcolor, op := stdcolor(i, data[i].note, datacolor, p)
@@ -555,6 +573,9 @@ func pchart(deck *generate.Deck, r io.ReadCloser) {
 
 // wbchart makes a word bar chart
 func wbchart(deck *generate.Deck, r io.ReadCloser) {
+	if left < 0 {
+		left = 20.0
+	}
 	hts := ts / 2
 	mts := ts * 0.75
 	linespacing := ts * ls
@@ -598,6 +619,11 @@ func hchart(deck *generate.Deck, r io.ReadCloser) {
 	linespacing := ts * ls
 
 	bardata, mindata, maxdata, title := getdata(r)
+
+	if left < 0 {
+		left = 30.0
+	}
+
 	if !datamin {
 		mindata = 0
 	}
@@ -638,6 +664,11 @@ func hchart(deck *generate.Deck, r io.ReadCloser) {
 // the types of charts are bar (column), dot, line, and volume
 func vchart(deck *generate.Deck, r io.ReadCloser) {
 	chartdata, mindata, maxdata, title := getdata(r)
+
+	if left < 0 {
+		left = 10.0
+	}
+
 	if !datamin {
 		mindata = 0
 	}
