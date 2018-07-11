@@ -525,7 +525,7 @@ func donut(deck *generate.Deck, data []ChartData, title string) {
 	if left < 0 {
 		left = 50.0
 	}
-	a1 := 90.0
+	a1 := 0.0
 	dx := left // + (psize / 2)
 	dy := top - (psize / 2)
 	if len(title) > 0 && showtitle {
@@ -533,7 +533,7 @@ func donut(deck *generate.Deck, data []ChartData, title string) {
 	}
 	for i, p := range pct(data) {
 		angle := (p / 100) * 360.0
-		a2 := a1 - angle
+		a2 := a1 + angle
 		mid := (a1 + a2) / 2
 
 		bcolor, op := stdcolor(i, data[i].note, datacolor, p)
