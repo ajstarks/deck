@@ -61,6 +61,7 @@ The command line options are:
 	-xlast       show the last x label
 	-color       data color (default "lightsteelblue")
 	-vcolor      value color (default "rgb(127,0,0)")
+	-volop       volume opacity (default 50)
 	-datafmt     data format for values (default "%.1f")
 */
 package main

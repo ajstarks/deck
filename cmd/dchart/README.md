@@ -48,7 +48,7 @@ These flag values represent percentages on the deck canvas.
 ## Chart types and elements
 
 The ```-bar```, ```-hbar```, ```-line```, ```-dot```, ```-scatter```, ```-vol```, 
-```-pgrid```, ```-pmap```, and ```-donut``` 
+```-pgrid```, ```-pmap```,```-donut```, and ```-radial```.
 flags specify the chart types.
 
 The ```-grid```, ```-title```, ```-val```, and ```-yaxis``` 
@@ -100,6 +100,7 @@ flags control the visibility of plot components.
 	-xlast       show the last x label
 	-color       data color (default "lightsteelblue")
 	-vcolor      value color (default "rgb(127,0,0)")
+	-volop       volume opacity (default 50)
 	-datafmt     data format for values (default "%.1f")
 
 

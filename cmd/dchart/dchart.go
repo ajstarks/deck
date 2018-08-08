@@ -1,4 +1,4 @@
-// lchart - make charts in the deck format
+// dchart - make charts in the deck format
 package main
 
 import (
@@ -23,7 +23,7 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth                     float64
+	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop              float64
 	xint, pmlen                                                                           int
 	readcsv, showdot, datamin, showvolume, showscatter                                    bool
 	showbar, showval, showxlast, showline, showhbar, wbar, showaxis                       bool
@@ -71,6 +71,7 @@ func cmdflags() {
 	flag.Float64Var(&umax, "max", -1, "maximum")
 	flag.Float64Var(&psize, "psize", 40.0, "size of the donut")
 	flag.Float64Var(&pwidth, "pwidth", ts*3, "width of the pmap/donut/radial")
+	flag.Float64Var(&volop, "volop", 50, "volume opacity")
 
 	flag.BoolVar(&showbar, "bar", true, "show a bar chart")
 	flag.BoolVar(&showdot, "dot", false, "show a dot chart")
@@ -782,7 +783,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		py = y
 	}
 	if showvolume {
-		deck.Polygon(xvol, yvol, datacolor, transparency)
+		deck.Polygon(xvol, yvol, datacolor, volop)
 	}
 	if fulldeck {
 		deck.EndSlide()
