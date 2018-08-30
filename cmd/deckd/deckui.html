@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Presentations</title>
+<script type="application/javascript">
+
+// lookup table: locations:servers
+var screens  = {
+		"Desk": "localhost:1958", 
+		"Bedroom": "raspi.local:1958", 
+		"Classroom A113": "calarts.edu/a113", 
+		"Room 101": "minitrue.gov/work"
+	};
+
+// screenlookup gives the server associated with a specified location
+function screenlookup() {
+	var srv = screens[document.getElementById("servername").value];
+	if (srv == "") {
+		srv = "localhost:1958";
+	}
+	return srv;
+}
+
+function Playlist(df) {
+	var srv = screenlookup();
+	var dur = document.getElementById("duration").value;
+	var slide = document.getElementById("slidenum").value;
+	
+	request = new XMLHttpRequest;
+	request.open('POST', "http://"+srv+"/deck/"+df+"?cmd="+dur+"&slide="+slide, true);
+	request.send();
+}
+
+// Stop a deck
+function Stop() {
+	var srv = screenlookup();
+	
+	request = new XMLHttpRequest;
+	request.open('POST', "http://"+srv+"/deck/?cmd=stop", true);
+	request.send();
+}
+
+// List content on the server
+function List(style) {
+	var srv = screenlookup();
+	var listype = document.getElementById("listype").value;
+	
+	request = new XMLHttpRequest;
+	request.open('GET', "http://"+srv+"/deck/?filter="+listype, true);
+	request.onload = function() {
+		var output = "";
+  		if (request.status == 200) {
+    		data = JSON.parse(request.responseText);
+    		output += '<table id="' + style + '">';
+    		output += '<tbody>';
+    		for (i in data.decks) {
+    			output += '<tr>';
+    			if (listype == "deck") {
+    				output += '<td><button id="play" onclick="Playlist(\''+data.decks[i].name+'\')">Play</button></td>';
+				output += '<td><img src="http://'+ srv + '/thumb/' + data.decks[i].name + '-kf.png"/></td>';
+    				output += '<td><button id="stop" onclick="Stop()">Stop</button>';
+    			}
+    			output += '<td>' +  data.decks[i].name + '</td>';
+    			output += '<td>' +  data.decks[i].meta + '</td>';
+    			output += '<td>' +  data.decks[i].date + '</td>';
+    			output += '</tr>';
+    		}
+    		output += '</tbody>';
+    		output += '</table>';
+    		var update = document.getElementById('decklist');
+    		update.innerHTML = output;
+  		} else {
+  			alert("error");
+  		}
+	}
+	request.send();
+}
+</script>
+
+<style type="text/css">
+
+body {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	line-height: 0.5em;
+	margin: 10%;
+	font-size: 16px;
+}
+
+h1 {
+	font-size: 400%;
+}
+
+caption {
+	font-size: 125%;
+	font-style: bold;
+	text-align: center;
+	background-color: #000;
+	color: white;
+	margin-top: 1em;
+	padding: 0.5em;
+}
+
+
+#decklist {
+	width: 100%;
+}
+
+
+#listselect {
+	padding: 1em;
+	background-color: #eee;
+	width: 75%;
+}
+
+#serverselect {
+	padding: 1em;
+	background-color: #eee;
+	width: 75%;
+	bottom: 2em;
+}
+
+button {
+	font-size:120%;
+	color: white;
+	border: 0px;
+}
+
+#play {
+	background-color: green;
+}
+
+#stop {
+	background-color: red;
+}
+
+#list {
+	background-color: darkgray;
+}
+
+select {
+	font-size: 120%;
+	border: 0;
+	width: 30%;
+	background: transparent;
+}
+
+label {
+	color: #000;
+}
+
+input {
+	text-align: center;
+}
+
+#listable {
+	font-size: 100%;
+	text-align: left;
+	border-collapse: collapse;
+}
+#listable th {
+	font-size: 120%;
+	font-weight: bold;
+	padding: 12px 15px;
+	color: #039;
+}
+#listable td {
+	padding: 10px 15px;
+	color: #669;
+	border-top: 1px solid #e8edff;
+}
+.oce-first {
+	background: #d0dafd;
+	border-right: 10px solid transparent;
+	border-left: 10px solid transparent;
+}
+#listable tr:hover td {
+	color: #339;
+	background: #eff2ff;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="ui" align="center">
+
+	<div id="serverselect">
+		<select id="servername" type="text" value="Desk" maxlength="40">
+			<option>Bedroom</option>
+			<option>Desk</option>
+			<option>Room 101</option>
+			<option>Classroom A113</option>
+		</select>
+	</div>
+
+	<div id="listselect">
+		<button id="list" onclick="List('listable')">List</button>
+		<select  id="listype" type="text" value="deck" placeholder="deck">
+			<option>deck</option>
+			<option>image</option>
+			<option>video</option>
+		</select>
+		<label>Duration</label><input id="duration" type="text" value="1s" placeholder="1s" size="4"/>
+		<label>Start Slide</label><input id="slidenum" type="text" placeholder="0" value="0" size="4" />
+	</div>
+
+	<div id="decklist"></div>
+</div>
+
+</body>
+</html>
