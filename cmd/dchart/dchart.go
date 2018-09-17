@@ -25,7 +25,7 @@ type ChartData struct {
 var (
 	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop              float64
 	xint, pmlen                                                                           int
-	readcsv, showdot, datamin, showvolume, showscatter                                    bool
+	readcsv, showdot, datamin, showvolume, showscatter, showpct                           bool
 	showbar, showval, showxlast, showline, showhbar, wbar, showaxis                       bool
 	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes bool
 	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols, hline      string
@@ -93,6 +93,7 @@ func cmdflags() {
 	flag.BoolVar(&datamin, "dmin", false, "zero minimum")
 	flag.BoolVar(&readcsv, "csv", false, "read CSV data")
 	flag.BoolVar(&wbar, "wbar", false, "show word bar chart")
+	flag.BoolVar(&showpct, "pct", false, "show computed percentages with values")
 	flag.IntVar(&xint, "xlabel", 1, "x axis label interval (show every n labels, 0 to show no labels)")
 	flag.IntVar(&pmlen, "pmlen", 20, "pmap label length")
 
@@ -333,6 +334,15 @@ func dformat(x float64) string {
 		return fmt.Sprintf("%0.f", x)
 	}
 	return fmt.Sprintf(datafmt, x)
+}
+
+// datasum computes the sum of the chart data
+func datasum(data []ChartData) float64 {
+	sum := 0.0
+	for _, d := range data {
+		sum += d.value
+	}
+	return sum
 }
 
 // pct computs the percentage of a range of values
@@ -597,6 +607,11 @@ func wbchart(deck *generate.Deck, r io.ReadCloser) {
 		deck.Text(left, top+(linespacing*1.5), title, "sans", ts*1.5, titlecolor)
 	}
 
+	var sum float64
+	if showpct {
+		sum = datasum(bardata)
+	}
+
 	// for every name, value pair, make the chart
 	y := top
 	for _, data := range bardata {
@@ -604,7 +619,12 @@ func wbchart(deck *generate.Deck, r io.ReadCloser) {
 		bv := vmap(data.value, mindata, maxdata, left, right)
 		deck.Line(left+hts, y+hts, bv, y+hts, ts*1.5, datacolor, wbop)
 		if showval {
-			deck.TextEnd(left, y+(hts/2), dformat(data.value), "mono", mts, valuecolor)
+			if showpct {
+				avgs := fmt.Sprintf(" ("+datafmt+"%%)", 100*(data.value/sum))
+				deck.TextEnd(left, y+(hts/2), dformat(data.value)+avgs, "mono", mts, valuecolor)
+			} else {
+				deck.TextEnd(left, y+(hts/2), dformat(data.value), "mono", mts, valuecolor)
+			}
 		}
 		y -= linespacing
 	}
@@ -640,6 +660,11 @@ func hchart(deck *generate.Deck, r io.ReadCloser) {
 		deck.TextMid(50, top+(linespacing*1.5), title, "sans", ts*1.5, titlecolor)
 	}
 
+	var sum float64
+	if showpct {
+		sum = datasum(bardata)
+	}
+
 	// for every name, value pair, make the chart
 	y := top
 	for _, data := range bardata {
@@ -652,7 +677,12 @@ func hchart(deck *generate.Deck, r io.ReadCloser) {
 			deck.Line(left, y+hts, bv, y+hts, ts, datacolor)
 		}
 		if showval {
-			deck.Text(bv+hts, y+(hts/2), dformat(data.value), "mono", mts, valuecolor)
+			if showpct {
+				avgs := fmt.Sprintf(" ("+datafmt+"%%)", 100*(data.value/sum))
+				deck.Text(bv+hts, y+(hts/2), dformat(data.value)+avgs, "mono", mts, valuecolor)
+			} else {
+				deck.Text(bv+hts, y+(hts/2), dformat(data.value), "mono", mts, valuecolor)
+			}
 		}
 		y -= linespacing
 	}
@@ -733,6 +763,11 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		}
 	}
 
+	var sum float64
+	if showpct {
+		sum = datasum(chartdata)
+	}
+
 	// for every name, value pair, make the chart elements
 	var px, py float64
 	for i, data := range chartdata {
@@ -770,7 +805,12 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			case "m":
 				yv = y - ((y - bottom) / 2)
 			}
-			deck.TextMid(x, yv, dformat(data.value), "sans", ts*0.75, valuecolor)
+			if showpct {
+				avgs := fmt.Sprintf(" ("+datafmt+"%%)", 100*(data.value/sum))
+				deck.TextMid(x, yv, dformat(data.value)+avgs, "sans", ts*0.75, valuecolor)
+			} else {
+				deck.TextMid(x, yv, dformat(data.value), "sans", ts*0.75, valuecolor)
+			}
 		}
 		if len(data.note) > 0 {
 			deck.TextMid(x, y+0.1, data.note, "serif", ts*0.6, labelcolor)

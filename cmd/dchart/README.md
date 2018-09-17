@@ -78,6 +78,7 @@ flags control the visibility of plot components.
 
 	-grid        show gridlines on the y axis (default false)
 	-val         show values (default true)
+	-pct         show percentages with values (default false)
 	-valpos      value position (t=top, b=bottom, m=middle) (default "t")
 	-yaxis       show a y axis (default true)
 	-yrange      specify the y axis labels (min,max,step)

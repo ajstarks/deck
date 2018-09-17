@@ -31,6 +31,7 @@ The command line options are:
 	-dot         show dot plot (default false)
 	-grid        show gridlines on the y axis (default false)
 	-val         show values (default true)
+	-pct         show percentages with values (default false)
 	-valpos      value position (t=top, b=bottom, m=middle) (default "t")
 	-vol         show volume plot (default false)
 	-pgrid       show a proportional grid (default false)
