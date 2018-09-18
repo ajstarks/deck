@@ -1,4 +1,4 @@
-# decksh -- a little language for deck markup
+# decksh: a little language for deck markup
 
 ```decksh``` is a domain-specific language (DSL) for generating ```deck``` markup.
 
@@ -9,7 +9,7 @@
 	$ decksh foo.sh            # input from foo.sh output to stdout
 	$ decksh -o foo.xml foo.sh # input from foo.sh output to foo.xml
 	
-```decksh``` becomes the head of a rendering pipeline:
+Typically, ```decksh``` acts as the head of a rendering pipeline:
 
 	$ decksh text.sh | pdf -pagesize 1200,900 
 
@@ -43,9 +43,12 @@ Produces:
 
 ![exampledeck](exampledeck.png)
 	
-Text, colors, captions items follow the Go convetions (surrounded by double quotes)
-Coordinates, dimensions and opacity range from 0-100 
-(they represent percentages on the canvas and percent opaque).
+Text, color and caption arguments follow Go convetions (surrounded by double quotes).
+Colors are in rgb format, or SVG color names.
+
+Coordinates, dimensions and opacity are floating point numbers ranging from from 0-100 
+(they represent percentages on the canvas and percent opacity).
+
 Canvas size and image dimensions are in pixels.
 
 ## Structure
@@ -58,18 +61,18 @@ Canvas size and image dimensions are in pixels.
 	
 ## Text
 
-	text "text" x y size [font] [color] [opacity]
+	text  "text" x y size [font] [color] [opacity]
 	ctext "text" x y size [font] [color] [opacity]
 	etext "text" x y size [font] [color] [opacity]
 	
 ## Images
 
-	image "file" x y width height [scale] [link]
+	image  "file" x y width height [scale] [link]
 	cimage "file" "caption" x y width height [scale] [link]
 	
 ## Lists
 	
-	list x y size [font] [color] [opacity]
+	list   x y size [font] [color] [opacity]
 	blist  x y size [font] [color] [opacity]
 	nlist  x y size [font] [color] [opacity]
 	li "text"
@@ -77,14 +80,16 @@ Canvas size and image dimensions are in pixels.
 	
 ## Graphics
 
-	rect x y w h [color] [opacity]
-	square x y w [color] [opacity]
+	rect    x y w h [color] [opacity]
 	ellipse x y w h [color] [opacity]
-	circle  x y w h [color] [opacity]
+
+	square  x y w [color] [opacity]
+	circle  x y w [color] [opacity]
+	
 	polygon "xcoords" "ycoords" [color] [opacity]
-	line x1 y1 x2 y2 [size] [color] [opacity]
-	arc x y w h a1 a2 [size] [color] [opacity]
-	curve x1 y1 x2 y2 x3 y3 [size] [color] [opacity]
+	line    x1 y1 x2 y2 [size] [color] [opacity]
+	arc     x y w h a1 a2 [size] [color] [opacity]
+	curve   x1 y1 x2 y2 x3 y3 [size] [color] [opacity]
 
 	
 	
