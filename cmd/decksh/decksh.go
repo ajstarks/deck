@@ -386,7 +386,6 @@ func process(w io.Writer, r io.Reader) error {
 
 	// handle read errors from scanning
 	if err := scanner.Err(); err != nil {
-		fmt.Fprintf(os.Stderr, "decksh: %v\n", err)
 		return err
 	}
 
@@ -429,7 +428,6 @@ func main() {
 
 	err := process(output, input)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(3)
 	}
 
