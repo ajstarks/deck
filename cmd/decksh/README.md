@@ -1,3 +1,93 @@
 # decksh -- a little language for deck markup
 
-```decksh``` generates ```deck``` markup using a *little language* using these specific keywords and functions
+```decksh``` is a domain-specific language (DSL) for generating ```deck``` markup.
+
+# Running the command
+
+	$ decksh                   # input from stdin, output to stdout
+	$ decksh -o foo.xml        # input from stdin, output to foo.xml
+	$ decksh foo.sh            # input from foo.sh output to stdout
+	$ decksh -o foo.xml foo.sh # input from foo.sh output to foo.xml
+	
+```decksh``` becomes the head of a rendering pipeline:
+
+	$ decksh text.sh | pdf -pagesize 1200,900 
+
+## Example input
+
+This deck script
+
+	// example deck
+	deck begin
+		canvas 1200 900
+		slide begin white black
+			ctext "Deck elements" 50 90 5
+			cimage "follow.jpg" "Dreams" 70 60 640 480 80
+
+			blist 10 70 3
+				li "text, image, list"
+				li "rect, ellipse, polygon"
+				li "line, arc, curve"
+			elist
+
+			rect    15 20 8 6             "rgb(127,0,0)"
+			ellipse 27.5 20 8 6           "rgb(0,127,0)"
+			polygon "37 37 45" "17 23 20" "rgb(0,0,127)"
+			line    50 20 60 20
+			arc     70 20 10 8 0 180 0   "rgb(0,0,127)"
+			curve   80 20 95 30 90 20 0  "rgb(127,127,127)"
+		slide end
+	deck end
+	
+Produces:
+
+![exampledeck](exampledeck.png)
+	
+Text, colors, captions items follow the Go convetions (surrounded by double quotes)
+Coordinates, dimensions and opacity range from 0-100 
+(they represent percentages on the canvas and percent opaque).
+Canvas size and image dimensions are in pixels.
+
+## Structure
+
+	deck begin
+	deck end
+	slide begin [bgcolor] [fgcolor]
+	slide end
+	canvas w h
+	
+## Text
+
+	text "text" x y size [font] [color] [opacity]
+	ctext "text" x y size [font] [color] [opacity]
+	etext "text" x y size [font] [color] [opacity]
+	
+## Images
+
+	image "file" x y width height [scale] [link]
+	cimage "file" "caption" x y width height [scale] [link]
+	
+## Lists
+	
+	list x y size [font] [color] [opacity]
+	blist  x y size [font] [color] [opacity]
+	nlist  x y size [font] [color] [opacity]
+	li "text"
+	elist
+	
+## Graphics
+
+	rect x y w h [color] [opacity]
+	square x y w [color] [opacity]
+	ellipse x y w h [color] [opacity]
+	circle  x y w h [color] [opacity]
+	polygon "xcoords" "ycoords" [color] [opacity]
+	line x1 y1 x2 y2 [size] [color] [opacity]
+	arc x y w h a1 a2 [size] [color] [opacity]
+	curve x1 y1 x2 y2 x3 y3 [size] [color] [opacity]
+
+	
+	
+
+
+
