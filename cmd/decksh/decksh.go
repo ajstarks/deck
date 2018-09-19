@@ -35,7 +35,7 @@ func parse(src string) []string {
 
 // dumptokens show the parsed tokens
 func dumptokens(w io.Writer, s []string, linenumber int) {
-	fmt.Fprintf(w, "line %-3d:\t[", linenumber)
+	fmt.Fprintf(w, "line %d: [", linenumber)
 	for i, t := range s {
 		fmt.Fprintf(w, " %d: %s ", i, t)
 	}
@@ -104,11 +104,11 @@ func slide(w io.Writer, s []string, linenumber int) error {
 func fontColorOp(s []string) string {
 	switch len(s) {
 	case 1:
-		return fmt.Sprintf("font=%s", s[0])
+		return fmt.Sprintf("font=%q", s[0])
 	case 2:
-		return fmt.Sprintf("font=%s color=%s", s[0], s[1])
+		return fmt.Sprintf("font=%q color=%q", s[0], s[1])
 	case 3:
-		return fmt.Sprintf("font=%s color=%s opacity=%q", s[0], s[1], s[2])
+		return fmt.Sprintf("font=%q color=%q opacity=%q", s[0], s[1], s[2])
 	default:
 		return ""
 	}
@@ -330,6 +330,15 @@ func curve(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+func chart(w io.Writer, s []string, linenumber int) error {
+	n := len(s)
+	if n < 1 {
+		return fmt.Errorf("line %d: dchart [arguments]", linenumber)
+	}
+	fmt.Fprintf(os.Stderr, "%v\n", s)
+	return nil
+}
+
 // process reads input, parses, dispatches functions for code generation
 func process(w io.Writer, r io.Reader) error {
 	scanner := bufio.NewScanner(r)
@@ -370,6 +379,8 @@ func process(w io.Writer, r io.Reader) error {
 			errors = append(errors, arc(w, tokens, n))
 		case "curve":
 			errors = append(errors, curve(w, tokens, n))
+		case "dchart", "chart":
+			errors = append(errors, chart(w, tokens, n))
 		default:
 			dumptokens(os.Stderr, tokens, n)
 		}
