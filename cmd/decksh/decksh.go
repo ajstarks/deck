@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"strings"
 	"text/scanner"
 )
@@ -104,11 +105,11 @@ func slide(w io.Writer, s []string, linenumber int) error {
 func fontColorOp(s []string) string {
 	switch len(s) {
 	case 1:
-		return fmt.Sprintf("font=%q", s[0])
+		return fmt.Sprintf("font=%s", s[0])
 	case 2:
-		return fmt.Sprintf("font=%q color=%q", s[0], s[1])
+		return fmt.Sprintf("font=%s color=%s", s[0], s[1])
 	case 3:
-		return fmt.Sprintf("font=%q color=%q opacity=%q", s[0], s[1], s[2])
+		return fmt.Sprintf("font=%s color=%s opacity=%q", s[0], s[1], s[2])
 	default:
 		return ""
 	}
@@ -330,13 +331,13 @@ func curve(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
-func chart(w io.Writer, s []string, linenumber int) error {
-	n := len(s)
-	if n < 1 {
-		return fmt.Errorf("line %d: dchart [arguments]", linenumber)
+func chart(w io.Writer, s string, linenumber int) error {
+	out, err := exec.Command("/bin/sh", "-c", s).Output()
+	if err != nil {
+		return err
 	}
-	fmt.Fprintf(os.Stderr, "%v\n", s)
-	return nil
+	fmt.Fprintf(w, "%s\n", out)
+	return err
 }
 
 // process reads input, parses, dispatches functions for code generation
@@ -348,7 +349,8 @@ func process(w io.Writer, r io.Reader) error {
 	// call the appropriate function, collecting errors as we go.
 	// If any errors occurred, print them at the end, and return the latest
 	for n := 1; scanner.Scan(); n++ {
-		tokens := parse(scanner.Text())
+		t := scanner.Text()
+		tokens := parse(t)
 		if len(tokens) < 1 {
 			continue
 		}
@@ -380,7 +382,7 @@ func process(w io.Writer, r io.Reader) error {
 		case "curve":
 			errors = append(errors, curve(w, tokens, n))
 		case "dchart", "chart":
-			errors = append(errors, chart(w, tokens, n))
+			errors = append(errors, chart(w, t, n))
 		default:
 			dumptokens(os.Stderr, tokens, n)
 		}
