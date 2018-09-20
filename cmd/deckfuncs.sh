@@ -77,10 +77,6 @@ function cimage {
 	echo "<image name=\"$1\" caption=\"$2\" xp=\"$3\" yp=\"$4\" width=\"$5\" height=\"$6\" scale=\"$7\"/>"
 }
 
-function line {
-	echo "<line xp1=\"$1\" yp1=\"$2\" xp2=\"$3\" yp2=\"$4\" sp=\"$5\" color=\"$6\" opacity=\"$7\"/>"
-}
-
 function rect {
 	echo "<rect xp=\"$1\" yp=\"$2\" wp=\"$3\" hp=\"$4\" color=\"$5\" opacity=\"$6\"/>" 
 }
@@ -97,17 +93,23 @@ function circle {
 	echo "<ellipse xp=\"$1\" yp=\"$2\" wp=\"$3\" hr=\"100\" color=\"$4\" opacity=\"$5\"/>" 
 }
 
-function arc {
-	echo "<arc xp=\"$1\" yp=\"$2\" wp=\"$3\" hp=\"$4\" a1=\"$5\" a2=\"$6\" color=\"$7\" opacity=\"$8\"/>"
-}
-
-function curve {
-	echo "<curve xp1=\"$1\" yp1=\"$2\" xp2=\"$3\" yp2=\"$4\" xp3=\"$5\" yp3=\"$6\" color=\"$7\" opacity=\"$8\"/>"
-}
-
 function polygon {
 	echo "<polygon xc=\"$1\" yc=\"$2\" color=\"$3\" opacity=\"$4\"/>"
 }
+
+function line {
+	echo "<line xp1=\"$1\" yp1=\"$2\" xp2=\"$3\" yp2=\"$4\" sp=\"$5\" color=\"$6\" opacity=\"$7\"/>"
+}
+
+function arc {
+	echo "<arc xp=\"$1\" yp=\"$2\" wp=\"$3\" hp=\"$4\" a1=\"$5\" a2=\"$6\" sp=\"$7\" color=\"$8\" opacity=\"$9\"/>"
+}
+
+function curve {
+	echo "<curve xp1=\"$1\" yp1=\"$2\" xp2=\"$3\" yp2=\"$4\" xp3=\"$5\" yp3=\"$6\" sp=\"$7\" color=\"$8\" opacity=\"$9\"/>"
+}
+
+
 
 function legend {
 		text "$1" $(($2 + 2)) $3 $4 $5
