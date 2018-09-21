@@ -140,7 +140,7 @@ func text(w io.Writer, s []string, linenumber int) error {
 	case "ctext":
 		fmt.Fprintf(w, "<text align=\"c\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
 	case "etext":
-		fmt.Fprintf(w, "<text align=\"e\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[0], s[2], s[3], s[4], fco, qesc(s[1]))
+		fmt.Fprintf(w, "<text align=\"e\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
 	}
 	return nil
 }
@@ -243,6 +243,12 @@ func regshapes(w io.Writer, s []string, linenumber int) error {
 	e := fmt.Errorf("line %d: %s x y w [color] [opacity]", linenumber, s[0])
 	if n < 4 {
 		return e
+	}
+	switch s[0] {
+		case "square":
+			s[0] = "rect"
+		case "circle":
+			s[0] = "ellipse"
 	}
 	dim := fmt.Sprintf("xp=%q yp=%q wp=%q hr=\"100\"", s[1], s[2], s[3])
 	switch n {
