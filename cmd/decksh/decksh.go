@@ -216,32 +216,48 @@ func listitem(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
-// shapes generates markup for rectangle, square, ellipse, and circle
+// shapes generates markup for rectangle and ellipse
 func shapes(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
 	e := fmt.Errorf("line %d: %s x y w h [color] [opacity]", linenumber, s[0])
 	if n < 5 {
 		return e
 	}
-	var dim string
-	switch s[0] {
-	case "square", "circle":
-		dim = fmt.Sprintf("xp=%q yp=%q wp=%q hr=\"100\"", s[1], s[2], s[3])
-	case "rect", "ellipse":
-		dim = fmt.Sprintf("xp=%q yp=%q wp=%q hp=%q", s[1], s[2], s[3], s[4])
-	}
+	dim := fmt.Sprintf("xp=%q yp=%q wp=%q hp=%q", s[1], s[2], s[3], s[4])
 	switch n {
 	case 5:
 		fmt.Fprintf(w, "<%s %s/>\n", s[0], dim)
 	case 6:
 		fmt.Fprintf(w, "<%s %s color=%s/>\n", s[0], dim, s[5])
 	case 7:
-		fmt.Fprintf(w, "<%s %s color=%s opacity=%s/>\n", s[0], dim, s[5], s[6])
+		fmt.Fprintf(w, "<%s %s color=%s opacity=%q/>\n", s[0], dim, s[5], s[6])
 	default:
 		return e
 	}
 	return nil
 }
+
+// regshapes generates markup for square and circle
+func regshapes(w io.Writer, s []string, linenumber int) error {
+	n := len(s)
+	e := fmt.Errorf("line %d: %s x y w [color] [opacity]", linenumber, s[0])
+	if n < 4 {
+		return e
+	}
+	dim := fmt.Sprintf("xp=%q yp=%q wp=%q hr=\"100\"", s[1], s[2], s[3])
+	switch n {
+	case 4:
+		fmt.Fprintf(w, "<%s %s/>\n", s[0], dim)
+	case 5:
+		fmt.Fprintf(w, "<%s %s color=%s/>\n", s[0], dim, s[4])
+	case 6:
+		fmt.Fprintf(w, "<%s %s color=%s opacity=%q/>\n", s[0], dim, s[4], s[5])
+	default:
+		return e
+	}
+	return nil
+}
+
 
 // polygon generates markup for polygons
 func polygon(w io.Writer, s []string, linenumber int) error {
@@ -256,7 +272,7 @@ func polygon(w io.Writer, s []string, linenumber int) error {
 	case 4:
 		fmt.Fprintf(w, "<%s xc=%s yc=%s color=%s/>\n", s[0], s[1], s[2], s[3])
 	case 5:
-		fmt.Fprintf(w, "<%s xc=%s yc=%s color=%s opacity=%s/>\n", s[0], s[1], s[2], s[3], s[4])
+		fmt.Fprintf(w, "<%s xc=%s yc=%s color=%s opacity=%q/>\n", s[0], s[1], s[2], s[3], s[4])
 	default:
 		return e
 	}
@@ -340,6 +356,14 @@ func chart(w io.Writer, s string, linenumber int) error {
 	return err
 }
 
+
+func assign(s []string, linenumber int) error {
+	if len(s) < 3 {
+		return fmt.Errorf("line %d: assignment needs id=<expression>", linenumber)
+	}
+	fmt.Fprintf(os.Stderr, "id=%s expression=%s\n", s[0], s[2:])
+	return nil
+}
 // process reads input, parses, dispatches functions for code generation
 func process(w io.Writer, r io.Reader) error {
 	scanner := bufio.NewScanner(r)
@@ -357,33 +381,52 @@ func process(w io.Writer, r io.Reader) error {
 		switch tokens[0] {
 		case "deck":
 			errors = append(errors, deck(w, tokens, n))
+			
 		case "canvas":
 			errors = append(errors, canvas(w, tokens, n))
+			
 		case "slide":
 			errors = append(errors, slide(w, tokens, n))
+			
 		case "text", "ctext", "etext":
 			errors = append(errors, text(w, tokens, n))
+			
 		case "image", "cimage":
 			errors = append(errors, image(w, tokens, n))
+			
 		case "list", "blist", "nlist":
 			errors = append(errors, list(w, tokens, n))
+			
 		case "elist":
 			errors = append(errors, elist(w, tokens, n))
+			
 		case "li":
 			errors = append(errors, listitem(w, tokens, n))
-		case "ellipse", "rect", "circle", "square":
+			
+		case "ellipse", "rect":
 			errors = append(errors, shapes(w, tokens, n))
+			
+		case "circle", "square":
+			errors = append(errors, regshapes(w, tokens, n))
+			
 		case "polygon", "poly":
 			errors = append(errors, polygon(w, tokens, n))
+			
 		case "line":
 			errors = append(errors, line(w, tokens, n))
+			
 		case "arc":
 			errors = append(errors, arc(w, tokens, n))
+			
 		case "curve":
 			errors = append(errors, curve(w, tokens, n))
+			
 		case "dchart", "chart":
 			errors = append(errors, chart(w, t, n))
 		default:
+			if tokens[1] == "=" {
+				errors = append(errors, assign(tokens, n))
+			}
 			dumptokens(os.Stderr, tokens, n)
 		}
 	}
