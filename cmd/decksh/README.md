@@ -17,6 +17,7 @@ Typically, ```decksh``` acts as the head of a rendering pipeline:
 
 This deck script
 
+	// example deck
 	deck begin
 		canvas 1200 900
 		slide begin "white" "black"
@@ -41,6 +42,7 @@ This deck script
 			ctext "line"     55 15 1
 			ctext "arc"      70 15 1
 			ctext "curve"    85 15 1
+			dchart -left=10 -right=45 -top=50 -bottom=30 -fulldeck=f -textsize=0.7 -color=tan  -barwidth=1.5 AAPL.d 
 		slide end
 	deck end
 
