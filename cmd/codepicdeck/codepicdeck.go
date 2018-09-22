@@ -52,7 +52,7 @@ func index(deck *generate.Deck, filenames []string, title string) {
 	x, y := 5.0, 90.0
 	for _, f := range filenames {
 		imagefile := swapext(f, ".go", ".png")
-		deck.Image(x, y, 72, 72, imagefile)
+		deck.Image(x, y, 72, 72, imagefile, "")
 		deck.TextMid(x, y-7, f, "sans", 1, "black")
 		x += 10.0
 		if x > 95 {
@@ -85,7 +85,7 @@ func codepic(deck *generate.Deck, filenames []string) {
 		imw, imh := imagesize(imagefile)
 		slide++
 		deck.StartSlide()
-		deck.Image(75, 68, imw, imh, imagefile)
+		deck.Image(75, 68, imw, imh, imagefile, "")
 		deck.Text(2.5, 96, includefile(codefile), "mono", 1.2, "black")
 		deck.TextEnd(90, 2.5, codefile, "sans", 2, "black")
 		deck.TextEnd(95, 2.5, fmt.Sprintf("[%d]", slide), "sans", 2, "gray")
