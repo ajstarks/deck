@@ -44,10 +44,10 @@ Produces:
 ![exampledeck](exampledeck.png)
 	
 Text, color and caption arguments follow Go convetions (surrounded by double quotes).
-Colors are in rgb format, or SVG color names.
+Colors are in rgb format ("rgb(n,n,n)"), or SVG color names.
 
-Coordinates, dimensions and opacity are floating point numbers ranging from from 0-100 
-(they represent percentages on the canvas and percent opacity).
+Coordinates, dimensions and opacities are floating point numbers ranging from from 0-100 
+(they represent percentages on the canvas and percent opaque).
 
 Canvas size and image dimensions are in pixels.
 

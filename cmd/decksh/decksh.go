@@ -12,6 +12,11 @@ import (
 	"text/scanner"
 )
 
+type expression struct {
+	id         string
+	expression []string
+}
+
 var xmlmap = strings.NewReplacer(
 	"&", "&amp;",
 	"<", "&lt;",
@@ -83,9 +88,9 @@ func slide(w io.Writer, s []string, linenumber int) error {
 		case 2:
 			fmt.Fprintln(w, "<slide>")
 		case 3:
-			fmt.Fprintf(w, "<slide bg=%q>\n", s[2])
+			fmt.Fprintf(w, "<slide bg=%s>\n", s[2])
 		case 4:
-			fmt.Fprintf(w, "<slide bg=%q fg=%q>\n", s[2], s[3])
+			fmt.Fprintf(w, "<slide bg=%s fg=%s>\n", s[2], s[3])
 		default:
 			return e
 		}
@@ -245,10 +250,10 @@ func regshapes(w io.Writer, s []string, linenumber int) error {
 		return e
 	}
 	switch s[0] {
-		case "square":
-			s[0] = "rect"
-		case "circle":
-			s[0] = "ellipse"
+	case "square":
+		s[0] = "rect"
+	case "circle":
+		s[0] = "ellipse"
 	}
 	dim := fmt.Sprintf("xp=%q yp=%q wp=%q hr=\"100\"", s[1], s[2], s[3])
 	switch n {
@@ -263,7 +268,6 @@ func regshapes(w io.Writer, s []string, linenumber int) error {
 	}
 	return nil
 }
-
 
 // polygon generates markup for polygons
 func polygon(w io.Writer, s []string, linenumber int) error {
@@ -362,7 +366,6 @@ func chart(w io.Writer, s string, linenumber int) error {
 	return err
 }
 
-
 func assign(s []string, linenumber int) error {
 	if len(s) < 3 {
 		return fmt.Errorf("line %d: assignment needs id=<expression>", linenumber)
@@ -370,6 +373,7 @@ func assign(s []string, linenumber int) error {
 	fmt.Fprintf(os.Stderr, "id=%s expression=%s\n", s[0], s[2:])
 	return nil
 }
+
 // process reads input, parses, dispatches functions for code generation
 func process(w io.Writer, r io.Reader) error {
 	scanner := bufio.NewScanner(r)
@@ -387,46 +391,46 @@ func process(w io.Writer, r io.Reader) error {
 		switch tokens[0] {
 		case "deck":
 			errors = append(errors, deck(w, tokens, n))
-			
+
 		case "canvas":
 			errors = append(errors, canvas(w, tokens, n))
-			
+
 		case "slide":
 			errors = append(errors, slide(w, tokens, n))
-			
+
 		case "text", "ctext", "etext":
 			errors = append(errors, text(w, tokens, n))
-			
+
 		case "image", "cimage":
 			errors = append(errors, image(w, tokens, n))
-			
+
 		case "list", "blist", "nlist":
 			errors = append(errors, list(w, tokens, n))
-			
+
 		case "elist":
 			errors = append(errors, elist(w, tokens, n))
-			
+
 		case "li":
 			errors = append(errors, listitem(w, tokens, n))
-			
+
 		case "ellipse", "rect":
 			errors = append(errors, shapes(w, tokens, n))
-			
+
 		case "circle", "square":
 			errors = append(errors, regshapes(w, tokens, n))
-			
+
 		case "polygon", "poly":
 			errors = append(errors, polygon(w, tokens, n))
-			
+
 		case "line":
 			errors = append(errors, line(w, tokens, n))
-			
+
 		case "arc":
 			errors = append(errors, arc(w, tokens, n))
-			
+
 		case "curve":
 			errors = append(errors, curve(w, tokens, n))
-			
+
 		case "dchart", "chart":
 			errors = append(errors, chart(w, t, n))
 		default:
