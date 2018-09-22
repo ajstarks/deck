@@ -1,38 +1,27 @@
 // example deck
-
-opts="-fulldeck"
-a=100
-b=200
-c=a+b
-thing="200"
-c=c+(a*b)/100
-
 deck begin
-	canvas 1200 900
-	slide begin white black
+	slide begin "white" "black"
 		ctext "Deck elements" 50 90 5
-		cimage "follow.jpg" "Dreams" 70 60 640 480 50 "https://budnitzbicycles.com"
+		cimage "follow.jpg" "image" 72 55 640 480 50 "https://budnitzbicycles.com"
 
-		blist 10 70 3
+		blist 7 75 3
 			li "text, image, list"
 			li "rect, ellipse, polygon"
 			li "line, arc, curve"
 		elist
 
-		rect    15 20 8 6              "rgb(127,0,0)"
-		ellipse 27.5 20 8 6            "rgb(0,127,0)"
-		polygon "37 37 45" "17 23 20"  "rgb(0,0,127)"
-		line    50 20 60 20 0.25       "rgb(127,0,0)"
-		arc     70 20 10 8 0 180 0.25  "rgb(0,127,0)"
-		curve   80 20 95 30 90 20 0.25 "rgb(0,0,127)"
-		ctext "rect"     15 15 1
-		ctext "ellipse"  27.5 15 1
-		ctext "polycon"  40 15 1
-		ctext "line"     55 15 1
-		ctext "arc"      70 15 1
-		ctext "curve"    85 15 1
-	slide end
-	slide begin
-		dchart -fulldeck=f AAPL.d
+		rect    15 15 8 6              "rgb(127,0,0)"
+		ellipse 27.5 15 8 6            "rgb(0,127,0)"
+		polygon "37 37 45" "12 18 15"  "rgb(0,0,127)"
+		line    50 15 60 15 0.25       "rgb(127,0,0)"
+		arc     70 15 10 8 0 180 0.25  "rgb(0,127,0)"
+		curve   80 15 95 30 90 15 0.25 "rgb(0,0,127)"
+		ctext "rect"     15 10 1
+		ctext "ellipse"  27.5 10 1
+		ctext "polygon"  40 10 1
+		ctext "line"     55 10 1
+		ctext "arc"      70 10 1
+		ctext "curve"    85 10 1
+		dchart -left=10 -right=45 -top=50 -bottom=30 -fulldeck=f -textsize=0.7 -color=tan  -barwidth=1.5 AAPL.d  
 	slide end
 deck end
