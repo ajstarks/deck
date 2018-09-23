@@ -2,7 +2,7 @@
 
 ```decksh``` is a domain-specific language (DSL) for generating ```deck``` markup.
 
-# Running the command
+## Running the command
 
 	$ decksh                   # input from stdin, output to stdout
 	$ decksh -o foo.xml        # input from stdin, output to foo.xml
@@ -51,55 +51,78 @@ Produces:
 
 ![exampledeck](exampledeck.png)
 	
-Text, color and caption arguments follow Go convetions (surrounded by double quotes).
+Text, font, color, caption and link arguments follow Go convetions (surrounded by double quotes).
 Colors are in rgb format ("rgb(n,n,n)"), or SVG color names.
 
-Coordinates, dimensions and opacities are floating point numbers ranging from from 0-100 
-(they represent percentages on the canvas and percent opaque).
+Coordinates, dimensions, scales and opacities are floating point numbers ranging from from 0-100 
+(they represent percentages on the canvas and percent opaque).  Some arguments are optional, and if omitted defaults are applied (black for text, gray for graphics, 100% opacity).
 
 Canvas size and image dimensions are in pixels.
 
 ## Structure
 
+Begin, end a deck.
+
 	deck begin
 	deck end
+	
+Begin, end a slide with optional background and text colors.
+
 	slide begin [bgcolor] [fgcolor]
 	slide end
 	canvas w h
 	
-## Text
+## Text 
+
+Left, centered, and end-aligned with optional font ("sans", "serif", "mono", or "symbol"), color and opacity.
 
 	text  "text" x y size [font] [color] [opacity]
 	ctext "text" x y size [font] [color] [opacity]
 	etext "text" x y size [font] [color] [opacity]
 	
-## Images
+## Images 
+
+Plain and captioned, with optional scales and links
 
 	image  "file" x y width height [scale] [link]
 	cimage "file" "caption" x y width height [scale] [link]
 	
-## Lists
+## Lists 
+(plain, bulleted, and numbered)
 	
 	list   x y size [font] [color] [opacity]
 	blist  x y size [font] [color] [opacity]
 	nlist  x y size [font] [color] [opacity]
+
+### list items, and ending the list
+
 	li "text"
 	elist
 	
 ## Graphics
+
+Rectangles, ellipses, squares and circles: specify the location and dimensions with optional color and opacity.
 
 	rect    x y w h [color] [opacity]
 	ellipse x y w h [color] [opacity]
 
 	square  x y w [color] [opacity]
 	circle  x y w [color] [opacity]
+
+For polygons, specify the x and y coordinates as a series of numbers, with optional color and opacity.
 	
 	polygon "xcoords" "ycoords" [color] [opacity]
+
+For lines specify the coordinates for the beginning and end points. For arc, specify the location of the center point, its width and height, and beginning and ending angles.
+Curve is a quadratic bezier: specify the beginning location, the control point, and ending location.  Size, color and opacity are optional, and defaults are applied.
+
 	line    x1 y1 x2 y2 [size] [color] [opacity]
 	arc     x y w h a1 a2 [size] [color] [opacity]
 	curve   x1 y1 x2 y2 x3 y3 [size] [color] [opacity]
 
 ## Charts
+
+Run the [dchart](https://github.com/ajstarks/deck/blob/master/cmd/dchart/README.md) command with the specified arguments.
 
 	dchart [args]
 
