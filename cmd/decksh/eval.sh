@@ -2,9 +2,9 @@
 l1=20
 l2=50
 l3=80
-op1=50
-op2=30
-op3=10
+op1=70
+op2=50
+op3=30
 ts1=4
 deck begin
 	canvas 1200 900
@@ -12,19 +12,19 @@ deck begin
 		text "one" 		l1 80 ts1
 		text "two" 		l1 70 ts1 "serif"
 		text "three" 	l1 60 ts1 "mono" "red"
-		text "four"  	l1 50 ts1 "sans" "blue" 50
+		text "four"  	l1 50 ts1 "sans" "blue" op1
 
 
 		ctext "one" 	l2 80 ts1
 		ctext "two" 	l2 70 ts1 "serif"
 		ctext "three" 	l2 60 ts1 "mono" "red"
-		ctext "four"  	l2 50 ts1 "sans" "blue" 30
+		ctext "four"  	l2 50 ts1 "sans" "blue" op2
 		
 
 		etext "one"		l3 80 ts1
 		etext "two"		l3 70 ts1 "serif"
 		etext "three"	l3 60 ts1 "mono" "red"
-		etext "four"	l3 50 ts1 "sans" "blue" 10
+		etext "four"	l3 50 ts1 "sans" "blue" op3
 	slide end
 	
 	midx=50
@@ -47,74 +47,78 @@ deck begin
 		cimage "follow.jpg" "SMALL" midx midy iw ih s2 imlink
 	slide end
 	
+	lsize=2
+	lx1=20
+	lx2=40
+	lx3=60
 	slide begin
-		list 10 90 2
+		list lx1 90 lsize
 			li "one"
 			li "two"
 			li "three"
 		elist
 		
-		list 30 90 2
+		list lx2 90 lsize
 			li "one"
 			li "two"
 			li "three"
 		elist
 		
-		nlist 50 90 2
+		nlist lx3 90 lsize
 			li "one"
 			li "two"
 			li "three"
 		elist
 		
-		list 10 70 2 "sans"
+		list lx1 70 lsize "sans"
 			li "one"
 			li "two"
 			li "three"
 		elist
 		
-		list 30 70 2 "serif"
+		list lx2 70 lsize "serif"
 			li "one"
 			li "two"
 			li "three"
 		elist
 		
-		nlist 50 70 2 "mono"
+		nlist lx3 70 lsize "mono"
 			li "one"
 			li "two"
 			li "three"
 		elist
 		
-		list 10 50 2 "sans" "red"
+		list lx1 50 lsize "sans" "red"
 			li "one"
 			li "two"
 			li "three"
 		elist
 		
-		list 30 50 2 "serif" "green"
+		list lx2 50 lsize "serif" "green"
 			li "one"
 			li "two"
 			li "three"
 		elist
 		
-		nlist 50 50 2 "mono" "blue"
+		nlist lx3 50 lsize "mono" "blue"
 			li "one"
 			li "two"
 			li "three"
 		elist
 		
-		list 10 30 2 "sans" "red" 50
+		list lx1 30 lsize "sans" "red" op1
 			li "one"
 			li "two"
 			li "three"
 		elist
 		
-		list 30 30 2 "serif" "green" 30
+		list lx2 30 lsize "serif" "green" op2
 			li "one"
 			li "two"
 			li "three"
 		elist
 		
-		nlist 50 30 2 "mono" "blue" 10
+		nlist lx3 30 lsize "mono" "blue" op3
 			li "one"
 			li "two"
 			li "three"
@@ -171,18 +175,18 @@ deck begin
 			li "line, arc, curve"
 		elist
 
-		rect    15 15 8 6              "rgb(127,0,0)"
-		ellipse 27.5 15 8 6            "rgb(0,127,0)"
-		polygon "37 37 45" "12 18 15"  "rgb(0,0,127)"
-		line    50 15 60 15 0.25       "rgb(127,0,0)"
-		arc     70 15 10 8 0 180 0.25  "rgb(0,127,0)"
-		curve   80 15 95 30 90 15 0.25 "rgb(0,0,127)"
+		rect    15 15 8 6              c1
+		ellipse 27.5 15 8 6            c2
+		polygon "37 37 45" "12 18 15"  c3
+		line    50 15 60 15 0.25       c1
+		arc     70 15 10 8 0 180 0.25  c2
+		curve   80 15 95 30 90 15 0.25 c3
 		ctext "rect"     15 10 1
 		ctext "ellipse"  27.5 10 1
 		ctext "polygon"  40 10 1
 		ctext "line"     55 10 1
 		ctext "arc"      70 10 1
 		ctext "curve"    85 10 1
-		//dchart -left=10 -right=45 -top=50 -bottom=30 -fulldeck=f -textsize=0.7 -color=tan  -barwidth=1.5 AAPL.d  
+		dchart -left=10 -right=45 -top=50 -bottom=30 -fulldeck=f -textsize=0.7 -color=tan  -barwidth=1.5 AAPL.d  
 	slide end
 deck end
