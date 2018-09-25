@@ -12,11 +12,10 @@ import (
 	"text/scanner"
 )
 
-type expression struct {
-	id         string
-	expression []string
-}
+// emap is the id=expression map
+var emap = map[string]string{}
 
+// xmlmap defines the XML substitutions
 var xmlmap = strings.NewReplacer(
 	"&", "&amp;",
 	"<", "&lt;",
@@ -71,6 +70,9 @@ func canvas(w io.Writer, s []string, linenumber int) error {
 	if len(s) != 3 {
 		return e
 	}
+	for i := 1; i < 3; i++ {
+		s[i] = eval(s[i])
+	}
 	fmt.Fprintf(w, "<canvas width=%q height=%q/>\n", s[1], s[2])
 	return nil
 }
@@ -81,6 +83,9 @@ func slide(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
 	if n < 2 {
 		return e
+	}
+	for i := 1; i < n; i++ {
+		s[i] = eval(s[i])
 	}
 	switch s[1] {
 	case "begin":
@@ -135,10 +140,15 @@ func text(w io.Writer, s []string, linenumber int) error {
 		return fmt.Errorf("line %d: %s \"text\" x y size [font] [color] [opacity]", linenumber, s[0])
 	}
 
+	for i := 1; i < n; i++ {
+		s[i] = eval(s[i])
+	}
+
 	var fco string
 	if n > 5 {
 		fco = fontColorOp(s[5:])
 	}
+
 	switch s[0] {
 	case "text":
 		fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
@@ -156,8 +166,14 @@ func image(w io.Writer, s []string, linenumber int) error {
 	if n < 6 {
 		return fmt.Errorf("line %d: [c]image \"image-file\" [caption] x y w h [scale] [link]", linenumber)
 	}
+
+	for i := 1; i < n; i++ {
+		s[i] = eval(s[i])
+	}
+
 	switch s[0] {
 	case "image":
+
 		switch n {
 		case 6:
 			fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q/>\n", s[1], s[2], s[3], s[4], s[5])
@@ -189,6 +205,9 @@ func list(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
 	if n < 4 {
 		return fmt.Errorf("line %d: %s x y size [font] [color] [opacity]", linenumber, s[0])
+	}
+	for i := 1; i < n; i++ {
+		s[i] = eval(s[i])
 	}
 	var fco string
 	if n > 4 {
@@ -228,6 +247,9 @@ func shapes(w io.Writer, s []string, linenumber int) error {
 	if n < 5 {
 		return e
 	}
+	for i := 1; i < n; i++ {
+		s[i] = eval(s[i])
+	}
 	dim := fmt.Sprintf("xp=%q yp=%q wp=%q hp=%q", s[1], s[2], s[3], s[4])
 	switch n {
 	case 5:
@@ -248,6 +270,9 @@ func regshapes(w io.Writer, s []string, linenumber int) error {
 	e := fmt.Errorf("line %d: %s x y w [color] [opacity]", linenumber, s[0])
 	if n < 4 {
 		return e
+	}
+	for i := 1; i < n; i++ {
+		s[i] = eval(s[i])
 	}
 	switch s[0] {
 	case "square":
@@ -276,6 +301,9 @@ func polygon(w io.Writer, s []string, linenumber int) error {
 	if n < 3 {
 		return e
 	}
+	for i := 1; i < n; i++ {
+		s[i] = eval(s[i])
+	}
 	switch n {
 	case 3:
 		fmt.Fprintf(w, "<%s xc=%s yc=%s/>\n", s[0], s[1], s[2])
@@ -296,6 +324,11 @@ func line(w io.Writer, s []string, linenumber int) error {
 	if n < 5 {
 		return e
 	}
+
+	for i := 1; i < n; i++ {
+		s[i] = eval(s[i])
+	}
+
 	lc := fmt.Sprintf("xp1=%q yp1=%q xp2=%q yp2=%q", s[1], s[2], s[3], s[4])
 	switch n {
 	case 5:
@@ -319,6 +352,9 @@ func arc(w io.Writer, s []string, linenumber int) error {
 	if n < 7 {
 		return e
 	}
+	for i := 1; i < n; i++ {
+		s[i] = eval(s[i])
+	}
 	ac := fmt.Sprintf("xp=%q yp=%q wp=%q hp=%q a1=%q a2=%q", s[1], s[2], s[3], s[4], s[5], s[6])
 	switch n {
 	case 7:
@@ -335,11 +371,15 @@ func arc(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+// curve make quadratic Bezier curve
 func curve(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
 	e := fmt.Errorf("line %d: %s x1 y1 x2 y2 x3 y3 [size] [color] [opacity]", linenumber, s[0])
 	if n < 7 {
 		return e
+	}
+	for i := 1; i < n; i++ {
+		s[i] = eval(s[i])
 	}
 	ac := fmt.Sprintf("xp1=%q yp1=%q xp2=%q yp2=%q xp3=%q yp3=%q", s[1], s[2], s[3], s[4], s[5], s[6])
 	switch n {
@@ -357,6 +397,7 @@ func curve(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+// chart runs the chart command
 func chart(w io.Writer, s string, linenumber int) error {
 	out, err := exec.Command("/bin/sh", "-c", s).Output()
 	if err != nil {
@@ -366,12 +407,23 @@ func chart(w io.Writer, s string, linenumber int) error {
 	return err
 }
 
+// assign creates an assignment by filling in the global id map
 func assign(s []string, linenumber int) error {
 	if len(s) < 3 {
 		return fmt.Errorf("line %d: assignment needs id=<expression>", linenumber)
 	}
-	fmt.Fprintf(os.Stderr, "id=%s expression=%s\n", s[0], s[2:])
+	emap[s[0]] = s[2]
+	//fmt.Fprintf(os.Stderr, "%v\n", emap)
 	return nil
+}
+
+// eval evaluates an id=<expressipn> string
+func eval(s string) string {
+	v, ok := emap[s]
+	if ok {
+		return v
+	}
+	return s
 }
 
 // process reads input, parses, dispatches functions for code generation
@@ -434,10 +486,9 @@ func process(w io.Writer, r io.Reader) error {
 		case "dchart", "chart":
 			errors = append(errors, chart(w, t, n))
 		default:
-			if tokens[1] == "=" {
+			if len(tokens) > 1 && tokens[1] == "=" {
 				errors = append(errors, assign(tokens, n))
 			}
-			dumptokens(os.Stderr, tokens, n)
 		}
 	}
 
