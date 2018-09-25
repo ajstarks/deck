@@ -26,6 +26,25 @@ func xmlesc(s string) string {
 	return xmlmap.Replace(s)
 }
 
+// assign creates an assignment by filling in the global id map
+func assign(s []string, linenumber int) error {
+	if len(s) < 3 {
+		return fmt.Errorf("line %d: assignment needs id=<expression>", linenumber)
+	}
+	emap[s[0]] = s[2]
+	//fmt.Fprintf(os.Stderr, "%v\n", emap)
+	return nil
+}
+
+// eval evaluates an id=<expressipn> string
+func eval(s string) string {
+	v, ok := emap[s]
+	if ok {
+		return v
+	}
+	return s
+}
+
 // parse takes a line of input and returns a string slice containing the parsed tokens
 func parse(src string) []string {
 	var s scanner.Scanner
@@ -34,6 +53,9 @@ func parse(src string) []string {
 	tokens := []string{}
 	for tok := s.Scan(); tok != scanner.EOF; tok = s.Scan() {
 		tokens = append(tokens, s.TokenText())
+	}
+	for i := 1; i < len(tokens); i++ {
+		tokens[i] = eval(tokens[i])
 	}
 	return tokens
 }
@@ -83,9 +105,6 @@ func slide(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
 	if n < 2 {
 		return e
-	}
-	for i := 1; i < n; i++ {
-		s[i] = eval(s[i])
 	}
 	switch s[1] {
 	case "begin":
@@ -139,16 +158,10 @@ func text(w io.Writer, s []string, linenumber int) error {
 	if n < 5 {
 		return fmt.Errorf("line %d: %s \"text\" x y size [font] [color] [opacity]", linenumber, s[0])
 	}
-
-	for i := 1; i < n; i++ {
-		s[i] = eval(s[i])
-	}
-
 	var fco string
 	if n > 5 {
 		fco = fontColorOp(s[5:])
 	}
-
 	switch s[0] {
 	case "text":
 		fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
@@ -166,11 +179,6 @@ func image(w io.Writer, s []string, linenumber int) error {
 	if n < 6 {
 		return fmt.Errorf("line %d: [c]image \"image-file\" [caption] x y w h [scale] [link]", linenumber)
 	}
-
-	for i := 1; i < n; i++ {
-		s[i] = eval(s[i])
-	}
-
 	switch s[0] {
 	case "image":
 
@@ -205,9 +213,6 @@ func list(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
 	if n < 4 {
 		return fmt.Errorf("line %d: %s x y size [font] [color] [opacity]", linenumber, s[0])
-	}
-	for i := 1; i < n; i++ {
-		s[i] = eval(s[i])
 	}
 	var fco string
 	if n > 4 {
@@ -247,9 +252,6 @@ func shapes(w io.Writer, s []string, linenumber int) error {
 	if n < 5 {
 		return e
 	}
-	for i := 1; i < n; i++ {
-		s[i] = eval(s[i])
-	}
 	dim := fmt.Sprintf("xp=%q yp=%q wp=%q hp=%q", s[1], s[2], s[3], s[4])
 	switch n {
 	case 5:
@@ -270,9 +272,6 @@ func regshapes(w io.Writer, s []string, linenumber int) error {
 	e := fmt.Errorf("line %d: %s x y w [color] [opacity]", linenumber, s[0])
 	if n < 4 {
 		return e
-	}
-	for i := 1; i < n; i++ {
-		s[i] = eval(s[i])
 	}
 	switch s[0] {
 	case "square":
@@ -301,9 +300,6 @@ func polygon(w io.Writer, s []string, linenumber int) error {
 	if n < 3 {
 		return e
 	}
-	for i := 1; i < n; i++ {
-		s[i] = eval(s[i])
-	}
 	switch n {
 	case 3:
 		fmt.Fprintf(w, "<%s xc=%s yc=%s/>\n", s[0], s[1], s[2])
@@ -324,11 +320,6 @@ func line(w io.Writer, s []string, linenumber int) error {
 	if n < 5 {
 		return e
 	}
-
-	for i := 1; i < n; i++ {
-		s[i] = eval(s[i])
-	}
-
 	lc := fmt.Sprintf("xp1=%q yp1=%q xp2=%q yp2=%q", s[1], s[2], s[3], s[4])
 	switch n {
 	case 5:
@@ -352,9 +343,6 @@ func arc(w io.Writer, s []string, linenumber int) error {
 	if n < 7 {
 		return e
 	}
-	for i := 1; i < n; i++ {
-		s[i] = eval(s[i])
-	}
 	ac := fmt.Sprintf("xp=%q yp=%q wp=%q hp=%q a1=%q a2=%q", s[1], s[2], s[3], s[4], s[5], s[6])
 	switch n {
 	case 7:
@@ -377,9 +365,6 @@ func curve(w io.Writer, s []string, linenumber int) error {
 	e := fmt.Errorf("line %d: %s x1 y1 x2 y2 x3 y3 [size] [color] [opacity]", linenumber, s[0])
 	if n < 7 {
 		return e
-	}
-	for i := 1; i < n; i++ {
-		s[i] = eval(s[i])
 	}
 	ac := fmt.Sprintf("xp1=%q yp1=%q xp2=%q yp2=%q xp3=%q yp3=%q", s[1], s[2], s[3], s[4], s[5], s[6])
 	switch n {
@@ -405,25 +390,6 @@ func chart(w io.Writer, s string, linenumber int) error {
 	}
 	fmt.Fprintf(w, "%s\n", out)
 	return err
-}
-
-// assign creates an assignment by filling in the global id map
-func assign(s []string, linenumber int) error {
-	if len(s) < 3 {
-		return fmt.Errorf("line %d: assignment needs id=<expression>", linenumber)
-	}
-	emap[s[0]] = s[2]
-	//fmt.Fprintf(os.Stderr, "%v\n", emap)
-	return nil
-}
-
-// eval evaluates an id=<expressipn> string
-func eval(s string) string {
-	v, ok := emap[s]
-	if ok {
-		return v
-	}
-	return s
 }
 
 // process reads input, parses, dispatches functions for code generation
