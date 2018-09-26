@@ -8,6 +8,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 	"text/scanner"
 )
@@ -20,6 +21,16 @@ var xmlmap = strings.NewReplacer(
 	"&", "&amp;",
 	"<", "&lt;",
 	">", "&gt;")
+
+var shell = "/bin/sh"
+var shellflag = "-c"
+
+func init() {
+	if runtime.GOOS == "windows" {
+		shell = "cmd"
+		shellflag = "/c"
+	}
+}
 
 // xmlesc escapes XML
 func xmlesc(s string) string {
@@ -384,7 +395,7 @@ func curve(w io.Writer, s []string, linenumber int) error {
 
 // chart runs the chart command
 func chart(w io.Writer, s string, linenumber int) error {
-	out, err := exec.Command("/bin/sh", "-c", s).Output()
+	out, err := exec.Command(shell, shellflag, s).Output()
 	if err != nil {
 		return err
 	}
