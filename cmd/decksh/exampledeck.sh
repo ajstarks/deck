@@ -33,7 +33,7 @@
 			ctext "text"	50 96 notesize notefont notecolor
 			ctext "image"	72 80 notesize notefont notecolor
 			ctext "list"	27 80 notesize notefont notecolor
-			ctext "chart"	27 55 notesize notefont notecolor
+			ctext "chart"	27 40 notesize notefont notecolor
 			ctext "rect"	15 notey notesize notefont notecolor
 			ctext "ellipse"	27.5 notey notesize notefont notecolor
 			ctext "polygon"	40 notey notesize notefont notecolor
