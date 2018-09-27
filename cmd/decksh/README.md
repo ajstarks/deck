@@ -66,7 +66,7 @@ This deck script:
 			chartright=45
 			top=50
 			bottom=35
-			dchart -fulldeck=f  -left chartleft -right chartright -top top -bottom bottom -textsize 1 -color "tan" -xlabel=2  -barwidth 1.5 AAPL.d 
+			dchart -fulldeck=f  -left chartleft -right chartright -top top -bottom bottom -textsize 1 -color tan -xlabel=2  -barwidth 1.5 AAPL.d 
 		slide end
 	deck end
 
