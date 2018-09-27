@@ -395,6 +395,14 @@ func curve(w io.Writer, s []string, linenumber int) error {
 
 // chart runs the chart command
 func chart(w io.Writer, s string, linenumber int) error {
+	args := strings.Fields(s)
+	for i := 1; i < len(args); i++ {
+		args[i] = eval(args[i])
+	}
+	s = args[0]
+	for i := 1; i < len(args); i++ {
+		s = s + " " + args[i]
+	}
 	out, err := exec.Command(shell, shellflag, s).Output()
 	if err != nil {
 		return err
