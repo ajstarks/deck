@@ -18,19 +18,21 @@ Typically, ```decksh``` acts as the head of a rendering pipeline:
 This deck script:
 
 	// Example deck
+	midx=50
+	midy=50
+	iw=640
+	ih=480
+
+	imfile="follow.jpg"
+	imlink="https://budnitzbicycles.com"
+	imscale=58
+	dtop=87
+
+	opts="-fulldeck=f -textsize 1  -xlabel=2  -barwidth 1.5"
 	deck begin
-		notecolor="maroon"
-		notesize=1.8
-		notefont="mono"
-		iw=640
-		ih=480
-		imscale=55
-		c1="red"
-		c2="green"
-		c3="blue"
 		slide begin "white" "black"
-			ctext "Deck elements" 50 90 5
-			cimage "follow.jpg" "Dreams" 72 55 iw ih imscale "https://budnitzbicycles.com"
+			ctext "Deck elements" midx dtop 5
+			cimage "follow.jpg" "Dreams" 72 midy iw ih imscale imlink
 
 			// List
 			blist 10 75 3
@@ -41,34 +43,44 @@ This deck script:
 
 			// Graphics
 			gy=10
-			notey=17
+			c1="red"
+			c2="blue"
+			c3="green"
 			rect    15 gy 8 6              c1
 			ellipse 27.5 gy 8 6            c2
 			polygon "37 37 45" "7 13 10"   c3
 			line    50 gy 60 gy 0.25       c1
-			arc	70 gy 10 8 0 180 0.25  c2
+			arc     70 gy 10 8 0 180 0.25  c2
 			curve   80 gy 95 25 90 gy 0.25 c3
 
 			// Annotations
-			ctext "text"	50 97 notesize notefont notecolor
-			ctext "image"	72 80 notesize notefont notecolor
-			ctext "list"	5 67 notesize notefont notecolor
-			ctext "chart"	5 45 notesize notefont notecolor
-			ctext "rect"	15 notey notesize notefont notecolor
-			ctext "ellipse"	27.5 notey notesize notefont notecolor
-			ctext "polygon"	40 notey notesize notefont notecolor
-			ctext "line"	55 notey notesize notefont notecolor
-			ctext "arc"		70 notey notesize notefont notecolor
-			ctext "curve"	85 notey notesize notefont notecolor
+			ns=5
+			nc="gray"
+			nf="serif"
+			nop=30
+			ctext "text"	50 95		ns nf nc nop
+			ctext "image"	72 80		ns nf nc nop
+			ctext "list"	25 80		ns nf nc nop
+			ctext "chart"	25 50		ns nf nc nop
+
+			ns=2
+			notey=17
+			ctext "rect"	15 notey	ns nf nc
+			ctext "ellipse"	27.5 notey	ns nf nc
+			ctext "polygon"	40 notey	ns nf nc
+			ctext "line"	55 notey	ns nf nc
+			ctext "arc"		70 notey	ns nf nc
+			ctext "curve"	85 notey	ns nf nc
 
 			// Chart
 			chartleft=10
 			chartright=45
-			top=50
-			bottom=35
-			dchart -fulldeck=f  -left chartleft -right chartright -top top -bottom bottom -textsize 1 -color tan -xlabel=2  -barwidth 1.5 AAPL.d 
+			charttop=42
+			chartbottom=28
+			dchart -left chartleft -right chartright -top charttop -bottom chartbottom opts AAPL.d 
 		slide end
 	deck end
+
 
 	
 Produces:
@@ -138,8 +150,8 @@ Rectangles, ellipses, squares and circles: specify the location and dimensions w
 	rect    x y w h [color] [opacity]
 	ellipse x y w h [color] [opacity]
 
-	square  x y w [color] [opacity]
-	circle  x y w [color] [opacity]
+	square  x y w   [color] [opacity]
+	circle  x y w   [color] [opacity]
 
 For polygons, specify the x and y coordinates as a series of numbers, with optional color and opacity.
 	
@@ -148,8 +160,8 @@ For polygons, specify the x and y coordinates as a series of numbers, with optio
 For lines specify the coordinates for the beginning and end points. For arc, specify the location of the center point, its width and height, and beginning and ending angles.
 Curve is a quadratic bezier: specify the beginning location, the control point, and ending location.  Size, color and opacity are optional, and defaults are applied.
 
-	line    x1 y1 x2 y2 [size] [color] [opacity]
-	arc     x y w h a1 a2 [size] [color] [opacity]
+	line    x1 y1 x2 y2       [size] [color] [opacity]
+	arc     x y w h a1 a2     [size] [color] [opacity]
 	curve   x1 y1 x2 y2 x3 y3 [size] [color] [opacity]
 
 ## Charts

@@ -43,7 +43,6 @@ func assign(s []string, linenumber int) error {
 		return fmt.Errorf("line %d: assignment needs id=<expression>", linenumber)
 	}
 	emap[s[0]] = s[2]
-	//fmt.Fprintf(os.Stderr, "%v\n", emap)
 	return nil
 }
 
@@ -89,7 +88,7 @@ func deck(w io.Writer, s []string, linenumber int) error {
 	switch s[1] {
 	case "begin":
 		fmt.Fprintln(w, "<deck>")
-	case "end":
+	case "end", "}":
 		fmt.Fprintln(w, "</deck>")
 	default:
 		return e
@@ -395,10 +394,17 @@ func curve(w io.Writer, s []string, linenumber int) error {
 
 // chart runs the chart command
 func chart(w io.Writer, s string, linenumber int) error {
+	// copy the command line into fields, evaluating as we go
 	args := strings.Fields(s)
 	for i := 1; i < len(args); i++ {
 		args[i] = eval(args[i])
+		// unquote substituted strings 
+		la := len(args[i])
+		if  la > 2 && args[i][0] == '"' && args[i][la-1] == '"' {
+			args[i] = args[i][1:la-1]
+		}
 	}
+	// glue the arguments back into a single string
 	s = args[0]
 	for i := 1; i < len(args); i++ {
 		s = s + " " + args[i]
