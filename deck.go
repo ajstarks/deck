@@ -157,6 +157,7 @@ type Arc struct {
 	Dimension
 	A1      float64 `xml:"a1,attr"`
 	A2      float64 `xml:"a2,attr"`
+	Sp		float64 `xml:"sp,attr"`
 	Opacity float64 `xml:"opacity,attr"`
 }
 
