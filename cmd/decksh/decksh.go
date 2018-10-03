@@ -445,7 +445,7 @@ func process(w io.Writer, r io.Reader) error {
 		case "slide":
 			errors = append(errors, slide(w, tokens, n))
 
-		case "text", "ctext", "etext", "textblock", "textcode", "textfile":
+		case "text", "ctext", "etext", "textblock", "textfile":
 			errors = append(errors, text(w, tokens, n))
 
 		case "image", "cimage":

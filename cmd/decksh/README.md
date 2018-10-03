@@ -1,8 +1,10 @@
 # decksh: a little language for deck markup
 
-```decksh``` is a domain-specific language (DSL) for generating ```deck``` markup.
+```decksh``` is a domain-specific language (DSL) for generating [```deck```](https://github.com/ajstarks/deck/blob/master/README.md) markup.
 
 ## Running
+
+```decksh``` reads from the specified input, and writes deck markup to the specified output destination:
 
 	$ decksh                   # input from stdin, output to stdout
 	$ decksh -o foo.xml        # input from stdin, output to foo.xml
@@ -70,7 +72,7 @@ Produces:
 ![exampledeck](exampledeck.png)
 	
 Text, font, color, caption and link arguments follow Go convetions (surrounded by double quotes).
-Colors are in rgb format ("rgb(n,n,n)"), or SVG color names.
+Colors are in rgb format ("rgb(n,n,n)"), or [SVG color names](https://www.w3.org/TR/SVG11/types.html#ColorKeywords).
 
 Coordinates, dimensions, scales and opacities are floating point numbers ranging from from 0-100 
 (they represent percentages on the canvas and percent opacity).  Some arguments are optional, and 
@@ -87,12 +89,13 @@ Canvas size and image dimensions are in pixels.
 
 ## Structure
 
-Begin, end a deck.
+Begin or end a deck.
 
 	deck begin
 	deck end
 	
 Begin, end a slide with optional background and text colors.
+Specify the size of the canvas.
 
 	slide begin [bgcolor] [fgcolor]
 	slide end
@@ -100,11 +103,14 @@ Begin, end a slide with optional background and text colors.
 	
 ## Text 
 
-Left, centered, and end-aligned with optional font ("sans", "serif", "mono", or "symbol"), color and opacity.
+Show left, centered, end or block-aligned text or a file's contents with 
+optional font ("sans", "serif", "mono", or "symbol"), color and opacity.
 
-	text  "text" x y size [font] [color] [opacity]
-	ctext "text" x y size [font] [color] [opacity]
-	etext "text" x y size [font] [color] [opacity]
+	text       "text" x y size [font] [color] [opacity]
+	ctext      "text" x y size [font] [color] [opacity]
+	etext      "text" x y size [font] [color] [opacity]
+	textfile   "filename" x y size [font] [color] [opacity]
+	textblock  "text" x y width size [font] [color] [opacity]
 	
 ## Images 
 
