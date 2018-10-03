@@ -33,6 +33,7 @@ This deck script:
 		slide begin "white" "black"
 			ctext "Deck elements" midx dtop 5
 			cimage "follow.jpg" "Dreams" 72 midy iw ih imscale imlink
+			textblock "Budnitz #1, Plainfield, NJ, May 10, 2015" 55 35 10 1 "serif" "white"
 
 			// List
 			blist 10 75 3
@@ -53,24 +54,6 @@ This deck script:
 			arc     70 gy 10 8 0 180 0.25  c2
 			curve   80 gy 95 25 90 gy 0.25 c3
 
-			// Annotations
-			ns=5
-			nc="gray"
-			nf="serif"
-			nop=30
-			ctext "text"	50 95		ns nf nc nop
-			ctext "image"	72 80		ns nf nc nop
-			ctext "list"	25 80		ns nf nc nop
-			ctext "chart"	25 50		ns nf nc nop
-
-			ns=2
-			notey=17
-			ctext "rect"	15 notey	ns nf nc
-			ctext "ellipse"	27.5 notey	ns nf nc
-			ctext "polygon"	40 notey	ns nf nc
-			ctext "line"	55 notey	ns nf nc
-			ctext "arc"		70 notey	ns nf nc
-			ctext "curve"	85 notey	ns nf nc
 
 			// Chart
 			chartleft=10
@@ -80,7 +63,6 @@ This deck script:
 			dchart -left chartleft -right chartright -top charttop -bottom chartbottom opts AAPL.d 
 		slide end
 	deck end
-
 
 	
 Produces:

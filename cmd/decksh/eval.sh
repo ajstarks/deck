@@ -6,9 +6,23 @@ op1=70
 op2=50
 op3=30
 ts1=4
+tb="Now is the time for all good men to come to the aid of the party & 'do it now'"
+
 deck begin
 	canvas 1200 900
+	slide begin
+		textblock tb 5 85 20 2
+		textblock tb 35 85 15 2 "serif"
+		textblock tb 65 85 10 2 "mono" "red"
+		textfile "AAPL.d" 5 50 2
+		textfile "AAPL.d" 35 50 2 "serif"
+		textfile "AAPL.d" 65 50 2 "mono" "red"
+	slide end
+	
 	slide begin "rgb(240,240,240)"
+		line l1 0 l1 100 0.1
+		line l2 0 l2 100 0.1
+		line l3 0 l3 100 0.1
 		text "one" 		l1 80 ts1
 		text "two" 		l1 70 ts1 "serif"
 		text "three" 	l1 60 ts1 "mono" "red"
@@ -41,9 +55,9 @@ deck begin
 		image imfile midx midy iw ih s2 imlink
 	slide end
 	
-	slide begin
-		cimage imfile "BIG" midx midy iw ih
-		cimage imfile "MED" midx midy iw ih s1
+	slide begin "black" "white"
+		cimage imfile "LARGE" midx midy iw ih
+		cimage imfile "MEDIUM" midx midy iw ih s1
 		cimage imfile "SMALL" midx midy iw ih s2 imlink
 	slide end
 	
@@ -170,15 +184,16 @@ deck begin
 	imscale=58
 	dtop=87
 	chartleft=10
-	chartright=45
-	top=42
-	bottom=28
+	chartright=42
+	chartop=42
+	chartbottom=28
 	imy=50
 	opts="-fulldeck=f -textsize 1  -xlabel=2  -barwidth 1.5"
 
 	slide begin "white" "black"
 		ctext "Deck elements" 50 dtop 5
 		cimage "follow.jpg" "Dreams" 72 imy iw ih imscale imlink
+		textblock "Budnitz #1, Plainfield, NJ, May 10, 2015" 55 35 10 1 "serif" "white"
 
 		// List
 		blist 10 75 3
@@ -198,13 +213,14 @@ deck begin
 		curve   80 gy 95 25 90 gy 0.25 c3
 
 		// Chart
-		dchart -left chartleft -right chartright -top top -bottom bottom opts AAPL.d 
+		dchart -left chartleft -right chartright -top chartop -bottom chartbottom opts AAPL.d 
 	slide end
 	
 	
 	slide begin "white" "black"
 		ctext "Deck elements" 50 dtop 5
 		cimage "follow.jpg" "Dreams" 72 imy iw ih imscale imlink
+		textblock "Budnitz #1, Plainfield, NJ, May 10, 2015" 55 35 10 1 "serif" "white"
 
 		// List
 		blist 10 75 3
@@ -242,6 +258,6 @@ deck begin
 		ctext "curve"	85 notey	ns nf nc
 
 		// Chart
-		dchart -left chartleft -right chartright -top top -bottom bottom opts AAPL.d 
+		dchart -left chartleft -right chartright -top chartop -bottom chartbottom opts AAPL.d 
 	slide end
 deck end

@@ -168,17 +168,21 @@ func text(w io.Writer, s []string, linenumber int) error {
 	if n < 5 {
 		return fmt.Errorf("line %d: %s \"text\" x y size [font] [color] [opacity]", linenumber, s[0])
 	}
-	var fco string
-	if n > 5 {
-		fco = fontColorOp(s[5:])
-	}
+
 	switch s[0] {
 	case "text":
-		fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
+		fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
 	case "ctext":
-		fmt.Fprintf(w, "<text align=\"c\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
+		fmt.Fprintf(w, "<text align=\"c\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
 	case "etext":
-		fmt.Fprintf(w, "<text align=\"e\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
+		fmt.Fprintf(w, "<text align=\"e\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
+	case "textfile":
+		fmt.Fprintf(w, "<text file=%s xp=%q yp=%q sp=%q %s/>\n", s[1], s[2], s[3], s[4], fontColorOp(s[5:]))
+	case "textblock":
+		if n < 6 {
+			return fmt.Errorf("line %d: %s \"text\" x y width size [font] [color] [opacity]", linenumber, s[0])
+		}
+		fmt.Fprintf(w, "<text type=\"block\" xp=%q yp=%q wp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], s[5], fontColorOp(s[6:]), qesc(s[1]))
 	}
 	return nil
 }
@@ -398,10 +402,10 @@ func chart(w io.Writer, s string, linenumber int) error {
 	args := strings.Fields(s)
 	for i := 1; i < len(args); i++ {
 		args[i] = eval(args[i])
-		// unquote substituted strings 
+		// unquote substituted strings
 		la := len(args[i])
-		if  la > 2 && args[i][0] == '"' && args[i][la-1] == '"' {
-			args[i] = args[i][1:la-1]
+		if la > 2 && args[i][0] == '"' && args[i][la-1] == '"' {
+			args[i] = args[i][1 : la-1]
 		}
 	}
 	// glue the arguments back into a single string
@@ -428,7 +432,7 @@ func process(w io.Writer, r io.Reader) error {
 	for n := 1; scanner.Scan(); n++ {
 		t := scanner.Text()
 		tokens := parse(t)
-		if len(tokens) < 1 {
+		if len(tokens) < 1 || t[0] == '#' {
 			continue
 		}
 		switch tokens[0] {
@@ -441,7 +445,7 @@ func process(w io.Writer, r io.Reader) error {
 		case "slide":
 			errors = append(errors, slide(w, tokens, n))
 
-		case "text", "ctext", "etext":
+		case "text", "ctext", "etext", "textblock", "textcode", "textfile":
 			errors = append(errors, text(w, tokens, n))
 
 		case "image", "cimage":
@@ -476,6 +480,7 @@ func process(w io.Writer, r io.Reader) error {
 
 		case "dchart", "chart":
 			errors = append(errors, chart(w, t, n))
+
 		default:
 			if len(tokens) > 1 && tokens[1] == "=" {
 				errors = append(errors, assign(tokens, n))
