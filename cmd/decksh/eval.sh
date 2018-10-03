@@ -6,19 +6,23 @@ op1=70
 op2=50
 op3=30
 ts1=4
+ty=92
 tb="Now is the time for all good men to come to the aid of the party & 'do it now'"
 
 deck begin
 	canvas 1200 900
 	slide begin
-		textblock tb 5 85 20 2
-		textblock tb 35 85 15 2 "serif"
-		textblock tb 65 85 10 2 "mono" "red"
-		textfile "AAPL.d" 5 50 2
+		textblock tb 5 ty 20 2
+		textblock tb 35 ty 15 2 "serif"
+		textblock tb 65 ty 10 2 "mono" "red"
+		textfile "AAPL.d" 5  50 2
 		textfile "AAPL.d" 35 50 2 "serif"
 		textfile "AAPL.d" 65 50 2 "mono" "red"
-	slide end
 	
+		textcode "code/hw.go" 5  75 20 1
+		textcode "code/hw.go" 35 75 20 1 "red"
+	slide end
+
 	slide begin "rgb(240,240,240)"
 		line l1 0 l1 100 0.1
 		line l2 0 l2 100 0.1

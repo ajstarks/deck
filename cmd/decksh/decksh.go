@@ -168,7 +168,7 @@ func text(w io.Writer, s []string, linenumber int) error {
 	if n < 5 {
 		return fmt.Errorf("line %d: %s \"text\" x y size [font] [color] [opacity]", linenumber, s[0])
 	}
-
+	
 	switch s[0] {
 	case "text":
 		fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
@@ -178,6 +178,15 @@ func text(w io.Writer, s []string, linenumber int) error {
 		fmt.Fprintf(w, "<text align=\"e\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
 	case "textfile":
 		fmt.Fprintf(w, "<text file=%s xp=%q yp=%q sp=%q %s/>\n", s[1], s[2], s[3], s[4], fontColorOp(s[5:]))
+	case "textcode":
+		switch n {
+			case 6:
+				fmt.Fprintf(w, "<text type=\"code\" file=%s xp=%q yp=%q wp=%q sp=%q/>\n", s[1], s[2], s[3], s[4], s[5])
+			case 7:
+				fmt.Fprintf(w, "<text type=\"code\" file=%s xp=%q yp=%q wp=%q sp=%q color=%s/>\n", s[1], s[2], s[3], s[4], s[5], s[6])
+			default:
+				return fmt.Errorf("line %d: %s \"file\" x y width size [color]", linenumber, s[0])
+		}
 	case "textblock":
 		if n < 6 {
 			return fmt.Errorf("line %d: %s \"text\" x y width size [font] [color] [opacity]", linenumber, s[0])
@@ -445,7 +454,7 @@ func process(w io.Writer, r io.Reader) error {
 		case "slide":
 			errors = append(errors, slide(w, tokens, n))
 
-		case "text", "ctext", "etext", "textblock", "textfile":
+		case "text", "ctext", "etext", "textblock", "textfile", "textcode":
 			errors = append(errors, text(w, tokens, n))
 
 		case "image", "cimage":

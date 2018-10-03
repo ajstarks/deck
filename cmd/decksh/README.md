@@ -106,11 +106,14 @@ Specify the size of the canvas.
 Show left, centered, end or block-aligned text or a file's contents with 
 optional font ("sans", "serif", "mono", or "symbol"), color and opacity.
 
-	text       "text" x y size [font] [color] [opacity]
-	ctext      "text" x y size [font] [color] [opacity]
-	etext      "text" x y size [font] [color] [opacity]
-	textfile   "filename" x y size [font] [color] [opacity]
-	textblock  "text" x y width size [font] [color] [opacity]
+Also, show blocks of code on a gray background.
+
+	text       "text"     x y size       [font] [color] [opacity]
+	ctext      "text"     x y size       [font] [color] [opacity]
+	etext      "text"     x y size       [font] [color] [opacity]
+	textfile   "filename" x y size       [font] [color] [opacity]
+	textblock  "text"     x y width size [font] [color] [opacity]
+	textcode   "filename" x y width size [color]
 	
 ## Images 
 
