@@ -168,16 +168,16 @@ func text(w io.Writer, s []string, linenumber int) error {
 	if n < 5 {
 		return fmt.Errorf("line %d: %s \"text\" x y size [font] [color] [opacity]", linenumber, s[0])
 	}
-
+	fco := fontColorOp(s[5:])
 	switch s[0] {
 	case "text":
-		fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
+		fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
 	case "ctext":
-		fmt.Fprintf(w, "<text align=\"c\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
+		fmt.Fprintf(w, "<text align=\"c\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
 	case "etext":
-		fmt.Fprintf(w, "<text align=\"e\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
+		fmt.Fprintf(w, "<text align=\"e\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
 	case "textfile":
-		fmt.Fprintf(w, "<text file=%s xp=%q yp=%q sp=%q %s/>\n", s[1], s[2], s[3], s[4], fontColorOp(s[5:]))
+		fmt.Fprintf(w, "<text file=%s xp=%q yp=%q sp=%q %s/>\n", s[1], s[2], s[3], s[4], fco)
 	}
 	return nil
 }
