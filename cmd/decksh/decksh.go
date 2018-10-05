@@ -168,7 +168,7 @@ func text(w io.Writer, s []string, linenumber int) error {
 	if n < 5 {
 		return fmt.Errorf("line %d: %s \"text\" x y size [font] [color] [opacity]", linenumber, s[0])
 	}
-	
+
 	switch s[0] {
 	case "text":
 		fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
@@ -178,20 +178,28 @@ func text(w io.Writer, s []string, linenumber int) error {
 		fmt.Fprintf(w, "<text align=\"e\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
 	case "textfile":
 		fmt.Fprintf(w, "<text file=%s xp=%q yp=%q sp=%q %s/>\n", s[1], s[2], s[3], s[4], fontColorOp(s[5:]))
-	case "textcode":
-		switch n {
-			case 6:
-				fmt.Fprintf(w, "<text type=\"code\" file=%s xp=%q yp=%q wp=%q sp=%q/>\n", s[1], s[2], s[3], s[4], s[5])
-			case 7:
-				fmt.Fprintf(w, "<text type=\"code\" file=%s xp=%q yp=%q wp=%q sp=%q color=%s/>\n", s[1], s[2], s[3], s[4], s[5], s[6])
-			default:
-				return fmt.Errorf("line %d: %s \"file\" x y width size [color]", linenumber, s[0])
-		}
-	case "textblock":
-		if n < 6 {
-			return fmt.Errorf("line %d: %s \"text\" x y width size [font] [color] [opacity]", linenumber, s[0])
-		}
-		fmt.Fprintf(w, "<text type=\"block\" xp=%q yp=%q wp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], s[5], fontColorOp(s[6:]), qesc(s[1]))
+	}
+	return nil
+}
+
+// text generates markup for a block of text
+func textblock(w io.Writer, s []string, linenumber int) error {
+	if len(s) < 6 {
+		return fmt.Errorf("line %d: %s \"text\" x y width size [font] [color] [opacity]", linenumber, s[0])
+	}
+	fmt.Fprintf(w, "<text type=\"block\" xp=%q yp=%q wp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], s[5], fontColorOp(s[6:]), qesc(s[1]))
+	return nil
+}
+
+// textcode generates markup for a block of code
+func textcode(w io.Writer, s []string, linenumber int) error {
+	switch len(s) {
+	case 6:
+		fmt.Fprintf(w, "<text type=\"code\" file=%s xp=%q yp=%q wp=%q sp=%q/>\n", s[1], s[2], s[3], s[4], s[5])
+	case 7:
+		fmt.Fprintf(w, "<text type=\"code\" file=%s xp=%q yp=%q wp=%q sp=%q color=%s/>\n", s[1], s[2], s[3], s[4], s[5], s[6])
+	default:
+		return fmt.Errorf("line %d: %s \"file\" x y width size [color]", linenumber, s[0])
 	}
 	return nil
 }
@@ -199,34 +207,38 @@ func text(w io.Writer, s []string, linenumber int) error {
 // image generates markup for images (plain and captioned)
 func image(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
-	if n < 6 {
-		return fmt.Errorf("line %d: [c]image \"image-file\" [caption] x y w h [scale] [link]", linenumber)
+	e := fmt.Errorf("line %d: [c]image \"image-file\" x y w h [scale] [link]", linenumber)
+	
+	switch n {
+	case 6:
+		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q/>\n", s[1], s[2], s[3], s[4], s[5])
+	case 7:
+		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q scale=%q/>\n", s[1], s[2], s[3], s[4], s[5], s[6])
+	case 8:
+		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q scale=%q link=%s/>\n", s[1], s[2], s[3], s[4], s[5], s[6], s[7])
+	default:
+		return e
 	}
-	switch s[0] {
-	case "image":
+	return nil
+}
 
-		switch n {
-		case 6:
-			fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q/>\n", s[1], s[2], s[3], s[4], s[5])
-		case 7:
-			fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q scale=%q/>\n", s[1], s[2], s[3], s[4], s[5], s[6])
-		case 8:
-			fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q scale=%q link=%s/>\n", s[1], s[2], s[3], s[4], s[5], s[6], s[7])
-		default:
-			return fmt.Errorf("line %d: %s \"image-file\" x y w h [scale] [link]", linenumber, s[0])
-		}
-	case "cimage":
-		caption := xmlesc(s[2])
-		switch n {
-		case 7:
-			fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q/>\n", s[1], caption, s[3], s[4], s[5], s[6])
-		case 8:
-			fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q scale=%q/>\n", s[1], caption, s[3], s[4], s[5], s[6], s[7])
-		case 9:
-			fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q scale=%q link=%s/>\n", s[1], caption, s[3], s[4], s[5], s[6], s[7], s[8])
-		default:
-			return fmt.Errorf("line %d: %s \"image-file\" \"caption\" x y w h [scale] [link]", linenumber, s[0])
-		}
+// cimage makes a captioned image
+func cimage(w io.Writer, s []string, linenumber int) error {
+	n := len(s)
+	e := fmt.Errorf("line %d: cimage \"image-file\" \"caption\" x y w h [scale] [link]", linenumber)
+	if n < 6 {
+		return e
+	}
+	caption := xmlesc(s[2])
+	switch n {
+	case 7:
+		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q/>\n", s[1], caption, s[3], s[4], s[5], s[6])
+	case 8:
+		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q scale=%q/>\n", s[1], caption, s[3], s[4], s[5], s[6], s[7])
+	case 9:
+		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q scale=%q link=%s/>\n", s[1], caption, s[3], s[4], s[5], s[6], s[7], s[8])
+	default:
+		return e
 	}
 	return nil
 }
@@ -454,11 +466,20 @@ func process(w io.Writer, r io.Reader) error {
 		case "slide":
 			errors = append(errors, slide(w, tokens, n))
 
-		case "text", "ctext", "etext", "textblock", "textfile", "textcode":
+		case "text", "ctext", "etext", "textfile":
 			errors = append(errors, text(w, tokens, n))
 
-		case "image", "cimage":
+		case "textblock":
+			errors = append(errors, textblock(w, tokens, n))
+
+		case "textcode":
+			errors = append(errors, textcode(w, tokens, n))
+
+		case "image":
 			errors = append(errors, image(w, tokens, n))
+
+		case "cimage":
+			errors = append(errors, cimage(w, tokens, n))
 
 		case "list", "blist", "nlist":
 			errors = append(errors, list(w, tokens, n))
