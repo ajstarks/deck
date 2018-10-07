@@ -208,7 +208,7 @@ func textcode(w io.Writer, s []string, linenumber int) error {
 func image(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
 	e := fmt.Errorf("line %d: [c]image \"image-file\" x y w h [scale] [link]", linenumber)
-	
+
 	switch n {
 	case 6:
 		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q/>\n", s[1], s[2], s[3], s[4], s[5])

@@ -12,9 +12,10 @@ tb="Now is the time for all good men to come to the aid of the party & 'do it no
 deck begin
 	canvas 1200 900
 	slide begin
-		textblock tb 5 ty 20 2
+		textblock tb  5 ty 20 2
 		textblock tb 35 ty 15 2 "serif"
 		textblock tb 65 ty 10 2 "mono" "red"
+		
 		textfile "AAPL.d" 5  50 2
 		textfile "AAPL.d" 35 50 2 "serif"
 		textfile "AAPL.d" 65 50 2 "mono" "red"
@@ -27,22 +28,22 @@ deck begin
 		line l1 0 l1 100 0.1
 		line l2 0 l2 100 0.1
 		line l3 0 l3 100 0.1
-		text "one" 		l1 80 ts1
-		text "two" 		l1 70 ts1 "serif"
-		text "three" 	l1 60 ts1 "mono" "red"
-		text "four"  	l1 50 ts1 "sans" "blue" op1
+		text "one"   l1 80 ts1
+		text "two"   l1 70 ts1 "serif"
+		text "three" l1 60 ts1 "mono" "red"
+		text "four"  l1 50 ts1 "sans" "blue" op1
 
 
-		ctext "one" 	l2 80 ts1
-		ctext "two" 	l2 70 ts1 "serif"
-		ctext "three" 	l2 60 ts1 "mono" "red"
-		ctext "four"  	l2 50 ts1 "sans" "blue" op2
+		ctext "one"   l2 80 ts1
+		ctext "two"   l2 70 ts1 "serif"
+		ctext "three" l2 60 ts1 "mono" "red"
+		ctext "four"  l2 50 ts1 "sans" "blue" op2
 		
 
-		etext "one"		l3 80 ts1
-		etext "two"		l3 70 ts1 "serif"
-		etext "three"	l3 60 ts1 "mono" "red"
-		etext "four"	l3 50 ts1 "sans" "blue" op3
+		etext "one"   l3 80 ts1
+		etext "two"   l3 70 ts1 "serif"
+		etext "three" l3 60 ts1 "mono" "red"
+		etext "four"  l3 50 ts1 "sans" "blue" op3
 	slide end
 	
 	midx=50
@@ -76,7 +77,7 @@ deck begin
 			li "three"
 		elist
 		
-		list lx2 90 lsize
+		blist lx2 90 lsize
 			li "one"
 			li "two"
 			li "three"
@@ -94,7 +95,7 @@ deck begin
 			li "three"
 		elist
 		
-		list lx2 70 lsize "serif"
+		blist lx2 70 lsize "serif"
 			li "one"
 			li "two"
 			li "three"
@@ -112,7 +113,7 @@ deck begin
 			li "three"
 		elist
 		
-		list lx2 50 lsize "serif" "green"
+		blist lx2 50 lsize "serif" "green"
 			li "one"
 			li "two"
 			li "three"
@@ -130,7 +131,7 @@ deck begin
 			li "three"
 		elist
 		
-		list lx2 30 lsize "serif" "green" op2
+		blist lx2 30 lsize "serif" "green" op2
 			li "one"
 			li "two"
 			li "three"
@@ -172,10 +173,10 @@ deck begin
 		line	55 35 65 40 1 c2
 		line	75 35 85 40 1 c3 30
 		
-		arc		20 25 10 5 0 180
-		arc		40 25 10 5 0 180 1 c1
-		arc		60 25 10 5 0 180 1 c2
-		arc		80 25 10 5 0 180 1 c3 30
+		arc	    20 25 10 5 0 180
+		arc	    40 25 10 5 0 180 1 c1
+		arc	    60 25 10 5 0 180 1 c2
+		arc	    80 25 10 5 0 180 1 c3 30
 		
 		curve	15 15 10 25 25 15
 		curve	35 15 30 25 45 15 1
