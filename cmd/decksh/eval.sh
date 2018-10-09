@@ -1,5 +1,5 @@
 // comprehensive tests
-deck begin
+deck
 	canvas 1200 900
 	tx1=5
 	tx2=35
@@ -7,7 +7,7 @@ deck begin
 	ty=92
 	tb="Now is the time for all good men to come to the aid of the party & 'do it now'"
 	// Text Functions
-	slide begin
+	slide
 		textblock tb tx1 ty 20 2
 		textblock tb tx2 ty 15 2 "serif"
 		textblock tb tx3 ty 10 2 "mono" "red"
@@ -18,7 +18,7 @@ deck begin
 	
 		textcode "code/hw.go" tx1 75 20 1
 		textcode "code/hw.go" tx2 75 20 1 "red"
-	slide end
+	eslide
 
 	l1=20
 	l2=50
@@ -27,7 +27,7 @@ deck begin
 	op2=50
 	op3=30
 	ts1=4
-	slide begin "rgb(240,240,240)"
+	slide  "rgb(240,240,240)"
 		line l1 0 l1 100 0.1
 		line l2 0 l2 100 0.1
 		line l3 0 l3 100 0.1
@@ -47,7 +47,7 @@ deck begin
 		etext "two"   l3 70 ts1 "serif"
 		etext "three" l3 60 ts1 "mono" "red"
 		etext "four"  l3 50 ts1 "sans" "blue" op3
-	slide end
+	eslide
 	
 	midx=50
 	midy=50
@@ -58,17 +58,17 @@ deck begin
 	imfile="follow.jpg"
 	imlink="https://budnitzbicycles.com"
 	// Images
-	slide begin
+	slide
 		image imfile midx midy iw ih
 		image imfile midx midy iw ih s1
 		image imfile midx midy iw ih s2 imlink
-	slide end
+	eslide
 	
-	slide begin "black" "white"
+	slide "black" "white"
 		cimage imfile "LARGE" midx midy iw ih
 		cimage imfile "MEDIUM" midx midy iw ih s1
 		cimage imfile "SMALL" midx midy iw ih s2 imlink
-	slide end
+	eslide
 	
 	lsize=2
 	lx1=20
@@ -79,7 +79,7 @@ deck begin
 	ly3=50
 	ly4=30
 	// Lists
-	slide begin
+	slide 
 		list lx1 ly1 lsize
 			li "one"
 			li "two"
@@ -151,14 +151,14 @@ deck begin
 			li "two"
 			li "three"
 		elist
-	slide end
+	eslide
 	
 	c1="red"
 	c2="blue"
 	c3="green"
 	shapeop=30
 	// Shapes
-	slide begin
+	slide
 		polygon	   "15 20 25" "90 95 90"
 		polygon	   "35 40 45" "90 95 90" c1
 		polygon	   "55 60 65" "90 95 90" c2 shapeop 
@@ -193,7 +193,7 @@ deck begin
 		curve	   35 15 30 25 45 15 1
 		curve	   55 15 45 25 65 15 1 c2
 		curve	   75 15 65 25 85 15 1 c3 shapeop 
-	slide end
+	eslide
 	
 	// Example deck
 	imscale=58
@@ -205,7 +205,7 @@ deck begin
 	imy=50
 	opts="-fulldeck=f -textsize 1  -xlabel=2  -barwidth 1.5"
 
-	slide begin "white" "black"
+	slide "white" "black"
 		ctext     "Deck elements" 50 dtop 5
 		cimage    "follow.jpg" "Dreams" 72 imy iw ih imscale imlink
 		textblock "Budnitz #1, Plainfield, NJ, May 10, 2015" 55 35 10 1 "serif" "white"
@@ -229,10 +229,10 @@ deck begin
 
 		// Chart
 		dchart -left chartleft -right chartright -top chartop -bottom chartbottom opts AAPL.d 
-	slide end
+	eslide
 	
 	
-	slide begin "white" "black"
+	slide "white" "black"
 		ctext     "Deck elements" 50 dtop 5
 		cimage    "follow.jpg" "Dreams" 72 imy iw ih imscale imlink
 		textblock "Budnitz #1, Plainfield, NJ, May 10, 2015" 55 35 10 1 "serif" "white"
@@ -274,5 +274,5 @@ deck begin
 
 		// Chart
 		dchart -left chartleft -right chartright -top chartop -bottom chartbottom opts AAPL.d 
-	slide end
-deck end
+	eslide
+edeck

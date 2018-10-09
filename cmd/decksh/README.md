@@ -31,8 +31,8 @@ This deck script:
 	dtop=87
 
 	opts="-fulldeck=f -textsize 1  -xlabel=2  -barwidth 1.5"
-	deck begin
-		slide begin "white" "black"
+	deck
+		slide "white" "black"
 			ctext "Deck elements" midx dtop 5
 			cimage "follow.jpg" "Dreams" 72 midy iw ih imscale imlink
 			textblock "Budnitz #1, Plainfield, NJ, May 10, 2015" 55 35 10 1 "serif" "white"
@@ -63,8 +63,8 @@ This deck script:
 			charttop=42
 			chartbottom=28
 			dchart -left chartleft -right chartright -top charttop -bottom chartbottom opts AAPL.d 
-		slide end
-	deck end
+		eslide
+	edeck
 
 	
 Produces:
@@ -91,14 +91,14 @@ Canvas size and image dimensions are in pixels.
 
 Begin or end a deck.
 
-	deck begin
-	deck end
+	deck
+	edeck
 	
 Begin, end a slide with optional background and text colors.
 Specify the size of the canvas.
 
-	slide begin [bgcolor] [fgcolor]
-	slide end
+	slide [bgcolor] [fgcolor]
+	eslide
 	canvas w h
 	
 ## Text 

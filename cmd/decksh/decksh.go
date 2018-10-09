@@ -25,6 +25,7 @@ var xmlmap = strings.NewReplacer(
 var shell = "/bin/sh"
 var shellflag = "-c"
 
+// on init, set the shell info, if on windows.
 func init() {
 	if runtime.GOOS == "windows" {
 		shell = "cmd"
@@ -81,19 +82,8 @@ func dumptokens(w io.Writer, s []string, linenumber int) {
 
 // deck produces the "deck" element
 func deck(w io.Writer, s []string, linenumber int) error {
-	e := fmt.Errorf("line %d: deck begin or end", linenumber)
-	if len(s) != 2 {
-		return e
-	}
-	switch s[1] {
-	case "begin":
-		fmt.Fprintln(w, "<deck>")
-	case "end", "}":
-		fmt.Fprintln(w, "</deck>")
-	default:
-		return e
-	}
-	return nil
+	_, err := fmt.Fprintln(w, "<deck>")
+	return err
 }
 
 // canvas produces the "canvas" element
@@ -111,32 +101,26 @@ func canvas(w io.Writer, s []string, linenumber int) error {
 
 // slide produces the "slide" element
 func slide(w io.Writer, s []string, linenumber int) error {
-	e := fmt.Errorf("line %d: slide begin or end [bgcolor] [fgcolor]", linenumber)
-	n := len(s)
-	if n < 2 {
-		return e
-	}
-	switch s[1] {
-	case "begin":
-		switch n {
-		case 2:
-			fmt.Fprintln(w, "<slide>")
-		case 3:
-			fmt.Fprintf(w, "<slide bg=%s>\n", s[2])
-		case 4:
-			fmt.Fprintf(w, "<slide bg=%s fg=%s>\n", s[2], s[3])
-		default:
-			return e
-		}
-	case "end":
-		if n == 2 {
-			fmt.Fprintln(w, "</slide>")
-		} else {
-			return e
-		}
+	switch len(s) {
+	case 1:
+		fmt.Fprintln(w, "<slide>")
+	case 2:
+		fmt.Fprintf(w, "<slide bg=%s>\n", s[1])
+	case 3:
+		fmt.Fprintf(w, "<slide bg=%s fg=%s>\n", s[1], s[2])
 	default:
-		return e
+		return fmt.Errorf("line %d: slide [bgcolor] [fgcolor]", linenumber)
 	}
+	return nil
+}
+
+// elist ends a deck, slide, or list
+func endtag(w io.Writer, s []string, linenumber int) error {
+	tag := s[0]
+	if len(tag) < 2 || tag[0:1] != "e" {
+		return fmt.Errorf("line %d: edeck, eslide, or elist", linenumber)
+	}
+	fmt.Fprintf(w, "</%s>\n", tag[1:])
 	return nil
 }
 
@@ -261,12 +245,6 @@ func list(w io.Writer, s []string, linenumber int) error {
 	case "nlist":
 		fmt.Fprintf(w, "<list type=\"number\" xp=%q yp=%q sp=%q %s>\n", s[1], s[2], s[3], fco)
 	}
-	return nil
-}
-
-// elist ends a list
-func elist(w io.Writer, s []string, linenumber int) error {
-	fmt.Fprintln(w, "</list>")
 	return nil
 }
 
@@ -484,8 +462,8 @@ func process(w io.Writer, r io.Reader) error {
 		case "list", "blist", "nlist":
 			errors = append(errors, list(w, tokens, n))
 
-		case "elist":
-			errors = append(errors, elist(w, tokens, n))
+		case "elist", "eslide", "edeck":
+			errors = append(errors, endtag(w, tokens, n))
 
 		case "li":
 			errors = append(errors, listitem(w, tokens, n))
