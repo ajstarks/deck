@@ -438,6 +438,7 @@ func forloop(w io.Writer, s []string, linenumber int) (float64, float64, float64
 	return begin, end, incr, nil
 }
 
+// parsefor collects and evaluates a loop body
 func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) error {
 	begin, end, incr, err := forloop(w, s, linenumber)
 	if err != nil {
@@ -456,6 +457,7 @@ func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) e
 	return err
 }
 
+// evaloop evaluates a loop statement
 func evaloop(w io.Writer, forvar string, s []string, begin, end, incr float64, scanner *bufio.Scanner, linenumber int) {
 		cp := make([]string, len(s))
 		for i:=0; i < len(s); i++ {
