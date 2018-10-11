@@ -73,9 +73,9 @@ func parse(src string) []string {
 
 // dumptokens show the parsed tokens
 func dumptokens(w io.Writer, s []string, linenumber int) {
-	fmt.Fprintf(w, "line %d: [", linenumber)
+	fmt.Fprintf(w, "line %d: args=%d [ ", linenumber, len(s))
 	for i, t := range s {
-		fmt.Fprintf(w, " %d: %s ", i, t)
+		fmt.Fprintf(w, "%d:%s ", i, t)
 	}
 	fmt.Fprintln(w, "]")
 }
@@ -420,6 +420,123 @@ func chart(w io.Writer, s string, linenumber int) error {
 	return err
 }
 
+// forloop processes for loops:
+// for x=begin end [incr]
+// ...
+// efor
+func forloop(w io.Writer, s []string, linenumber int) (float64, float64, float64, error) {
+	var begin, end, incr float64
+	if len(s) < 5 {
+		return 0, 0, 0, fmt.Errorf("line %d: for begin end [incr] ... efor", linenumber)
+	}
+	fmt.Sscanf(s[3], "%f", &begin)
+	fmt.Sscanf(s[4], "%f", &end)
+	incr = 1.0
+	if len(s) > 5 {
+		fmt.Sscanf(s[5], "%f", &incr)
+	}
+	return begin, end, incr, nil
+}
+
+func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) error {
+	begin, end, incr, err := forloop(w, s, linenumber)
+	if err != nil {
+		return err
+	}
+	forvar := s[1]
+	fmt.Fprintf(os.Stderr, "begin=%v end=%v incr=%v\n", begin, end, incr)
+	for scanner.Scan() {
+		t := scanner.Text()
+		s = parse(t)
+		if s[0] == "efor" {
+			break
+		}
+		evaloop(w, forvar, s, begin, end, incr, scanner, linenumber)
+	}
+	return err
+}
+
+func evaloop(w io.Writer, forvar string, s []string, begin, end, incr float64, scanner *bufio.Scanner, linenumber int) {
+		cp := make([]string, len(s))
+		for i:=0; i < len(s); i++ {
+			cp[i] = s[i]
+		}
+		
+		for v := begin; v <= end; v += incr {
+			fmt.Fprintf(os.Stderr, "forval=%v -> (%v)\t%v\n", forvar, v, s)
+			emap[forvar] = fmt.Sprintf("%v", v)
+			for i := 1; i < len(s); i++ {
+				cp[i] = eval(s[i])
+			}
+			keyparse(w, cp, "", scanner, linenumber)
+		}
+}
+
+// keyparse parses keywords and executes
+func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) error {
+	switch tokens[0] {
+	case "deck":
+		return deck(w, tokens, n)
+
+	case "canvas":
+		return canvas(w, tokens, n)
+
+	case "slide":
+		return slide(w, tokens, n)
+
+	case "text", "ctext", "etext", "textfile":
+		return text(w, tokens, n)
+
+	case "textblock":
+		return textblock(w, tokens, n)
+
+	case "textcode":
+		return textcode(w, tokens, n)
+
+	case "image":
+		return image(w, tokens, n)
+
+	case "cimage":
+		return cimage(w, tokens, n)
+
+	case "list", "blist", "nlist":
+		return list(w, tokens, n)
+
+	case "elist", "eslide", "edeck":
+		return endtag(w, tokens, n)
+
+	case "li":
+		return listitem(w, tokens, n)
+
+	case "ellipse", "rect":
+		return shapes(w, tokens, n)
+
+	case "circle", "square":
+		return regshapes(w, tokens, n)
+
+	case "polygon", "poly":
+		return polygon(w, tokens, n)
+
+	case "line":
+		return line(w, tokens, n)
+
+	case "arc":
+		return arc(w, tokens, n)
+
+	case "curve":
+		return curve(w, tokens, n)
+
+	case "dchart", "chart":
+		return chart(w, t, n)
+
+	default:
+		if len(tokens) > 1 && tokens[1] == "=" {
+			return assign(tokens, n)
+		}
+	}
+	return nil
+}
+
 // process reads input, parses, dispatches functions for code generation
 func process(w io.Writer, r io.Reader) error {
 	scanner := bufio.NewScanner(r)
@@ -434,68 +551,11 @@ func process(w io.Writer, r io.Reader) error {
 		if len(tokens) < 1 || t[0] == '#' {
 			continue
 		}
-		switch tokens[0] {
-		case "deck":
-			errors = append(errors, deck(w, tokens, n))
-
-		case "canvas":
-			errors = append(errors, canvas(w, tokens, n))
-
-		case "slide":
-			errors = append(errors, slide(w, tokens, n))
-
-		case "text", "ctext", "etext", "textfile":
-			errors = append(errors, text(w, tokens, n))
-
-		case "textblock":
-			errors = append(errors, textblock(w, tokens, n))
-
-		case "textcode":
-			errors = append(errors, textcode(w, tokens, n))
-
-		case "image":
-			errors = append(errors, image(w, tokens, n))
-
-		case "cimage":
-			errors = append(errors, cimage(w, tokens, n))
-
-		case "list", "blist", "nlist":
-			errors = append(errors, list(w, tokens, n))
-
-		case "elist", "eslide", "edeck":
-			errors = append(errors, endtag(w, tokens, n))
-
-		case "li":
-			errors = append(errors, listitem(w, tokens, n))
-
-		case "ellipse", "rect":
-			errors = append(errors, shapes(w, tokens, n))
-
-		case "circle", "square":
-			errors = append(errors, regshapes(w, tokens, n))
-
-		case "polygon", "poly":
-			errors = append(errors, polygon(w, tokens, n))
-
-		case "line":
-			errors = append(errors, line(w, tokens, n))
-
-		case "arc":
-			errors = append(errors, arc(w, tokens, n))
-
-		case "curve":
-			errors = append(errors, curve(w, tokens, n))
-
-		case "dchart", "chart":
-			errors = append(errors, chart(w, t, n))
-
-		default:
-			if len(tokens) > 1 && tokens[1] == "=" {
-				errors = append(errors, assign(tokens, n))
-			}
+		if tokens[0] == "for" {
+			errors = append(errors, parsefor(w, tokens, n, scanner))
 		}
+		errors = append(errors, keyparse(w, tokens, t, scanner, n))
 	}
-
 	// report any collected errors
 	nerrs := 0
 	for _, e := range errors {

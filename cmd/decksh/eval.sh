@@ -1,11 +1,22 @@
 // comprehensive tests
 deck
+	slide
+		for x=5 100 5
+			line x 100 x 0 0.1 "black"
+		efor
+		
+		for y=5 100 5
+			line 100 y 0 y 0.1 "red"
+		efor
+	eslide
+	
 	canvas 1200 900
 	tx1=5
 	tx2=35
 	tx3=65
 	ty=92
 	tb="Now is the time for all good men to come to the aid of the party & 'do it now'"
+	
 	// Text Functions
 	slide
 		textblock tb tx1 ty 20 2
@@ -157,6 +168,7 @@ deck
 	c2="blue"
 	c3="green"
 	shapeop=30
+	
 	// Shapes
 	slide
 		polygon	   "15 20 25" "90 95 90"
