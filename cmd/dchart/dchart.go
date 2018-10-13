@@ -460,14 +460,17 @@ func radial(deck *generate.Deck, data []ChartData, title string, maxd float64) {
 	step := fullcircle / float64(len(data))
 	var color string
 	for _, d := range data {
-		px, py := polar(dx, dy, pwidth, t)
 		cv := vmap(d.value, 0, maxd, 2, psize)
+		px, py := polar(dx, dy, pwidth, t)
+		tx, ty := polar(dx, dy, pwidth+(psize/2)+(ts*2), t)
+		
 		if len(d.note) > 0 {
 			color = d.note
 		} else {
 			color = datacolor
 		}
-		deck.TextMid(px, py+(psize/2)+ts/2, d.label, "sans", ts/2, "black")
+		deck.Line(tx, ty, px, py, 0.05, "gray", 50)
+		deck.TextMid(tx, ty,  d.label, "sans", ts/2, "black")
 		if showval {
 			deck.TextMid(px, py-ts/3, dformat(d.value), "mono", ts, valuecolor)
 		}
@@ -859,7 +862,7 @@ func main() {
 			r, err := os.Open(file)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "%v\n", err)
-				continue
+				os.Exit(1)
 			}
 			chart(deck, r)
 		}
