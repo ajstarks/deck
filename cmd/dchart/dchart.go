@@ -469,7 +469,7 @@ func radial(deck *generate.Deck, data []ChartData, title string, maxd float64) {
 		} else {
 			color = datacolor
 		}
-		deck.Line(tx, ty, px, py, 0.05, "gray", 50)
+		
 		deck.TextMid(tx, ty,  d.label, "sans", ts/2, "black")
 		if showval {
 			deck.TextMid(px, py-ts/3, dformat(d.value), "mono", ts, valuecolor)
@@ -478,6 +478,7 @@ func radial(deck *generate.Deck, data []ChartData, title string, maxd float64) {
 			spokes(deck, px, py, psize/2, 0.05, int(d.value), color)
 		} else {
 			deck.Circle(px, py, cv, color, transparency)
+			deck.Line(tx, ty, px, py, 0.05, "gray", 50)
 		}
 		t -= step
 	}
