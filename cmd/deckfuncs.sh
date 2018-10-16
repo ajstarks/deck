@@ -13,7 +13,7 @@ function slide {
 	case $1 in
 		begin) echo "<slide bg=\"$2\" fg=\"$3\">";;
 		end) echo "</slide>";;
-		*) echo "<slide>";;
+		*) echo "<slide bg=\"$1\" fg=\"$2\">";;
 	esac
 }
 
@@ -65,6 +65,14 @@ function elist {
 	echo "</list>"
 }
 
+function eslide {
+	echo "</slide>"
+}
+
+function edeck {
+	echo "</deck>"
+}
+
 function listend {
 	echo "</list>"
 }
@@ -108,8 +116,6 @@ function arc {
 function curve {
 	echo "<curve xp1=\"$1\" yp1=\"$2\" xp2=\"$3\" yp2=\"$4\" xp3=\"$5\" yp3=\"$6\" sp=\"$7\" color=\"$8\" opacity=\"$9\"/>"
 }
-
-
 
 function legend {
 		text "$1" $(($2 + 2)) $3 $4 $5
