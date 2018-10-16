@@ -445,7 +445,7 @@ func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) e
 		return err
 	}
 	forvar := s[1]
-	fmt.Fprintf(os.Stderr, "begin=%v end=%v incr=%v\n", begin, end, incr)
+	//fmt.Fprintf(os.Stderr, "begin=%v end=%v incr=%v\n", begin, end, incr)
 	for scanner.Scan() {
 		t := scanner.Text()
 		s = parse(t)
@@ -465,7 +465,7 @@ func evaloop(w io.Writer, forvar string, s []string, begin, end, incr float64, s
 		}
 		
 		for v := begin; v <= end; v += incr {
-			fmt.Fprintf(os.Stderr, "forval=%v -> (%v)\t%v\n", forvar, v, s)
+			//fmt.Fprintf(os.Stderr, "forval=%v -> (%v)\t%v\n", forvar, v, s)
 			emap[forvar] = fmt.Sprintf("%v", v)
 			for i := 1; i < len(s); i++ {
 				cp[i] = eval(s[i])
