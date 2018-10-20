@@ -23,7 +23,7 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop              float64
+	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop, linewidth   float64
 	xint, pmlen                                                                           int
 	readcsv, showdot, datamin, showvolume, showscatter, showpct                           bool
 	showbar, showval, showxlast, showline, showhbar, wbar, showaxis                       bool
@@ -71,6 +71,7 @@ func cmdflags() {
 	flag.Float64Var(&umax, "max", -1, "maximum")
 	flag.Float64Var(&psize, "psize", 40.0, "size of the donut")
 	flag.Float64Var(&pwidth, "pwidth", ts*3, "width of the pmap/donut/radial")
+	flag.Float64Var(&linewidth, "linewidth", 0.2, "width of line for line charts")
 	flag.Float64Var(&volop, "volop", 50, "volume opacity")
 
 	flag.BoolVar(&showbar, "bar", true, "show a bar chart")
@@ -463,14 +464,14 @@ func radial(deck *generate.Deck, data []ChartData, title string, maxd float64) {
 		cv := vmap(d.value, 0, maxd, 2, psize)
 		px, py := polar(dx, dy, pwidth, t)
 		tx, ty := polar(dx, dy, pwidth+(psize/2)+(ts*2), t)
-		
+
 		if len(d.note) > 0 {
 			color = d.note
 		} else {
 			color = datacolor
 		}
-		
-		deck.TextMid(tx, ty,  d.label, "sans", ts/2, "black")
+
+		deck.TextMid(tx, ty, d.label, "sans", ts/2, "black")
 		if showval {
 			deck.TextMid(px, py-ts/3, dformat(d.value), "mono", ts, valuecolor)
 		}
@@ -783,7 +784,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			yvol[i+1] = y
 		}
 		if showline && i > 0 {
-			deck.Line(px, py, x, y, 0.2, datacolor)
+			deck.Line(px, py, x, y, linewidth, datacolor)
 		}
 		if showdot {
 			dottedvline(deck, x, bottom, y, ts/6, 1, dotlinecolor)

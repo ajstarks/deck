@@ -56,6 +56,7 @@ The command line options are:
 
 	-pwidth      width of the donut or proportional map (default 3)
 	-barwidth    barwidth (default computed from the number of data points)
+	-linewidth   linewidth for line charts (default 0.2)
 	-ls          linespacing (default 2.4)
 	-textsize    text size (default 1.5)
 	-xlabel      x axis label interval (default 1, 0 to supress all labels)
