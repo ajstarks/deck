@@ -444,8 +444,7 @@ func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) e
 	if err != nil {
 		return err
 	}
-	forvar := s[1]
-	//fmt.Fprintf(os.Stderr, "begin=%v end=%v incr=%v\n", begin, end, incr)
+	forvar := s[1]	// for x=....
 	for scanner.Scan() {
 		t := scanner.Text()
 		s = parse(t)
@@ -459,19 +458,17 @@ func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) e
 
 // evaloop evaluates a loop statement
 func evaloop(w io.Writer, forvar string, s []string, begin, end, incr float64, scanner *bufio.Scanner, linenumber int) {
-		cp := make([]string, len(s))
-		for i:=0; i < len(s); i++ {
-			cp[i] = s[i]
-		}
-		
-		for v := begin; v <= end; v += incr {
-			//fmt.Fprintf(os.Stderr, "forval=%v -> (%v)\t%v\n", forvar, v, s)
-			emap[forvar] = fmt.Sprintf("%v", v)
-			for i := 1; i < len(s); i++ {
-				cp[i] = eval(s[i])
+	e := make([]string, len(s))
+	for v := begin; v <= end; v += incr {
+		for i := 0; i < len(s); i++ {
+			if s[i] == forvar {
+				e[i] = fmt.Sprintf("%v", v)
+			} else {
+			  e[i] = s[i]
 			}
-			keyparse(w, cp, "", scanner, linenumber)
-		}
+		}	
+		keyparse(w, e, "", scanner, linenumber)
+	}
 }
 
 // keyparse parses keywords and executes

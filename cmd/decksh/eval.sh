@@ -1,12 +1,9 @@
 // comprehensive tests
 deck
-	slide
-		for x=5 100 5
-			line x 100 x 0 0.1 "black"
-		efor
-		
-		for y=5 100 5
-			line 100 y 0 y 0.1 "red"
+	slide	
+		for v=0 100 5
+			line 100 v 0 v 0.1 "blue"
+			line v 100 v 0 0.1 "red"
 		efor
 	eslide
 	

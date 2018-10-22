@@ -94,16 +94,28 @@ Begin or end a deck.
 	deck
 	edeck
 	
-Begin, end a slide with optional background and text colors.
 Specify the size of the canvas.
+	
+	canvas w h
+	
+Begin, end a slide with optional background and text colors.
+
 
 	slide [bgcolor] [fgcolor]
 	eslide
-	canvas w h
 	
+## Loops
+
+Loop over ```statements```, with ```x``` starting at ```begin```, ending at ```end``` with an optional ```increment``` 
+(if omitted the increment is 1). Substitution of ```x``` will occur in statements.
+
+	for x=begin end [increment]
+		statements
+	efor
+
 ## Text 
 
-Show left, centered, end or block-aligned text or a file's contents with 
+Left, centered, end or block-aligned text or a file's contents with 
 optional font ("sans", "serif", "mono", or "symbol"), color and opacity.
 
 Also, show blocks of code on a gray background.
@@ -119,7 +131,7 @@ Also, show blocks of code on a gray background.
 
 Plain and captioned, with optional scales and links
 
-	image  "file" x y width height [scale] [link]
+	image  "file"           x y width height [scale] [link]
 	cimage "file" "caption" x y width height [scale] [link]
 	
 ## Lists 
@@ -148,12 +160,14 @@ For polygons, specify the x and y coordinates as a series of numbers, with optio
 	
 	polygon "xcoords" "ycoords" [color] [opacity]
 
-For lines specify the coordinates for the beginning and end points. For arc, specify the location of the center point, its width and height, and beginning and ending angles.
-Curve is a quadratic bezier: specify the beginning location, the control point, and ending location.  Size, color and opacity are optional, and defaults are applied.
+For lines specify the coordinates for the beginning and end points.
+Curve is a quadratic bezier: specify the beginning location, the control point, and ending location.
+For arcs, specify the location of the center point, its width and height, and the beginning and ending angles.
+Size, color and opacity are optional, and defaults are applied.
 
 	line    x1 y1 x2 y2       [size] [color] [opacity]
-	arc     x y w h a1 a2     [size] [color] [opacity]
 	curve   x1 y1 x2 y2 x3 y3 [size] [color] [opacity]
+	arc     x y w h a1 a2     [size] [color] [opacity]
 
 ## Charts
 
