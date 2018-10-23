@@ -41,7 +41,7 @@ func xmlesc(s string) string {
 // assign creates an assignment by filling in the global id map
 func assign(s []string, linenumber int) error {
 	if len(s) < 3 {
-		return fmt.Errorf("line %d: assignment needs id=<expression>", linenumber)
+		return fmt.Errorf("line %d: assignment needs id=<expression>, id+=<expression> or id-=<expression>", linenumber)
 	}
 	emap[s[0]] = s[2]
 	return nil
@@ -444,10 +444,13 @@ func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) e
 	if err != nil {
 		return err
 	}
-	forvar := s[1]	// for x=....
+	forvar := s[1] // for x=....
 	for scanner.Scan() {
 		t := scanner.Text()
 		s = parse(t)
+		if len(s) < 1 {
+			continue
+		}
 		if s[0] == "efor" {
 			break
 		}
@@ -464,15 +467,16 @@ func evaloop(w io.Writer, forvar string, s []string, begin, end, incr float64, s
 			if s[i] == forvar {
 				e[i] = fmt.Sprintf("%v", v)
 			} else {
-			  e[i] = s[i]
+				e[i] = s[i]
 			}
-		}	
+		}
 		keyparse(w, e, "", scanner, linenumber)
 	}
 }
 
 // keyparse parses keywords and executes
 func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) error {
+
 	switch tokens[0] {
 	case "deck":
 		return deck(w, tokens, n)
@@ -529,6 +533,7 @@ func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) 
 		return chart(w, t, n)
 
 	default:
+
 		if len(tokens) > 1 && tokens[1] == "=" {
 			return assign(tokens, n)
 		}
