@@ -13,6 +13,14 @@ import (
 	"text/scanner"
 )
 
+// types of for loops
+const (
+	noloop = iota
+	numloop
+	fileloop
+	vectloop
+)
+
 // emap is the id=expression map
 var emap = map[string]string{}
 
@@ -41,7 +49,7 @@ func xmlesc(s string) string {
 // assign creates an assignment by filling in the global id map
 func assign(s []string, linenumber int) error {
 	if len(s) < 3 {
-		return fmt.Errorf("line %d: assignment needs id=<expression>, id+=<expression> or id-=<expression>", linenumber)
+		return fmt.Errorf("line %d: assignment needs id=<expression>", linenumber)
 	}
 	emap[s[0]] = s[2]
 	return nil
@@ -420,11 +428,62 @@ func chart(w io.Writer, s string, linenumber int) error {
 	return err
 }
 
+// fortype returns the type of for loop; either:
+// for v = begin end incr
+// for v = ["abc" "123"]
+// for v = "file"
+func fortype(s []string) int {
+	n := len(s)
+	// for x = ...
+	if n < 4 || s[2] != "=" {
+		return noloop
+	}
+	// for x = [...]
+	if s[3] == "[" && s[len(s)-1] == "]" {
+		return vectloop
+	}
+	// for x = "foo.d"
+	if n == 4 && len(s[3]) > 3 && s[3][0] == '"' && s[3][len(s[3])-1] == '"' {
+		return fileloop
+	}
+	// for x = begin end [increment]
+	if n == 5 || n == 6 {
+		return numloop
+	}
+	return noloop
+}
+
+func forvector(s []string) ([]string, error) {
+	n := len(s)
+	if n < 5 {
+		return nil, fmt.Errorf("incomplete for: %v", s)
+	}
+	elements := make([]string, n-5)
+	for i := 4; i < n-1; i++ {
+		elements[i-4] = s[i]
+	}
+	return elements, nil
+}
+
+func forfile(s []string) ([]string, error) {
+	var contents []string
+	fname := s[3][1 : len(s[3])-1] // remove quotes
+	r, err := os.Open(fname)
+	if err != nil {
+		return contents, err
+	}
+	fs := bufio.NewScanner(r)
+	for fs.Scan() {
+		contents = append(contents, fs.Text())
+	}
+	return contents, fs.Err()
+}
+
 // forloop processes for loops:
 // for x=begin end [incr]
 // ...
 // efor
-func forloop(w io.Writer, s []string, linenumber int) (float64, float64, float64, error) {
+func fornum(w io.Writer, s []string, linenumber int) (float64, float64, float64, error) {
 	var begin, end, incr float64
 	if len(s) < 5 {
 		return 0, 0, 0, fmt.Errorf("line %d: for begin end [incr] ... efor", linenumber)
@@ -440,23 +499,38 @@ func forloop(w io.Writer, s []string, linenumber int) (float64, float64, float64
 
 // parsefor collects and evaluates a loop body
 func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) error {
-	begin, end, incr, err := forloop(w, s, linenumber)
-	if err != nil {
+	switch fortype(s) {
+	case numloop:
+		begin, end, incr, err := fornum(w, s, linenumber)
+		if err != nil {
+			return err
+		}
+		forvar := s[1] // for x=....
+		for scanner.Scan() {
+			t := scanner.Text()
+			s = parse(t)
+			if len(s) < 1 {
+				continue
+			}
+			if s[0] == "efor" {
+				break
+			}
+			evaloop(w, forvar, s, begin, end, incr, scanner, linenumber)
+		}
 		return err
+
+	case vectloop:
+		vl, err := forvector(s)
+		fmt.Fprintf(os.Stderr, "for vect=%v (%v)\n", vl, err)
+		return err
+
+	case fileloop:
+		fl, err := forfile(s)
+		fmt.Fprintf(os.Stderr, "for file=%v (%v)\n", fl, err)
+		return err
+	default:
+		return fmt.Errorf("line %d: incorrect for loop: %v", linenumber, s)
 	}
-	forvar := s[1] // for x=....
-	for scanner.Scan() {
-		t := scanner.Text()
-		s = parse(t)
-		if len(s) < 1 {
-			continue
-		}
-		if s[0] == "efor" {
-			break
-		}
-		evaloop(w, forvar, s, begin, end, incr, scanner, linenumber)
-	}
-	return err
 }
 
 // evaloop evaluates a loop statement
