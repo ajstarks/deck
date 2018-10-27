@@ -106,12 +106,27 @@ Begin, end a slide with optional background and text colors.
 	
 ## Loops
 
-Loop over ```statements```, with ```x``` starting at ```begin```, ending at ```end``` with an optional ```increment``` 
-(if omitted the increment is 1). Substitution of ```x``` will occur in statements.
+Loop over ```statements```, with ```x``` starting at ```begin```, ending at ```end``` with an optional ```increment``` (if omitted the increment is 1). 
+Substitution of ```x``` will occur in statements.
 
 	for x=begin end [increment]
 		statements
 	efor
+
+Loop over ```statements```, with ```x``` ranging over the contents of items within ```[]```.
+Substitution of ```x``` will occur in statements.
+
+	for x=["abc" "def" "ghi"]
+		statements
+	efor
+
+Loop over ```statements```, with ```x``` ranging over the contents ```"file"```.
+Substitution of ```x``` will occur in statements.
+
+	for x="file"
+		statements
+	efor
+
 
 ## Text 
 

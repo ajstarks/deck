@@ -453,6 +453,7 @@ func fortype(s []string) int {
 	return noloop
 }
 
+// forvector returns the elements between "[" and "]"
 func forvector(s []string) ([]string, error) {
 	n := len(s)
 	if n < 5 {
@@ -465,6 +466,7 @@ func forvector(s []string) ([]string, error) {
 	return elements, nil
 }
 
+// forfile reads and returns the contents of the file in for x = "file"
 func forfile(s []string) ([]string, error) {
 	var contents []string
 	fname := s[3][1 : len(s[3])-1] // remove quotes
@@ -479,11 +481,8 @@ func forfile(s []string) ([]string, error) {
 	return contents, fs.Err()
 }
 
-// forloop processes for loops:
-// for x=begin end [incr]
-// ...
-// efor
-func fornum(w io.Writer, s []string, linenumber int) (float64, float64, float64, error) {
+// fornum returns the arguments for for x=begin end [incr]
+func fornum(s []string, linenumber int) (float64, float64, float64, error) {
 	var begin, end, incr float64
 	if len(s) < 5 {
 		return 0, 0, 0, fmt.Errorf("line %d: for begin end [incr] ... efor", linenumber)
@@ -499,37 +498,76 @@ func fornum(w io.Writer, s []string, linenumber int) (float64, float64, float64,
 
 // parsefor collects and evaluates a loop body
 func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) error {
+
+	forvar := s[1] // for x=....
+	// determine the type of loop
+
 	switch fortype(s) {
 	case numloop:
-		begin, end, incr, err := fornum(w, s, linenumber)
+		begin, end, incr, err := fornum(s, linenumber)
 		if err != nil {
 			return err
 		}
-		forvar := s[1] // for x=....
+		// evaluate the body
 		for scanner.Scan() {
-			t := scanner.Text()
-			s = parse(t)
-			if len(s) < 1 {
+			p := parse(scanner.Text())
+			if len(p) < 1 {
 				continue
 			}
-			if s[0] == "efor" {
+			if p[0] == "efor" {
 				break
 			}
-			evaloop(w, forvar, s, begin, end, incr, scanner, linenumber)
+			evaloop(w, forvar, p, begin, end, incr, scanner, linenumber)
 		}
 		return err
-
 	case vectloop:
 		vl, err := forvector(s)
-		fmt.Fprintf(os.Stderr, "for vect=%v (%v)\n", vl, err)
+		if err != nil {
+			return err
+		}
+		for scanner.Scan() {
+			p := parse(scanner.Text())
+			if len(p) < 1 {
+				continue
+			}
+			if p[0] == "efor" {
+				break
+			}
+			evalfl(w, forvar, p, vl, scanner, linenumber)
+		}
 		return err
-
 	case fileloop:
 		fl, err := forfile(s)
-		fmt.Fprintf(os.Stderr, "for file=%v (%v)\n", fl, err)
+		if err != nil {
+			return err
+		}
+		for scanner.Scan() {
+			p := parse(scanner.Text())
+			if len(p) < 1 {
+				continue
+			}
+			if p[0] == "efor" {
+				break
+			}
+			evalfl(w, forvar, p, fl, scanner, linenumber)
+		}
 		return err
 	default:
 		return fmt.Errorf("line %d: incorrect for loop: %v", linenumber, s)
+	}
+}
+
+func evalfl(w io.Writer, forvar string, s []string, t []string, scanner *bufio.Scanner, linenumber int) {
+	e := make([]string, len(s))
+	for _, v := range t {
+		for i := 0; i < len(s); i++ {
+			if s[i] == forvar {
+				e[i] = fmt.Sprintf("\"%s\"", v)
+			} else {
+				e[i] = s[i]
+			}
+		}
+		keyparse(w, e, "", scanner, linenumber)
 	}
 }
 
