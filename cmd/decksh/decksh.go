@@ -20,6 +20,7 @@ const (
 	fileloop
 	vectloop
 )
+const doublequote = 0x22
 
 // emap is the id=expression map
 var emap = map[string]string{}
@@ -55,7 +56,36 @@ func assign(s []string, linenumber int) error {
 	return nil
 }
 
-// eval evaluates an id=<expressipn> string
+// assignop creates an assignment by computing an addition or substraction on an identifier
+func assignop(s []string, linenumber int) error {
+	operr := fmt.Errorf("line %d:  id += number or id -= number", linenumber)
+	if len(s) < 4 {
+		return operr
+	}
+	var e, v float64
+	_, err := fmt.Sscanf(eval(s[0]), "%f", &e)
+	if err != nil {
+		return fmt.Errorf("line %d: %v is not a number", linenumber, s[0])
+	}
+	_, verr := fmt.Sscanf(s[3], "%f", &v)
+	if verr != nil {
+		return fmt.Errorf("line %d: %v is not a number", linenumber, s[3])
+	}
+
+	switch s[1] {
+	case "+":
+		emap[s[0]] = fmt.Sprintf("%v", e+v)
+		//fmt.Fprintf(os.Stderr, "%v -> %v\n", s, e+v)
+	case "-":
+		emap[s[0]] = fmt.Sprintf("%v", e-v)
+		//fmt.Fprintf(os.Stderr, "%v -> %v\n", s, e-v)
+	default:
+		return operr
+	}
+	return nil
+}
+
+// eval evaluates an id string
 func eval(s string) string {
 	v, ok := emap[s]
 	if ok {
@@ -411,7 +441,7 @@ func chart(w io.Writer, s string, linenumber int) error {
 		args[i] = eval(args[i])
 		// unquote substituted strings
 		la := len(args[i])
-		if la > 2 && args[i][0] == '"' && args[i][la-1] == '"' {
+		if la > 2 && args[i][0] == doublequote && args[i][la-1] == doublequote {
 			args[i] = args[i][1 : la-1]
 		}
 	}
@@ -443,7 +473,7 @@ func fortype(s []string) int {
 		return vectloop
 	}
 	// for x = "foo.d"
-	if n == 4 && len(s[3]) > 3 && s[3][0] == '"' && s[3][len(s[3])-1] == '"' {
+	if n == 4 && len(s[3]) > 3 && s[3][0] == doublequote && s[3][len(s[3])-1] == doublequote {
 		return fileloop
 	}
 	// for x = begin end [increment]
@@ -485,13 +515,22 @@ func forfile(s []string) ([]string, error) {
 func fornum(s []string, linenumber int) (float64, float64, float64, error) {
 	var begin, end, incr float64
 	if len(s) < 5 {
-		return 0, 0, 0, fmt.Errorf("line %d: for begin end [incr] ... efor", linenumber)
+		return 0, -1, 0, fmt.Errorf("line %d: for begin end [incr] ... efor", linenumber)
 	}
-	fmt.Sscanf(s[3], "%f", &begin)
-	fmt.Sscanf(s[4], "%f", &end)
+	_, berr := fmt.Sscanf(s[3], "%f", &begin)
+	if berr != nil {
+		return 0, -1, 0, berr
+	}
+	_, enderr := fmt.Sscanf(s[4], "%f", &end)
+	if enderr != nil {
+		return 0, -1, 0, enderr
+	}
 	incr = 1.0
 	if len(s) > 5 {
-		fmt.Sscanf(s[5], "%f", &incr)
+		_, ierr := fmt.Sscanf(s[5], "%f", &incr)
+		if ierr != nil {
+			return 0, -1, 0, ierr
+		}
 	}
 	return begin, end, incr, nil
 }
@@ -588,7 +627,7 @@ func evaloop(w io.Writer, forvar string, s []string, begin, end, incr float64, s
 
 // keyparse parses keywords and executes
 func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) error {
-
+	//fmt.Fprintf(os.Stderr, "%v\n", emap)
 	switch tokens[0] {
 	case "deck":
 		return deck(w, tokens, n)
@@ -644,12 +683,15 @@ func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) 
 	case "dchart", "chart":
 		return chart(w, t, n)
 
-	default:
-
+	default: // not a keyword, process assignments
 		if len(tokens) > 1 && tokens[1] == "=" {
 			return assign(tokens, n)
 		}
+		if len(tokens) > 3 && (tokens[1] == "+" || tokens[1] == "-") {
+			return assignop(tokens, n)
+		}
 	}
+
 	return nil
 }
 

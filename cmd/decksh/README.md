@@ -85,6 +85,12 @@ Canvas size and image dimensions are in pixels.
 	x=10
 	y=20
 	text "hello, world" x y 5
+	
+```id+=<number>``` and ```id-=<number>``` increment and decrement the value of ```id``` by <number>
+
+	x+=5
+	y-=10
+	
 
 
 ## Structure
