@@ -1,5 +1,6 @@
 // comprehensive tests
 deck
+	canvas 1200 900
 	slide	
 		for v=0 100 5
 			line 100 v 0 v 0.1 "blue"
@@ -7,7 +8,22 @@ deck
 		efor
 	eslide
 	
-	canvas 1200 900
+	slide
+		cr=5
+		for cx=10 90 20
+			ellipse cx 50 7 cr "blue" 100
+			ellipse cx 55 7 cr "red" 100
+			rect cx 52.5 7 cr "blue" 100
+			ctext "item" cx 60 2
+		efor
+		
+		for cx=20 90 20
+			circle cx 50 cr "red" 100
+			square cx 52.5 4.9 "red" 100
+			circle cx 55 cr "blue" 100
+		efor
+	eslide
+	
 	tx1=5
 	tx2=35
 	tx3=65
@@ -16,9 +32,12 @@ deck
 	
 	// Text Functions
 	slide
-		textblock tb tx1 ty 20 2
-		textblock tb tx2 ty 15 2 "serif"
-		textblock tb tx3 ty 10 2 "mono" "red"
+		tw=20
+		textblock tb tx1 ty tw 2
+		tw-=5
+		textblock tb tx2 ty tw 2 "serif"
+		tw-=5
+		textblock tb tx3 ty tw 2 "mono" "red"
 		
 		textfile "AAPL.d" tx1 50 2
 		textfile "AAPL.d" tx2 50 2 "serif"
@@ -39,6 +58,7 @@ deck
 		line l1 0 l1 100 0.1
 		line l2 0 l2 100 0.1
 		line l3 0 l3 100 0.1
+		
 		text "one"   l1 80 ts1
 		text "two"   l1 70 ts1 "serif"
 		text "three" l1 60 ts1 "mono" "red"
@@ -94,18 +114,21 @@ deck
 			li "three"
 		elist
 		
-		blist lx2 ly1 lsize
+		lx1+=20
+		blist lx1 ly1 lsize
 			li "one"
 			li "two"
 			li "three"
 		elist
 		
-		nlist lx3 ly1 lsize
+		lx1+=20
+		nlist lx1 ly1 lsize
 			li "one"
 			li "two"
 			li "three"
 		elist
 		
+		lx1=20
 		list lx1 ly2 lsize "sans"
 			li "one"
 			li "two"
