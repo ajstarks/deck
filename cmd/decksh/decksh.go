@@ -458,6 +458,16 @@ func chart(w io.Writer, s string, linenumber int) error {
 	return err
 }
 
+func isaop(s []string) bool {
+	if len(s) < 4 {
+		return false
+	}
+	if (s[1] == "+" || s[1] == "-") && s[2] == "=" {
+		return true
+	}
+	return false
+}
+
 // fortype returns the type of for loop; either:
 // for v = begin end incr
 // for v = ["abc" "123"]
@@ -535,6 +545,22 @@ func fornum(s []string, linenumber int) (float64, float64, float64, error) {
 	return begin, end, incr, nil
 }
 
+// forbody collects items within a for loop body
+func forbody(scanner *bufio.Scanner) [][]string {
+	elements := [][]string{}
+	for scanner.Scan() {
+		p := parse(scanner.Text())
+		if len(p) < 1 {
+			continue
+		}
+		if p[0] == "efor" {
+			break
+		}
+		elements = append(elements, p)
+	}
+	return elements
+}
+
 // parsefor collects and evaluates a loop body
 func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) error {
 
@@ -564,15 +590,11 @@ func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) e
 		if err != nil {
 			return err
 		}
-		for scanner.Scan() {
-			p := parse(scanner.Text())
-			if len(p) < 1 {
-				continue
+		body := forbody(scanner)
+		for _, v := range vl {
+			for _, fb := range body {
+				evalfl(w, forvar, v, fb, scanner, linenumber)
 			}
-			if p[0] == "efor" {
-				break
-			}
-			evalfl(w, forvar, p, vl, scanner, linenumber)
 		}
 		return err
 	case fileloop:
@@ -580,15 +602,11 @@ func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) e
 		if err != nil {
 			return err
 		}
-		for scanner.Scan() {
-			p := parse(scanner.Text())
-			if len(p) < 1 {
-				continue
+		body := forbody(scanner)
+		for _, v := range fl {
+			for _, fb := range body {
+				evalfl(w, forvar, v, fb, scanner, linenumber)
 			}
-			if p[0] == "efor" {
-				break
-			}
-			evalfl(w, forvar, p, fl, scanner, linenumber)
 		}
 		return err
 	default:
@@ -596,18 +614,16 @@ func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) e
 	}
 }
 
-func evalfl(w io.Writer, forvar string, s []string, t []string, scanner *bufio.Scanner, linenumber int) {
+func evalfl(w io.Writer, forvar, v string, s []string, scanner *bufio.Scanner, linenumber int) {
 	e := make([]string, len(s))
-	for _, v := range t {
-		for i := 0; i < len(s); i++ {
-			if s[i] == forvar {
-				e[i] = fmt.Sprintf("\"%s\"", v)
-			} else {
-				e[i] = s[i]
-			}
+	copy(e, s)
+	for i := 0; i < len(s); i++ {
+		if s[i] == forvar {
+			e[i] = fmt.Sprintf("\"%s\"", v)
 		}
-		keyparse(w, e, "", scanner, linenumber)
 	}
+	//fmt.Fprintf(os.Stderr, "%v -> %v\n", s, e)
+	keyparse(w, e, "", scanner, linenumber)
 }
 
 // evaloop evaluates a loop statement
