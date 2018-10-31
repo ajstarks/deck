@@ -822,7 +822,12 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		}
 		// show x label every xinit times, show the last, if specified
 		if xint > 0 && (i%xint == 0 || (showxlast && i == l-1)) {
-			deck.TextMid(x, bottom-(ts*2), data.label, "sans", ts*0.8, labelcolor)
+			xlabels := strings.Split(data.label, `\n`)
+			xly := bottom - (ts * 2)
+			for _, xl := range xlabels {
+				deck.TextMid(x, xly, xl, "sans", ts*0.8, labelcolor)
+				xly -= ts * 1.2
+			}
 		}
 		px = x
 		py = y
