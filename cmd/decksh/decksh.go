@@ -193,13 +193,17 @@ func text(w io.Writer, s []string, linenumber int) error {
 	fco := fontColorOp(s[5:])
 	switch s[0] {
 	case "text":
-		fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
+		fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n",
+			s[2], s[3], s[4], fco, qesc(s[1]))
 	case "ctext":
-		fmt.Fprintf(w, "<text align=\"c\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
+		fmt.Fprintf(w, "<text align=\"c\" xp=%q yp=%q sp=%q %s>%s</text>\n",
+			s[2], s[3], s[4], fco, qesc(s[1]))
 	case "etext":
-		fmt.Fprintf(w, "<text align=\"e\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
+		fmt.Fprintf(w, "<text align=\"e\" xp=%q yp=%q sp=%q %s>%s</text>\n",
+			s[2], s[3], s[4], fco, qesc(s[1]))
 	case "textfile":
-		fmt.Fprintf(w, "<text file=%s xp=%q yp=%q sp=%q %s/>\n", s[1], s[2], s[3], s[4], fco)
+		fmt.Fprintf(w, "<text file=%s xp=%q yp=%q sp=%q %s/>\n",
+			s[1], s[2], s[3], s[4], fco)
 	}
 	return nil
 }
@@ -209,7 +213,8 @@ func textblock(w io.Writer, s []string, linenumber int) error {
 	if len(s) < 6 {
 		return fmt.Errorf("line %d: %s \"text\" x y width size [font] [color] [opacity]", linenumber, s[0])
 	}
-	fmt.Fprintf(w, "<text type=\"block\" xp=%q yp=%q wp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], s[5], fontColorOp(s[6:]), qesc(s[1]))
+	fmt.Fprintf(w, "<text type=\"block\" xp=%q yp=%q wp=%q sp=%q %s>%s</text>\n",
+		s[2], s[3], s[4], s[5], fontColorOp(s[6:]), qesc(s[1]))
 	return nil
 }
 
@@ -217,9 +222,11 @@ func textblock(w io.Writer, s []string, linenumber int) error {
 func textcode(w io.Writer, s []string, linenumber int) error {
 	switch len(s) {
 	case 6:
-		fmt.Fprintf(w, "<text type=\"code\" file=%s xp=%q yp=%q wp=%q sp=%q/>\n", s[1], s[2], s[3], s[4], s[5])
+		fmt.Fprintf(w, "<text type=\"code\" file=%s xp=%q yp=%q wp=%q sp=%q/>\n",
+			s[1], s[2], s[3], s[4], s[5])
 	case 7:
-		fmt.Fprintf(w, "<text type=\"code\" file=%s xp=%q yp=%q wp=%q sp=%q color=%s/>\n", s[1], s[2], s[3], s[4], s[5], s[6])
+		fmt.Fprintf(w, "<text type=\"code\" file=%s xp=%q yp=%q wp=%q sp=%q color=%s/>\n",
+			s[1], s[2], s[3], s[4], s[5], s[6])
 	default:
 		return fmt.Errorf("line %d: %s \"file\" x y width size [color]", linenumber, s[0])
 	}
@@ -233,11 +240,14 @@ func image(w io.Writer, s []string, linenumber int) error {
 
 	switch n {
 	case 6:
-		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q/>\n", s[1], s[2], s[3], s[4], s[5])
+		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q/>\n",
+			s[1], s[2], s[3], s[4], s[5])
 	case 7:
-		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q scale=%q/>\n", s[1], s[2], s[3], s[4], s[5], s[6])
+		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q scale=%q/>\n",
+			s[1], s[2], s[3], s[4], s[5], s[6])
 	case 8:
-		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q scale=%q link=%s/>\n", s[1], s[2], s[3], s[4], s[5], s[6], s[7])
+		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q scale=%q link=%s/>\n",
+			s[1], s[2], s[3], s[4], s[5], s[6], s[7])
 	default:
 		return e
 	}
@@ -254,11 +264,14 @@ func cimage(w io.Writer, s []string, linenumber int) error {
 	caption := xmlesc(s[2])
 	switch n {
 	case 7:
-		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q/>\n", s[1], caption, s[3], s[4], s[5], s[6])
+		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q/>\n",
+			s[1], caption, s[3], s[4], s[5], s[6])
 	case 8:
-		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q scale=%q/>\n", s[1], caption, s[3], s[4], s[5], s[6], s[7])
+		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q scale=%q/>\n",
+			s[1], caption, s[3], s[4], s[5], s[6], s[7])
 	case 9:
-		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q scale=%q link=%s/>\n", s[1], caption, s[3], s[4], s[5], s[6], s[7], s[8])
+		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q scale=%q link=%s/>\n",
+			s[1], caption, s[3], s[4], s[5], s[6], s[7], s[8])
 	default:
 		return e
 	}
@@ -277,11 +290,14 @@ func list(w io.Writer, s []string, linenumber int) error {
 	}
 	switch s[0] {
 	case "list":
-		fmt.Fprintf(w, "<list xp=%q yp=%q sp=%q %s>\n", s[1], s[2], s[3], fco)
+		fmt.Fprintf(w, "<list xp=%q yp=%q sp=%q %s>\n",
+			s[1], s[2], s[3], fco)
 	case "blist":
-		fmt.Fprintf(w, "<list type=\"bullet\" xp=%q yp=%q sp=%q %s>\n", s[1], s[2], s[3], fco)
+		fmt.Fprintf(w, "<list type=\"bullet\" xp=%q yp=%q sp=%q %s>\n",
+			s[1], s[2], s[3], fco)
 	case "nlist":
-		fmt.Fprintf(w, "<list type=\"number\" xp=%q yp=%q sp=%q %s>\n", s[1], s[2], s[3], fco)
+		fmt.Fprintf(w, "<list type=\"number\" xp=%q yp=%q sp=%q %s>\n",
+			s[1], s[2], s[3], fco)
 	}
 	return nil
 }
@@ -564,25 +580,19 @@ func forbody(scanner *bufio.Scanner) [][]string {
 // parsefor collects and evaluates a loop body
 func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) error {
 
-	forvar := s[1] // for x=....
+	forvar := s[1]
+	body := forbody(scanner)
 	// determine the type of loop
-
 	switch fortype(s) {
 	case numloop:
 		begin, end, incr, err := fornum(s, linenumber)
 		if err != nil {
 			return err
 		}
-		// evaluate the body
-		for scanner.Scan() {
-			p := parse(scanner.Text())
-			if len(p) < 1 {
-				continue
+		for v := begin; v <= end; v += incr {
+			for _, fb := range body {
+				evaloop(w, forvar, "%s", fmt.Sprintf("%v", v), fb, scanner, linenumber)
 			}
-			if p[0] == "efor" {
-				break
-			}
-			evaloop(w, forvar, p, begin, end, incr, scanner, linenumber)
 		}
 		return err
 	case vectloop:
@@ -590,10 +600,9 @@ func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) e
 		if err != nil {
 			return err
 		}
-		body := forbody(scanner)
 		for _, v := range vl {
 			for _, fb := range body {
-				evalfl(w, forvar, v, fb, scanner, linenumber)
+				evaloop(w, forvar, "\"%s\"", v, fb, scanner, linenumber)
 			}
 		}
 		return err
@@ -602,10 +611,9 @@ func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) e
 		if err != nil {
 			return err
 		}
-		body := forbody(scanner)
 		for _, v := range fl {
 			for _, fb := range body {
-				evalfl(w, forvar, v, fb, scanner, linenumber)
+				evaloop(w, forvar, "\"%s\"", v, fb, scanner, linenumber)
 			}
 		}
 		return err
@@ -614,31 +622,16 @@ func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) e
 	}
 }
 
-func evalfl(w io.Writer, forvar, v string, s []string, scanner *bufio.Scanner, linenumber int) {
+func evaloop(w io.Writer, forvar string, format string, v string, s []string, scanner *bufio.Scanner, linenumber int) {
 	e := make([]string, len(s))
 	copy(e, s)
 	for i := 0; i < len(s); i++ {
 		if s[i] == forvar {
-			e[i] = fmt.Sprintf("\"%s\"", v)
+			e[i] = fmt.Sprintf(format, v)
 		}
 	}
 	//fmt.Fprintf(os.Stderr, "%v -> %v\n", s, e)
 	keyparse(w, e, "", scanner, linenumber)
-}
-
-// evaloop evaluates a loop statement
-func evaloop(w io.Writer, forvar string, s []string, begin, end, incr float64, scanner *bufio.Scanner, linenumber int) {
-	e := make([]string, len(s))
-	for v := begin; v <= end; v += incr {
-		for i := 0; i < len(s); i++ {
-			if s[i] == forvar {
-				e[i] = fmt.Sprintf("%v", v)
-			} else {
-				e[i] = s[i]
-			}
-		}
-		keyparse(w, e, "", scanner, linenumber)
-	}
 }
 
 // keyparse parses keywords and executes
@@ -703,7 +696,7 @@ func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) 
 		if len(tokens) > 1 && tokens[1] == "=" {
 			return assign(tokens, n)
 		}
-		if len(tokens) > 3 && (tokens[1] == "+" || tokens[1] == "-") {
+		if isaop(tokens) {
 			return assignop(tokens, n)
 		}
 	}
