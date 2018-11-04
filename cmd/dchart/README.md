@@ -8,6 +8,7 @@ and data is intepreted as a floating point value.
 
 A line beginning with "#" is parsed as a title, 
 with the title text beginning after the "#".  If a third column is present, it serves as an annotation.
+label strings with ```\n``` characters denote multi-line labels.
 
 
 Here is an example input data file:
