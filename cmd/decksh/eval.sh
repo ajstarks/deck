@@ -76,6 +76,14 @@ deck
 		etext "three" l3 60 ts1 "mono" "red"
 		etext "four"  l3 50 ts1 "sans" "blue" op3
 	eslide
+
+	lopts="-fulldeck=f -val=f -left 20 -right 80 -line -bar=f -scatter -max 100 -yrange 0,100,20"
+	slide
+		dchart lopts -xlabel 1  -yaxis -grid -color red     sales.d
+		dchart lopts -xlabel 0               -color green revenue.d 
+		legend "Sales"   20 20 1.5 "sans" "green"
+		legend "Revenue" 35 20 1.5 "sans" "red"
+	eslide
 	
 	midx=50
 	midy=50

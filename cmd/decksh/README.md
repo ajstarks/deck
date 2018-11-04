@@ -147,6 +147,13 @@ Also, show blocks of code on a gray background.
 	textfile   "filename" x y size       [font] [color] [opacity]
 	textblock  "text"     x y width size [font] [color] [opacity]
 	textcode   "filename" x y width size [color]
+
+
+## Legend
+
+Show a colored legend
+
+	legend "text" x y size font color
 	
 ## Images 
 

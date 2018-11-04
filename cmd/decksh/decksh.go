@@ -449,6 +449,20 @@ func curve(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+// legend makes the markup for the legend keyword
+func legend(w io.Writer, s []string, linenumber int) error {
+	n := len(s)
+	if n < 7 {
+		return fmt.Errorf("line %d: legend \"text\" x y size font color", linenumber)
+	}
+	var tx, cy float64
+	fmt.Sscanf(s[2], "%f", &tx)
+	fmt.Sscanf(s[3], "%f", &cy)
+	fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", fmt.Sprintf("%.3f", tx+2), s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
+	fmt.Fprintf(w, "<ellipse xp=%q yp=%q wp=%q hr=\"100\" color=%s/>\n", s[2], fmt.Sprintf("%.3f", cy+.5), s[4], s[6])
+	return nil
+}
+
 // chart runs the chart command
 func chart(w io.Writer, s string, linenumber int) error {
 	// copy the command line into fields, evaluating as we go
@@ -688,6 +702,9 @@ func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) 
 
 	case "curve":
 		return curve(w, tokens, n)
+
+	case "legend":
+		return legend(w, tokens, n)
 
 	case "dchart", "chart":
 		return chart(w, t, n)
