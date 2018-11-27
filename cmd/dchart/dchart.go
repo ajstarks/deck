@@ -50,6 +50,7 @@ const (
 	titlecolor   = "black"
 	labelcolor   = "rgb(75,75,75)"
 	dotlinecolor = "lightgray"
+	defaultfmt   = "%.1f"
 	wbop         = 30.0
 	largest      = math.MaxFloat64
 	smallest     = -math.MaxFloat64
@@ -104,7 +105,7 @@ func cmdflags() {
 	flag.StringVar(&datacolor, "color", "lightsteelblue", "data color")
 	flag.StringVar(&valuecolor, "vcolor", "rgb(127,0,0)", "value color")
 	flag.StringVar(&bgcolor, "bgcolor", "white", "background color")
-	flag.StringVar(&datafmt, "datafmt", "%.1f", "data format")
+	flag.StringVar(&datafmt, "datafmt", defaultfmt, "data format")
 	flag.StringVar(&yaxr, "yrange", "", "y-axis range (min,max,step)")
 	flag.StringVar(&hline, "hline", "", "horizontal line value,label")
 
@@ -330,6 +331,11 @@ func yaxis(deck *generate.Deck, x, dmin, dmax float64) {
 // if there is no fractional portion of the float64, override the flag and
 // return the string with no decimals.
 func dformat(x float64) string {
+
+	if datafmt != defaultfmt {
+		return fmt.Sprintf(datafmt, x)
+	}
+
 	frac := x - float64(int(x))
 	if frac == 0 {
 		return fmt.Sprintf("%0.f", x)
