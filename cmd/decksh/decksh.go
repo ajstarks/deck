@@ -171,6 +171,8 @@ func fontColorOp(s []string) string {
 		return fmt.Sprintf("font=%s color=%s", s[0], s[1])
 	case 3:
 		return fmt.Sprintf("font=%s color=%s opacity=%q", s[0], s[1], s[2])
+	case 4:
+		return fmt.Sprintf("font=%s color=%s opacity=%q lp=%q", s[0], s[1], s[2], s[3])
 	default:
 		return ""
 	}
@@ -282,7 +284,7 @@ func cimage(w io.Writer, s []string, linenumber int) error {
 func list(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
 	if n < 4 {
-		return fmt.Errorf("line %d: %s x y size [font] [color] [opacity]", linenumber, s[0])
+		return fmt.Errorf("line %d: %s x y size [font] [color] [opacity] [lp]", linenumber, s[0])
 	}
 	var fco string
 	if n > 4 {
