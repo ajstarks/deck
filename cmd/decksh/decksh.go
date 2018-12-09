@@ -172,13 +172,13 @@ func fontColorOp(s []string) string {
 	case 3:
 		return fmt.Sprintf("font=%s color=%s opacity=%q", s[0], s[1], s[2])
 	case 4:
-		return fmt.Sprintf("font=%s color=%s opacity=%q link=%q", s[0], s[1], s[2], s[3])
+		return fmt.Sprintf("font=%s color=%s opacity=%q link=%s", s[0], s[1], s[2], s[3])
 	default:
 		return ""
 	}
 }
 
-func fontColorOpLP(s []string) string {
+func fontColorOpLp(s []string) string {
 	switch len(s) {
 	case 1:
 		return fmt.Sprintf("font=%s", s[0])
@@ -188,6 +188,8 @@ func fontColorOpLP(s []string) string {
 		return fmt.Sprintf("font=%s color=%s opacity=%q", s[0], s[1], s[2])
 	case 4:
 		return fmt.Sprintf("font=%s color=%s opacity=%q lp=%q", s[0], s[1], s[2], s[3])
+	case 5:
+		return fmt.Sprintf("font=%s color=%s opacity=%q lp=%q link=%s", s[0], s[1], s[2], s[3], s[4])
 	default:
 		return ""
 	}
@@ -207,7 +209,7 @@ func text(w io.Writer, s []string, linenumber int) error {
 	if n < 5 {
 		return fmt.Errorf("line %d: %s \"text\" x y size [font] [color] [opacity]", linenumber, s[0])
 	}
-	fco := fontColorOpLP(s[5:])
+	fco := fontColorOp(s[5:])
 	switch s[0] {
 	case "text":
 		fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n",
@@ -220,7 +222,7 @@ func text(w io.Writer, s []string, linenumber int) error {
 			s[2], s[3], s[4], fco, qesc(s[1]))
 	case "textfile":
 		fmt.Fprintf(w, "<text file=%s xp=%q yp=%q sp=%q %s/>\n",
-			s[1], s[2], s[3], s[4], fco)
+			s[1], s[2], s[3], s[4], fontColorOpLp(s[5:]))
 	}
 	return nil
 }
@@ -303,7 +305,7 @@ func list(w io.Writer, s []string, linenumber int) error {
 	}
 	var fco string
 	if n > 4 {
-		fco = fontColorOpLP(s[4:])
+		fco = fontColorOpLp(s[4:])
 	}
 
 	switch s[0] {
