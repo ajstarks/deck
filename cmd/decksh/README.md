@@ -141,11 +141,11 @@ optional font ("sans", "serif", "mono", or "symbol"), color and opacity.
 
 Also, show blocks of code on a gray background.
 
-	text       "text"     x y size       [font] [color] [opacity]
-	ctext      "text"     x y size       [font] [color] [opacity]
-	etext      "text"     x y size       [font] [color] [opacity]
-	textfile   "filename" x y size       [font] [color] [opacity]
-	textblock  "text"     x y width size [font] [color] [opacity]
+	text       "text"     x y size       [font] [color] [opacity] [link]
+	ctext      "text"     x y size       [font] [color] [opacity] [link]
+	etext      "text"     x y size       [font] [color] [opacity] [link]
+	textfile   "filename" x y size       [font] [color] [opacity] [lp]
+	textblock  "text"     x y width size [font] [color] [opacity] [link]
 	textcode   "filename" x y width size [color]
 
 
