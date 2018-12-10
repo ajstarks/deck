@@ -195,6 +195,20 @@ func fontColorOpLp(s []string) string {
 	}
 }
 
+func textattr(s string) string {
+	f := strings.Split(s, "/")
+	switch len(f) {
+		case 1:
+			return fmt.Sprintf("font=%q", f[0])
+		case 2:
+			return fmt.Sprintf("font=%q color=%q", f[0], f[1])
+		case 3:
+			return fmt.Sprintf("font=%q color=%q opacity=%q", f[0], f[1], f[2])
+		default:
+			return ""
+	}
+}
+
 // remove quotes from a string, and XML escape it
 func qesc(s string) string {
 	if len(s) < 3 {
@@ -207,7 +221,7 @@ func qesc(s string) string {
 func text(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
 	if n < 5 {
-		return fmt.Errorf("line %d: %s \"text\" x y size [font] [color] [opacity]", linenumber, s[0])
+		return fmt.Errorf("line %d: %s \"text\" x y size [font] [color] [opacity] [link]", linenumber, s[0])
 	}
 	fco := fontColorOp(s[5:])
 	switch s[0] {
@@ -230,7 +244,7 @@ func text(w io.Writer, s []string, linenumber int) error {
 // text generates markup for a block of text
 func textblock(w io.Writer, s []string, linenumber int) error {
 	if len(s) < 6 {
-		return fmt.Errorf("line %d: %s \"text\" x y width size [font] [color] [opacity]", linenumber, s[0])
+		return fmt.Errorf("line %d: %s \"text\" x y width size [font] [color] [opacity] [link]", linenumber, s[0])
 	}
 	fmt.Fprintf(w, "<text type=\"block\" xp=%q yp=%q wp=%q sp=%q %s>%s</text>\n",
 		s[2], s[3], s[4], s[5], fontColorOp(s[6:]), qesc(s[1]))
@@ -255,7 +269,7 @@ func textcode(w io.Writer, s []string, linenumber int) error {
 // image generates markup for images (plain and captioned)
 func image(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
-	e := fmt.Errorf("line %d: [c]image \"image-file\" x y w h [scale] [link]", linenumber)
+	e := fmt.Errorf("line %d: image \"image-file\" x y w h [scale] [link]", linenumber)
 
 	switch n {
 	case 6:
@@ -301,7 +315,7 @@ func cimage(w io.Writer, s []string, linenumber int) error {
 func list(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
 	if n < 4 {
-		return fmt.Errorf("line %d: %s x y size [font] [color] [opacity] [lp]", linenumber, s[0])
+		return fmt.Errorf("line %d: %s x y size [font] [color] [opacity] [lp] [link]", linenumber, s[0])
 	}
 	var fco string
 	if n > 4 {
