@@ -198,14 +198,14 @@ func fontColorOpLp(s []string) string {
 func textattr(s string) string {
 	f := strings.Split(s, "/")
 	switch len(f) {
-		case 1:
-			return fmt.Sprintf("font=%q", f[0])
-		case 2:
-			return fmt.Sprintf("font=%q color=%q", f[0], f[1])
-		case 3:
-			return fmt.Sprintf("font=%q color=%q opacity=%q", f[0], f[1], f[2])
-		default:
-			return ""
+	case 1:
+		return fmt.Sprintf("font=%q", f[0])
+	case 2:
+		return fmt.Sprintf("font=%q color=%q", f[0], f[1])
+	case 3:
+		return fmt.Sprintf("font=%q color=%q opacity=%q", f[0], f[1], f[2])
+	default:
+		return ""
 	}
 }
 
@@ -497,6 +497,93 @@ func legend(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+func arrow(w io.Writer, s []string, linenumber int) error {
+	lw := 0.2
+	aw := 3.0
+	ah := 3.0
+	ls := len(s)
+	color := `"gray"`
+	opacity := "100"
+
+	if len(s[0]) < 6 {
+		return fmt.Errorf("line: %d [l|r|u|d]arrow x y length [linewidth] [arrowidth] [arrowheight] [color] [opacity]", linenumber)
+	}
+	arrowtype := s[0][0]
+	var x, y, l, endx, endy, a1x, a1y, a2x, a2y float64
+		
+	if ls < 4 {
+		return fmt.Errorf("line %d: %carrow x y length [linewidth] [arrowidth] [arrowheight] [color] [opacity]", linenumber, arrowtype)
+	}
+	
+	if _, err := fmt.Sscanf(s[1], "%f", &x); err != nil {
+		return err
+	}
+	if _, err := fmt.Sscanf(s[2], "%f", &y); err != nil {
+		return err
+	}
+	if _, err := fmt.Sscanf(s[3], "%f", &l); err != nil {
+		return err
+	}
+	if ls >= 5 {
+		if _, err := fmt.Sscanf(s[4], "%f", &lw); err != nil {
+			return err
+		}
+	}
+	if ls >= 6 {
+		if _, err := fmt.Sscanf(s[5], "%f", &aw); err != nil {
+			return err
+		}
+	}
+	if ls >= 7 {
+		if _, err := fmt.Sscanf(s[6], "%f", &ah); err != nil {
+			return err
+		}
+	}
+	if ls >= 8 {
+		color = s[7]
+	}
+	if ls == 9 {
+		opacity = s[8]
+	}
+	
+	switch arrowtype {
+	case 'r': // right
+		endx = x + l
+		endy = y
+		a1x = endx - aw
+		a1y = y - (ah / 2)
+		a2x = a1x
+		a2y = y + (ah / 2)
+	case 'l': // left
+		endx = x - l
+		endy = y
+		a1x = endx + aw
+		a1y = y - (ah / 2)
+		a2x = a1x
+		a2y = y + (ah / 2)
+	case 'u': // up
+		endx = x
+		endy = y + l
+		a1x = x - (aw / 2)
+		a1y = endy - ah
+		a2x = x + (aw / 2)
+		a2y = endy - ah
+	case 'd': // down
+		endx = x
+		endy = y - l
+		a1x = x + (aw / 2)
+		a1y = endy + ah
+		a2x = x - (aw / 2)
+		a2y = endy + ah
+	default:
+		return fmt.Errorf("line: %d [l|r|u|d]arrow x y length [linewidth] [arrowidth] [arrowheight] [color] [opacity]", linenumber)
+	}
+	fmt.Fprintf(w, "<line xp1=%q yp1=%q xp2=\"%v\" yp2=\"%v\" sp=\"%v\" color=%s opacity=%q/>\n", s[1], s[2], endx, endy, lw, color, opacity)
+	fmt.Fprintf(w, "<polygon xc=\"%v %v %v\" yc=\"%v %v %v\" color=%s opacity=%q/>\n", endx, a1x, a2x, endy, a1y, a2y, color, opacity)
+
+	return nil
+}
+
 // chart runs the chart command
 func chart(w io.Writer, s string, linenumber int) error {
 	// copy the command line into fields, evaluating as we go
@@ -739,6 +826,9 @@ func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) 
 
 	case "legend":
 		return legend(w, tokens, n)
+		
+	case "larrow", "rarrow", "uarrow", "darrow":
+		return arrow(w, tokens, n)
 
 	case "dchart", "chart":
 		return chart(w, t, n)

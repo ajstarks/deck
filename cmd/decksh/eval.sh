@@ -7,6 +7,8 @@ deck
 			line v 100 v 0 0.1 "red"
 		efor
 	eslide
+
+
 	
 	slide
 		cr=5
@@ -110,10 +112,13 @@ deck
 	lx1=20
 	lx2=40
 	lx3=60
+	
 	ly1=90
 	ly2=70
 	ly3=50
+	
 	ly4=30
+	ly5=10
 	// Lists
 	slide 
 		list lx1 ly1 lsize
@@ -190,6 +195,24 @@ deck
 			li "two"
 			li "three"
 		elist
+
+		list lx1 ly5 lsize "sans" "red" op1 1
+			li "one"
+			li "two"
+			li "three"
+		elist
+		
+		blist lx2 ly5 lsize "serif" "green" op2 1
+			li "one"
+			li "two"
+			li "three"
+		elist
+		
+		nlist lx3 ly5 lsize "mono" "blue" op3 1
+			li "one"
+			li "two"
+			li "three"
+		elist
 	eslide
 	
 	c1="red"
@@ -233,6 +256,47 @@ deck
 		curve	   35 15 30 25 45 15 1
 		curve	   55 15 45 25 65 15 1 c2
 		curve	   75 15 65 25 85 15 1 c3 shapeop 
+	eslide
+	
+	// Arrows
+	slide
+		larrow 50 50 20
+		larrow 50 60 25 0.4
+		larrow 50 70 30 0.5 4
+		larrow 50 80 35 0.6 5 8 
+		larrow 50 90 40 0.7 6 10 "red"
+		
+		
+		rarrow 50 50 20
+		rarrow 50 60 25 0.4
+		rarrow 50 70 30 0.5 4
+		rarrow 50 80 35 0.6 5 8 
+		rarrow 50 90 40 0.7 6 10 "red"
+		
+		uarrow 05 10 35
+		uarrow 15 10 30 0.4
+		uarrow 25 10 25 0.5 4
+		uarrow 35 10 20 0.6 5 8
+		uarrow 45 10 15 0.7 6 10 "red"
+		
+		darrow 95 45 35
+		darrow 85 45 30 0.4
+		darrow 75 45 25 0.5 4
+		darrow 65 45 20 0.6 5 8
+		darrow 55 45 15 0.7 6 10 "red"
+		
+		
+		for lcx=50 90 10
+			circle 50 lcx 2 "black"
+		efor
+		
+		for lcx=5 45 10
+			circle lcx 10 2 "black"
+		efor
+		
+		for lcx=55 95 10
+			circle lcx 45 2 "black"
+		efor
 	eslide
 	
 	// Example deck
