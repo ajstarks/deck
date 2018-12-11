@@ -505,16 +505,18 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	color := `"gray"`
 	opacity := "100"
 
+	errfmt := fmt.Errorf("line: %d [l|r|u|d]arrow x y length [linewidth] [arrowidth] [arrowheight] [color] [opacity]", linenumber)
+
 	if len(s[0]) < 6 {
-		return fmt.Errorf("line: %d [l|r|u|d]arrow x y length [linewidth] [arrowidth] [arrowheight] [color] [opacity]", linenumber)
+		return errfmt
 	}
 	arrowtype := s[0][0]
-	var x, y, l, endx, endy, a1x, a1y, a2x, a2y float64
-		
+	var x, y, l float64
+
 	if ls < 4 {
-		return fmt.Errorf("line %d: %carrow x y length [linewidth] [arrowidth] [arrowheight] [color] [opacity]", linenumber, arrowtype)
+		return errfmt
 	}
-	
+
 	if _, err := fmt.Sscanf(s[1], "%f", &x); err != nil {
 		return err
 	}
@@ -545,41 +547,75 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	if ls == 9 {
 		opacity = s[8]
 	}
-	
+
+	var lx1, lx2, ly1, ly2, ax1, ax2, ax3, ay1, ay2, ay3 float64
+
 	switch arrowtype {
 	case 'r': // right
-		endx = x + l
-		endy = y
-		a1x = endx - aw
-		a1y = y - (ah / 2)
-		a2x = a1x
-		a2y = y + (ah / 2)
+		lx1 = x
+		ly1 = y
+
+		lx2 = (x + l) - aw
+		ly2 = y
+
+		ax1 = x + l
+		ax2 = lx2
+		ax3 = lx2
+
+		ay1 = y
+		ay2 = y + (ah / 2)
+		ay3 = y - (ah / 2)
+
 	case 'l': // left
-		endx = x - l
-		endy = y
-		a1x = endx + aw
-		a1y = y - (ah / 2)
-		a2x = a1x
-		a2y = y + (ah / 2)
+		lx1 = x
+		ly1 = y
+
+		lx2 = (x - l) + aw
+		ly2 = y
+
+		ax1 = x - l
+		ax2 = lx2
+		ax3 = ax2
+
+		ay1 = y
+		ay2 = y + (ah / 2)
+		ay3 = y - (ah / 2)
+
 	case 'u': // up
-		endx = x
-		endy = y + l
-		a1x = x - (aw / 2)
-		a1y = endy - ah
-		a2x = x + (aw / 2)
-		a2y = endy - ah
+		lx1 = x
+		ly1 = y
+
+		lx2 = x
+		ly2 = (y + l) - ah
+
+		ax1 = x
+		ax2 = x + (aw / 2)
+		ax3 = x - (aw / 2)
+
+		ay1 = y + l
+		ay2 = ay1 - ah
+		ay3 = ay2
+
 	case 'd': // down
-		endx = x
-		endy = y - l
-		a1x = x + (aw / 2)
-		a1y = endy + ah
-		a2x = x - (aw / 2)
-		a2y = endy + ah
+		lx1 = x
+		ly1 = y
+
+		lx2 = x
+		ly2 = (y - l) + ah
+
+		ax1 = x
+		ax2 = x + (aw / 2)
+		ax3 = x - (aw / 2)
+
+		ay1 = y - l
+		ay2 = ay1 + ah
+		ay3 = ay2
+
 	default:
-		return fmt.Errorf("line: %d [l|r|u|d]arrow x y length [linewidth] [arrowidth] [arrowheight] [color] [opacity]", linenumber)
+		return errfmt
 	}
-	fmt.Fprintf(w, "<line xp1=%q yp1=%q xp2=\"%v\" yp2=\"%v\" sp=\"%v\" color=%s opacity=%q/>\n", s[1], s[2], endx, endy, lw, color, opacity)
-	fmt.Fprintf(w, "<polygon xc=\"%v %v %v\" yc=\"%v %v %v\" color=%s opacity=%q/>\n", endx, a1x, a2x, endy, a1y, a2y, color, opacity)
+	fmt.Fprintf(w, "<line xp1=\"%v\" yp1=\"%v\" xp2=\"%v\" yp2=\"%v\" sp=\"%v\" color=%s opacity=%q/>\n", lx1, ly1, lx2, ly2, lw, color, opacity)
+	fmt.Fprintf(w, "<polygon xc=\"%v %v %v\" yc=\"%v %v %v\" color=%s opacity=%q/>\n", ax1, ax2, ax3, ay1, ay2, ay3, color, opacity)
 
 	return nil
 }
@@ -826,7 +862,7 @@ func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) 
 
 	case "legend":
 		return legend(w, tokens, n)
-		
+
 	case "larrow", "rarrow", "uarrow", "darrow":
 		return arrow(w, tokens, n)
 

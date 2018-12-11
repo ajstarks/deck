@@ -260,42 +260,44 @@ deck
 	
 	// Arrows
 	slide
-		larrow 50 50 20
-		larrow 50 60 25 0.4
-		larrow 50 70 30 0.5 4
-		larrow 50 80 35 0.6 5 8 
-		larrow 50 90 40 0.7 6 10 "red"
-		
-		
-		rarrow 50 50 20
-		rarrow 50 60 25 0.4
-		rarrow 50 70 30 0.5 4
-		rarrow 50 80 35 0.6 5 8 
-		rarrow 50 90 40 0.7 6 10 "red"
-		
-		uarrow 05 10 35
-		uarrow 15 10 30 0.4
-		uarrow 25 10 25 0.5 4
-		uarrow 35 10 20 0.6 5 8
-		uarrow 45 10 15 0.7 6 10 "red"
-		
-		darrow 95 45 35
-		darrow 85 45 30 0.4
-		darrow 75 45 25 0.5 4
-		darrow 65 45 20 0.6 5 8
-		darrow 55 45 15 0.7 6 10 "red"
-		
-		
-		for lcx=50 90 10
+		larrow 50 45 20
+		larrow 50 55 25 0.4
+		larrow 50 65 30 0.5 4
+		larrow 50 75 35 0.6 5 8 
+		larrow 50 85 40 0.7 6 10 "red"
+		larrow 50 95 40 0.7 7 12 "blue" 20
+
+		rarrow 50 45 20
+		rarrow 50 55 25 0.4
+		rarrow 50 65 30 0.5 4
+		rarrow 50 75 35 0.6 5 8 
+		rarrow 50 85 40 0.7 6 10 "red"
+		rarrow 50 95 40 0.7 7 12 "blue" 20
+
+		uarrow 05 5 35
+		uarrow 15 5 30 0.4
+		uarrow 25 5 25 0.5 4
+		uarrow 35 5 20 0.6 5 8
+		uarrow 45 5 15 0.7 6 10 "red"
+		uarrow 55 5 15 0.7 7 12 "blue" 20
+
+		darrow 95 40 35
+		darrow 85 40 30 0.4
+		darrow 75 40 25 0.5 4
+		darrow 65 40 20 0.6 5 8
+		darrow 55 40 15 0.7 6 10 "red"
+		darrow 45 40 15 0.7 7 12 "blue" 20
+
+		for lcx=45 95 10
 			circle 50 lcx 2 "black"
 		efor
 		
-		for lcx=5 45 10
-			circle lcx 10 2 "black"
+		for lcx=5 55 10
+			circle lcx 5 2 "black"
 		efor
 		
-		for lcx=55 95 10
-			circle lcx 45 2 "black"
+		for lcx=45 95 10
+			circle lcx 40 2 "black"
 		efor
 	eslide
 	
