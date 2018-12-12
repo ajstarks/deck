@@ -264,41 +264,69 @@ deck
 		larrow 50 55 25 0.4
 		larrow 50 65 30 0.5 4
 		larrow 50 75 35 0.6 5 8 
-		larrow 50 85 40 0.7 6 10 "red"
-		larrow 50 95 40 0.7 7 12 "blue" 20
+		larrow 50 85 40 0.7 6 9 "red"
+		larrow 50 95 45 0.8 8 10 "blue" 20
 
 		rarrow 50 45 20
 		rarrow 50 55 25 0.4
 		rarrow 50 65 30 0.5 4
 		rarrow 50 75 35 0.6 5 8 
-		rarrow 50 85 40 0.7 6 10 "red"
-		rarrow 50 95 40 0.7 7 12 "blue" 20
+		rarrow 50 85 40 0.7 6 9 "red"
+		rarrow 50 95 45 0.8 8 10 "blue" 20
 
 		uarrow 05 5 35
 		uarrow 15 5 30 0.4
 		uarrow 25 5 25 0.5 4
 		uarrow 35 5 20 0.6 5 8
-		uarrow 45 5 15 0.7 6 10 "red"
-		uarrow 55 5 15 0.7 7 12 "blue" 20
+		uarrow 45 5 15 0.7 6 9 "red"
+		uarrow 55 5 10 0.8 8 10 "blue" 20
 
 		darrow 95 40 35
 		darrow 85 40 30 0.4
 		darrow 75 40 25 0.5 4
 		darrow 65 40 20 0.6 5 8
-		darrow 55 40 15 0.7 6 10 "red"
-		darrow 45 40 15 0.7 7 12 "blue" 20
+		darrow 55 40 15 0.7 6 9 "red"
+		darrow 45 40 10 0.8 8 10 "blue" 20
 
 		for lcx=45 95 10
-			circle 50 lcx 2 "black"
+			circle 50 lcx 1.5 "gray"
 		efor
 		
 		for lcx=5 55 10
-			circle lcx 5 2 "black"
+			circle lcx 5 1.5 "gray"
 		efor
 		
 		for lcx=45 95 10
-			circle lcx 40 2 "black"
+			circle lcx 40 1.5 "gray"
 		efor
+	eslide
+	
+	slide
+		circle 50 50 2 "red"
+		rarrow 50 50 40 
+		larrow 50 50 40
+		uarrow 50 50 40
+		darrow 50 50 40
+		ctext "North" 50 93 2
+		ctext "South" 50  7 2
+		etext "West"  7 49 2
+		text  "East"  93 49 2
+		
+		rect  30 70 15 10 "red"
+		uarrow 30 75 10 0 2 2 "red"
+		ctext "hello" 30 69 2 "sans" "white"
+		
+		rect 70 70 15 10 "blue"
+		darrow 70 65 10 0 2 2 "blue"
+		ctext "bye" 70 69 2 "sans" "white"
+		
+		cpx=30
+		cpy=50
+		circle cpx cpy 1 "red"
+		curve 50 50  cpx cpy  30 65
+		
+		curve 50 50  70 cpy  70 65
+	
 	eslide
 	
 	// Example deck

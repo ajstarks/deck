@@ -501,6 +501,7 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	lw := 0.2
 	aw := 3.0
 	ah := 3.0
+	notch := 0.75
 	ls := len(s)
 	color := `"gray"`
 	opacity := "100"
@@ -548,74 +549,82 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 		opacity = s[8]
 	}
 
-	var lx1, lx2, ly1, ly2, ax1, ax2, ax3, ay1, ay2, ay3 float64
-
+	var lx1, lx2, ly1, ly2, ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 float64
+	
 	switch arrowtype {
 	case 'r': // right
 		lx1 = x
+		lx2 = (x + l) - (aw * notch)
+		
 		ly1 = y
-
-		lx2 = (x + l) - aw
 		ly2 = y
 
 		ax1 = x + l
-		ax2 = lx2
+		ax2 = ax1 - aw
 		ax3 = lx2
+		ax4 = ax2
 
 		ay1 = y
 		ay2 = y + (ah / 2)
-		ay3 = y - (ah / 2)
+		ay3 = y
+		ay4 = y - (ah / 2)
 
 	case 'l': // left
 		lx1 = x
+		lx2 = (x - l) + (aw * notch)
+		
 		ly1 = y
-
-		lx2 = (x - l) + aw
 		ly2 = y
 
 		ax1 = x - l
-		ax2 = lx2
-		ax3 = ax2
+		ax2 = ax1 + aw
+		ax3 = lx2
+		ax4 = ax2
 
 		ay1 = y
 		ay2 = y + (ah / 2)
-		ay3 = y - (ah / 2)
+		ay3 = y
+		ay4 = y - (ah / 2)
 
 	case 'u': // up
 		lx1 = x
-		ly1 = y
-
 		lx2 = x
-		ly2 = (y + l) - ah
+		
+		ly1 = y
+		ly2 = (y + l) - (ah * notch)
 
 		ax1 = x
 		ax2 = x + (aw / 2)
-		ax3 = x - (aw / 2)
+		ax3 = lx2
+		ax4 = x - (aw / 2)
 
 		ay1 = y + l
 		ay2 = ay1 - ah
-		ay3 = ay2
+		ay3 = ay1 - (ah * notch)
+		ay4 = ay2
 
 	case 'd': // down
 		lx1 = x
-		ly1 = y
-
 		lx2 = x
-		ly2 = (y - l) + ah
+		
+		ly1 = y
+		ly2 = (y - l) + (ah * notch)
 
 		ax1 = x
 		ax2 = x + (aw / 2)
-		ax3 = x - (aw / 2)
+		ax3 = lx2
+		ax4 = x - (aw / 2)
 
 		ay1 = y - l
 		ay2 = ay1 + ah
-		ay3 = ay2
+		ay3 = ay1 + (ah * notch)
+		ay4 = ay2
 
 	default:
 		return errfmt
 	}
-	fmt.Fprintf(w, "<line xp1=\"%v\" yp1=\"%v\" xp2=\"%v\" yp2=\"%v\" sp=\"%v\" color=%s opacity=%q/>\n", lx1, ly1, lx2, ly2, lw, color, opacity)
-	fmt.Fprintf(w, "<polygon xc=\"%v %v %v\" yc=\"%v %v %v\" color=%s opacity=%q/>\n", ax1, ax2, ax3, ay1, ay2, ay3, color, opacity)
+	fmt.Fprintf(w, "<line xp1=\"%v\" yp1=\"%v\" xp2=\"%v\" yp2=\"%v\" sp=\"%v\" color=%s opacity=%q/>\n",	lx1, ly1, lx2, ly2, lw, color, opacity)
+	fmt.Fprintf(w, "<polygon xc=\"%v %v %v %v\" yc=\"%v %v %v %v\" color=%s opacity=%q/>\n",				ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4, color, opacity)
 
 	return nil
 }
