@@ -26,7 +26,7 @@ var (
 	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop, linewidth   float64
 	xint, pmlen                                                                           int
 	readcsv, showdot, datamin, showvolume, showscatter, showpct                           bool
-	showbar, showval, showxlast, showline, showhbar, wbar, showaxis                       bool
+	showbar, showval, showxlast, showline, showhbar, wbar, showaxis, shownote             bool
 	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes bool
 	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols, hline      string
 )
@@ -90,6 +90,7 @@ func cmdflags() {
 	flag.BoolVar(&showradial, "radial", false, "show a radial chart")
 	flag.BoolVar(&showspokes, "spokes", false, "show spokes on radial charts")
 	flag.BoolVar(&showpgrid, "pgrid", false, "show proportional grid")
+	flag.BoolVar(&shownote, "note", true, "show annotations")
 	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
 	flag.BoolVar(&fulldeck, "fulldeck", true, "generate full markup")
 	flag.BoolVar(&datamin, "dmin", false, "zero minimum")
@@ -823,7 +824,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 				deck.TextMid(x, yv, dformat(data.value), "sans", ts*0.75, valuecolor)
 			}
 		}
-		if len(data.note) > 0 {
+		if len(data.note) > 0 && shownote {
 			deck.TextMid(x, y+0.1, data.note, "serif", ts*0.6, labelcolor)
 		}
 		// show x label every xinit times, show the last, if specified

@@ -65,5 +65,6 @@ The command line options are:
 	-vcolor      value color (default "rgb(127,0,0)")
 	-volop       volume opacity (default 50)
 	-datafmt     data format for values (default "%.1f")
+	-note        show annotation (default true)
 */
 package main
