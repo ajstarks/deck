@@ -491,6 +491,66 @@ func line(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+// hline makes a horizontal line
+func hline(w io.Writer, s []string, linenumber int) error {
+	e := fmt.Errorf("line %d: %s x y length [size] [color] [opacity]", linenumber, s[0])
+	n := len(s)
+	if n < 4 {
+		return e
+	}
+	var x1, l float64
+	if _, err := fmt.Sscanf(s[1], "%f", &x1); err != nil {
+		return err
+	}
+	if _, err := fmt.Sscanf(s[3], "%f", &l); err != nil {
+		return err
+	}
+	lc := fmt.Sprintf("xp1=%q yp1=%q xp2=\"%v\" yp2=%q", s[1], s[2], x1+l, s[2])
+	switch n {
+	case 4:
+		fmt.Fprintf(w, "<line %s/>\n", lc)
+	case 5:
+		fmt.Fprintf(w, "<line %s sp=%q/>\n", lc, s[4])
+	case 6:
+		fmt.Fprintf(w, "<line %s sp=%q color=%s/>\n", lc, s[4], s[5])
+	case 7:
+		fmt.Fprintf(w, "<line %s sp=%q color=%s opacity=%q/>\n", lc, s[4], s[5], s[6])
+	default:
+		return e
+	}
+	return nil
+}
+
+// vline makes a vertical line
+func vline(w io.Writer, s []string, linenumber int) error {
+	e := fmt.Errorf("line %d: %s x y length [size] [color] [opacity]", linenumber, s[0])
+	n := len(s)
+	if n < 4 {
+		return e
+	}
+	var y1, l float64
+	if _, err := fmt.Sscanf(s[2], "%f", &y1); err != nil {
+		return err
+	}
+	if _, err := fmt.Sscanf(s[3], "%f", &l); err != nil {
+		return err
+	}
+	lc := fmt.Sprintf("xp1=%q yp1=%q xp2=%q yp2=\"%v\"", s[1], s[2], s[1], y1+l)
+	switch n {
+	case 4:
+		fmt.Fprintf(w, "<line %s/>\n", lc)
+	case 5:
+		fmt.Fprintf(w, "<line %s sp=%q/>\n", lc, s[4])
+	case 6:
+		fmt.Fprintf(w, "<line %s sp=%q color=%s/>\n", lc, s[4], s[5])
+	case 7:
+		fmt.Fprintf(w, "<line %s sp=%q color=%s opacity=%q/>\n", lc, s[4], s[5], s[6])
+	default:
+		return e
+	}
+	return nil
+}
+
 // arc makes the markup for arc
 func arc(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
@@ -929,6 +989,12 @@ func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) 
 
 	case "larrow", "rarrow", "uarrow", "darrow":
 		return arrow(w, tokens, n)
+
+	case "vline":
+		return vline(w, tokens, n)
+
+	case "hline":
+		return hline(w, tokens, n)
 
 	case "dchart", "chart":
 		return chart(w, t, n)

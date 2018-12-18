@@ -7,6 +7,33 @@ deck
 			line v 100 v 0 0.1 "red"
 		efor
 	eslide
+	
+	slide
+		hline 50 50 20
+		hline 50 55 25 0.5
+		hline 50 60 30 1 "red"
+		hline 50 65 35 1.5 "blue"
+		hline 50 70 40 2 "green" 50
+		
+		vline 10 50 20
+		vline 15 50 25 0.5
+		vline 20 50 30 1 "red"
+		vline 25 50 35 1.5 "blue"
+		vline 30 50 40 2 "green" 50
+		
+		for v=10 40 5
+			vline v 10 30 0.1 "red"
+			hline 10 v 30 0.1 "blue"
+		efor
+		
+		for v=50 80 5
+			vline v 10 30 0.1 "blue"
+		efor
+		
+		for v=10 40 5
+			hline 50 v 30 0.1 "red"
+		efor
+	eslide
 
 	slide
 		cr=5

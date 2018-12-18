@@ -212,6 +212,7 @@ Plain and captioned, with optional scales and links
 ## Graphics
 
 Rectangles, ellipses, squares and circles: specify the location and dimensions with optional color and opacity.
+The default color and opacity is gray, 100%
 
 	rect    x y w h [color] [opacity]
 	ellipse x y w h [color] [opacity]
@@ -223,12 +224,18 @@ For polygons, specify the x and y coordinates as a series of numbers, with optio
 	
 	polygon "xcoords" "ycoords" [color] [opacity]
 
-For lines specify the coordinates for the beginning and end points.
-Curve is a quadratic bezier: specify the beginning location, the control point, and ending location.
-For arcs, specify the location of the center point, its width and height, and the beginning and ending angles.
-Size, color and opacity are optional, and defaults are applied.
+For lines, specify the coordinates for the beginning and end points. 
+For horizonal and vertical lines specify the initial point and the length.
+Line thickness, color and opacity are optional, with defaults 
 
-	line    x1 y1 x2 y2       [size] [color] [opacity]
+	line    x1 y1 x2 y2 [size] [color] [opacity]
+	hline   x y length  [size] [color] [opacity]
+	vline   x y length  [size] [color] [opacity]
+	
+Curve is a quadratic bezier: specify the beginning location, the control point, and ending location.
+For arcs, specify the location of the center point, the width and height, and the beginning and ending angles.
+Line thickness, color and opacity are optional, with defaults (0.2, gray, 100%).
+
 	curve   x1 y1 x2 y2 x3 y3 [size] [color] [opacity]
 	arc     x y w h a1 a2     [size] [color] [opacity]
 	
