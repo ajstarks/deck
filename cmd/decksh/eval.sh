@@ -26,32 +26,39 @@ deck
 	
 	slide
 		titlex=10
-		titley=50
+		titley=20
 		
 		subty=titley-10
 		ctext "Title" titlex titley 5
 		ctext "subtitle" titlex subty 4 "sans" "gray"
 		
-		titlex=30
-		spacing=10
+		titlex+=20
+		spacing=12
 		subty=titley-spacing
 		ctext "Title" titlex titley 5
 		ctext "subtitle" titlex subty 4 "sans" "gray"
 		
-		titlex=50
+		titlex+=20
 		subty=titley+spacing
 		ctext "Title" titlex titley 5
 		ctext "subtitle" titlex subty 4 "sans" "gray"
 		
-		titlex=70
+		titlex+=20
 		subty=titley*1.2
 		ctext "Title" titlex titley 5
 		ctext "subtitle" titlex subty 4 "sans" "gray"
 		
-		titlex=90
+		titlex+=20
 		subty=titley/1.2
 		ctext "Title" titlex titley 5
 		ctext "subtitle" titlex subty 4 "sans" "gray"
+		
+		titlex/=2.2
+		subty*=3
+		subty-=10
+		ctext "Title" titlex titley 5 "serif" "red"
+		ctext "subtitle" titlex subty 4 "sans" "blue"
+		
 	eslide
 	
 	tx1=5
