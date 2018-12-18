@@ -49,10 +49,61 @@ func xmlesc(s string) string {
 
 // assign creates an assignment by filling in the global id map
 func assign(s []string, linenumber int) error {
+	switch len(s) {
+	case 3:
+		return simpleassign(s, linenumber)
+	case 5:
+		return binop(s, linenumber)
+	default:
+		return fmt.Errorf("line %d: %v is a illegal assignment", linenumber, s)
+	}
+}
+
+// assign creates an simple assignment id=number
+func simpleassign(s []string, linenumber int) error {
 	if len(s) < 3 {
 		return fmt.Errorf("line %d: assignment needs id=<expression>", linenumber)
 	}
 	emap[s[0]] = s[2]
+	return nil
+}
+
+// binop processes a binary expression: id=id op number
+func binop(s []string, linenumber int) error {
+	es := fmt.Errorf("line %d: id=id operation number or id]", linenumber)
+	if len(s) < 5 {
+		return es
+	}
+	if s[1] != "=" {
+		return es
+	}
+	target := s[0]
+	ls := s[2]
+	op := s[3]
+	rs := s[4]
+
+	var lv, rv float64
+	if _, err := fmt.Sscanf(eval(ls), "%f", &lv); err != nil {
+		return fmt.Errorf("line %d: %v is not a number", linenumber, ls)
+	}
+	if _, err := fmt.Sscanf(eval(rs), "%f", &rv); err != nil {
+		return fmt.Errorf("line %d: %v is not a number", linenumber, rs)
+	}
+	switch op {
+	case "+":
+		emap[target] = fmt.Sprintf("%v", lv+rv)
+	case "-":
+		emap[target] = fmt.Sprintf("%v", lv-rv)
+	case "*":
+		emap[target] = fmt.Sprintf("%v", lv*rv)
+	case "/":
+		if rv == 0 {
+			return fmt.Errorf("line %d: you cannot divide by zero (%v / %v)", linenumber, lv, rv)
+		}
+		emap[target] = fmt.Sprintf("%v", lv/rv)
+	default:
+		return es
+	}
 	return nil
 }
 
@@ -63,22 +114,25 @@ func assignop(s []string, linenumber int) error {
 		return operr
 	}
 	var e, v float64
-	_, err := fmt.Sscanf(eval(s[0]), "%f", &e)
-	if err != nil {
+	if _, err := fmt.Sscanf(eval(s[0]), "%f", &e); err != nil {
 		return fmt.Errorf("line %d: %v is not a number", linenumber, s[0])
 	}
-	_, verr := fmt.Sscanf(s[3], "%f", &v)
-	if verr != nil {
+	if _, err := fmt.Sscanf(s[3], "%f", &v); err != nil {
 		return fmt.Errorf("line %d: %v is not a number", linenumber, s[3])
 	}
 
 	switch s[1] {
 	case "+":
 		emap[s[0]] = fmt.Sprintf("%v", e+v)
-		//fmt.Fprintf(os.Stderr, "%v -> %v\n", s, e+v)
 	case "-":
 		emap[s[0]] = fmt.Sprintf("%v", e-v)
-		//fmt.Fprintf(os.Stderr, "%v -> %v\n", s, e-v)
+	case "*":
+		emap[s[0]] = fmt.Sprintf("%v", e*v)
+	case "/":
+		if v == 0 {
+			return fmt.Errorf("line %d: you cannot divide by zero (%v / %v)", linenumber, e, v)
+		}
+		emap[s[0]] = fmt.Sprintf("%v", e/v)
 	default:
 		return operr
 	}
@@ -550,12 +604,12 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	}
 
 	var lx1, lx2, ly1, ly2, ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 float64
-	
+
 	switch arrowtype {
 	case 'r': // right
 		lx1 = x
 		lx2 = (x + l) - (aw * notch)
-		
+
 		ly1 = y
 		ly2 = y
 
@@ -572,7 +626,7 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	case 'l': // left
 		lx1 = x
 		lx2 = (x - l) + (aw * notch)
-		
+
 		ly1 = y
 		ly2 = y
 
@@ -589,7 +643,7 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	case 'u': // up
 		lx1 = x
 		lx2 = x
-		
+
 		ly1 = y
 		ly2 = (y + l) - (ah * notch)
 
@@ -606,7 +660,7 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	case 'd': // down
 		lx1 = x
 		lx2 = x
-		
+
 		ly1 = y
 		ly2 = (y - l) + (ah * notch)
 
@@ -623,8 +677,8 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	default:
 		return errfmt
 	}
-	fmt.Fprintf(w, "<line xp1=\"%v\" yp1=\"%v\" xp2=\"%v\" yp2=\"%v\" sp=\"%v\" color=%s opacity=%q/>\n",	lx1, ly1, lx2, ly2, lw, color, opacity)
-	fmt.Fprintf(w, "<polygon xc=\"%v %v %v %v\" yc=\"%v %v %v %v\" color=%s opacity=%q/>\n",				ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4, color, opacity)
+	fmt.Fprintf(w, "<line xp1=\"%v\" yp1=\"%v\" xp2=\"%v\" yp2=\"%v\" sp=\"%v\" color=%s opacity=%q/>\n", lx1, ly1, lx2, ly2, lw, color, opacity)
+	fmt.Fprintf(w, "<polygon xc=\"%v %v %v %v\" yc=\"%v %v %v %v\" color=%s opacity=%q/>\n", ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4, color, opacity)
 
 	return nil
 }

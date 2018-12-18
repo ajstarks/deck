@@ -80,19 +80,54 @@ if omitted defaults are applied (black for text, gray for graphics, 100% opacity
 
 Canvas size and image dimensions are in pixels.
 
+## Simple assignments
+
 ```id=<number>``` defines a constant, which may be then subtitited. For example:
 
 	x=10
 	y=20
 	text "hello, world" x y 5
 	
-```id+=<number>``` and ```id-=<number>``` increment and decrement the value of ```id``` by <number>
-
-	x+=5
-	y-=10
+## Assignment operations
 	
+```id+=<number>``` increment the value of ```id``` by <number>
+	
+	x+=5
+	
+```id-=<number>``` decrement the value of ```id``` by <number>
 
+	x-=10
+	
+```id*=<number>``` multiply the value of ```id``` by <number>
 
+	x*=50
+	
+```id*=<number>``` divide the value of ```id``` by <number>
+
+	x/=100
+	
+## Binary operations
+	
+Addition ```id=<id> + number or <id>```
+
+	tx=10
+	spacing=1.2
+	
+	sx=tx-10
+	vx=tx+spacing
+
+Subtraction ```id=<id> - number or <id>```
+	
+	a=x-10
+	
+Muliplication ```id=<id> * number or <id>```
+
+	a=x*10
+	
+Division ```id=<id> / number or <id>```
+
+	a=x/10
+	
 ## Structure
 
 Begin or end a deck.

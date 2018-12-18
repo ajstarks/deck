@@ -8,8 +8,6 @@ deck
 		efor
 	eslide
 
-
-	
 	slide
 		cr=5
 		for cx=10 90 20
@@ -24,6 +22,36 @@ deck
 			square cx 52.5 4.9 "red" 100
 			circle cx 55 cr "blue" 100
 		efor
+	eslide
+	
+	slide
+		titlex=10
+		titley=50
+		
+		subty=titley-10
+		ctext "Title" titlex titley 5
+		ctext "subtitle" titlex subty 4 "sans" "gray"
+		
+		titlex=30
+		spacing=10
+		subty=titley-spacing
+		ctext "Title" titlex titley 5
+		ctext "subtitle" titlex subty 4 "sans" "gray"
+		
+		titlex=50
+		subty=titley+spacing
+		ctext "Title" titlex titley 5
+		ctext "subtitle" titlex subty 4 "sans" "gray"
+		
+		titlex=70
+		subty=titley*1.2
+		ctext "Title" titlex titley 5
+		ctext "subtitle" titlex subty 4 "sans" "gray"
+		
+		titlex=90
+		subty=titley/1.2
+		ctext "Title" titlex titley 5
+		ctext "subtitle" titlex subty 4 "sans" "gray"
 	eslide
 	
 	tx1=5
