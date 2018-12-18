@@ -90,19 +90,19 @@ Canvas size and image dimensions are in pixels.
 	
 ## Assignment operations
 	
-```id+=<number>``` increment the value of ```id``` by <number>
+```id+=<number>``` increment the value of ```id``` by ```<number>```
 	
 	x+=5
 	
-```id-=<number>``` decrement the value of ```id``` by <number>
+```id-=<number>``` decrement the value of ```id``` by ```<number>```
 
 	x-=10
 	
-```id*=<number>``` multiply the value of ```id``` by <number>
+```id*=<number>``` multiply the value of ```id``` by ```<number>```
 
 	x*=50
 	
-```id*=<number>``` divide the value of ```id``` by <number>
+```id*=<number>``` divide the value of ```id``` by ```<number>```
 
 	x/=100
 	
