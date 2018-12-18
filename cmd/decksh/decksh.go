@@ -712,7 +712,8 @@ func isaop(s []string) bool {
 	if len(s) < 4 {
 		return false
 	}
-	if (s[1] == "+" || s[1] == "-") && s[2] == "=" {
+	op := s[1]
+	if (op == "+" || op == "-" || op == "*" || op == "/") && s[2] == "=" {
 		return true
 	}
 	return false
