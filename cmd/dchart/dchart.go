@@ -273,8 +273,15 @@ func tsvdata(r io.ReadCloser) ([]ChartData, float64, float64, string) {
 // dottedvline makes dotted vertical line, using circles,
 // with specified step
 func dottedvline(deck *generate.Deck, x, y1, y2, dotsize, step float64, color string) {
-	for y := y1; y <= y2; y += step {
-		deck.Circle(x, y, dotsize, color)
+
+	if y1 < y2 { // positive
+		for y := y1; y <= y2; y += step {
+			deck.Circle(x, y, dotsize, color)
+		}
+	} else { // negative
+		for y := y2; y <= y1; y += step {
+			deck.Circle(x, y, dotsize, color)
+		}
 	}
 }
 
