@@ -372,23 +372,22 @@ deck
 		ctext "North" 50 93 2
 		ctext "South" 50  7 2
 		etext "West"  7 49 2
-		text  "East"  93 49 2
-		
-		rect  30 70 15 10 "red"
-		uarrow 30 75 10 0 2 2 "red"
-		ctext "hello" 30 69 2 "sans" "white"
-		
-		rect 70 70 15 10 "blue"
-		darrow 70 65 10 0 2 2 "blue"
-		ctext "bye" 70 69 2 "sans" "white"
-		
-		cpx=30
-		cpy=50
-		circle cpx cpy 1 "red"
-		curve 50 50  cpx cpy  30 65
-		
-		curve 50 50  70 cpy  70 65
+		text  "East"  93 49 2	
+	eslide
 	
+	slide
+		lcarrow 50 70 50 95 25 95
+		rcarrow 50 70 50 95 75 95
+		
+		dcarrow 50 50 75 50 75 25
+		ucarrow 50 50 25 50 25 75
+		
+		circle 50 70 1.5 "red"
+		circle 50 50 1.5 "red"
+		circle 75 25 1.5 "red"
+		circle 25 75 1.5 "red"
+		circle 25 95 1.5 "red"
+		circle 75 95 1.5 "red"
 	eslide
 	
 	// Example deck

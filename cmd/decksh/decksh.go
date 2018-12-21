@@ -673,6 +673,7 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 	arrowtype := s[0][0]
 	switch arrowtype {
 	case 'r':
+
 		ax1 = x
 		ax2 = ax1 - aw
 		ax3 = x - (aw * notch)
@@ -715,6 +716,9 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 	default:
 		return errfmt
 	}
+	// adjust the end point of the curve to be the notch point
+	curvestring[5] = fmt.Sprintf("%v", ax3)
+	curvestring[6] = fmt.Sprintf("%v", ay3)
 	curve(w, curvestring, linenumber)
 	fmt.Fprintf(w, "<polygon xc=\"%v %v %v %v\" yc=\"%v %v %v %v\" color=%s opacity=%q/>\n", ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4, color, opacity)
 	return nil
