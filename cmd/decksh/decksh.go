@@ -614,12 +614,12 @@ func legend(w io.Writer, s []string, linenumber int) error {
 // carrow makes a arrow with a curved line
 func carrow(w io.Writer, s []string, linenumber int) error {
 	ls := len(s)
-	errfmt := fmt.Errorf("line: %d [l|r|u|d]carrow x1 y1 x2 y2 x3 y3 [linewidth] [arrowidth] [arrowheight] [color] [opacity]", linenumber)
+	e := fmt.Errorf("line: %d [l|r|u|d]carrow x1 y1 x2 y2 x3 y3 [linewidth] [arrowidth] [arrowheight] [color] [opacity]", linenumber)
 	if len(s[0]) < 7 {
-		return errfmt
+		return e
 	}
 	if ls < 7 {
-		return errfmt
+		return e
 	}
 	aw := 3.0
 	ah := 3.0
@@ -714,7 +714,7 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 		ay3 = ay1 + (ah * notch)
 		ay4 = ay2
 	default:
-		return errfmt
+		return e
 	}
 	// adjust the end point of the curve to be the notch point
 	curvestring[5] = fmt.Sprintf("%v", ax3)
@@ -724,26 +724,23 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+// arrow draws arrows with straight lines
 func arrow(w io.Writer, s []string, linenumber int) error {
+	ls := len(s)
+	e := fmt.Errorf("line: %d [l|r|u|d]arrow x y length [linewidth] [arrowidth] [arrowheight] [color] [opacity]", linenumber)
+
 	lw := 0.2
 	aw := 3.0
 	ah := 3.0
 	notch := 0.75
-	ls := len(s)
 	color := `"gray"`
 	opacity := "100"
 
-	errfmt := fmt.Errorf("line: %d [l|r|u|d]arrow x y length [linewidth] [arrowidth] [arrowheight] [color] [opacity]", linenumber)
-
-	if len(s[0]) < 6 {
-		return errfmt
+	if len(s[0]) < 6 || ls < 4 {
+		return e
 	}
 	arrowtype := s[0][0]
 	var x, y, l float64
-
-	if ls < 4 {
-		return errfmt
-	}
 
 	if _, err := fmt.Sscanf(s[1], "%f", &x); err != nil {
 		return err
@@ -848,7 +845,7 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 		ay4 = ay2
 
 	default:
-		return errfmt
+		return e
 	}
 	fmt.Fprintf(w, "<line xp1=\"%v\" yp1=\"%v\" xp2=\"%v\" yp2=\"%v\" sp=\"%v\" color=%s opacity=%q/>\n", lx1, ly1, lx2, ly2, lw, color, opacity)
 	fmt.Fprintf(w, "<polygon xc=\"%v %v %v %v\" yc=\"%v %v %v %v\" color=%s opacity=%q/>\n", ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4, color, opacity)
@@ -880,6 +877,7 @@ func chart(w io.Writer, s string, linenumber int) error {
 	return err
 }
 
+// isaop tests for assignment operators
 func isaop(s []string) bool {
 	if len(s) < 4 {
 		return false
@@ -1029,6 +1027,7 @@ func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) e
 	}
 }
 
+// evaloop evaluates items in a loop body
 func evaloop(w io.Writer, forvar string, format string, v string, s []string, scanner *bufio.Scanner, linenumber int) {
 	e := make([]string, len(s))
 	copy(e, s)
