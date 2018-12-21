@@ -611,6 +611,115 @@ func legend(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+// carrow makes a arrow with a curved line
+func carrow(w io.Writer, s []string, linenumber int) error {
+	ls := len(s)
+	errfmt := fmt.Errorf("line: %d [l|r|u|d]carrow x1 y1 x2 y2 x3 y3 [linewidth] [arrowidth] [arrowheight] [color] [opacity]", linenumber)
+	if len(s[0]) < 7 {
+		return errfmt
+	}
+	if ls < 7 {
+		return errfmt
+	}
+	aw := 3.0
+	ah := 3.0
+	notch := 0.75
+
+	color := `"gray"`
+	opacity := "100"
+
+	// copy the curve portion
+	curvestring := make([]string, 10)
+	curvestring[0] = "curve"
+	for i := 1; i < 7; i++ {
+		curvestring[i] = s[i]
+	}
+	// set and override the defaults for linewidth, color, and opacity
+	curvestring[7] = "0.2"
+	curvestring[8] = color
+	curvestring[9] = opacity
+	switch ls {
+	case 8:
+		curvestring[7] = s[7] // linewidth
+	case 11:
+		color = s[10]
+		curvestring[8] = color // color
+	case 12:
+		opacity = s[11]
+		curvestring[9] = opacity // opacity
+	}
+
+	var x, y, ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 float64
+
+	// end point of the curve is the point of the arrow
+	if _, err := fmt.Sscanf(s[5], "%f", &x); err != nil {
+		return err
+	}
+	if _, err := fmt.Sscanf(s[6], "%f", &y); err != nil {
+		return nil
+	}
+
+	// override width and height of the arrow
+	if ls >= 9 {
+		if _, err := fmt.Sscanf(s[8], "%f", &aw); err != nil {
+			return err
+		}
+	}
+	if ls >= 10 {
+		if _, err := fmt.Sscanf(s[9], "%f", &ah); err != nil {
+			return err
+		}
+	}
+	arrowtype := s[0][0]
+	switch arrowtype {
+	case 'r':
+		ax1 = x
+		ax2 = ax1 - aw
+		ax3 = x - (aw * notch)
+		ax4 = ax2
+
+		ay1 = y
+		ay2 = y + (ah / 2)
+		ay3 = y
+		ay4 = y - (ah / 2)
+	case 'l':
+		ax1 = x
+		ax2 = ax1 + aw
+		ax3 = x + (aw * notch)
+		ax4 = ax2
+
+		ay1 = y
+		ay2 = y + (ah / 2)
+		ay3 = y
+		ay4 = y - (ah / 2)
+	case 'u':
+		ax1 = x
+		ax2 = x + (aw / 2)
+		ax3 = x
+		ax4 = x - (aw / 2)
+
+		ay1 = y
+		ay2 = ay1 - ah
+		ay3 = ay1 - (ah * notch)
+		ay4 = ay2
+	case 'd':
+		ax1 = x
+		ax2 = x + (aw / 2)
+		ax3 = x
+		ax4 = x - (aw / 2)
+
+		ay1 = y
+		ay2 = ay1 + ah
+		ay3 = ay1 + (ah * notch)
+		ay4 = ay2
+	default:
+		return errfmt
+	}
+	curve(w, curvestring, linenumber)
+	fmt.Fprintf(w, "<polygon xc=\"%v %v %v %v\" yc=\"%v %v %v %v\" color=%s opacity=%q/>\n", ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4, color, opacity)
+	return nil
+}
+
 func arrow(w io.Writer, s []string, linenumber int) error {
 	lw := 0.2
 	aw := 3.0
@@ -739,7 +848,6 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	}
 	fmt.Fprintf(w, "<line xp1=\"%v\" yp1=\"%v\" xp2=\"%v\" yp2=\"%v\" sp=\"%v\" color=%s opacity=%q/>\n", lx1, ly1, lx2, ly2, lw, color, opacity)
 	fmt.Fprintf(w, "<polygon xc=\"%v %v %v %v\" yc=\"%v %v %v %v\" color=%s opacity=%q/>\n", ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4, color, opacity)
-
 	return nil
 }
 
@@ -989,6 +1097,9 @@ func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) 
 
 	case "larrow", "rarrow", "uarrow", "darrow":
 		return arrow(w, tokens, n)
+
+	case "lcarrow", "rcarrow", "ucarrow", "dcarrow":
+		return carrow(w, tokens, n)
 
 	case "vline":
 		return vline(w, tokens, n)

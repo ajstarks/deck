@@ -244,10 +244,17 @@ Line thickness, color and opacity are optional, with defaults (0.2, gray, 100%).
 Left, right, up, and down pointing arrows with optional linewidth, width, height, color, and opacity.
 Default linewidth is 0.2, default arrow width and height is 3, default color and opacity is gray, 100%.
 
-	larrow x y length [linewidth] [arrowidth] [arrowheight] [color] [opacity]
-	rarrow x y length [linewidth] [arrowidth] [arrowheight] [color] [opacity]
-	uarrow x y length [linewidth] [arrowidth] [arrowheight] [color] [opacity]
-	darrow x y length [linewidth] [arrowidth] [arrowheight] [color] [opacity]
+The curve variants use the same syntax for specifying curves.
+
+	larrow x y length         [linewidth] [arrowidth] [arrowheight] [color] [opacity]
+	rarrow x y length         [linewidth] [arrowidth] [arrowheight] [color] [opacity]
+	uarrow x y length         [linewidth] [arrowidth] [arrowheight] [color] [opacity]
+	darrow x y length         [linewidth] [arrowidth] [arrowheight] [color] [opacity]
+
+	lcarrow x1 y1 x2 y2 x3 y3 [linewidth] [arrowidth] [arrowheight] [color] [opacity]
+	rcarrow x1 y1 x2 y2 x3 y3 [linewidth] [arrowidth] [arrowheight] [color] [opacity]
+	ucarrow x1 y1 x2 y2 x3 y3 [linewidth] [arrowidth] [arrowheight] [color] [opacity]
+	dcarrow x1 y1 x2 y2 x3 y3 [linewidth] [arrowidth] [arrowheight] [color] [opacity]
 
 ## Charts
 
