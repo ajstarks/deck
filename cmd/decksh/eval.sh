@@ -376,17 +376,28 @@ deck
 	eslide
 	
 	slide
-		lcarrow 50 70 50 95 25 95
+		lcarrow 50 70 50 95 25 95 2 6 6 "blue"
+		lcarrow 50 30 50 05 25 05 1 5 5
+		rcarrow 50 30 50 05 75 05 0.5
 		rcarrow 50 70 50 95 75 95
-		
+
 		dcarrow 50 50 75 50 75 25
-		ucarrow 50 50 25 50 25 75
+		dcarrow 50 50 25 50 25 25 0.5
+		ucarrow 50 50 25 50 25 75 1 4 4
+		ucarrow 50 50 75 50 75 75 2 6 6 "green"
 		
-		circle 50 70 1.5 "red"
+		circle 50 30 1.5 "red"
 		circle 50 50 1.5 "red"
-		circle 75 25 1.5 "red"
+		circle 50 70 1.5 "red"
+
+		circle 25 05 1.5 "red"
+		circle 25 25 1.5 "red"
 		circle 25 75 1.5 "red"
 		circle 25 95 1.5 "red"
+
+		circle 75 05 1.5 "red"
+		circle 75 25 1.5 "red"
+		circle 75 75 1.5 "red"
 		circle 75 95 1.5 "red"
 	eslide
 	

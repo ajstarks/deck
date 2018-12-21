@@ -638,13 +638,15 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 	curvestring[7] = "0.2"
 	curvestring[8] = color
 	curvestring[9] = opacity
-	switch ls {
-	case 8:
+
+	if ls >= 8 {
 		curvestring[7] = s[7] // linewidth
-	case 11:
+	}
+	if ls >= 11 {
 		color = s[10]
 		curvestring[8] = color // color
-	case 12:
+	}
+	if ls == 12 {
 		opacity = s[11]
 		curvestring[9] = opacity // opacity
 	}
