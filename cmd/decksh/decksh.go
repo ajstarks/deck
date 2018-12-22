@@ -281,17 +281,13 @@ func text(w io.Writer, s []string, linenumber int) error {
 	fco := fontColorOp(s[5:])
 	switch s[0] {
 	case "text":
-		fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n",
-			s[2], s[3], s[4], fco, qesc(s[1]))
+		fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
 	case "ctext":
-		fmt.Fprintf(w, "<text align=\"c\" xp=%q yp=%q sp=%q %s>%s</text>\n",
-			s[2], s[3], s[4], fco, qesc(s[1]))
+		fmt.Fprintf(w, "<text align=\"c\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
 	case "etext":
-		fmt.Fprintf(w, "<text align=\"e\" xp=%q yp=%q sp=%q %s>%s</text>\n",
-			s[2], s[3], s[4], fco, qesc(s[1]))
+		fmt.Fprintf(w, "<text align=\"e\" xp=%q yp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], fco, qesc(s[1]))
 	case "textfile":
-		fmt.Fprintf(w, "<text file=%s xp=%q yp=%q sp=%q %s/>\n",
-			s[1], s[2], s[3], s[4], fontColorOpLp(s[5:]))
+		fmt.Fprintf(w, "<text file=%s xp=%q yp=%q sp=%q %s/>\n", s[1], s[2], s[3], s[4], fontColorOpLp(s[5:]))
 	}
 	return nil
 }
@@ -301,8 +297,7 @@ func textblock(w io.Writer, s []string, linenumber int) error {
 	if len(s) < 6 {
 		return fmt.Errorf("line %d: %s \"text\" x y width size [font] [color] [opacity] [link]", linenumber, s[0])
 	}
-	fmt.Fprintf(w, "<text type=\"block\" xp=%q yp=%q wp=%q sp=%q %s>%s</text>\n",
-		s[2], s[3], s[4], s[5], fontColorOp(s[6:]), qesc(s[1]))
+	fmt.Fprintf(w, "<text type=\"block\" xp=%q yp=%q wp=%q sp=%q %s>%s</text>\n", s[2], s[3], s[4], s[5], fontColorOp(s[6:]), qesc(s[1]))
 	return nil
 }
 
@@ -310,11 +305,9 @@ func textblock(w io.Writer, s []string, linenumber int) error {
 func textcode(w io.Writer, s []string, linenumber int) error {
 	switch len(s) {
 	case 6:
-		fmt.Fprintf(w, "<text type=\"code\" file=%s xp=%q yp=%q wp=%q sp=%q/>\n",
-			s[1], s[2], s[3], s[4], s[5])
+		fmt.Fprintf(w, "<text type=\"code\" file=%s xp=%q yp=%q wp=%q sp=%q/>\n", s[1], s[2], s[3], s[4], s[5])
 	case 7:
-		fmt.Fprintf(w, "<text type=\"code\" file=%s xp=%q yp=%q wp=%q sp=%q color=%s/>\n",
-			s[1], s[2], s[3], s[4], s[5], s[6])
+		fmt.Fprintf(w, "<text type=\"code\" file=%s xp=%q yp=%q wp=%q sp=%q color=%s/>\n", s[1], s[2], s[3], s[4], s[5], s[6])
 	default:
 		return fmt.Errorf("line %d: %s \"file\" x y width size [color]", linenumber, s[0])
 	}
@@ -328,14 +321,11 @@ func image(w io.Writer, s []string, linenumber int) error {
 
 	switch n {
 	case 6:
-		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q/>\n",
-			s[1], s[2], s[3], s[4], s[5])
+		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q/>\n", s[1], s[2], s[3], s[4], s[5])
 	case 7:
-		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q scale=%q/>\n",
-			s[1], s[2], s[3], s[4], s[5], s[6])
+		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q scale=%q/>\n", s[1], s[2], s[3], s[4], s[5], s[6])
 	case 8:
-		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q scale=%q link=%s/>\n",
-			s[1], s[2], s[3], s[4], s[5], s[6], s[7])
+		fmt.Fprintf(w, "<image name=%s xp=%q yp=%q width=%q height=%q scale=%q link=%s/>\n", s[1], s[2], s[3], s[4], s[5], s[6], s[7])
 	default:
 		return e
 	}
@@ -352,14 +342,11 @@ func cimage(w io.Writer, s []string, linenumber int) error {
 	caption := xmlesc(s[2])
 	switch n {
 	case 7:
-		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q/>\n",
-			s[1], caption, s[3], s[4], s[5], s[6])
+		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q/>\n", s[1], caption, s[3], s[4], s[5], s[6])
 	case 8:
-		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q scale=%q/>\n",
-			s[1], caption, s[3], s[4], s[5], s[6], s[7])
+		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q scale=%q/>\n", s[1], caption, s[3], s[4], s[5], s[6], s[7])
 	case 9:
-		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q scale=%q link=%s/>\n",
-			s[1], caption, s[3], s[4], s[5], s[6], s[7], s[8])
+		fmt.Fprintf(w, "<image name=%s caption=%s xp=%q yp=%q width=%q height=%q scale=%q link=%s/>\n", s[1], caption, s[3], s[4], s[5], s[6], s[7], s[8])
 	default:
 		return e
 	}
@@ -379,14 +366,11 @@ func list(w io.Writer, s []string, linenumber int) error {
 
 	switch s[0] {
 	case "list":
-		fmt.Fprintf(w, "<list xp=%q yp=%q sp=%q %s>\n",
-			s[1], s[2], s[3], fco)
+		fmt.Fprintf(w, "<list xp=%q yp=%q sp=%q %s>\n", s[1], s[2], s[3], fco)
 	case "blist":
-		fmt.Fprintf(w, "<list type=\"bullet\" xp=%q yp=%q sp=%q %s>\n",
-			s[1], s[2], s[3], fco)
+		fmt.Fprintf(w, "<list type=\"bullet\" xp=%q yp=%q sp=%q %s>\n", s[1], s[2], s[3], fco)
 	case "nlist":
-		fmt.Fprintf(w, "<list type=\"number\" xp=%q yp=%q sp=%q %s>\n",
-			s[1], s[2], s[3], fco)
+		fmt.Fprintf(w, "<list type=\"number\" xp=%q yp=%q sp=%q %s>\n", s[1], s[2], s[3], fco)
 	}
 	return nil
 }
@@ -395,12 +379,12 @@ func list(w io.Writer, s []string, linenumber int) error {
 func listitem(w io.Writer, s []string, linenumber int) error {
 	ls := len(s)
 	switch {
-	 	case ls == 1: 
-	 		fmt.Fprintln(w, "<li/>")
-	 	case ls == 2:
-	 		fmt.Fprintf(w, "<li>%s</li>\n", qesc(s[1]))
-	 	case ls > 2:
-			fmt.Fprintf(w, "<li %s>%s</li>\n", fontColorOp(s[2:]), qesc(s[1]))
+	case ls == 1:
+		fmt.Fprintln(w, "<li/>")
+	case ls == 2:
+		fmt.Fprintf(w, "<li>%s</li>\n", qesc(s[1]))
+	case ls > 2:
+		fmt.Fprintf(w, "<li %s>%s</li>\n", fontColorOp(s[2:]), qesc(s[1]))
 	}
 	return nil
 }
@@ -668,7 +652,6 @@ func arrowhead(x, y, ah, aw, notch float64, arrowtype byte) (float64, float64, f
 	return ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4
 }
 
-
 // carrow makes a arrow with a curved line
 func carrow(w io.Writer, s []string, linenumber int) error {
 	ls := len(s)
@@ -729,7 +712,7 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 		if _, err := fmt.Sscanf(s[9], "%f", &ah); err != nil {
 			return err
 		}
-	}	
+	}
 	ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 := arrowhead(x, y, ah, aw, notch, s[0][0])
 	// adjust the end point of the curve to be the notch point
 	curvestring[5] = fmt.Sprintf("%v", ax3)
@@ -754,7 +737,7 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	if len(s[0]) < 6 || ls < 4 {
 		return e
 	}
-	
+
 	var x, y, l float64
 
 	if _, err := fmt.Sscanf(s[1], "%f", &x); err != nil {
