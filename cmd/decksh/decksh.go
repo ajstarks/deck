@@ -232,6 +232,7 @@ func fontColorOp(s []string) string {
 	}
 }
 
+// fontColorOpLp generates markup for font, color, and opacity and linespacing
 func fontColorOpLp(s []string) string {
 	switch len(s) {
 	case 1:
@@ -604,8 +605,12 @@ func legend(w io.Writer, s []string, linenumber int) error {
 		return fmt.Errorf("line %d: legend \"text\" x y size font color", linenumber)
 	}
 	var tx, cy float64
-	fmt.Sscanf(s[2], "%f", &tx)
-	fmt.Sscanf(s[3], "%f", &cy)
+	if _, err := fmt.Sscanf(s[2], "%f", &tx); err != nil {
+		return err
+	}
+	if _, err := fmt.Sscanf(s[3], "%f", &cy); err != nil {
+		return err
+	}
 	fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", fmt.Sprintf("%.3f", tx+2), s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
 	fmt.Fprintf(w, "<ellipse xp=%q yp=%q wp=%q hr=\"100\" color=%s/>\n", s[2], fmt.Sprintf("%.3f", cy+.5), s[4], s[6])
 	return nil
@@ -950,19 +955,16 @@ func fornum(s []string, linenumber int) (float64, float64, float64, error) {
 	if len(s) < 5 {
 		return 0, -1, 0, fmt.Errorf("line %d: for begin end [incr] ... efor", linenumber)
 	}
-	_, berr := fmt.Sscanf(s[3], "%f", &begin)
-	if berr != nil {
-		return 0, -1, 0, berr
+	if _, err := fmt.Sscanf(s[3], "%f", &begin); err != nil {
+		return 0, -1, 0, err
 	}
-	_, enderr := fmt.Sscanf(s[4], "%f", &end)
-	if enderr != nil {
-		return 0, -1, 0, enderr
+	if _, err := fmt.Sscanf(s[4], "%f", &end); err != nil {
+		return 0, -1, 0, err
 	}
 	incr = 1.0
 	if len(s) > 5 {
-		_, ierr := fmt.Sscanf(s[5], "%f", &incr)
-		if ierr != nil {
-			return 0, -1, 0, ierr
+		if _, err := fmt.Sscanf(s[5], "%f", &incr); err != nil {
+			return 0, -1, 0, err
 		}
 	}
 	return begin, end, incr, nil
@@ -1038,7 +1040,6 @@ func evaloop(w io.Writer, forvar string, format string, v string, s []string, sc
 			e[i] = fmt.Sprintf(format, v)
 		}
 	}
-	//fmt.Fprintf(os.Stderr, "%v -> %v\n", s, e)
 	keyparse(w, e, "", scanner, linenumber)
 }
 
