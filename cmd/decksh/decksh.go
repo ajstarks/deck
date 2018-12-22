@@ -393,10 +393,14 @@ func list(w io.Writer, s []string, linenumber int) error {
 
 // listitem generates list items
 func listitem(w io.Writer, s []string, linenumber int) error {
-	if len(s) > 1 {
-		fmt.Fprintf(w, "<li>%s</li>\n", qesc(s[1]))
-	} else {
-		fmt.Fprintln(w, "<li/>")
+	ls := len(s)
+	switch {
+	 	case ls == 1: 
+	 		fmt.Fprintln(w, "<li/>")
+	 	case ls == 2:
+	 		fmt.Fprintf(w, "<li>%s</li>\n", qesc(s[1]))
+	 	case ls > 2:
+			fmt.Fprintf(w, "<li %s>%s</li>\n", fontColorOp(s[2:]), qesc(s[1]))
 	}
 	return nil
 }
@@ -616,6 +620,55 @@ func legend(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+// arrowhead returns the coordinates for left, right, up and down arrowheads
+func arrowhead(x, y, ah, aw, notch float64, arrowtype byte) (float64, float64, float64, float64, float64, float64, float64, float64) {
+	var ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 float64
+	switch arrowtype {
+	case 'r':
+		ax1 = x
+		ax2 = ax1 - aw
+		ax3 = x - (aw * notch)
+		ax4 = ax2
+
+		ay1 = y
+		ay2 = y + (ah / 2)
+		ay3 = y
+		ay4 = y - (ah / 2)
+	case 'l':
+		ax1 = x
+		ax2 = ax1 + aw
+		ax3 = x + (aw * notch)
+		ax4 = ax2
+
+		ay1 = y
+		ay2 = y + (ah / 2)
+		ay3 = y
+		ay4 = y - (ah / 2)
+	case 'u':
+		ax1 = x
+		ax2 = x + (aw / 2)
+		ax3 = x
+		ax4 = x - (aw / 2)
+
+		ay1 = y
+		ay2 = ay1 - ah
+		ay3 = ay1 - (ah * notch)
+		ay4 = ay2
+	case 'd':
+		ax1 = x
+		ax2 = x + (aw / 2)
+		ax3 = x
+		ax4 = x - (aw / 2)
+
+		ay1 = y
+		ay2 = ay1 + ah
+		ay3 = ay1 + (ah * notch)
+		ay4 = ay2
+	}
+	return ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4
+}
+
+
 // carrow makes a arrow with a curved line
 func carrow(w io.Writer, s []string, linenumber int) error {
 	ls := len(s)
@@ -656,7 +709,7 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 		curvestring[9] = opacity // opacity
 	}
 
-	var x, y, ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 float64
+	var x, y float64
 
 	// end point of the curve is the point of the arrow
 	if _, err := fmt.Sscanf(s[5], "%f", &x); err != nil {
@@ -676,53 +729,8 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 		if _, err := fmt.Sscanf(s[9], "%f", &ah); err != nil {
 			return err
 		}
-	}
-	arrowtype := s[0][0]
-	switch arrowtype {
-	case 'r':
-
-		ax1 = x
-		ax2 = ax1 - aw
-		ax3 = x - (aw * notch)
-		ax4 = ax2
-
-		ay1 = y
-		ay2 = y + (ah / 2)
-		ay3 = y
-		ay4 = y - (ah / 2)
-	case 'l':
-		ax1 = x
-		ax2 = ax1 + aw
-		ax3 = x + (aw * notch)
-		ax4 = ax2
-
-		ay1 = y
-		ay2 = y + (ah / 2)
-		ay3 = y
-		ay4 = y - (ah / 2)
-	case 'u':
-		ax1 = x
-		ax2 = x + (aw / 2)
-		ax3 = x
-		ax4 = x - (aw / 2)
-
-		ay1 = y
-		ay2 = ay1 - ah
-		ay3 = ay1 - (ah * notch)
-		ay4 = ay2
-	case 'd':
-		ax1 = x
-		ax2 = x + (aw / 2)
-		ax3 = x
-		ax4 = x - (aw / 2)
-
-		ay1 = y
-		ay2 = ay1 + ah
-		ay3 = ay1 + (ah * notch)
-		ay4 = ay2
-	default:
-		return e
-	}
+	}	
+	ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 := arrowhead(x, y, ah, aw, notch, s[0][0])
 	// adjust the end point of the curve to be the notch point
 	curvestring[5] = fmt.Sprintf("%v", ax3)
 	curvestring[6] = fmt.Sprintf("%v", ay3)
@@ -746,7 +754,7 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	if len(s[0]) < 6 || ls < 4 {
 		return e
 	}
-	arrowtype := s[0][0]
+	
 	var x, y, l float64
 
 	if _, err := fmt.Sscanf(s[1], "%f", &x); err != nil {
@@ -779,10 +787,11 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	if ls == 9 {
 		opacity = s[8]
 	}
-
 	var lx1, lx2, ly1, ly2, ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 float64
 
+	arrowtype := s[0][0]
 	switch arrowtype {
+
 	case 'r': // right
 		lx1 = x
 		lx2 = (x + l) - (aw * notch)
