@@ -21,6 +21,7 @@ const (
 	vectloop
 )
 const doublequote = 0x22
+const stdnotch = 0.75
 
 // emap is the id=expression map
 var emap = map[string]string{}
@@ -180,7 +181,7 @@ func deck(w io.Writer, s []string, linenumber int) error {
 
 // canvas produces the "canvas" element
 func canvas(w io.Writer, s []string, linenumber int) error {
-	e := fmt.Errorf("line %d: canvas width height", linenumber)
+	e := fmt.Errorf("line %d: %s width height", linenumber, s[0])
 	if len(s) != 3 {
 		return e
 	}
@@ -317,7 +318,7 @@ func textcode(w io.Writer, s []string, linenumber int) error {
 // image generates markup for images (plain and captioned)
 func image(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
-	e := fmt.Errorf("line %d: image \"image-file\" x y w h [scale] [link]", linenumber)
+	e := fmt.Errorf("line %d: %s \"image-file\" x y w h [scale] [link]", linenumber, s[0])
 
 	switch n {
 	case 6:
@@ -335,7 +336,7 @@ func image(w io.Writer, s []string, linenumber int) error {
 // cimage makes a captioned image
 func cimage(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
-	e := fmt.Errorf("line %d: cimage \"image-file\" \"caption\" x y w h [scale] [link]", linenumber)
+	e := fmt.Errorf("line %d: %s \"image-file\" \"caption\" x y w h [scale] [link]", linenumber, s[0])
 	if n < 6 {
 		return e
 	}
@@ -604,7 +605,8 @@ func legend(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
-// arrowhead returns the coordinates for left, right, up and down arrowheads
+// arrowhead returns the coordinates for left, right, up, down arrowheads.
+// x, y is the point of the arrow, aw, ah are width, height
 func arrowhead(x, y, ah, aw, notch float64, arrowtype byte) (float64, float64, float64, float64, float64, float64, float64, float64) {
 	var ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 float64
 	switch arrowtype {
@@ -664,7 +666,6 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 	}
 	aw := 3.0
 	ah := 3.0
-	notch := 0.75
 
 	color := `"gray"`
 	opacity := "100"
@@ -675,11 +676,12 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 	for i := 1; i < 7; i++ {
 		curvestring[i] = s[i]
 	}
-	// set and override the defaults for linewidth, color, and opacity
+	// set defaults for linewidth, color, and opacity
 	curvestring[7] = "0.2"
 	curvestring[8] = color
 	curvestring[9] = opacity
 
+	// override settings for  linewidth, color, and opacity
 	if ls >= 8 {
 		curvestring[7] = s[7] // linewidth
 	}
@@ -713,10 +715,12 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 			return err
 		}
 	}
-	ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 := arrowhead(x, y, ah, aw, notch, s[0][0])
+	// compute the coordinates for the arrowhead
+	ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 := arrowhead(x, y, ah, aw, stdnotch, s[0][0])
 	// adjust the end point of the curve to be the notch point
 	curvestring[5] = fmt.Sprintf("%v", ax3)
 	curvestring[6] = fmt.Sprintf("%v", ay3)
+
 	curve(w, curvestring, linenumber)
 	fmt.Fprintf(w, "<polygon xc=\"%v %v %v %v\" yc=\"%v %v %v %v\" color=%s opacity=%q/>\n", ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4, color, opacity)
 	return nil
@@ -730,7 +734,7 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	lw := 0.2
 	aw := 3.0
 	ah := 3.0
-	notch := 0.75
+
 	color := `"gray"`
 	opacity := "100"
 
@@ -775,22 +779,22 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	arrowtype := s[0][0]
 	switch arrowtype {
 	case 'r':
-		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x+l, y, aw, ah, notch, arrowtype)
+		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x+l, y, aw, ah, stdnotch, arrowtype)
 		lx1, lx2 = x, ax3
 		ly1, ly2 = y, y
 
 	case 'l':
-		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x-l, y, aw, ah, notch, arrowtype)
+		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x-l, y, aw, ah, stdnotch, arrowtype)
 		lx1, lx2 = x, ax3
 		ly1, ly2 = y, y
 
 	case 'u':
-		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x, y+l, aw, ah, notch, arrowtype)
+		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x, y+l, aw, ah, stdnotch, arrowtype)
 		lx1, lx2 = x, x
 		ly1, ly2 = y, ay3
 
 	case 'd':
-		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x, y-l, aw, ah, notch, arrowtype)
+		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x, y-l, aw, ah, stdnotch, arrowtype)
 		lx1, lx2 = x, x
 		ly1, ly2 = y, ay3
 
