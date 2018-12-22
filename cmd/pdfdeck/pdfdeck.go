@@ -280,6 +280,8 @@ func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, spacing float64, list []deck
 	tw := deck.Pwidth(lwidth, cw, cw/2)
 
 	var t string
+	
+	defont := font
 	for i, tl := range list {
 		doc.SetFont(fontlookup(font), "", fs)
 		doc.SetTextColor(red, green, blue)
@@ -297,6 +299,9 @@ func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, spacing float64, list []deck
 		}
 		if len(tl.Font) > 0 {
 			doc.SetFont(fontlookup(tl.Font), "", fs)
+			font = tl.Font
+		} else {
+			font = defont
 		}
 		//doc.Text(x, y, translate(t))
 		yw := textwrap(doc, x, y, tw, fs, ls, translate(t), font, "")
