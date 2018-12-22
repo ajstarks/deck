@@ -774,78 +774,30 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 
 	arrowtype := s[0][0]
 	switch arrowtype {
+	case 'r':
+		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x+l, y, aw, ah, notch, arrowtype)
+		lx1, lx2 = x, ax3
+		ly1, ly2 = y, y
 
-	case 'r': // right
-		lx1 = x
-		lx2 = (x + l) - (aw * notch)
+	case 'l':
+		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x-l, y, aw, ah, notch, arrowtype)
+		lx1, lx2 = x, ax3
+		ly1, ly2 = y, y
 
-		ly1 = y
-		ly2 = y
+	case 'u':
+		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x, y+l, aw, ah, notch, arrowtype)
+		lx1, lx2 = x, x
+		ly1, ly2 = y, ay3
 
-		ax1 = x + l
-		ax2 = ax1 - aw
-		ax3 = lx2
-		ax4 = ax2
-
-		ay1 = y
-		ay2 = y + (ah / 2)
-		ay3 = y
-		ay4 = y - (ah / 2)
-
-	case 'l': // left
-		lx1 = x
-		lx2 = (x - l) + (aw * notch)
-
-		ly1 = y
-		ly2 = y
-
-		ax1 = x - l
-		ax2 = ax1 + aw
-		ax3 = lx2
-		ax4 = ax2
-
-		ay1 = y
-		ay2 = y + (ah / 2)
-		ay3 = y
-		ay4 = y - (ah / 2)
-
-	case 'u': // up
-		lx1 = x
-		lx2 = x
-
-		ly1 = y
-		ly2 = (y + l) - (ah * notch)
-
-		ax1 = x
-		ax2 = x + (aw / 2)
-		ax3 = lx2
-		ax4 = x - (aw / 2)
-
-		ay1 = y + l
-		ay2 = ay1 - ah
-		ay3 = ay1 - (ah * notch)
-		ay4 = ay2
-
-	case 'd': // down
-		lx1 = x
-		lx2 = x
-
-		ly1 = y
-		ly2 = (y - l) + (ah * notch)
-
-		ax1 = x
-		ax2 = x + (aw / 2)
-		ax3 = lx2
-		ax4 = x - (aw / 2)
-
-		ay1 = y - l
-		ay2 = ay1 + ah
-		ay3 = ay1 + (ah * notch)
-		ay4 = ay2
+	case 'd':
+		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x, y-l, aw, ah, notch, arrowtype)
+		lx1, lx2 = x, x
+		ly1, ly2 = y, ay3
 
 	default:
 		return e
 	}
+
 	fmt.Fprintf(w, "<line xp1=\"%v\" yp1=\"%v\" xp2=\"%v\" yp2=\"%v\" sp=\"%v\" color=%s opacity=%q/>\n", lx1, ly1, lx2, ly2, lw, color, opacity)
 	fmt.Fprintf(w, "<polygon xc=\"%v %v %v %v\" yc=\"%v %v %v %v\" color=%s opacity=%q/>\n", ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4, color, opacity)
 	return nil
