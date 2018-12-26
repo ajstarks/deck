@@ -243,7 +243,7 @@ deck
 			
 		listleft+=30
 		text "textfile"		listleft gtop ts "mono"
-		textfile "sample.txt"	listleft row2 2
+		textfile "example.txt"	listleft row2 2
 	
 		listleft+=30
 		text "textcode"	listleft gtop ts "mono"
