@@ -1,0 +1,17 @@
+deck
+	slide "rgb(250,250,250)" "black"
+		ctext   "Deck elements" 50 90 5
+		image   "follow.jpg"    70 60 640 480 60
+		blist   10 70 3
+			li "text, image, list"
+			li "rect, ellipse, polygon"
+			li "line, arc, curve"
+		elist
+		rect    15 20 8 6              "rgb(127,0,0)"
+		ellipse 27.5 20 8 6            "rgb(0,127,0)"
+		line    50 20 60 20
+		curve   80 20 95 30 90 20
+		arc     70 20 10 8 0 180 0.1  "rgb(0,0,127)"
+		polygon "37 37 45" "17 23 20" "rgb(0,0,127)"
+	eslide
+edeck

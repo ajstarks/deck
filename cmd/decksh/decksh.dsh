@@ -1,0 +1,326 @@
+// the decksh script that describes decksh
+deck
+	left=10
+	top=90
+	titlesize=6
+	cx=50
+	spotcolor="rgb(127,0,0)"
+	slide
+		image "shell.jpg" 50 50 2000 1329 60
+		ctext "decksh: a little language for decks" cx top titlesize
+		etext "Anthony Starks" 95 10 2 
+		etext "@ajstarks" 95 7 2 "sans" "black" 100 "https://twitter.com/ajstarks"
+	eslide
+	
+	slide
+		cy=70
+		sep=10
+		ts=5
+		dscolor="rgb(0,0,0)"
+		markupcolor="gray"
+		outcolor=spotcolor
+		ay=cy+2
+		alen=10
+		
+		etext	"decksh"		20 cy ts "sans" dscolor
+		rarrow 22 ay alen
+		ctext	"deck markup"	50 cy ts "sans" markupcolor
+		rarrow 67 ay alen
+		text	"PDF"			80 cy ts "sans" outcolor
+		cy+=10
+		text	"SVG"			80 cy ts "sans" outcolor
+		cy-=20
+		text	"PNG" 			80 cy ts "sans" outcolor
+		
+		cy-=sep
+		imy=cy-10
+
+		textcode	"example.dsh" 5  cy 25 0.75 dscolor
+		textcode	"example.xml" 35 cy 40 0.75 markupcolor
+		image		"example.png" 87 imy 792 612 22
+	eslide
+	
+	slide
+		kx=left+20
+		etext "keyword"		kx 50 5 "mono" spotcolor
+		kx+=15
+		etext "args"		kx 50 5 "mono" "rgb(0,0,127)"
+		kx+=5
+		text "[optionals]"	kx 50 5 "mono" "rgb(127,127,127)"
+	eslide
+	
+	slide
+		listleft=left
+		lsize=titlesize*0.4
+		top=90
+		ltop=top-10
+		text "Running decksh" left top titlesize
+		list listleft ltop lsize "mono"
+			li "decksh"
+			li "decksh in.dsh"
+			li "decksh -o out.xml"
+			li "decksh -o out.xml in.dsh"
+		elist
+
+		textcode "hb.dsh" left 40 35 lsize
+
+		listleft+=45
+		text "chmod +x mydeck; ./mydeck" listleft 40 lsize "mono"
+		text "executable script" listleft 35 lsize "serif"
+
+		list listleft ltop lsize "serif"
+			li "read from stdin, write to stdout"
+			li "read from named file, write to stdout"
+			li "read from stdin, write named file"
+			li "read from named file, write to named file"
+		elist
+	eslide
+	
+	slide
+		text "Keywords" left top titlesize  
+		headcolor=spotcolor
+		listleft=left
+		headtop=top-10
+		listtop=headtop-5
+		listspacing=1.4
+		
+		text "Structure" listleft headtop 3 "sans" headcolor
+		list listleft listtop 2 "mono" "black" 100 listspacing
+			li "deck...edeck"
+			li "slide...eslide"
+			li "canvas"
+		elist
+		listleft+=25
+		
+		text "Text" listleft headtop 3 "sans" headcolor
+		list listleft listtop 2 "mono" "black" 100 listspacing
+			li "text"
+			li "ctext"
+			li "etext"
+			li "textblock"
+			li "textfile"
+			li "textcode"
+		elist
+		
+		listleft+=25
+		text "Graphics" listleft headtop 3 "sans" headcolor
+		list listleft listtop 2 "mono" "black" 100 listspacing
+			li "rect"
+			li "ellipse"
+			li "square"
+			li "circle"
+			li "polygon"
+			li "arc"
+			li "curve"
+			li "line"
+			li "hline"
+			li "vline"
+		elist
+		
+		listleft+=25
+		text "Images" listleft headtop 3 "sans" headcolor
+		list listleft listtop 2 "mono" "black" 100 listspacing
+			li "image"
+			li "cimage"
+		elist
+		
+		listleft=left
+		headtop-=45
+		listtop-=45
+		
+		text "Lists" listleft headtop 3 "sans" headcolor
+		list listleft listtop 2 "mono" "black" 100 listspacing
+			li "list"
+			li "blist"
+			li "nlist"
+		elist
+		listleft+=25
+		
+		text "Arrows" listleft headtop 3 "sans" headcolor
+		list listleft listtop 2 "mono" "black" 100 listspacing
+			li "rarrow"
+			li "larrow"
+			li "uarrow"
+			li "darrow"
+			li "crarrow"
+			li "clarrow"
+			li "cuarrow"
+			li "cdarrow"
+		elist
+		
+		listleft+=25
+		text "Charts" listleft headtop 3 "sans" headcolor
+		list listleft listtop 2 "mono" "black" 100 listspacing
+			li "dchart"
+			li "legend"
+		elist
+	eslide
+	
+	slide
+		listleft=left+5
+		gtop=top
+		text "Graphics" left top titlesize
+		ts=titlesize-2
+		row1=gtop-20
+		row2=gtop-45
+		row3=gtop-60
+		lw=0.5
+		
+		
+		gtop-=30
+		ctext "rect"	listleft gtop ts "mono"
+		rect listleft row1 10 5
+		listleft+=25
+		
+		ctext "ellipse"	listleft gtop ts "mono"
+		ellipse listleft row1 10 5
+		listleft+=25
+		
+		ctext "square"	listleft gtop ts "mono"
+		square listleft row1 6
+		listleft+=25
+		
+		ctext "circle"	listleft gtop ts "mono"
+		circle listleft row1 6
+		
+		gtop-=25
+		listleft=left+5
+		
+		ctext "polygon"	listleft gtop ts "mono"
+		polygon "10 15 20" "45 50 45"
+		
+		listleft+=25
+		ctext "arc"		listleft gtop ts "mono"
+		arc 40 row2 10 10 0 180 lw
+		
+		listleft+=25
+		ctext "curve"	listleft gtop ts "mono"
+		curve 60 row2  60 55  70 row2 lw
+		
+		listleft+=25
+		ctext "line"	listleft gtop ts "mono"
+		line 85 50 95 row2 lw
+		
+		listleft=left+5
+		gtop-=25
+		ctext "hline"	listleft gtop ts "mono"
+		hline 10 20 10 lw
+		
+		listleft+=25
+		ctext "vline"	listleft gtop ts "mono"
+		vline 40 20 10 lw
+	eslide
+	
+	slide
+		listleft=left
+		gtop=top
+		text "Text" left top titlesize
+		row1=gtop-20
+		row2=gtop-45
+		row3=gtop-60
+		lw=0.5
+		
+		gtop-=30
+		text "text"	listleft gtop ts "mono"
+		text   "hello, world" listleft row1 3
+		circle listleft row1 1 spotcolor
+		listleft+=30
+		
+		text "ctext"	listleft gtop ts "mono"
+		ctext "hello, world" 47 row1 3
+		circle 47 row1 1 spotcolor
+		
+		listleft+=30
+		text "etext"	listleft gtop ts "mono"
+		text  "hello, world" listleft row1 3
+		circle 85 row1 1 spotcolor
+				
+		gtop-=40
+		listleft=left
+		
+		text "textblock"	listleft gtop ts "mono"
+		textblock "The quick brown fox jump over the lazy dog" listleft row2 15 2
+			
+		listleft+=30
+		text "textfile"		listleft gtop ts "mono"
+		textfile "sample.txt"	listleft row2 2
+	
+		listleft+=30
+		text "textcode"	listleft gtop ts "mono"
+		textcode "code/hw.go" listleft row2 30 1.5
+	eslide
+	
+	slide
+		listleft=left+5
+		gtop=top
+		text "Arrows" left top titlesize
+		ts=titlesize-2
+		row1=gtop-20
+		row2=gtop-45
+		row3=gtop-60
+		lw=0.5
+		
+		
+		gtop-=30
+		ctext "larrow"	listleft gtop ts "mono"
+		larrow 20 row1 10
+		circle 20 row1 1 spotcolor
+		listleft+=25
+		
+		ctext "rarrow"	listleft gtop ts "mono"
+		rarrow 35 row1 10
+		circle 35 row1 1 spotcolor
+		listleft+=25
+		
+		ctext "uarrow"	listleft gtop ts "mono"
+		uarrow 65 70 10
+		circle 65 70 1 spotcolor
+		listleft+=25
+		
+		ctext "darrow"	listleft gtop ts "mono"
+		darrow 90 80 10
+		circle 90 80 1 spotcolor
+		
+		gtop-=30
+		listleft=left+5
+		
+		ctext "clarrow"	listleft gtop ts "mono"
+		
+		
+		listleft+=25
+		ctext "crarrow"		listleft gtop ts "mono"
+		
+		
+		listleft+=25
+		ctext "cuparrow"	listleft gtop ts "mono"
+		
+		
+		listleft+=25
+		ctext "cdarrow"	listleft gtop ts "mono"
+		
+	eslide
+	
+	slide
+		cy=15
+		ny=30
+ 		textfile "example.dsh" 3 80 1.5 "mono"
+		image    "example.png" 75 60 792 612 40
+		ctext    "decksh source" 25 ny 2 "serif"
+		ctext    "output"        75 ny 2 "serif"
+		ctext	 "$ decksh example.dsh | pdf" cx cy 4 "mono"
+	eslide
+	
+	slide
+		text "References" left top titlesize
+		text "deck"		left 70 3 "sans" headcolor
+		text "decksh"	left 60 3 "sans" headcolor
+		text "pdfdeck"	left 50 3 "sans" headcolor
+		text "dchart"	left 40 3 "sans" headcolor
+	
+		left+=15
+		text "github.com/ajstarks/deck"  			left 70 3 "mono" "black" 100 "https://github.com/ajstarks/deck"
+		text "github.com/ajstarks/deck/cmd/decksh"	left 60 3 "mono" "black" 100 "https://github.com/ajstarks/deck/blob/master/cmd/decksh/README.md"
+		text "github.com/ajstarks/deck/cmd/pdfdeck" left 50 3 "mono" "black" 100 "https://github.com/ajstarks/deck/tree/master/cmd/pdfdeck"
+		text "github.com/ajstarks/deck/cmd/dchart"	left 40 3 "mono" "black" 100 "https://github.com/ajstarks/deck/blob/master/cmd/dchart/README.md"
+	eslide
+edeck
