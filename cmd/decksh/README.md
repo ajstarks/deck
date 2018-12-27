@@ -184,11 +184,7 @@ Also, show blocks of code on a gray background.
 	textcode   "filename" x y width size [color]
 
 
-## Legend
 
-Show a colored legend
-
-	legend "text" x y size font color
 	
 ## Images 
 
@@ -261,4 +257,10 @@ The curve variants use the same syntax for specifying curves.
 Run the [dchart](https://github.com/ajstarks/deck/blob/master/cmd/dchart/README.md) command with the specified arguments.
 
 	dchart [args]
+
+## Legend
+
+Show a colored legend
+
+	legend "text" x y size [font] [color]
 
