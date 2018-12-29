@@ -5,7 +5,8 @@ deck
 	titlesize=6
 	ts=titlesize-2
 	namesize=titlesize/3
-	spotsize=0.75
+	spotsize=0.5
+	spotop=100
 	cx=50
 	sep=5
 	spotcolor="rgb(127,0,0)"
@@ -14,8 +15,12 @@ deck
 	
 	// Title slide
 	slide
+		tty=top-5
+		bts=titlesize*1.5
 		image "shell.jpg"		50 50 2000 1329 60
-		ctext "decksh: a little language for decks" cx top titlesize
+		ctext "decksh" cx tty bts "mono" spotcolor
+		tty-=10
+		ctext "a little language for decks" cx tty titlesize
 		etext "Anthony Starks"	85 10 namesize
 		etext "@ajstarks"		85 7 namesize "sans" "black" 100 "https://twitter.com/ajstarks"
 		image "starx.png"		92 9 500 500 8
@@ -52,30 +57,27 @@ deck
 	// Running
 	slide
 		lx=left
-		top=90
-		ltop=top-10
+		ly=top-10
 		text "Running decksh" left top titlesize
-		list lx ltop ts "mono" "black" 100 1.4
+		list lx ly ts "mono" "black" 100 1.4
 			li "decksh"
-			li "decksh in.dsh"
+			li "decksh mydeck"
 			li "decksh -o out.xml"
-			li "decksh -o out.xml in.dsh"
+			li "decksh -o out.xml mydeck"
+			li "chmod +x mydeck; ./mydeck"
 		elist
-
-		ls=ts*0.5
-		textcode "hb.dsh" left 40 30 ls
-
-		lx+=60
- 		list lx ltop ls "serif" "black" 100 2.8
+		lx+=62
+		es=ts*0.5
+ 		list lx ly es "serif" "black" 100 2.8
  			li "read from stdin, write to stdout"
  			li "read from file, write to stdout"
  			li "read from stdin, write to file"
  			li "read from file, write to file"
+ 			li "executable deck"
  		elist
+		ly-=40
+		textcode "hb.dsh" left ly 30 es
  		
- 		lx-=20
- 		text "chmod +x mydeck" lx 40 ts "mono"
-		text "./mydeck" lx 35 ts "mono"
 	eslide
 	
 	// Keywords
@@ -92,13 +94,13 @@ deck
 	slide
 		text "Keywords" left top titlesize  
 		
-		hsize=3
-		lsize=hsize*0.75
+		hsize=4
+		lsize=hsize*0.6
 		csep=25
 		rsep=35
 		headtop=top-10
 		listtop=headtop-sep
-		listspacing=lsize*0.6
+		listspacing=lsize*0.55
 		headcolor=spotcolor
 		
 		lx=left
@@ -188,7 +190,7 @@ deck
 	slide
 		text "Assignments" left top titlesize
 		sy=top-10
-		textfile "samplecode.txt"	left sy 2.5 "mono" "black" 100 1.3
+		textfile "samplecode.txt" left sy 2.3 "mono" "black" 100 1.4
 	eslide
 
 	// Text
@@ -263,30 +265,31 @@ deck
 		grcolor="rgb(200,200,200)"
 		lw=0.5
 		
+		
 		gtop-=25
 		r1a=gtop-sep
 		ctext "rect"	lx gtop ts "mono" spotcolor
 		ctext "x y w h [color] [op]" lx r1a apisize "sans" apicolor
 		rect lx row1 10 5 grcolor
-		circle lx row1 spotsize spotcolor
+		circle lx row1 spotsize spotcolor spotop
 		lx+=25
 		
 		ctext "ellipse"	lx gtop ts "mono" spotcolor
 		ctext "x y w h [color] [op]" lx r1a apisize "sans" apicolor
 		ellipse lx row1 10 5 grcolor
-		circle lx row1 spotsize spotcolor
+		circle lx row1 spotsize spotcolor spotop
 		lx+=25
 		
 		ctext "square"	lx gtop ts "mono" spotcolor
 		ctext "x y w [color] [opacity]" lx r1a apisize "sans" apicolor
 		square lx row1 6 grcolor
-		circle lx row1 spotsize spotcolor
+		circle lx row1 spotsize spotcolor spotop
 		lx+=25
 		
 		ctext "circle"	lx gtop ts "mono" spotcolor
 		ctext "x y w [color] [op]" lx r1a apisize "sans" apicolor
 		circle lx row1 6 grcolor
-		circle lx row1 spotsize spotcolor
+		circle lx row1 spotsize spotcolor spotop
 		
 		gtop-=25
 		lx=left+sep
@@ -296,30 +299,30 @@ deck
 		ctext `"xc" "yc" [color] [op]` lx r2a apisize "sans" apicolor
 
 		polygon "10 15 20" "45 50 45" grcolor
-		circle  10 45 spotsize spotcolor
-		circle  15 50 spotsize spotcolor
-		circle  20 45 spotsize spotcolor
+		circle  10 45 spotsize spotcolor spotop
+		circle  15 50 spotsize spotcolor spotop
+		circle  20 45 spotsize spotcolor spotop
 		
 		lx+=25
 		ctext "arc"		lx gtop ts "mono" spotcolor
 		ctext "x y w h a1 a2 [lw] [color] [op]" lx r2a apisize "sans" apicolor
 		arc 40 row2 10 10 0 180 lw grcolor
-		circle 40 row2 spotsize spotcolor
+		circle 40 row2 spotsize spotcolor spotop
 		
 		lx+=25
 		ctext "curve"	lx gtop ts "mono" spotcolor
 		ctext "x1 y2 x2 y2 x3 y3 [color] [op]" lx r2a apisize "sans" apicolor
 		curve 60 row2  60 55  70 row2 lw grcolor
-		circle 60 row2 spotsize spotcolor
-		circle 60 55   spotsize spotcolor
-		circle 70 row2 spotsize spotcolor
+		circle 60 row2 spotsize spotcolor spotop
+		circle 60 55   spotsize spotcolor spotop
+		circle 70 row2 spotsize spotcolor spotop
 		
 		lx+=25
 		ctext "line"	lx gtop ts "mono" spotcolor
 		ctext "x1 y2 x2 y2 [lw] [color] [op]" lx r2a apisize "sans" apicolor
 		line 85 50 95 row2 lw grcolor
 		circle 85 50 spotsize spotcolor
-		circle 95 row2 spotsize spotcolor
+		circle 95 row2 spotsize spotcolor spotop
 		
 		lx=left+sep
 		gtop-=25
@@ -327,14 +330,14 @@ deck
 		
 		ctext "hline"	lx gtop ts "mono" spotcolor
 		ctext "x y len [lw] [color] [op]" lx r3a apisize "sans" apicolor
-		hline 10 20 10 lw grcolor
-		circle 10 20 spotsize spotcolor
+		hline 10 25 8 lw grcolor
+		circle left 25 spotsize spotcolor spotop
 		
 		lx+=25
 		ctext "vline"	lx gtop ts "mono" spotcolor
 		ctext "x y len [lw] [color] [op]" lx r3a apisize "sans" apicolor
-		vline 40 20 10 lw grcolor
-		circle 40 20 spotsize spotcolor
+		vline 40 22 8 lw grcolor
+		circle 40 22 spotsize spotcolor spotop
 	eslide
 
 	// Images
@@ -506,21 +509,20 @@ deck
 		cy=15
 		ny=30
  		textfile "example.dsh" 3 80 1.5 "mono"
-		image    "example.png" 75 60 792 612 40
-		ctext    "decksh source" 25 ny 2 "serif"
-		ctext    "output"        75 ny 2 "serif"
+		image    "example.png" 75 60 792 612 45
 		ctext	 "decksh example.dsh | pdf" cx cy 4 "mono"
 	eslide
 	
 	// Examples
 	slide
-		ctext "Examples" 50 50 titlesize
+		ets=titlesize*1.5
+		ctext "Examples" 50 50 ets
 	eslide
 	
 	// Go module information flows
 	slide
 		ts=3
-		titlesize=ts*1.5
+		gts=ts*1.5
 		ns=ts*0.65
 		gy=80
 		my=gy-20
@@ -533,7 +535,7 @@ deck
 		ah=2
 		modcolor="steelblue"
 		metacolor="gray"
-		ctext "Go Module Information Flows" 50 90 titlesize "sans"
+		ctext "Go Module Information Flows" 50 90 gts "sans"
 		ctext "go command"	20 gy ts
 		ctext "mirror"		50 my ts
 		ctext "godoc.org"	80 dy ts
@@ -727,21 +729,88 @@ deck
 		dchart -color=brown		-top chartop -bottom chartbottom -left=40 -right=60 opt -xlabel=40 code/Linda.d
 		dchart -color=salmon	-top chartop -bottom chartbottom -left=70 -right=90 opt -xlabel=40 code/Patricia.d
 	eslide
+	
+	// German fires
+	slide
+		chartop=70
+		chartbottom=30
+		chartleft=10
+		chartheight=35
+		chartwidth=10
+		shift=chartwidth+2
+	
+		tx=chartleft+5
+		ty=chartop+12
+		ny=chartop+5
+		bigsize=3
+		notesize=bigsize*0.4
+		opts="-min=0 -max=500 -yrange=0,500,100 -fulldeck=f -vol -val=f -xlabel=6 -textsize=1.2"
+		color="red"
+
+		text "German Wildfires 2012-2018" chartleft ty bigsize
+		textblock "2014 saw a record number of fires in March, although 2015 had the most fires per year" 35 ny 15 notesize "serif"
+		textblock "The record was broken in April 2018 (502 fires)" 85 ny 10 notesize "serif"
+	
+		color="orange"
+		right=chartleft+chartwidth
+		ax=chartleft+2
+		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color -yaxis fire2012.d
+		textfile "ft2012.d" ax chartbottom bigsize
+
+ 		chartleft+=shift
+ 		right=chartleft+chartwidth
+ 		ax=chartleft+2
+ 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color fire2013.d
+ 		textfile "ft2013.d" ax chartbottom bigsize
+ 		
+ 		chartleft+=shift
+ 		right=chartleft+chartwidth
+ 		ax=chartleft+2
+ 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color fire2014.d
+ 		textfile "ft2014.d" ax chartbottom bigsize
+ 		
+ 		chartleft+=shift
+ 		right=chartleft+chartwidth
+ 		ax=chartleft+2
+ 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color fire2015.d
+ 		textfile "ft2015.d" ax chartbottom bigsize
+ 		
+ 		chartleft+=shift
+ 		right=chartleft+chartwidth
+ 		ax=chartleft+2
+ 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color fire2016.d
+ 		textfile "ft2016.d" ax chartbottom bigsize
+ 		
+ 		chartleft+=shift
+ 		right=chartleft+chartwidth
+ 		ax=chartleft+2
+ 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color fire2017.d
+ 		textfile "ft2017.d" ax chartbottom bigsize
+ 		
+ 		chartleft+=shift
+ 		right=chartleft+chartwidth
+ 		ax=chartleft+0.5
+ 		color="red"
+ 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color fire2018.d
+ 		textfile "ft2018.d" ax chartbottom bigsize
+	eslide
 
 	// References
 	slide
+		ts=4
 		text "go get it"	left top titlesize
-		text "deck"			left 70 3 "sans" headcolor
-		text "decksh"		left 60 3 "sans" headcolor
-		text "pdfdeck"		left 50 3 "sans" headcolor
-		text "dchart"		left 40 3 "sans" headcolor
-		text "deck fonts"	left 30 3 "sans" headcolor
+		text "deck"			left 70 ts "mono" headcolor
+		text "decksh"		left 60 ts "mono" headcolor
+		text "pdfdeck"		left 50 ts "mono" headcolor
+		text "dchart"		left 40 ts "mono" headcolor
+		text "deck fonts"	left 30 ts "mono" headcolor
 	
-		left+=17
-		text "github.com/ajstarks/deck"  			left 70 3 "mono" "black" 100 "https://github.com/ajstarks/deck"
-		text "github.com/ajstarks/deck/cmd/decksh"	left 60 3 "mono" "black" 100 "https://github.com/ajstarks/deck/blob/master/cmd/decksh/README.md"
-		text "github.com/ajstarks/deck/cmd/pdfdeck" left 50 3 "mono" "black" 100 "https://github.com/ajstarks/deck/tree/master/cmd/pdfdeck"
-		text "github.com/ajstarks/deck/cmd/dchart"	left 40 3 "mono" "black" 100 "https://github.com/ajstarks/deck/blob/master/cmd/dchart/README.md"
-		text "github.com/ajstarks/deckfonts"        left 30 3 "mono" "black" 100 "https://github.com/ajstarks/deckfonts"
+		left+=30
+		ts*=0.6
+		text "github.com/ajstarks/deck"  			left 70 ts "mono" "black" 100 "https://github.com/ajstarks/deck"
+		text "github.com/ajstarks/deck/cmd/decksh"	left 60 ts "mono" "black" 100 "https://github.com/ajstarks/deck/blob/master/cmd/decksh/README.md"
+		text "github.com/ajstarks/deck/cmd/pdfdeck" left 50 ts "mono" "black" 100 "https://github.com/ajstarks/deck/tree/master/cmd/pdfdeck"
+		text "github.com/ajstarks/deck/cmd/dchart"	left 40 ts "mono" "black" 100 "https://github.com/ajstarks/deck/blob/master/cmd/dchart/README.md"
+		text "github.com/ajstarks/deckfonts"        left 30 ts "mono" "black" 100 "https://github.com/ajstarks/deckfonts"
 	eslide
 edeck
