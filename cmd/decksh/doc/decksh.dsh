@@ -3,7 +3,7 @@ deck
 	left=10
 	top=90
 	titlesize=6
-	ts=titlesize-2
+	ts=titlesize*0.6
 	namesize=titlesize/3
 	spotsize=0.5
 	spotop=100
@@ -19,18 +19,23 @@ deck
 		bts=titlesize*1.5
 		image "shell.jpg"		50 50 2000 1329 60
 		ctext "decksh" cx tty bts "mono" spotcolor
-		tty-=10
+		tty-=12
 		ctext "a little language for decks" cx tty titlesize
 		etext "Anthony Starks"	85 10 namesize
-		etext "@ajstarks"		85 7 namesize "sans" "black" 100 "https://twitter.com/ajstarks"
+		etext "@ajstarks"		85 6 namesize "sans" "black" 100 "https://twitter.com/ajstarks"
 		image "starx.png"		92 9 500 500 8
 	eslide
 	
+	slide
+		textblock `When you say “language,” most programmers think of the big ones, like FORTRAN or COBOL or Pascal. In fact, a language is any mechanism to express intent, and the input to many programs can be viewed profitably as statements in a language. This column is about those “little languages.”` left 80 70 3.5
+		text "Jon Bentley, ACM Programming Pearls, Little Languages, 1986" left 25 2.5 "serif"
+	eslide
+
 	// Overview
 	slide
 		cy=70
 		ysep=10
-		dscolor="rgb(0,0,0)"
+		dscolor="rgb(127,0,0)"
 		markupcolor="gray"
 		outcolor="rgb(0,0,127)"
 		ay=cy+2
@@ -49,8 +54,8 @@ deck
 		cy-=ysep
 		imy=cy-10
 
-		textcode	"example.dsh" 5  cy 25 0.75 dscolor
-		textcode	"example.xml" 33 cy 40 0.75 markupcolor
+		textfile	"example.dsh" 5  cy  0.75 "mono" dscolor
+		textfile	"example.xml" 33 cy  0.75 "mono" markupcolor
 		image		"example.png" 87 imy 792 612 22
 	eslide
 
@@ -93,14 +98,13 @@ deck
 	// Keyword list
 	slide
 		text "Keywords" left top titlesize  
-		
-		hsize=4
-		lsize=hsize*0.6
+		hsize=3.5
+		lsize=hsize*0.6			// increase the size for 4:3 to 0.6
 		csep=25
 		rsep=35
 		headtop=top-10
 		listtop=headtop-sep
-		listspacing=lsize*0.55
+		listspacing=lsize*0.6
 		headcolor=spotcolor
 		
 		lx=left
@@ -190,7 +194,7 @@ deck
 	slide
 		text "Assignments" left top titlesize
 		sy=top-10
-		textfile "samplecode.txt" left sy 2.3 "mono" "black" 100 1.4
+		textfile "samplecode.txt" left sy 2 "mono" "black" 100 1.4 // you can increase size for 4:3
 	eslide
 
 	// Text
@@ -249,7 +253,7 @@ deck
 		apix=80
 		text "textcode"	lx gtop ts "mono" spotcolor
 		ctext `"filename" x y width size [color]` apix apiy apisize "sans" apicolor
-		textcode "code/hw.go" lx row2 30 1.5
+		textcode "code/hw.go" lx row2 30 1.2
 	eslide
 	
 	// Graphics
@@ -364,8 +368,8 @@ deck
 		text "Lists" left top titlesize
 		lx=left
 		ktop=top-70
-		row1=top-30
-		ls=ts-1
+		row1=top-20
+		ls=ts*0.9
 		apiy=ktop-sep
 		apix=lx-sep
 
@@ -375,6 +379,8 @@ deck
 			li "One"
 			li "Two"
 			li "Three"
+			li "Four"
+			li "Five"
 		elist
 		
 		lx+=30
@@ -386,6 +392,8 @@ deck
 			li "One"
 			li "Two"
 			li "Three"
+			li "Four"
+			li "Five"
 		elist
 		
 		lx+=30
@@ -398,6 +406,8 @@ deck
 			li "One"
 			li "Two"
 			li "Three"
+			li "Four"
+			li "Five"
 		elist
 	eslide
 	
