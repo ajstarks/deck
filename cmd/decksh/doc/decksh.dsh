@@ -17,13 +17,13 @@ deck
 	slide
 		tty=top-5
 		bts=titlesize*1.5
-		image "shell.jpg"		50 50 2000 1329 60
+		image "images/shell.jpg"		50 50 2000 1329 60
 		ctext "decksh" cx tty bts "mono" spotcolor
 		tty-=12
 		ctext "a little language for decks" cx tty titlesize
-		etext "Anthony Starks"	85 10 namesize
-		etext "@ajstarks"		85 6 namesize "sans" "black" 100 "https://twitter.com/ajstarks"
-		image "starx.png"		92 9 500 500 8
+		etext "Anthony Starks"			85 10 namesize
+		etext "@ajstarks"				85 6 namesize "sans" "black" 100 "https://twitter.com/ajstarks"
+		image "images/starx.png"		92 9 500 500 8
 	eslide
 	
 	slide
@@ -54,9 +54,9 @@ deck
 		cy-=ysep
 		imy=cy-10
 
-		textfile	"example.dsh" 5  cy  0.75 "mono" dscolor
-		textfile	"example.xml" 33 cy  0.75 "mono" markupcolor
-		image		"example.png" 87 imy 792 612 22
+		textfile	"code/example.dsh" 5  cy  0.75 "mono" dscolor
+		textfile	"code/example.xml" 33 cy  0.75 "mono" markupcolor
+		image		"images/example.png" 87 imy 792 612 22
 	eslide
 
 	// Running
@@ -353,13 +353,13 @@ deck
 		apiy=row1-sep
 		ctext "image" lx row1 ts "mono" spotcolor
 		ctext `"file" x y w h [scale] [link]` lx apiy apisize "sans" apicolor
-		image "follow.jpg" lx imy 640 480 40
+		image "images/follow.jpg" lx imy 640 480 40
 		circle lx imy spotsize spotcolor
 		
 		lx+=40
 		ctext "cimage" lx row1 ts "mono" spotcolor
 		ctext `"file" "caption" x y w h [scale] [link]` lx apiy apisize "sans" apicolor
-		cimage "cloudy.jpg" "Up in the clouds" lx imy 640 480 40
+		cimage "images/cloudy.jpg" "Up in the clouds" lx imy 640 480 40
 		circle lx imy spotsize spotcolor
 	eslide
 	
@@ -518,8 +518,8 @@ deck
 	slide
 		cy=15
 		ny=30
- 		textfile "example.dsh" 3 80 1.5 "mono"
-		image    "example.png" 75 60 792 612 45
+ 		textfile "code/example.dsh" 3 80 1.5 "mono"
+		image    "images/example.png" 75 60 792 612 45
 		ctext	 "decksh example.dsh | pdf" cx cy 4 "mono"
 	eslide
 	
@@ -596,7 +596,7 @@ deck
 		bottom=chartop-h
 		iy=bottom+h2
 		ny=bottom+2		
-		cimage  "pichai.jpg" "Pichai" ix iy 400 400 15
+		cimage  "images/pichai.jpg" "Pichai" ix iy 400 400 15
 		dchart opts -yrange=0,1200,600 -top chartop -bottom bottom -left chartleft -right right code/pichai.d
 		text "+38.19%" nx ny nsize
 		ctext "GOOG" 50 ny 3 "sans" "gray" 75
@@ -605,7 +605,7 @@ deck
 		bottom=chartop-h
 		iy=bottom+h2
 		ny=bottom+2	
-		cimage "nadella.jpg" "Nadella" ix iy 357 502 15 
+		cimage "images/nadella.jpg" "Nadella" ix iy 357 502 15 
 		dchart opts -yrange=0,120,60 -top chartop -bottom bottom -left chartleft -right right code/nadella.d
 		text "+66.79%" nx ny nsize
 		ctext "MSFT" 50 ny 3 "sans" "gray" 75
@@ -614,7 +614,7 @@ deck
 		bottom=chartop-h
 		iy=bottom+h2
 		ny=bottom+2	
-		cimage "cook.png" "Cook"  ix iy 575 657 10
+		cimage "images/cook.png" "Cook"  ix iy 575 657 10
 		dchart opts -yrange=0,200,100 -top chartop -bottom bottom -left chartleft -right right code/cook.d
 		text "+68.56%" nx ny nsize
 		ctext "AAPL" 50 ny 3 "sans" "gray" 75
@@ -623,7 +623,7 @@ deck
 		bottom=chartop-h
 		iy=bottom+h2
 		ny=bottom+2
-		cimage "welch.jpg" "Welch" ix iy 200 208 30
+		cimage "images/welch.jpg" "Welch" ix iy 200 208 30
 		dchart opts -yrange=0,60,30 -top chartop -bottom bottom -left chartleft -right right -color gray code/welch.d
 		text "+96.56%" nx ny nsize
 		ctext "GE" 50 ny 3 "sans" "gray" 75
