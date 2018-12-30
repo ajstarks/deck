@@ -500,7 +500,7 @@ deck
 	
 		ctext "dchart" lx row1 ts "mono" spotcolor
 		ctext "[args]" lx apiy apisize "sans" apicolor
-		dchart -fulldeck=f -xlabel 2 -left 10 -right 60 -top chartop -bottom chartbot AAPL.d
+		dchart -fulldeck=f -xlabel 2 -left 10 -right 60 -top chartop -bottom chartbot code/AAPL.d
 		
 		lx+=45
 		apiy=row1-sep
@@ -597,7 +597,7 @@ deck
 		iy=bottom+h2
 		ny=bottom+2		
 		cimage  "pichai.jpg" "Pichai" ix iy 400 400 15
-		dchart opts -yrange=0,1200,600 -top chartop -bottom bottom -left chartleft -right right pichai.d
+		dchart opts -yrange=0,1200,600 -top chartop -bottom bottom -left chartleft -right right code/pichai.d
 		text "+38.19%" nx ny nsize
 		ctext "GOOG" 50 ny 3 "sans" "gray" 75
 		
@@ -606,7 +606,7 @@ deck
 		iy=bottom+h2
 		ny=bottom+2	
 		cimage "nadella.jpg" "Nadella" ix iy 357 502 15 
-		dchart opts -yrange=0,120,60 -top chartop -bottom bottom -left chartleft -right right nadella.d
+		dchart opts -yrange=0,120,60 -top chartop -bottom bottom -left chartleft -right right code/nadella.d
 		text "+66.79%" nx ny nsize
 		ctext "MSFT" 50 ny 3 "sans" "gray" 75
 		
@@ -615,7 +615,7 @@ deck
 		iy=bottom+h2
 		ny=bottom+2	
 		cimage "cook.png" "Cook"  ix iy 575 657 10
-		dchart opts -yrange=0,200,100 -top chartop -bottom bottom -left chartleft -right right cook.d
+		dchart opts -yrange=0,200,100 -top chartop -bottom bottom -left chartleft -right right code/cook.d
 		text "+68.56%" nx ny nsize
 		ctext "AAPL" 50 ny 3 "sans" "gray" 75
 		 
@@ -624,7 +624,7 @@ deck
 		iy=bottom+h2
 		ny=bottom+2
 		cimage "welch.jpg" "Welch" ix iy 200 208 30
-		dchart opts -yrange=0,60,30 -top chartop -bottom bottom -left chartleft -right right -color gray welch.d
+		dchart opts -yrange=0,60,30 -top chartop -bottom bottom -left chartleft -right right -color gray code/welch.d
 		text "+96.56%" nx ny nsize
 		ctext "GE" 50 ny 3 "sans" "gray" 75
 	eslide
@@ -655,8 +655,8 @@ deck
 		textblock   "steady annual growth: 8-9%"         50 yt  7 notesize "serif" "gray"
 		textblock   "assumed 10% year over year growth"  70 yt 10 notesize "serif" "gray"
 
-		dchart opts          -left=10 -right=65 -volop=10 -color acolor -vcolor acolor actual.d
-		dchart opts -scatter -left=70 -right=85 -volop=20 -color fcolor -vcolor fcolor forecast.d
+		dchart opts          -left=10 -right=65 -volop=10 -color acolor -vcolor acolor code/actual.d
+		dchart opts -scatter -left=70 -right=85 -volop=20 -color fcolor -vcolor fcolor code/forecast.d
     eslide
 	
 	// Aggregated on one chart
@@ -764,45 +764,45 @@ deck
 		color="orange"
 		right=chartleft+chartwidth
 		ax=chartleft+2
-		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color -yaxis fire2012.d
-		textfile "ft2012.d" ax chartbottom bigsize
+		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color -yaxis code/fire2012.d
+		textfile "code/ft2012.d" ax chartbottom bigsize
 
  		chartleft+=shift
  		right=chartleft+chartwidth
  		ax=chartleft+2
- 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color fire2013.d
- 		textfile "ft2013.d" ax chartbottom bigsize
+ 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color code/fire2013.d
+ 		textfile "code/ft2013.d" ax chartbottom bigsize
  		
  		chartleft+=shift
  		right=chartleft+chartwidth
  		ax=chartleft+2
- 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color fire2014.d
- 		textfile "ft2014.d" ax chartbottom bigsize
+ 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color code/fire2014.d
+ 		textfile "code/ft2014.d" ax chartbottom bigsize
  		
  		chartleft+=shift
  		right=chartleft+chartwidth
  		ax=chartleft+2
- 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color fire2015.d
- 		textfile "ft2015.d" ax chartbottom bigsize
+ 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color code/fire2015.d
+ 		textfile "code/ft2015.d" ax chartbottom bigsize
  		
  		chartleft+=shift
  		right=chartleft+chartwidth
  		ax=chartleft+2
- 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color fire2016.d
- 		textfile "ft2016.d" ax chartbottom bigsize
+ 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color code/fire2016.d
+ 		textfile "code/ft2016.d" ax chartbottom bigsize
  		
  		chartleft+=shift
  		right=chartleft+chartwidth
  		ax=chartleft+2
- 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color fire2017.d
- 		textfile "ft2017.d" ax chartbottom bigsize
+ 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color code/fire2017.d
+ 		textfile "code/ft2017.d" ax chartbottom bigsize
  		
  		chartleft+=shift
  		right=chartleft+chartwidth
  		ax=chartleft+0.5
  		color="red"
- 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color fire2018.d
- 		textfile "ft2018.d" ax chartbottom bigsize
+ 		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color code/fire2018.d
+ 		textfile "code/ft2018.d" ax chartbottom bigsize
 	eslide
 
 	// References
