@@ -63,7 +63,7 @@ deck
 	slide "black" "white"
 		ctext "hello, world" 50 25 10
 		circle 50 0 100 "blue"
-		textfile "code/hw.dsh" 15 90 3 "mono" "white"
+		textfile "code/hw.dsh" 15 92 3 "mono" "white"
 	eslide
 	
 	// Running
@@ -111,7 +111,7 @@ deck
 		rsep=35
 		headtop=top-10
 		listtop=headtop-sep
-		listspacing=lsize*0.6
+		listspacing=lsize*0.65
 		headcolor=spotcolor
 		
 		lx=left
@@ -201,7 +201,7 @@ deck
 	slide
 		text "Assignments" left top titlesize "serif"
 		sy=top-10
-		textfile "code/samplecode.txt" left sy 2.5 "mono" "black" 100 1.4 // you can increase size for 4:3
+		textfile "code/samplecode.txt" left sy 2.2 "mono" "black" 100 1.4 // you can increase size for 4:3
 	eslide
 
 	// Text
