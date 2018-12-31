@@ -1,0 +1,6 @@
+deck
+	slide "black" "white"
+		ctext "hello, world" 50 25 10
+		circle 50 0 100 "blue"
+	eslide
+edeck

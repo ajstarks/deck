@@ -10,7 +10,7 @@ deck
 	cx=50
 	sep=5
 	spotcolor="rgb(127,0,0)"
-	apisize=1.5
+	apisize=1.6
 	apicolor="rgb(127,127,127)"
 	
 	// Title slide
@@ -27,8 +27,8 @@ deck
 	eslide
 	
 	slide
-		textblock `When you say “language,” most programmers think of the big ones, like FORTRAN or COBOL or Pascal. In fact, a language is any mechanism to express intent, and the input to many programs can be viewed profitably as statements in a language. This column is about those “little languages.”` left 80 70 3.5
-		text "Jon Bentley, ACM Programming Pearls, Little Languages, 1986" left 25 2.5 "serif"
+		textblock `When you say “language,” most programmers think of the big ones, like FORTRAN or COBOL or Pascal. In fact, a language is any mechanism to express intent, and the input to many programs can be viewed profitably as statements in a language. This column is about those “little languages.”` left 80 70 3.5 "serif"
+		text "Jon Bentley, ACM Programming Pearls, Little Languages, 1986" left 25 2.5
 	eslide
 
 	// Overview
@@ -58,12 +58,19 @@ deck
 		textfile	"code/example.xml" 33 cy  0.75 "mono" markupcolor
 		image		"images/example.png" 87 imy 792 612 22
 	eslide
-
+	
+	// hello deck world
+	slide "black" "white"
+		ctext "hello, world" 50 25 10
+		circle 50 0 100 "blue"
+		textfile "code/hw.dsh" 15 90 3 "mono" "white"
+	eslide
+	
 	// Running
 	slide
 		lx=left
 		ly=top-10
-		text "Running decksh" left top titlesize
+		text "Running decksh" left top titlesize "serif"
 		list lx ly ts "mono" "black" 100 1.4
 			li "decksh"
 			li "decksh mydeck"
@@ -81,7 +88,7 @@ deck
  			li "executable deck"
  		elist
 		ly-=40
-		textcode "hb.dsh" left ly 30 es
+		textcode "code/hb.dsh" left ly 30 es
  		
 	eslide
 	
@@ -97,7 +104,7 @@ deck
 	
 	// Keyword list
 	slide
-		text "Keywords" left top titlesize  
+		text "Keywords" left top titlesize "serif"  
 		hsize=3.5
 		lsize=hsize*0.6			// increase the size for 4:3 to 0.6
 		csep=25
@@ -192,16 +199,16 @@ deck
 	
 	// Assignments
 	slide
-		text "Assignments" left top titlesize
+		text "Assignments" left top titlesize "serif"
 		sy=top-10
-		textfile "samplecode.txt" left sy 2 "mono" "black" 100 1.4 // you can increase size for 4:3
+		textfile "code/samplecode.txt" left sy 2.5 "mono" "black" 100 1.4 // you can increase size for 4:3
 	eslide
 
 	// Text
 	slide
 		lx=left
 		gtop=top
-		text "Text" left top titlesize
+		text "Text" left top titlesize "serif"
 		row1=gtop-20
 		row2=gtop-45
 		row3=gtop-60
@@ -214,7 +221,7 @@ deck
 		apix=lx+sep
 		apiy=gtop-sep
 		text "text"	lx gtop ts "mono" spotcolor
-		ctext "x y size [font] [color] [op] [link]" apix apiy apisize "sans" apicolor
+		ctext "x y size [font] [color] [op] [link]" apix apiy apisize "serif" apicolor
 		text   hw lx row1 3
 		circle lx row1 spotsize spotcolor
 		
@@ -222,7 +229,7 @@ deck
 		apix=lx+sep
 		
 		text "ctext"	lx gtop ts "mono" spotcolor
-		ctext "x y size [font] [color] [op] [link]" apix apiy apisize "sans" apicolor
+		ctext "x y size [font] [color] [op] [link]" apix apiy apisize "serif" apicolor
 		ctext hw 47 row1 3
 		circle 47 row1 spotsize spotcolor
 		
@@ -230,7 +237,7 @@ deck
 		apix=lx+sep
 		
 		text "etext"	lx gtop ts "mono" spotcolor
-		ctext "x y size [font] [color] [op] [link]" apix apiy apisize "sans" apicolor
+		ctext "x y size [font] [color] [op] [link]" apix apiy apisize "serif" apicolor
 		text  hw lx row1 3
 		circle 85 row1 spotsize spotcolor
 				
@@ -241,26 +248,26 @@ deck
 		
 		text "textblock"	lx gtop ts "mono" spotcolor
 		textblock "The quick brown fox jump over the lazy dog" lx row2 15 2
-		ctext `"text" x y width size [font] [color] [op] [link]` apix apiy apisize "sans" apicolor
+		ctext `"text" x y width size [font] [color] [op] [link]` apix apiy apisize "serif" apicolor
 			
 		lx+=30
 		apix=50
 		text "textfile"		lx gtop ts "mono" spotcolor
-		ctext `"file" x y size [font] [color] [op] [sp]` apix apiy apisize "sans" apicolor
-		textfile "example.txt"	lx row2 2
+		ctext `"file" x y size [font] [color] [op] [sp]` apix apiy apisize "serif" apicolor
+		textfile "code/example.txt"	lx row2 2
 	
 		lx+=30
 		apix=80
 		text "textcode"	lx gtop ts "mono" spotcolor
-		ctext `"filename" x y width size [color]` apix apiy apisize "sans" apicolor
-		textcode "code/hw.go" lx row2 30 1.2
+		ctext `"filename" x y width size [color]` apix apiy apisize "serif" apicolor
+		textcode "code/hw.go" lx row2 30 1.4
 	eslide
 	
 	// Graphics
 	slide
 		lx=left+sep
 		gtop=top
-		text "Graphics" left top titlesize
+		text "Graphics" left top titlesize "serif"
 		
 		row1=gtop-15
 		r1a=row1-15
@@ -273,25 +280,25 @@ deck
 		gtop-=25
 		r1a=gtop-sep
 		ctext "rect"	lx gtop ts "mono" spotcolor
-		ctext "x y w h [color] [op]" lx r1a apisize "sans" apicolor
+		ctext "x y w h [color] [op]" lx r1a apisize "serif" apicolor
 		rect lx row1 10 5 grcolor
 		circle lx row1 spotsize spotcolor spotop
 		lx+=25
 		
 		ctext "ellipse"	lx gtop ts "mono" spotcolor
-		ctext "x y w h [color] [op]" lx r1a apisize "sans" apicolor
+		ctext "x y w h [color] [op]" lx r1a apisize "serif" apicolor
 		ellipse lx row1 10 5 grcolor
 		circle lx row1 spotsize spotcolor spotop
 		lx+=25
 		
 		ctext "square"	lx gtop ts "mono" spotcolor
-		ctext "x y w [color] [opacity]" lx r1a apisize "sans" apicolor
+		ctext "x y w [color] [opacity]" lx r1a apisize "serif" apicolor
 		square lx row1 6 grcolor
 		circle lx row1 spotsize spotcolor spotop
 		lx+=25
 		
 		ctext "circle"	lx gtop ts "mono" spotcolor
-		ctext "x y w [color] [op]" lx r1a apisize "sans" apicolor
+		ctext "x y w [color] [op]" lx r1a apisize "serif" apicolor
 		circle lx row1 6 grcolor
 		circle lx row1 spotsize spotcolor spotop
 		
@@ -300,7 +307,7 @@ deck
 		r2a=gtop-sep
 		
 		ctext "polygon"	lx gtop ts "mono" spotcolor
-		ctext `"xc" "yc" [color] [op]` lx r2a apisize "sans" apicolor
+		ctext `"xc" "yc" [color] [op]` lx r2a apisize "serif" apicolor
 
 		polygon "10 15 20" "45 50 45" grcolor
 		circle  10 45 spotsize spotcolor spotop
@@ -309,13 +316,13 @@ deck
 		
 		lx+=25
 		ctext "arc"		lx gtop ts "mono" spotcolor
-		ctext "x y w h a1 a2 [lw] [color] [op]" lx r2a apisize "sans" apicolor
+		ctext "x y w h a1 a2 [lw] [color] [op]" lx r2a apisize "serif" apicolor
 		arc 40 row2 10 10 0 180 lw grcolor
 		circle 40 row2 spotsize spotcolor spotop
 		
 		lx+=25
 		ctext "curve"	lx gtop ts "mono" spotcolor
-		ctext "x1 y2 x2 y2 x3 y3 [color] [op]" lx r2a apisize "sans" apicolor
+		ctext "x1 y2 x2 y2 x3 y3 [color] [op]" lx r2a apisize "serif" apicolor
 		curve 60 row2  60 55  70 row2 lw grcolor
 		circle 60 row2 spotsize spotcolor spotop
 		circle 60 55   spotsize spotcolor spotop
@@ -323,7 +330,7 @@ deck
 		
 		lx+=25
 		ctext "line"	lx gtop ts "mono" spotcolor
-		ctext "x1 y2 x2 y2 [lw] [color] [op]" lx r2a apisize "sans" apicolor
+		ctext "x1 y2 x2 y2 [lw] [color] [op]" lx r2a apisize "serif" apicolor
 		line 85 50 95 row2 lw grcolor
 		circle 85 50 spotsize spotcolor
 		circle 95 row2 spotsize spotcolor spotop
@@ -333,39 +340,39 @@ deck
 		r3a=gtop-sep
 		
 		ctext "hline"	lx gtop ts "mono" spotcolor
-		ctext "x y len [lw] [color] [op]" lx r3a apisize "sans" apicolor
+		ctext "x y len [lw] [color] [op]" lx r3a apisize "serif" apicolor
 		hline 10 25 8 lw grcolor
 		circle left 25 spotsize spotcolor spotop
 		
 		lx+=25
 		ctext "vline"	lx gtop ts "mono" spotcolor
-		ctext "x y len [lw] [color] [op]" lx r3a apisize "sans" apicolor
+		ctext "x y len [lw] [color] [op]" lx r3a apisize "serif" apicolor
 		vline 40 22 8 lw grcolor
 		circle 40 22 spotsize spotcolor spotop
 	eslide
 
 	// Images
 	slide
-		text "Images" left top titlesize
+		text "Images" left top titlesize "serif"
 		lx=left+20
 		row1=top-70
 		imy=row1+30
 		apiy=row1-sep
 		ctext "image" lx row1 ts "mono" spotcolor
-		ctext `"file" x y w h [scale] [link]` lx apiy apisize "sans" apicolor
+		ctext `"file" x y w h [scale] [link]` lx apiy apisize "serif" apicolor
 		image "images/follow.jpg" lx imy 640 480 40
 		circle lx imy spotsize spotcolor
 		
 		lx+=40
 		ctext "cimage" lx row1 ts "mono" spotcolor
-		ctext `"file" "caption" x y w h [scale] [link]` lx apiy apisize "sans" apicolor
+		ctext `"file" "caption" x y w h [scale] [link]` lx apiy apisize "serif" apicolor
 		cimage "images/cloudy.jpg" "Up in the clouds" lx imy 640 480 40
 		circle lx imy spotsize spotcolor
 	eslide
 	
 	// Lists
 	slide
-		text "Lists" left top titlesize
+		text "Lists" left top titlesize "serif"
 		lx=left
 		ktop=top-70
 		row1=top-20
@@ -374,7 +381,7 @@ deck
 		apix=lx-sep
 
 		text "list" lx ktop ts "mono" spotcolor
-		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "sans" apicolor
+		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "serif" apicolor
 		list lx row1 ls 
 			li "One"
 			li "Two"
@@ -386,7 +393,7 @@ deck
 		lx+=30
 		apix=lx-sep
 		text "blist" lx ktop ts "mono" spotcolor
-		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "sans" apicolor
+		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "serif" apicolor
 
 		blist lx row1 ls
 			li "One"
@@ -400,7 +407,7 @@ deck
 		apix=lx-sep
 
 		text "nlist" lx ktop ts "mono" spotcolor
-		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "sans" apicolor
+		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "serif" apicolor
 
 		nlist lx row1 ls
 			li "One"
@@ -415,7 +422,7 @@ deck
 	slide
 		lx=left+sep
 		gtop=top
-		text "Arrows" left top titlesize
+		text "Arrows" left top titlesize "serif"
 		ts=titlesize-2
 		row1=gtop-20
 		row2=gtop-45
@@ -425,25 +432,25 @@ deck
 		gtop-=30
 		apiy=gtop-sep
 		ctext "larrow"	lx gtop ts "mono" spotcolor
-		ctext "x y len [aw] [ah] [lw] [color] [op]" lx apiy apisize "sans" apicolor
+		ctext "x y len [aw] [ah] [lw] [color] [op]" lx apiy apisize "serif" apicolor
 		larrow 20 row1 10 
 		circle 20 row1 spotsize spotcolor
 		lx+=25
 		
 		ctext "rarrow"	lx gtop ts "mono" spotcolor
-		ctext "..." lx apiy apisize "sans" apicolor
+		ctext "..." lx apiy apisize "serif" apicolor
 		rarrow 35 row1 10
 		circle 35 row1 spotsize spotcolor
 		lx+=25
 		
 		ctext "uarrow"	lx gtop ts "mono" spotcolor
-		ctext "..." lx apiy apisize "sans" apicolor
+		ctext "..." lx apiy apisize "serif" apicolor
 		uarrow 65 70 10
 		circle 65 70 spotsize spotcolor
 		lx+=25
 		
 		ctext "darrow"	lx gtop ts "mono" spotcolor
-		ctext "..." lx apiy apisize "sans" apicolor
+		ctext "..." lx apiy apisize "serif" apicolor
 		darrow 90 80 10
 		circle 90 80 spotsize spotcolor
 		
@@ -453,7 +460,7 @@ deck
 		apiy=gtop-sep
 		
 		ctext "lcarrow"	lx gtop ts "mono" spotcolor
-		ctext "x1 y1 x2 y2 x3 y3 [lw] [aw] [ah] [color] [op]" lx apiy apisize "sans" apicolor
+		ctext "x1 y1 x2 y2 x3 y3 [lw] [aw] [ah] [color] [op]" lx apiy apisize "serif" apicolor
 		lcarrow 20 row2  20 40  10 40
 		circle  20 row2 spotsize spotcolor
 		circle  20 40 spotsize spotcolor
@@ -461,7 +468,7 @@ deck
 		
 		lx+=25
 		ctext "rcarrow"	lx gtop ts "mono" spotcolor
-		ctext "..." lx apiy apisize "sans" apicolor
+		ctext "..." lx apiy apisize "serif" apicolor
 
 		rcarrow 35 row2 35 40 45 40
 		circle  35 row2 spotsize spotcolor
@@ -471,7 +478,7 @@ deck
 		
 		lx+=25
 		ctext "ucarrow"	lx gtop ts "mono" spotcolor
-		ctext "..." lx apiy apisize "sans" apicolor
+		ctext "..." lx apiy apisize "serif" apicolor
 
 		ucarrow 60 row2 70 row2 70 40
 		circle  60 row2 spotsize spotcolor
@@ -481,7 +488,7 @@ deck
 		
 		lx+=25
 		ctext "dcarrow"	lx gtop ts "mono" spotcolor
-		ctext "..." lx apiy apisize "sans" apicolor
+		ctext "..." lx apiy apisize "serif" apicolor
 		dcarrow 85 40 95 40 95 row2
 		circle  85 40 spotsize spotcolor
 		circle  95 40 spotsize spotcolor
@@ -490,7 +497,7 @@ deck
 	
 	// Charts
 	slide
-		text "Charts" left top titlesize
+		text "Charts" left top titlesize "serif"
 		lx=left+25
 		row1=20
 		chartop=top-20
@@ -499,13 +506,13 @@ deck
 		apiy=row1-sep
 	
 		ctext "dchart" lx row1 ts "mono" spotcolor
-		ctext "[args]" lx apiy apisize "sans" apicolor
+		ctext "[args]" lx apiy apisize "serif" apicolor
 		dchart -fulldeck=f -xlabel 2 -left 10 -right 60 -top chartop -bottom chartbot code/AAPL.d
 		
 		lx+=45
 		apiy=row1-sep
 		ctext "legend" lx row1 ts "mono" spotcolor
-		ctext "x y size [font] [color]" lx apiy apisize "sans" apicolor
+		ctext "x y size [font] [color]" lx apiy apisize "serif" apicolor
 		
 		legend "Sales" lx ly 2 "sans" "blue"
 		ly-=5
@@ -521,6 +528,94 @@ deck
  		textfile "code/example.dsh" 3 80 1.5 "mono"
 		image    "images/example.png" 75 60 792 612 45
 		ctext	 "decksh example.dsh | pdf" cx cy 4 "mono"
+	eslide
+	
+	// Example deck
+	slide "white" "black"
+		imscale=58
+		dtop=87
+		chartleft=10
+		chartright=42
+		chartop=42
+		chartbottom=28
+		imy=50
+		iw=640
+		ih=480
+		imlink="https://budnitzbicycles.com"
+		opts="-fulldeck=f -textsize 1  -xlabel=2  -barwidth 1.5"
+		c1="red"
+		c2="blue"
+		c3="green"
+		shapeop=30
+
+		ctext     "Deck elements" 50 dtop 5
+		cimage    "images/follow.jpg" "Dreams" 72 imy iw ih imscale imlink
+		textblock "Budnitz #1, Plainfield, NJ, May 10, 2015" 55 35 10 1 "serif" "white"
+
+		// List
+		blist 10 75 3
+			li "text, image, list"
+			li "rect, ellipse, polygon"
+			li "line, arc, curve"
+		elist
+
+		// Graphics
+		gy=10
+		notey=17
+		rect    15 gy 8 6              c1
+		ellipse 27.5 gy 8 6            c2
+		polygon "37 37 45" "7 13 10"   c3
+		line    50 gy 60 gy 0.25       c1
+		arc     70 gy 10 8 0 180 0.25  c2
+		curve   80 gy 95 25 90 gy 0.25 c3
+
+		// Chart
+		dchart -left chartleft -right chartright -top chartop -bottom chartbottom opts code/AAPL.d 
+	eslide
+	
+	
+	slide "white" "black"
+		ctext     "Deck elements" 50 dtop 5
+		cimage    "images/follow.jpg" "Dreams" 72 imy iw ih imscale imlink
+		textblock "Budnitz #1, Plainfield, NJ, May 10, 2015" 55 35 10 1 "serif" "white"
+
+		// List
+		blist 10 75 3
+			li "text, image, list"
+			li "rect, ellipse, polygon"
+			li "line, arc, curve"
+		elist
+
+		// Graphics
+		gy=10
+		rect    15 gy 8 6              c1
+		ellipse 27.5 gy 8 6            c2
+		polygon "37 37 45" "7 13 10"   c3
+		line    50 gy 60 gy 0.25       c1
+		arc     70 gy 10 8 0 180 0.25  c2
+		curve   80 gy 95 25 90 gy 0.25 c3
+
+		// Annotations
+		ns=5
+		nc="gray"
+		nf="serif"
+		nop=30
+		ctext "text"	50 95		ns nf nc nop
+		ctext "image"	72 80		ns nf nc nop
+		ctext "list"	25 80		ns nf nc nop
+		ctext "chart"	25 50		ns nf nc nop
+
+		ns=2
+		notey=17
+		ctext "rect"	15 notey	ns nf nc
+		ctext "ellipse"	27.5 notey	ns nf nc
+		ctext "polygon"	40 notey	ns nf nc
+		ctext "line"	55 notey	ns nf nc
+		ctext "arc"		70 notey	ns nf nc
+		ctext "curve"	85 notey	ns nf nc
+
+		// Chart
+		dchart -left chartleft -right chartright -top chartop -bottom chartbottom opts code/AAPL.d 
 	eslide
 	
 	// Examples
@@ -808,7 +903,7 @@ deck
 	// References
 	slide
 		ts=4
-		text "go get it"	left top titlesize
+		text "go get it"	left top titlesize "serif"
 		text "deck"			left 70 ts "mono" headcolor
 		text "decksh"		left 60 ts "mono" headcolor
 		text "pdfdeck"		left 50 ts "mono" headcolor
