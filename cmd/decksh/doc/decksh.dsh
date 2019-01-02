@@ -3,7 +3,7 @@ deck
 	left=10
 	top=90
 	titlesize=6
-	ts=titlesize*0.6
+	ts=titlesize*0.7
 	namesize=titlesize/3
 	spotsize=0.5
 	spotop=100
@@ -44,8 +44,8 @@ deck
 	// Grid
 	slide
 		for v=0 100 10
-			vline v 0 100 0.1 "blue"
-			hline 0 v 100 0.1 "red"
+			vline v 0 100 0.1 // "blue"
+			hline 0 v 100 0.1 // "red"
 		efor
 		ctext "10" 10 5 3 "mono"
 		ctext "20" 20 5 3 "mono"
@@ -66,7 +66,7 @@ deck
 		ctext "70" 5 70 3 "mono"
 		ctext "80" 5 80 3 "mono"
 		ctext "90" 5 90 3 "mono"
-		ctext "Percent Grid" 50 50 6
+		ctext "Percent Grid" 50 50 8
 	eslide
 
 	// Overview
@@ -680,7 +680,7 @@ deck
 		ah=2
 		modcolor="steelblue"
 		metacolor="gray"
-		ctext "Go Module Information Flows" 50 90 gts "sans"
+		ctext "Go Module Information Flows" 50 90 gts "sans" "black" 100 "https://blog.golang.org/modules2019"
 		ctext "go command"	20 gy ts
 		ctext "mirror"		50 my ts
 		ctext "godoc.org"	80 dy ts
@@ -938,6 +938,8 @@ deck
  		color="red"
  		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color code/fire2018.d
  		textfile "code/ft2018.d" ax chartbottom bigsize
+ 		
+ 		text "Chartable a blog by Datawrapper, Weekly Chart, September 6, 2018" left 5 1.5 "sans" "gray" 100 "https://blog.datawrapper.de/weekly43-wildfires-germany/"
 	eslide
 
 	// References
@@ -950,8 +952,8 @@ deck
 		text "dchart"		left 40 ts "mono" headcolor
 		text "deck fonts"	left 30 ts "mono" headcolor
 	
-		left+=30
-		ts*=0.6
+		left+=27
+		ts*=0.7
 		text "github.com/ajstarks/deck"  			left 70 ts "mono" "black" 100 "https://github.com/ajstarks/deck"
 		text "github.com/ajstarks/deck/cmd/decksh"	left 60 ts "mono" "black" 100 "https://github.com/ajstarks/deck/blob/master/cmd/decksh/README.md"
 		text "github.com/ajstarks/deck/cmd/pdfdeck" left 50 ts "mono" "black" 100 "https://github.com/ajstarks/deck/tree/master/cmd/pdfdeck"
