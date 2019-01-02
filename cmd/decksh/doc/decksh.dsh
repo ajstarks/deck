@@ -110,6 +110,7 @@ deck
 	slide
 		lx=left
 		ly=top-10
+		ts=titlesize*0.6
 		text "Running decksh" left top titlesize "serif"
 		list lx ly ts "mono" "black" 100 1.4
 			li "decksh"
