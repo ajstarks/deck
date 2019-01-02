@@ -1,4 +1,4 @@
-//  hello world
+// hello world
 deck
 	slide "black" "white"
 		ctext "hello, world" 50 25 10

@@ -10,7 +10,7 @@ deck
 	cx=50
 	sep=5
 	spotcolor="rgb(127,0,0)"
-	apisize=1.6
+	apisize=1.4
 	apicolor="rgb(127,127,127)"
 	
 	// Title slide
