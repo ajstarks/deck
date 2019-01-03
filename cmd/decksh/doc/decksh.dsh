@@ -44,8 +44,8 @@ deck
 	// Grid
 	slide
 		for v=0 100 10
-			vline v 0 100 0.1 // "blue"
-			hline 0 v 100 0.1 // "red"
+			vline v 0 100 0.1 "blue" 40
+			hline 0 v 100 0.1 "red"  40
 		efor
 		ctext "10" 10 5 3 "mono"
 		ctext "20" 20 5 3 "mono"
@@ -128,7 +128,7 @@ deck
  			li "read from file, write to file"
  			li "executable deck"
  		elist
-		ly-=40
+		ly-=50
 		textcode "code/hb.dsh" left ly 30 es
  		
 	eslide
@@ -147,12 +147,12 @@ deck
 	slide
 		text "Keywords" left top titlesize "serif"  
 		hsize=3.5
-		lsize=hsize*0.6			// increase the size for 4:3 to 0.6
+		lsize=hsize*0.5			// increase the size for 4:3 to 0.6
 		csep=25
 		rsep=35
 		headtop=top-10
 		listtop=headtop-sep
-		listspacing=lsize*0.65
+		listspacing=lsize*0.75
 		headcolor=spotcolor
 		
 		lx=left
@@ -240,9 +240,10 @@ deck
 	
 	// Assignments
 	slide
+		assize=1.8
 		text "Assignments" left top titlesize "serif"
 		sy=top-10
-		textfile "code/samplecode.txt" left sy 2.2 "mono" "black" 100 1.4 // you can increase size for 4:3
+		textfile "code/samplecode.txt" left sy assize "mono" "black" 100 1.4 // you can increase size for 4:3
 	eslide
 
 	// Text
@@ -299,9 +300,10 @@ deck
 	
 		lx+=30
 		apix=80
+		codesize=1.2
 		text "textcode"	lx gtop ts "mono" spotcolor
 		ctext `"filename" x y width size [color]` apix apiy apisize "serif" apicolor
-		textcode "code/hw.go" lx row2 30 1.4
+		textcode "code/hw.go" lx row2 30 codesize
 	eslide
 	
 	// Graphics
@@ -397,7 +399,7 @@ deck
 		text "Images" left top titlesize "serif"
 		lx=left+20
 		row1=top-70
-		imy=row1+30
+		imy=row1+35
 		apiy=row1-sep
 		ctext "image" lx row1 ts "mono" spotcolor
 		ctext `"file" x y w h [scale] [link]` lx apiy apisize "serif" apicolor
@@ -428,7 +430,6 @@ deck
 			li "Two"
 			li "Three"
 			li "Four"
-			li "Five"
 		elist
 		
 		lx+=30
@@ -441,7 +442,6 @@ deck
 			li "Two"
 			li "Three"
 			li "Four"
-			li "Five"
 		elist
 		
 		lx+=30
@@ -455,7 +455,6 @@ deck
 			li "Two"
 			li "Three"
 			li "Four"
-			li "Five"
 		elist
 	eslide
 	
@@ -573,7 +572,7 @@ deck
 	
 	// Example deck
 	slide "white" "black"
-		imscale=58
+		imscale=50
 		dtop=87
 		chartleft=10
 		chartright=42
@@ -590,7 +589,7 @@ deck
 		shapeop=30
 
 		ctext     "Deck elements" 50 dtop 5
-		cimage    "images/follow.jpg" "Dreams" 72 imy iw ih imscale imlink
+		image    "images/follow.jpg"  72 imy iw ih imscale imlink
 		textblock "Budnitz #1, Plainfield, NJ, May 10, 2015" 55 35 10 1 "serif" "white"
 
 		// List
@@ -602,7 +601,6 @@ deck
 
 		// Graphics
 		gy=10
-		notey=17
 		rect    15 gy 8 6              c1
 		ellipse 27.5 gy 8 6            c2
 		polygon "37 37 45" "7 13 10"   c3
@@ -617,7 +615,7 @@ deck
 	
 	slide "white" "black"
 		ctext     "Deck elements" 50 dtop 5
-		cimage    "images/follow.jpg" "Dreams" 72 imy iw ih imscale imlink
+		image    "images/follow.jpg" 72 imy iw ih imscale imlink
 		textblock "Budnitz #1, Plainfield, NJ, May 10, 2015" 55 35 10 1 "serif" "white"
 
 		// List
@@ -640,14 +638,17 @@ deck
 		ns=5
 		nc="gray"
 		nf="serif"
-		nop=30
+		nop=40
+		ch=chartop-chartbottom
+		chh=ch/2
+		chy=chartop-chh
 		ctext "text"	50 95		ns nf nc nop
 		ctext "image"	72 80		ns nf nc nop
 		ctext "list"	25 80		ns nf nc nop
-		ctext "chart"	25 50		ns nf nc nop
+		ctext "chart"	25 chy		ns nf nc nop
 
 		ns=2
-		notey=17
+		notey=gy+8
 		ctext "rect"	15 notey	ns nf nc
 		ctext "ellipse"	27.5 notey	ns nf nc
 		ctext "polygon"	40 notey	ns nf nc
@@ -688,16 +689,16 @@ deck
 		ctext "index"		80 iy ts
 		ctext "notary"		50 ny ts
 		ctext "code hosts"	20 cy ts
-		ctext "(bitbucket, github, ...)" 20 16 ts
+		ctext "(bitbucket, github, ...)" 20 15 ts
 		
-		ctext "fetches, verifies and builds Go code"			20 76 ns "serif" "gray"
-		ctext "helps users find and choose modules"				80 76 ns "serif" "gray"
-		ctext "serves cached module code"						50 56 ns "serif" "gray"
-		ctext "and notarized hashes"							50 53 ns "serif" "gray"
-		ctext "signs and publishes module hashes"				50 36 ns "serif" "gray"
-		ctext "serves module source code"						20 12 ns "serif" "gray"
-		ctext "serves feed listing of Go modules & versions"	80 16 ns "serif" "gray"
-		ctext "answer queries for goimports"					80 13 ns "serif" "gray"
+		ctext "fetches, verifies and builds Go code"			20 75 ns "serif" "gray"
+		ctext "helps users find and choose modules"				80 75 ns "serif" "gray"
+		ctext "serves cached module code"						50 55 ns "serif" "gray"
+		ctext "and notarized hashes"							50 51.5 ns "serif" "gray"
+		ctext "signs and publishes module hashes"				50 35 ns "serif" "gray"
+		ctext "serves module source code"						20 10 ns "serif" "gray"
+		ctext "serves feed listing of Go modules & versions"	80 15 ns "serif" "gray"
+		ctext "answer queries for goimports"					80 11 ns "serif" "gray"
 
 		
 		rcarrow	20 25 15 50 45 my lw aw ah modcolor				// code -> mirror
@@ -708,7 +709,7 @@ deck
 		uarrow	80 25 50 lw aw ah metacolor						// index -> godoc.org
 		lcarrow	80 25 75 40 55 ny lw aw ah metacolor			// index -> notary
 		
-		uarrow	50 45 7 lw aw ah								// notary -> index
+		uarrow	50 45 5 lw aw ah								// notary -> mirror
 		
 		rcarrow	50 65 50 80 70 gy lw aw ah modcolor				// mirror -> godoc.org
 		lcarrow	50 65 50 80 30 dy lw aw ah modcolor				// mirror -> go command
@@ -767,10 +768,10 @@ deck
 	
 	// Forecast vs. Actuals from SWD
 	slide
-		opts="-fulldeck=f -min=0 -max=180 -yrange=0,180,20 -line -vol -bar=f -top=65 -bottom=20 -datafmt=$%v"
+		opts="-fulldeck=f -min=0 -max=180 -yrange=0,180,20 -line -vol -bar=f -top=65 -bottom=20 -datafmt=$%v -textsize=1.8"
 		chartop=80
 		yy=chartop-10
-		yt=yy-3
+		yt=yy-4
 		notey=25
 		notesize=1.8
 		acolor="gray"
@@ -940,7 +941,7 @@ deck
  		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color code/fire2018.d
  		textfile "code/ft2018.d" ax chartbottom bigsize
  		
- 		text "Chartable a blog by Datawrapper, Weekly Chart, September 6, 2018" left 5 1.5 "sans" "gray" 100 "https://blog.datawrapper.de/weekly43-wildfires-germany/"
+ 		text "Chartable a blog by Datawrapper, Weekly Chart, September 6, 2018" left 5 1.5 "serif" "steelblue" 100 "https://blog.datawrapper.de/weekly43-wildfires-germany/"
 	eslide
 
 	// References
