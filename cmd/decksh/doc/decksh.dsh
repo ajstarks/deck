@@ -2,7 +2,7 @@
 deck
 	left=10
 	top=90
-	titlesize=6
+	titlesize=5
 	ts=titlesize*0.7
 	namesize=titlesize/3
 	spotsize=0.5
@@ -28,7 +28,7 @@ deck
 	
 	slide
 		textblock `When you say “language,” most programmers think of the big ones, like FORTRAN or COBOL or Pascal. In fact, a language is any mechanism to express intent, and the input to many programs can be viewed profitably as statements in a language. This column is about those “little languages.”` left 80 70 3.5 "serif"
-		text "Jon Bentley, ACM Programming Pearls, Little Languages, 1986" left 25 2.5
+		text "Jon Bentley, ACM Programming Pearls, Little Languages, 1986" left 15 2.5
 	eslide
 	
 	// Deck
@@ -71,7 +71,7 @@ deck
 
 	// Overview
 	slide
-		cy=70
+		cy=80
 		ysep=10
 		dscolor="rgb(127,0,0)"
 		markupcolor="gray"
@@ -93,12 +93,10 @@ deck
 		imy=cy-10
 
 		textfile	"code/example.dsh" 5  cy  0.75 "mono" dscolor
-		textfile	"code/example.xml" 33 cy  0.75 "mono" markupcolor
+		textfile	"code/example.xml" 35 cy  0.75 "mono" markupcolor
 		image		"images/example.png" 87 imy 792 612 22
 	eslide
-	
-
-	
+		
 	// hello deck world
 	slide "black" "white"
 		ctext "hello, world" 50 25 10
@@ -563,11 +561,10 @@ deck
 
 	// Zoom in to overview
 	slide
-		cy=15
-		ny=30
- 		textfile "code/example.dsh" 3 80 1.5 "mono"
-		image    "images/example.png" 75 60 792 612 45
-		ctext	 "decksh example.dsh | pdf" cx cy 4 "mono"
+		cy=5
+ 		textfile "code/example.dsh" 3 85 1.5 "mono"
+		image    "images/example.png" 75 60 792 612 40
+		ctext	 "decksh example.dsh | pdf" cx cy 3.5 "mono"
 	eslide
 	
 	// Example deck
@@ -941,7 +938,7 @@ deck
  		dchart opts -left chartleft -right right -top chartop -bottom chartbottom -color color code/fire2018.d
  		textfile "code/ft2018.d" ax chartbottom bigsize
  		
- 		text "Chartable a blog by Datawrapper, Weekly Chart, September 6, 2018" left 5 1.5 "serif" "steelblue" 100 "https://blog.datawrapper.de/weekly43-wildfires-germany/"
+ 		text "Chartable blog, Weekly Chart, September 6, 2018" left 5 1.5 "serif" "steelblue" 100 "https://blog.datawrapper.de/weekly43-wildfires-germany/"
 	eslide
 
 	// References
