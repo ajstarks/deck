@@ -133,23 +133,17 @@ deck
 	
 	// Keywords
 	slide
-		kx=left
-		ky=top-15
 		optx=53
 		argcolor="rgb(0,0,127)"
 		optcolor="rgb(127,127,127)"
 		
-		text "keyword"		kx ky 3 "mono" spotcolor
-		kx+=25
-		text "args"			kx ky 3 "mono" argcolor
-		text "[optionals]"	optx ky 3 "mono" optcolor
-	
+		ky=70
 		sl=left
 		exsize=2.5
 		text "Keywords and arguments" left top titlesize "serif"
-		text "text"              		sl 60 exsize "mono" "maroon"
-		text `"string....."   x y n` 18 60 exsize "mono" argcolor
-		text "[font][color][op]" optx 60 exsize "mono" optcolor
+		text "text"              		sl ky exsize "mono" "maroon"
+		text `"string....."   x y n` 18 ky exsize "mono" argcolor
+		text "[font][color][op]" optx ky exsize "mono" optcolor
 		text `text "hello, world"  80 50 2`							sl 50 exsize "mono"
 		text `text "hello, world"  80 40 2 "serif"`					sl 40 exsize "mono"
 		text `text "hello, world"  80 30 2 "serif" "red"`			sl 30 exsize "mono"
