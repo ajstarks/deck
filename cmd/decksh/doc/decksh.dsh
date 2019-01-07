@@ -161,12 +161,12 @@ deck
 	slide
 		text "Keywords" left top titlesize "serif"  
 		hsize=ts
-		lsize=hsize*0.5			// increase the size for 4:3 to 0.6
+		lsize=hsize*0.55			// increase the size for 4:3 to 0.6
 		csep=25
 		rsep=35
 		headtop=top-10
 		listtop=headtop-sep
-		listspacing=lsize*0.75
+		listspacing=lsize*0.85
 		headcolor=spotcolor
 		
 		lx=left
