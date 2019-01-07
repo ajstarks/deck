@@ -133,18 +133,40 @@ deck
 	
 	// Keywords
 	slide
-		kx=25
-		ctext "keyword"		kx 50 5 "mono" spotcolor
-		kx+=20
-		ctext "args"		kx 50 5 "mono" "rgb(0,0,127)"
+		kx=left
+		ky=top-15
+		optx=53
+		argcolor="rgb(0,0,127)"
+		optcolor="rgb(127,127,127)"
+		
+		text "keyword"		kx ky 3 "mono" spotcolor
 		kx+=25
-		ctext "[optionals]"	kx 50 5 "mono" "rgb(127,127,127)"
+		text "args"			kx ky 3 "mono" argcolor
+		text "[optionals]"	optx ky 3 "mono" optcolor
+	
+		sl=left
+		exsize=2.5
+		text "Keywords and arguments" left top titlesize "serif"
+		text "text"              		sl 60 exsize "mono" "maroon"
+		text `"string....."   x y n` 18 60 exsize "mono" argcolor
+		text "[font][color][op]" optx 60 exsize "mono" optcolor
+		text `text "hello, world"  80 50 2`							sl 50 exsize "mono"
+		text `text "hello, world"  80 40 2 "serif"`					sl 40 exsize "mono"
+		text `text "hello, world"  80 30 2 "serif" "red"`			sl 30 exsize "mono"
+		text `text "hello, world"  80 20 2 "serif" "red" 50`		sl 20 exsize "mono"
+		
+		sl+=70
+		exsize*=1.3
+		text "hello, world" sl 50 exsize
+		text "hello, world" sl 40 exsize "serif"
+		text "hello, world" sl 30 exsize "serif" "red"
+		text "hello, world" sl 20 exsize "serif" "red" 50
 	eslide
 	
 	// Keyword list
 	slide
 		text "Keywords" left top titlesize "serif"  
-		hsize=3.5
+		hsize=ts
 		lsize=hsize*0.5			// increase the size for 4:3 to 0.6
 		csep=25
 		rsep=35
