@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"os/exec"
 	"runtime"
@@ -38,7 +39,7 @@ var shellflag = "-c"
 // on init, set the shell info, if on windows.
 func init() {
 	if runtime.GOOS == "windows" {
-		shell = "cmd"
+		shell = `c:\windows\system32\cmd.exe`
 		shellflag = "/c"
 	}
 }
@@ -605,6 +606,89 @@ func legend(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+func angle(x1, y1, x2, y2 float64) float64 {
+	return math.Atan2(y2-y1, x2-x1)
+}
+
+func distance(x1, y1, x2, y2 float64) float64 {
+	dx := x2 - x1
+	dy := y2 - y1
+	return math.Sqrt((dx * dx) + (dy * dy))
+}
+
+func rt(x1, y1, x2, y2 float64) (float64, float64) {
+	dx := x2 - x1
+	dy := y2 - y1
+	return math.Sqrt((dx * dx) + (dy * dy)), math.Atan2(dy, dx)
+}
+
+func polar(cx, cy, r, t float64) (float64, float64) {
+	return ((r * math.Cos(t)) + cx), ((r * math.Sin(t)) + cy)
+}
+
+func genarrow(x1, y1, x2, y2, aw, ah float64) (float64, float64, float64, float64, float64, float64, float64, float64) {
+	r, t := rt(x1, y1, x2, y2)
+	n := r - (aw * 0.75)
+	nt := angle(x1, y1, x1+n, y1+(ah/2))
+	ax1, ay1 := polar(x1, y1, r, t)
+	ax2, ay2 := polar(x1, y1, r-aw, t+nt)
+	ax3, ay3 := polar(x1, y1, n, t)
+	ax4, ay4 := polar(x1, y1, r-aw, t-nt)
+
+	return ax1, ay1, ax2, ay2, ax3, ay3, ax4, ay4
+}
+
+// arrow draws a general arrow given two points.
+// The rotation of the arrowhead is computed.
+func arrow(w io.Writer, s []string, linenumber int) error {
+	ls := len(s)
+	e := fmt.Errorf("line: %d arrow x1 y1 x2 y2 [linewidth] [arrowidth] [arrowheight] [color] [opacity]", linenumber)
+	if ls < 5 {
+		return e
+	}
+	aw := 3.0
+	ah := 3.0
+	lw := "0.2"
+	color := `"gray"`
+	opacity := "100"
+	var x1, y1, x2, y2 float64
+	if _, err := fmt.Sscanf(s[1], "%f", &x1); err != nil {
+		return err
+	}
+	if _, err := fmt.Sscanf(s[2], "%f", &y1); err != nil {
+		return err
+	}
+	if _, err := fmt.Sscanf(s[3], "%f", &x2); err != nil {
+		return err
+	}
+	if _, err := fmt.Sscanf(s[4], "%f", &y2); err != nil {
+		return err
+	}
+	if ls >= 6 {
+		lw = s[5] // linewidth
+	}
+	if ls >= 7 {
+		if _, err := fmt.Sscanf(s[6], "%f", &aw); err != nil {
+			return err
+		}
+	}
+	if ls >= 8 {
+		if _, err := fmt.Sscanf(s[7], "%f", &ah); err != nil {
+			return err
+		}
+	}
+	if ls >= 9 {
+		color = s[8] // color
+	}
+	if ls == 10 {
+		opacity = s[9] // opacity
+	}
+	ax1, ay1, ax2, ay2, ax3, ay3, ax4, ay4 := genarrow(x1, y1, x2, y2, aw, ah)
+	fmt.Fprintf(w, "<line xp1=%q yp1=%q xp2=\"%v\" yp2=\"%v\" sp=%q color=%s opacity=%q/>\n", s[1], s[2], ax3, ay3, lw, color, opacity)
+	fmt.Fprintf(w, "<polygon xc=\"%v %v %v %v\" yc=\"%v %v %v %v\" color=%s opacity=%q/>\n", ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4, color, opacity)
+	return nil
+}
+
 // arrowhead returns the coordinates for left, right, up, down arrowheads.
 // x, y is the point of the arrow, aw, ah are width, height
 func arrowhead(x, y, ah, aw, notch float64, arrowtype byte) (float64, float64, float64, float64, float64, float64, float64, float64) {
@@ -722,87 +806,6 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 	curvestring[6] = fmt.Sprintf("%v", ay3)
 
 	curve(w, curvestring, linenumber)
-	fmt.Fprintf(w, "<polygon xc=\"%v %v %v %v\" yc=\"%v %v %v %v\" color=%s opacity=%q/>\n", ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4, color, opacity)
-	return nil
-}
-
-// arrow draws arrows with straight lines
-func arrow(w io.Writer, s []string, linenumber int) error {
-	ls := len(s)
-	e := fmt.Errorf("line: %d [l|r|u|d]arrow x y length [linewidth] [arrowidth] [arrowheight] [color] [opacity]", linenumber)
-
-	lw := 0.2
-	aw := 3.0
-	ah := 3.0
-
-	color := `"gray"`
-	opacity := "100"
-
-	if len(s[0]) < 6 || ls < 4 {
-		return e
-	}
-
-	var x, y, l float64
-
-	if _, err := fmt.Sscanf(s[1], "%f", &x); err != nil {
-		return err
-	}
-	if _, err := fmt.Sscanf(s[2], "%f", &y); err != nil {
-		return err
-	}
-	if _, err := fmt.Sscanf(s[3], "%f", &l); err != nil {
-		return err
-	}
-	if ls >= 5 {
-		if _, err := fmt.Sscanf(s[4], "%f", &lw); err != nil {
-			return err
-		}
-	}
-	if ls >= 6 {
-		if _, err := fmt.Sscanf(s[5], "%f", &aw); err != nil {
-			return err
-		}
-	}
-	if ls >= 7 {
-		if _, err := fmt.Sscanf(s[6], "%f", &ah); err != nil {
-			return err
-		}
-	}
-	if ls >= 8 {
-		color = s[7]
-	}
-	if ls == 9 {
-		opacity = s[8]
-	}
-	var lx1, lx2, ly1, ly2, ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 float64
-
-	arrowtype := s[0][0]
-	switch arrowtype {
-	case 'r':
-		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x+l, y, aw, ah, stdnotch, arrowtype)
-		lx1, lx2 = x, ax3
-		ly1, ly2 = y, y
-
-	case 'l':
-		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x-l, y, aw, ah, stdnotch, arrowtype)
-		lx1, lx2 = x, ax3
-		ly1, ly2 = y, y
-
-	case 'u':
-		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x, y+l, aw, ah, stdnotch, arrowtype)
-		lx1, lx2 = x, x
-		ly1, ly2 = y, ay3
-
-	case 'd':
-		ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 = arrowhead(x, y-l, aw, ah, stdnotch, arrowtype)
-		lx1, lx2 = x, x
-		ly1, ly2 = y, ay3
-
-	default:
-		return e
-	}
-
-	fmt.Fprintf(w, "<line xp1=\"%v\" yp1=\"%v\" xp2=\"%v\" yp2=\"%v\" sp=\"%v\" color=%s opacity=%q/>\n", lx1, ly1, lx2, ly2, lw, color, opacity)
 	fmt.Fprintf(w, "<polygon xc=\"%v %v %v %v\" yc=\"%v %v %v %v\" color=%s opacity=%q/>\n", ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4, color, opacity)
 	return nil
 }
@@ -1049,8 +1052,11 @@ func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) 
 	case "legend":
 		return legend(w, tokens, n)
 
-	case "larrow", "rarrow", "uarrow", "darrow":
+	case "arrow":
 		return arrow(w, tokens, n)
+
+	// case "larrow", "rarrow", "uarrow", "darrow":
+	//	return arrow(w, tokens, n)
 
 	case "lcarrow", "rcarrow", "ucarrow", "dcarrow":
 		return carrow(w, tokens, n)

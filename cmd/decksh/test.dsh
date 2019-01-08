@@ -322,33 +322,33 @@ deck
 	
 	// Arrows
 	slide
-		larrow 50 45 20
-		larrow 50 55 25 0.4
-		larrow 50 65 30 0.5 4
-		larrow 50 75 35 0.6 5 8 
-		larrow 50 85 40 0.7 6 9 "red"
-		larrow 50 95 45 0.8 8 10 "blue" 20
+		arrow 50 45 30 45
+		arrow 50 55 25 55 0.4
+		arrow 50 65 20 65 0.5 4
+		arrow 50 75 15 75 0.6 5 8 
+		arrow 50 85 10 85 0.7 6 9 "red"
+		arrow 50 95 05 95 0.8 8 10 "blue" 20
 
-		rarrow 50 45 20
-		rarrow 50 55 25 0.4
-		rarrow 50 65 30 0.5 4
-		rarrow 50 75 35 0.6 5 8 
-		rarrow 50 85 40 0.7 6 9 "red"
-		rarrow 50 95 45 0.8 8 10 "blue" 20
+		arrow 50 45 70 45
+		arrow 50 55 75 55 0.4
+		arrow 50 65 80 65 0.5 4
+		arrow 50 75 85 75 0.6 5 8 
+		arrow 50 85 90 85 0.7 6 9 "red"
+		arrow 50 95 95 95 0.8 8 10 "blue" 20
 
-		uarrow 05 5 35
-		uarrow 15 5 30 0.4
-		uarrow 25 5 25 0.5 4
-		uarrow 35 5 20 0.6 5 8
-		uarrow 45 5 15 0.7 6 9 "red"
-		uarrow 55 5 10 0.8 8 10 "blue" 20
+		arrow 05 5 05 40
+		arrow 15 5 15 35 0.4
+		arrow 25 5 25 30 0.5 4
+		arrow 35 5 35 25 0.6 5 8
+		arrow 45 5 45 20 0.7 6 9 "red"
+		arrow 55 5 55 15 0.8 8 10 "blue" 20
 
-		darrow 95 40 35
-		darrow 85 40 30 0.4
-		darrow 75 40 25 0.5 4
-		darrow 65 40 20 0.6 5 8
-		darrow 55 40 15 0.7 6 9 "red"
-		darrow 45 40 10 0.8 8 10 "blue" 20
+		arrow 95 40 95 05
+		arrow 85 40 85 10 0.4
+		arrow 75 40 75 15 0.5 4
+		arrow 65 40 65 20 0.6 5 8
+		arrow 55 40 55 25 0.7 6 9 "red"
+		arrow 45 40 45 30 0.8 8 10 "blue" 20
 
 		for lcx=45 95 10
 			circle 50 lcx 1.5 "gray"
@@ -362,17 +362,52 @@ deck
 			circle lcx 40 1.5 "gray"
 		efor
 	eslide
-	
+		
 	slide
-		circle 50 50 2 "red"
-		rarrow 50 50 40 
-		larrow 50 50 40
-		uarrow 50 50 40
-		darrow 50 50 40
-		ctext "North" 50 93 2
-		ctext "South" 50  7 2
-		etext "West"  7 49 2
-		text  "East"  93 49 2	
+		circle 50 50 2 "blue"
+		arrow 50 50 90 50	// right
+		arrow 50 50 10 50	// left
+		arrow 50 50 50 90	// up
+		arrow 50 50 50 10	// down
+		
+		arrow 50 50 90 90	// upper right
+		arrow 50 50 10 10	// lower left
+		arrow 50 50 10 90	// upper left
+		arrow 50 50 90 10	// lower right
+		ctext "up"			50 93 2
+		ctext "down"		50  7 2
+		etext "left"		7 49 2
+		text  "right"		93 49 2
+		ctext "upper left"	10 90 2
+		ctext "upper right"	90 90 2
+		ctext "lower left"	10 10 2
+		ctext "lower right"	90 10 2
+	eslide
+
+	slide
+		arrow 50 70 25 95 2 6 6 "blue"
+		arrow 50 30 25 05 1 5 5
+		arrow 50 30 75 05 0.5
+		arrow 50 70 75 95
+
+		arrow 50 50 75 25
+		arrow 50 50 25 25 0.5
+		arrow 50 50 25 75 1 4 4
+		arrow 50 50 75 75 2 6 6 "green"
+		
+		circle 50 30 1.5 "red"
+		circle 50 50 1.5 "red"
+		circle 50 70 1.5 "red"
+
+		circle 25 05 1.5 "red"
+		circle 25 25 1.5 "red"
+		circle 25 75 1.5 "red"
+		circle 25 95 1.5 "red"
+
+		circle 75 05 1.5 "red"
+		circle 75 25 1.5 "red"
+		circle 75 75 1.5 "red"
+		circle 75 95 1.5 "red"
 	eslide
 	
 	slide

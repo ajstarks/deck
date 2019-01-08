@@ -23,7 +23,7 @@ deck
 		ctext "a little language for decks" cx tty titlesize
 		etext "Anthony Starks"			85 10 namesize
 		etext "@ajstarks"				85 6 namesize "sans" "black" 100 "https://twitter.com/ajstarks"
-		image "images/starx.png"		92 9 500 500 8
+		image "images/starx.png"		90 9 500 500 5
 	eslide
 	
 	slide
@@ -227,10 +227,7 @@ deck
 		lx+=csep
 		text "Arrows" lx headtop hsize "sans" headcolor
 		list lx listtop lsize "mono" "black" 100 listspacing
-			li "rarrow"
-			li "larrow"
-			li "uarrow"
-			li "darrow"
+			li "arrow"
 			li "crarrow"
 			li "clarrow"
 			li "cuarrow"
@@ -485,29 +482,26 @@ deck
 		
 		gtop-=30
 		apiy=gtop-sep
-		ctext "larrow"	lx gtop ts "mono" spotcolor
-		ctext "x y len [aw] [ah] [lw] [color] [op]" lx apiy apisize "serif" apicolor
-		larrow 20 row1 10 
+		ctext "arrow" lx gtop ts "mono" spotcolor
+		ctext "x1 y1 x2 y2 [aw] [ah] [lw] [color] [op]" lx apiy apisize "serif" apicolor
+		arrow 20 row1 10 row1 
+		circle 10 row1 spotsize spotcolor
 		circle 20 row1 spotsize spotcolor
 		lx+=25
 		
-		ctext "rarrow"	lx gtop ts "mono" spotcolor
-		ctext "..." lx apiy apisize "serif" apicolor
-		rarrow 35 row1 10
+		arrow 35 row1 45 70
+		arrow 65 row1 65 80
+		arrow 90 80   90 row1
+		
 		circle 35 row1 spotsize spotcolor
-		lx+=25
+		circle 45 70   spotsize spotcolor
 		
-		ctext "uarrow"	lx gtop ts "mono" spotcolor
-		ctext "..." lx apiy apisize "serif" apicolor
-		uarrow 65 70 10
-		circle 65 70 spotsize spotcolor
-		lx+=25
+		circle 65 row1 spotsize spotcolor
+		circle 65 80   spotsize spotcolor
 		
-		ctext "darrow"	lx gtop ts "mono" spotcolor
-		ctext "..." lx apiy apisize "serif" apicolor
-		darrow 90 80 10
 		circle 90 80 spotsize spotcolor
-		
+		circle 90 row1 spotsize spotcolor
+
 		gtop-=40
 		row2=row1-40
 		lx=left+sep
@@ -781,7 +775,7 @@ deck
 	
 	// Forecast vs. Actuals from SWD
 	slide
-		opts="-fulldeck=f -min=0 -max=180 -yrange=0,180,20 -line -vol -bar=f -top=65 -bottom=20 -datafmt=$%v -textsize=1.8"
+		opts="-fulldeck=f -min=0 -max=180 -yrange=0,180,20 -line -vol -bar=f -top=60 -bottom=15 -datafmt=$%v -textsize=1.8"
 		chartop=80
 		yy=chartop-10
 		yt=yy-4
@@ -805,8 +799,8 @@ deck
 		textblock   "steady annual growth: 8-9%"         50 yt  7 notesize "serif" "gray"
 		textblock   "assumed 10% year over year growth"  70 yt 10 notesize "serif" "gray"
 
-		dchart opts          -left=10 -right=65 -volop=10 -color acolor -vcolor acolor code/actual.d
-		dchart opts -scatter -left=70 -right=85 -volop=20 -color fcolor -vcolor fcolor code/forecast.d
+		dchart opts -left=10 -right=65 -volop=10 -color acolor -vcolor acolor code/actual.d
+		dchart opts -left=70 -right=85 -volop=20 -color fcolor -vcolor fcolor code/forecast.d
     eslide
 	
 	// Aggregated on one chart
