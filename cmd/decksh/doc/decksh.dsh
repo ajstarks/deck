@@ -110,23 +110,25 @@ deck
 		ly=top-10
 		ts=titlesize*0.6
 		text "Running decksh" left top titlesize "serif"
-		list lx ly ts "mono" "black" 100 1.4
+		lls=1.4
+		list lx ly ts "mono" "black" 100 lls
 			li "decksh"
-			li "decksh mydeck"
+			li "decksh in.dsh"
 			li "decksh -o out.xml"
-			li "decksh -o out.xml mydeck"
-			li "chmod +x mydeck; ./mydeck"
+			li "decksh -o out.xml in.dsh"
+			li "chmod +x in.dsh; ./in.dsh"
 		elist
-		lx+=62
-		es=ts*0.5
- 		list lx ly es "serif" "black" 100 2.8
+		lx+=50
+		es=ts*0.75
+		lls*=1.333
+ 		list lx ly es "serif" "black" 100 lls
  			li "read from stdin, write to stdout"
  			li "read from file, write to stdout"
  			li "read from stdin, write to file"
  			li "read from file, write to file"
  			li "executable deck"
  		elist
-		ly-=50
+		ly-=45
 		textcode "code/hb.dsh" left ly 30 es
  		
 	eslide
@@ -317,6 +319,51 @@ deck
 		textcode "code/hw.go" lx row2 30 codesize
 	eslide
 	
+	// Lists
+	slide
+		text "Lists" left top titlesize "serif"
+		lx=left
+		ktop=top-70
+		row1=top-20
+		ls=ts*0.9
+		apiy=ktop-sep
+		apix=lx-sep
+
+		text "list" lx ktop ts "mono" spotcolor
+		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "serif" apicolor
+		list lx row1 ls 
+			li "One"
+			li "Two"
+			li "Three"
+			li "Four"
+		elist
+		
+		lx+=30
+		apix=lx-sep
+		text "blist" lx ktop ts "mono" spotcolor
+		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "serif" apicolor
+
+		blist lx row1 ls
+			li "One"
+			li "Two"
+			li "Three"
+			li "Four"
+		elist
+		
+		lx+=30
+		apix=lx-sep
+
+		text "nlist" lx ktop ts "mono" spotcolor
+		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "serif" apicolor
+
+		nlist lx row1 ls
+			li "One"
+			li "Two"
+			li "Three"
+			li "Four"
+		elist
+	eslide
+
 	// Graphics
 	slide
 		lx=left+sep
@@ -405,70 +452,6 @@ deck
 		circle 40 22 spotsize spotcolor spotop
 	eslide
 
-	// Images
-	slide
-		text "Images" left top titlesize "serif"
-		lx=left+20
-		row1=top-70
-		imy=row1+35
-		apiy=row1-sep
-		ctext "image" lx row1 ts "mono" spotcolor
-		ctext `"file" x y w h [scale] [link]` lx apiy apisize "serif" apicolor
-		image "images/follow.jpg" lx imy 640 480 40
-		circle lx imy spotsize spotcolor
-		
-		lx+=40
-		ctext "cimage" lx row1 ts "mono" spotcolor
-		ctext `"file" "caption" x y w h [scale] [link]` lx apiy apisize "serif" apicolor
-		cimage "images/cloudy.jpg" "Up in the clouds" lx imy 640 480 40
-		circle lx imy spotsize spotcolor
-	eslide
-	
-	// Lists
-	slide
-		text "Lists" left top titlesize "serif"
-		lx=left
-		ktop=top-70
-		row1=top-20
-		ls=ts*0.9
-		apiy=ktop-sep
-		apix=lx-sep
-
-		text "list" lx ktop ts "mono" spotcolor
-		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "serif" apicolor
-		list lx row1 ls 
-			li "One"
-			li "Two"
-			li "Three"
-			li "Four"
-		elist
-		
-		lx+=30
-		apix=lx-sep
-		text "blist" lx ktop ts "mono" spotcolor
-		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "serif" apicolor
-
-		blist lx row1 ls
-			li "One"
-			li "Two"
-			li "Three"
-			li "Four"
-		elist
-		
-		lx+=30
-		apix=lx-sep
-
-		text "nlist" lx ktop ts "mono" spotcolor
-		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "serif" apicolor
-
-		nlist lx row1 ls
-			li "One"
-			li "Two"
-			li "Three"
-			li "Four"
-		elist
-	eslide
-	
 	// Arrows
 	slide
 		lx=left+sep
@@ -542,7 +525,27 @@ deck
 		circle  95 40 spotsize spotcolor
 		circle  95 row2 spotsize spotcolor
 	eslide
+
+	// Images
+	slide
+		text "Images" left top titlesize "serif"
+		lx=left+20
+		row1=top-70
+		imy=row1+35
+		apiy=row1-sep
+		ctext "image" lx row1 ts "mono" spotcolor
+		ctext `"file" x y w h [scale] [link]` lx apiy apisize "serif" apicolor
+		image "images/follow.jpg" lx imy 640 480 40
+		circle lx imy spotsize spotcolor
+		
+		lx+=40
+		ctext "cimage" lx row1 ts "mono" spotcolor
+		ctext `"file" "caption" x y w h [scale] [link]` lx apiy apisize "serif" apicolor
+		cimage "images/cloudy.jpg" "Up in the clouds" lx imy 640 480 40
+		circle lx imy spotsize spotcolor
+	eslide
 	
+
 	// Charts
 	slide
 		text "Charts" left top titlesize "serif"
@@ -571,9 +574,9 @@ deck
 
 	// Zoom in to overview
 	slide
-		cy=5
- 		textfile "code/example.dsh" 3 85 1.5 "mono"
-		image    "images/example.png" 75 60 792 612 40
+		cy=top
+ 		textfile "code/example.dsh" 3 82 1.5 "mono"
+		image    "images/example.png" 75 55 792 612 40
 		ctext	 "decksh example.dsh | pdf" cx cy 3.5 "mono"
 	eslide
 	
