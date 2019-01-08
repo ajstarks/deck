@@ -570,6 +570,18 @@ deck
 		ly-=5
 		legend "Profit" lx ly 2 "sans" "green"
 	eslide
+	
+	// dchart overview
+	slide
+		text "dchart: charts for deck" 5 90 5 "sans" "black" 100 "https://github.com/ajstarks/deck/tree/master/cmd/dchart"
+		ctext "Bitcoin to USD" 35 79 1.5
+		dchart -fulldeck=f -textsize=1   -top=75 -left=10 -bottom=50 -right=60 -color=steelblue -title=f -bar=f -vol -val=f -xlabel=0 -yaxis -grid -csv -csvcol=Date,Close -yrange=0,20000,4000 code/BTC-USD.csv
+		dchart -fulldeck=f -textsize=1   -top=48 -left=10 -bottom=40 -right=60 -color=orange -yaxis=f -bar -val=f -xlabel=100 -xlast -title=f -csv -csvcol=Date,Volume code/BTC-USD.csv
+		dchart -fulldeck=f -textsize=1   -top=75 -left=72 -bottom=50 -right=95 -xlabel=5  code/AAPL.d
+		dchart -fulldeck=f -textsize=0.9 -top=40 -left=72            -right=75 -pgrid  -ls=2.4 -val=f code/incar.d
+		dchart -fulldeck=f -textsize=0.9 -top=25 -left=40 -bottom=20 -right=60  -wbar  -ls=2.8 code/browser.d
+		dchart -fulldeck=f -textsize=1   -top=25 -left=5  -bottom=15 -right=30  -val=f -bar=f -vol -xlabel=10 -color=brown code/sine.d
+	eslide
 
 	// Zoom in to overview
 	slide
@@ -711,20 +723,36 @@ deck
 
 		
 		rcarrow	20 25 15 50 45 my lw aw ah modcolor				// code -> mirror
-		rarrow	30 21 45 lw aw ah metacolor						// code -> index
+		arrow	30 21 75 21 lw aw ah metacolor					// code -> index
 		rcarrow	20 25 25 40 45 ny lw aw ah modcolor				// code -> notary
 		
 		lcarrow	80 25 82 50 55 my lw aw ah metacolor			// index -> mirror
-		uarrow	80 25 50 lw aw ah metacolor						// index -> godoc.org
+		arrow	80 25 80 75 lw aw ah metacolor					// index -> godoc.org
 		lcarrow	80 25 75 40 55 ny lw aw ah metacolor			// index -> notary
 		
-		uarrow	50 45 5 lw aw ah								// notary -> mirror
+		arrow	50 45 50 50 lw aw ah							// notary -> mirror
 		
 		rcarrow	50 65 50 80 70 gy lw aw ah modcolor				// mirror -> godoc.org
 		lcarrow	50 65 50 80 30 dy lw aw ah modcolor				// mirror -> go command
 		
 		legend "modules/code"	50 7 1 "sans" modcolor
 		legend "metadata"		50 5 1 "sans" metacolor
+	eslide
+	
+	slide
+		multi="The number and share of Americans living in multi- generational family households have continued to rise, despite improvements in the U.S. economy since the Great Recession. In 2016, a record 64 million people, or 20% of the U.S.population, lived with multiple generations under one roof, according to a new Pew Research Center analysis of census data."
+		topts="-fulldeck=f -color=steelblue -line -bar=f -scatter -dot -min=0 -max=30 -textsize=1 -bottom=14 -top=36"
+		popts="-fulldeck=f -color=steelblue -bar=f -textsize=1.2"
+		ctext "A record 64 million Americans live in multigenerational households" 50 90 3
+		textblock multi 5 80 40 1.8 "serif" "black" 100 "http://www.pewresearch.org/fact-tank/2018/04/05/a-record-64-million-americans-live-in-multigenerational-households/"
+		dchart popts -vol       -top=75 -bottom=55 -left=55 -right=95  code/kids2
+		dchart popts -line -dot -top=35 -bottom=15 -left=10 -right=45  code/kids
+		dchart topts -left=55 -right=59  code/tkids
+		dchart topts -left=62 -right=67  code/akids
+		dchart topts -left=69 -right=74  code/bkids
+		dchart topts -left=76 -right=81  code/hkids
+		dchart topts -left=83 -right=88  code/okids
+		dchart topts -left=90 -right=95  code/wkids
 	eslide
 
 	// up and to the right
