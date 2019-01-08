@@ -77,12 +77,11 @@ deck
 		markupcolor="gray"
 		outcolor="rgb(0,0,127)"
 		ay=cy+2
-		alen=10
 		
 		etext	"decksh"		20 cy ts "sans" dscolor
-		rarrow 22 ay alen
+		arrow 22 ay 32 ay
 		ctext	"deck markup"	50 cy ts "sans" markupcolor
-		rarrow 67 ay alen
+		arrow 67 ay 77 ay
 		text	"PDF"			80 cy ts "sans" outcolor
 		cy+=10
 		text	"SVG"			80 cy ts "sans" outcolor
