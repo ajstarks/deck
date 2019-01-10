@@ -14,18 +14,15 @@ deck
 	apicolor="rgb(127,127,127)"
 	
 	// Title slide
+
 	slide
-		tty=top-5
-		bts=titlesize*1.5
-		image "images/shell.jpg"		50 50 2000 1329 60
-		ctext "decksh" cx tty bts "mono" spotcolor
-		tty-=12
-		ctext "a little language for decks" cx tty titlesize
-		etext "Anthony Starks"			85 10 namesize
-		etext "@ajstarks"				85 6 namesize "sans" "black" 100 "https://twitter.com/ajstarks"
-		image "images/starx.png"		90 9 500 500 5
+		text "decksh" 								15 50 10 "mono" "maroon"
+		text "a little language for decks"			15 42 3
+		image "images/shell0.png" 75 50 1200 1200 20
+		text "Anthony Starks"						15 10 1.5 "sans" "rgb(127,127,127)" 
+		text "@ajstarks"							15 6  1.5 "sans" "rgb(127,127,127)" 100 "https://twitter.com/ajstarks"
 	eslide
-	
+
 	slide
 		textblock `When you say “language,” most programmers think of the big ones, like FORTRAN or COBOL or Pascal. In fact, a language is any mechanism to express intent, and the input to many programs can be viewed profitably as statements in a language. This column is about those “little languages.”` left 80 70 3.5 "serif"
 		text "Jon Bentley, ACM Programming Pearls, Little Languages, 1986" left 15 2.5
@@ -465,7 +462,7 @@ deck
 		gtop-=30
 		apiy=gtop-sep
 		ctext "arrow" lx gtop ts "mono" spotcolor
-		ctext "x1 y1 x2 y2 [aw] [ah] [lw] [color] [op]" lx apiy apisize "serif" apicolor
+		ctext "x1 y1 x2 y2 [linewidth] [aw] [ah] [color] [op]" lx apiy apisize "serif" apicolor
 		arrow 20 row1 10 row1 
 		circle 10 row1 spotsize spotcolor
 		circle 20 row1 spotsize spotcolor
@@ -586,7 +583,7 @@ deck
 	// Zoom in to overview
 	slide
 		cy=top
- 		textfile "code/example.dsh" 3 82 1.5 "mono"
+ 		textfile "code/example.dsh" 3 82 codesize "mono"
 		image    "images/example.png" 75 55 792 612 40
 		ctext	 "decksh example.dsh | pdf" cx cy 3.5 "mono"
 	eslide
@@ -685,6 +682,29 @@ deck
 	slide
 		ets=titlesize*1.5
 		ctext "Examples" 50 50 ets
+	eslide
+	
+	// Business card
+	slide
+		image "images/buscard.png"  50 50 200 350
+	eslide
+	
+	// Business card + code
+	slide
+		image "images/buscard.png"  80 50 200 350
+		textfile "code/buscard.dsh" 7 90 1.2 "mono"
+	eslide
+	
+	// Alignment example
+	slide
+		image "images/buscard.png"  80 50 200 350
+		textfile "code/buscard.dsh" 7 90 codesize "mono"
+		arrow 35 88 80 88 0.2 2 2 "red"
+		arrow 35 85 75 85 0.2 2 2 "green"
+		arrow 35 82 72.5 82 0.2 2 2 "blue"
+		line  80 88 80 10  0.5 "red" 30
+		line  75 85 75 10 0.5 "green" 30
+		line  72.5 82 72.5 10  0.5 "blue" 30
 	eslide
 	
 	// Go module information flows
