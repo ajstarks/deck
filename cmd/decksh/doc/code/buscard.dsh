@@ -7,7 +7,7 @@ deck
     cs=ts*0.55    // contact info text size
     ly=58         // line y
 
-    slide "rgb(250,250,250)" "rgb(127,127,127)"
+    slide "white" "rgb(100,100,100)"
         image "starx.png"               mx 87 512 512 7.5
         ctext "Anthony J. Starks"       mx 70 ts "sans" "black"
         ctext "Art + Code"              mx 62 ss "sans" "maroon"

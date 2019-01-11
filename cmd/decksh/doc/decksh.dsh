@@ -13,14 +13,29 @@ deck
 	apisize=1.4
 	apicolor="rgb(127,127,127)"
 	
-	// Title slide
-
+	// Title slide	
 	slide
-		text "decksh" 								15 50 10 "mono" "maroon"
-		text "a little language for decks"			15 42 3
-		image "images/shell0.png" 75 50 1200 1200 20
-		text "Anthony Starks"						15 10 1.5 "sans" "rgb(127,127,127)" 
-		text "@ajstarks"							15 6  1.5 "sans" "rgb(127,127,127)" 100 "https://twitter.com/ajstarks"
+		text "decksh" 								5 50 12 "sans" "maroon"
+		text "a little language for decks"			5 40 4
+		etext "Anthony Starks"						95 10 1.5 "sans" "rgb(127,127,127)" 
+		etext "@ajstarks"							95 6  1.5 "sans" "rgb(127,127,127)" 100 "https://twitter.com/ajstarks"
+		square	75 50 40     "rgb(220,220,220)"
+		rect	70 55 20 20  "rgb(127,0,0)"
+		rect	80 50 20 20  "white"
+		rect	75 45 20 20  "rgb(127,127,127)"
+		hline   65 52 20 0.4 "white"
+		
+		hline   68 50  3 0.2 "white"
+		hline   70 48  5 0.2 "white"
+		hline   70 46  7 0.2 "white"
+		hline   70 44 10 0.2 "white"
+		hline   70 42  6 0.2 "white"
+		hline   70 40  4 0.2 "white"
+		hline   68 38  3 0.2 "white"
+		
+		circle  66 53.5 0.5 "white"
+		circle  67 53.5 0.5 "white"
+		circle  68 53.5 0.5 "white"
 	eslide
 
 	slide
@@ -31,7 +46,7 @@ deck
 	// Deck
 	slide "white" "rgb(50,50,50)"
 		text	"Deck" 5 45 18 "sans" "black" 100 "https://github.com/ajstarks/deck"
-		square	75 50 40 "rgb(240,240,240)"
+		square	75 50 40 "rgb(220,220,220)"
 		rect	70 55 20 20 "rgb(127,0,0)"
 		rect	80 50 20 20 "white"
 		rect	75 45 20 20 "rgb(127,127,127)"
@@ -653,7 +668,7 @@ deck
 		curve   80 gy 95 25 90 gy 0.25 c3
 
 		// Annotations
-		ns=5
+		ns=4
 		nc="gray"
 		nf="serif"
 		nop=40
@@ -684,21 +699,25 @@ deck
 		ctext "Examples" 50 50 ets
 	eslide
 	
+	codebgcolor="rgb(230,230,230)"
+	codefgcolor="black"
 	// Business card
-	slide
+	slide  codebgcolor codefgcolor
 		image "images/buscard.png"  50 50 200 350
 	eslide
 	
 	// Business card + code
-	slide
+	slide codebgcolor codefgcolor
+		rect 27 50 50 90 "white"
 		image "images/buscard.png"  80 50 200 350
-		textfile "code/buscard.dsh" 7 90 1.2 "mono"
+		textfile "code/buscard.dsh" 5 90 1.2 "mono"
 	eslide
 	
 	// Alignment example
-	slide
+	slide codebgcolor codefgcolor
+		rect 27 50 50 90 "white"
 		image "images/buscard.png"  80 50 200 350
-		textfile "code/buscard.dsh" 7 90 codesize "mono"
+		textfile "code/buscard.dsh" 5 90 codesize "mono"
 		arrow 35 88 80 88 0.2 2 2 "red"
 		arrow 35 85 75 85 0.2 2 2 "green"
 		arrow 35 82 72.5 82 0.2 2 2 "blue"
@@ -707,6 +726,13 @@ deck
 		line  72.5 82 72.5 10  0.5 "blue" 30
 	eslide
 	
+	// horizontal business card
+	slide codebgcolor codefgcolor
+		rect 27 50 50 90 "white"
+		image "images/hbcard.png"  76 50 350 200
+		textfile "code/hbcard.dsh" 5 90 codesize "mono"
+	eslide	
+
 	// Go module information flows
 	slide
 		ts=3
@@ -759,6 +785,7 @@ deck
 		legend "metadata"		50 5 1 "sans" metacolor
 	eslide
 	
+	// Mutigenerational households
 	slide
 		multi="The number and share of Americans living in multi- generational family households have continued to rise, despite improvements in the U.S. economy since the Great Recession. In 2016, a record 64 million people, or 20% of the U.S.population, lived with multiple generations under one roof, according to a new Pew Research Center analysis of census data."
 		topts="-fulldeck=f -color=steelblue -line -bar=f -scatter -dot -min=0 -max=30 -textsize=1 -bottom=14 -top=36"
@@ -775,7 +802,7 @@ deck
 		dchart topts -left=90 -right=95  code/wkids
 	eslide
 
-	// up and to the right
+	// CEOs: up and to the right
 	h=15
 	w=50
 	chartleft=25
