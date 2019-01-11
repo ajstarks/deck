@@ -15,8 +15,8 @@ deck
 	
 	// Title slide	
 	slide
-		text "decksh" 								5 50 12 "sans" "maroon"
-		text "a little language for decks"			5 40 4
+		text "decksh" 								7 50 12 "sans" "maroon"
+		text "a little language for decks"			7 40 4
 		etext "Anthony Starks"						95 10 1.5 "sans" "rgb(127,127,127)" 
 		etext "@ajstarks"							95 6  1.5 "sans" "rgb(127,127,127)" 100 "https://twitter.com/ajstarks"
 		square	75 50 40     "rgb(220,220,220)"
