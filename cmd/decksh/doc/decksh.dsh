@@ -585,7 +585,7 @@ deck
 	
 	// dchart overview
 	slide
-		text "dchart: charts for deck" 5 90 5 "sans" "black" 100 "https://github.com/ajstarks/deck/tree/master/cmd/dchart"
+		text "dchart: charts for deck" left top titlesize "serif" "black" 100 "https://github.com/ajstarks/deck/tree/master/cmd/dchart"
 		ctext "Bitcoin to USD" 35 79 1.5
 		dchart -fulldeck=f -textsize=1   -top=75 -left=10 -bottom=50 -right=60 -color=steelblue -title=f -bar=f -vol -val=f -xlabel=0 -yaxis -grid -csv -csvcol=Date,Close -yrange=0,20000,4000 code/BTC-USD.csv
 		dchart -fulldeck=f -textsize=1   -top=48 -left=10 -bottom=40 -right=60 -color=orange -yaxis=f -bar -val=f -xlabel=100 -xlast -title=f -csv -csvcol=Date,Volume code/BTC-USD.csv
@@ -597,7 +597,7 @@ deck
 
 	// Zoom in to overview
 	slide
-		cy=top
+		cy=top-80
  		textfile "code/example.dsh" 3 82 codesize "mono"
 		image    "images/example.png" 75 55 792 612 40
 		ctext	 "decksh example.dsh | pdf" cx cy 3.5 "mono"
@@ -749,40 +749,50 @@ deck
 		ah=2
 		modcolor="steelblue"
 		metacolor="gray"
-		ctext "Go Module Information Flows" 50 90 gts "sans" "black" 100 "https://blog.golang.org/modules2019"
-		ctext "go command"	20 gy ts
-		ctext "mirror"		50 my ts
-		ctext "godoc.org"	80 dy ts
-		ctext "index"		80 iy ts
-		ctext "notary"		50 ny ts
-		ctext "code hosts"	20 cy ts
-		ctext "(bitbucket, github, ...)" 20 15 ts
 		
-		ctext "fetches, verifies and builds Go code"			20 75 ns "serif" "gray"
-		ctext "helps users find and choose modules"				80 75 ns "serif" "gray"
-		ctext "serves cached module code"						50 55 ns "serif" "gray"
-		ctext "and notarized hashes"							50 51.5 ns "serif" "gray"
-		ctext "signs and publishes module hashes"				50 35 ns "serif" "gray"
-		ctext "serves module source code"						20 10 ns "serif" "gray"
-		ctext "serves feed listing of Go modules & versions"	80 15 ns "serif" "gray"
-		ctext "answer queries for goimports"					80 11 ns "serif" "gray"
+		col1=25
+		col2=50
+		col3=75
+		ctext "Go Module Information Flows" 50 90 gts "sans" "black" 100 "https://blog.golang.org/modules2019"
+		ctext "go command"	col1 gy ts
+		ctext "mirror"		col2 my ts
+		ctext "godoc.org"	col3 dy ts
+		ctext "index"		col3 iy ts
+		ctext "notary"		col2 ny ts
+		ctext "code hosts"	col1 cy ts
+		ctext "(bitbucket, github, ...)" col1 15 ts
+		
+		ctext "fetches, verifies and builds Go code"			col1 75 ns "serif" "gray"
+		ctext "helps users find and choose modules"				col3 75 ns "serif" "gray"
+		ctext "serves cached module code"						col2 55 ns "serif" "gray"
+		ctext "and notarized hashes"							col2 51.5 ns "serif" "gray"
+		ctext "signs and publishes module hashes"				col2 35 ns "serif" "gray"
+		ctext "serves module source code"						col1 10 ns "serif" "gray"
+		ctext "serves feed listing of Go modules & versions"	col3 15 ns "serif" "gray"
+		ctext "answer queries for goimports"					col3 11 ns "serif" "gray"
 
 		
-		rcarrow	20 25 15 50 45 my lw aw ah modcolor				// code -> mirror
-		arrow	30 21 75 21 lw aw ah metacolor					// code -> index
-		rcarrow	20 25 25 40 45 ny lw aw ah modcolor				// code -> notary
+		cx1=col1+10
+		cx3=col3-10
+		ccx=col1-5
+		rcarrow	col1 25   col1 col2  45 my   lw aw ah modcolor		// code -> mirror
+		arrow	cx1 21    cx3 21 lw aw ah metacolor				// code -> index
+		rcarrow	col1 25   col1 40 45 ny lw aw ah modcolor			// code -> notary
 		
-		lcarrow	80 25 82 50 55 my lw aw ah metacolor			// index -> mirror
-		arrow	80 25 80 75 lw aw ah metacolor					// index -> godoc.org
-		lcarrow	80 25 75 40 55 ny lw aw ah metacolor			// index -> notary
+		icx=col3
+		lcarrow	col3 25 col3 col2 55 my lw aw ah metacolor		// index -> mirror
+		arrow	col3 25 col3 75 lw aw ah metacolor				// index -> godoc.org
+		lcarrow	col3 25 col3 40 55 ny lw aw ah metacolor		// index -> notary
 		
-		arrow	50 45 50 50 lw aw ah							// notary -> mirror
+		arrow	col2 45 col2 col2 lw aw ah						// notary -> mirror
 		
-		rcarrow	50 65 50 80 70 gy lw aw ah modcolor				// mirror -> godoc.org
-		lcarrow	50 65 50 80 30 dy lw aw ah modcolor				// mirror -> go command
+		gx3=col3-10
+		gx2=col1+10
+		rcarrow	col2 65 col2 col3 gx3 gy lw aw ah modcolor		// mirror -> godoc.org
+		lcarrow	col2 65 col2 col3 gx2 dy lw aw ah modcolor		// mirror -> go command
 		
-		legend "modules/code"	50 7 1 "sans" modcolor
-		legend "metadata"		50 5 1 "sans" metacolor
+		legend "modules/code"	col1 5 1 "sans" modcolor
+		legend "metadata"		col3 5 1 "sans" metacolor
 	eslide
 	
 	// Mutigenerational households
