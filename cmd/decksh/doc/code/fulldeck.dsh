@@ -1,0 +1,30 @@
+deck
+
+	// text alignment
+	slide "rgb(180,180,180)"
+		text  "Left"   50 80 10 "sans" "black"
+		ctext "Center" 50 50 10 "sans" "gray"
+		etext "Right"  50 20 10 "sans" "white"
+		vline 50 0 100 0.2 "black" 20
+	eslide
+
+	// list
+	slide "blanchedalmond" "black"
+		text "Important Items" 10 80 5
+		blist 10 60 4 "sans" "red" 
+			li "First"
+			li "Second"
+			li "Third"
+			li "Fourth"
+		elist
+	eslide
+
+	// picture with text annotation
+	slide
+		quote="Tony Stark was able to build this in a cave. With a box of scraps!"
+		image "cave.jpg" 50 50 1920 1080 100 "https://youtu.be/MtntTvuv8Aw"
+		rect 70 60 40 40 "black" 40
+		textblock quote 45 70 45 5 "sans" "white"
+	eslide
+
+edeck

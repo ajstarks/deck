@@ -40,7 +40,7 @@ deck
 
 	slide
 		textblock `When you say “language,” most programmers think of the big ones, like FORTRAN or COBOL or Pascal. In fact, a language is any mechanism to express intent, and the input to many programs can be viewed profitably as statements in a language. This column is about those “little languages.”` left 80 70 3.5 "serif"
-		text "Jon Bentley, ACM Programming Pearls, Little Languages, 1986" left 15 2.5
+		text "Jon Bentley, Little Languages, Communications of the ACM, August 1986" left 15 2.5 "sans" "black" 100 "http://staff.um.edu.mt/afra1/seminar/little-languages.pdf"
 	eslide
 	
 	// Deck
@@ -113,6 +113,20 @@ deck
 		ctext "hello, world" 50 25 10
 		circle 50 0 100 "blue"
 		textfile "code/hw.dsh" 15 92 3 "mono" "white"
+	eslide
+	
+	// full deck example
+	slide
+		imx=80
+		tx=5
+		//rect 50 20 100 25 "black" 5
+		//rect 50 50 100 25 "black" 5
+		//rect 50 80 100 25 "black" 5
+
+		textfile "code/fulldeck.dsh" tx 95 1.25 "mono"
+		image "images/align.png"   imx 80 1920 1080 10
+		image "images/list.png"    imx 50 1920 1080 10
+		image "images/ironman.png" imx 20 1920 1080 10
 	eslide
 	
 	// Running
@@ -693,14 +707,19 @@ deck
 		dchart -left chartleft -right chartright -top chartop -bottom chartbottom opts code/AAPL.d 
 	eslide
 	
+	
+	codebgcolor="rgb(230,230,230)"
+	codefgcolor="black"
+	
+
+	
 	// Examples
 	slide
 		ets=titlesize*1.5
 		ctext "Examples" 50 50 ets
 	eslide
 	
-	codebgcolor="rgb(230,230,230)"
-	codefgcolor="black"
+	
 	// Business card
 	slide  codebgcolor codefgcolor
 		image "images/buscard.png"  50 50 200 350
