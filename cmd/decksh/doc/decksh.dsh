@@ -189,8 +189,9 @@ deck
 		text "Keywords" left top titlesize "serif"  
 		hsize=ts
 		lsize=hsize*0.55			// increase the size for 4:3 to 0.6
-		csep=25
-		rsep=35
+		csep=20
+		csep2=csep/2
+		rsep=40
 		headtop=top-10
 		listtop=headtop-sep
 		listspacing=lsize*0.85
@@ -237,13 +238,17 @@ deck
 		headtop-=rsep
 		listtop-=rsep
 		lx=left
-		text "Graphics" lx headtop hsize "sans" headcolor
+		text "Graphics and Arrows" lx headtop hsize "sans" headcolor
 		list lx listtop lsize "mono" "black" 100 listspacing
 			li "rect"
-			li "ellipse"
 			li "square"
+			li "ellipse"
 			li "circle"
 			li "polygon"
+		elist
+		lx+=csep2
+		
+		list lx listtop lsize "mono" "black" 100 listspacing
 			li "arc"
 			li "curve"
 			li "line"
@@ -251,8 +256,8 @@ deck
 			li "vline"
 		elist
 		
-		lx+=csep
-		text "Arrows" lx headtop hsize "sans" headcolor
+		lx+=csep2
+		//text "Arrows" lx headtop hsize "sans" headcolor
 		list lx listtop lsize "mono" "black" 100 listspacing
 			li "arrow"
 			li "crarrow"
@@ -879,6 +884,78 @@ deck
 		ctext "GE" 50 ny 3 "sans" "gray" 75
 	eslide
 	
+	// IBM execs
+	imy=90
+	imw=90
+	imh=90
+	ims=50
+
+	opts="-fulldeck=f -color=green -bar=f -note=f -val=f -line -linewidth=0.02 -vol -volop=20 -yaxis -xlabel=6000 -xlast -textsize=1"
+	w=28
+	tw=w+4
+	h=12
+	chleft=20
+	right=chleft+w
+	ix=chleft-10
+	h2=h/2
+	h3=h*0.75
+	interval=h*2
+	tx=right+5
+	tsize=1.5
+	notex=right+10
+	notefont="serif"
+	notecolor="rgb(70,70,70)"
+	notesize=1.2
+	romettyq="The first woman to lead IBM, Rometty shifted IBM away from shrinking businesses such as computers and operating system software, and into higher-growth areas like artificial intelligence. Her tenure has also been met by fierce criticism relating to executive compensation bonuses, layoffs, outsourcing, and presiding over 24 consecutive quarters of revenue decline."
+	palmisanoq="Palmisano's mandate was to move into new unique businesses with high profit margins and potential for innovation. This included purchasing PWC Consulting in 2002, so that IBM could go beyond selling computers and software and help customers use technology to solve business challenges in areas such as marketing, procurement and manufacturing."
+	gerstnerq="Gerstner's choice to keep the company together was the defining decision of his tenure, as these gave IBM the capabilities to deliver complete IT solutions to customers. Services could be sold as an add-on to companies that had already bought IBM computers, while barely profitable pieces of hardware were used to open the door to more profitable deals."
+	akersq="Akers was credited with simplifying the company's bureaucracy to focus more on profits. In a restructuring intended to reverse three years of disappointing performance, he created five new, autonomous organizations responsible for the company's innovation, design and manufacturing. Akers was forced to resign, after the company posted an unprecedented $5 billion annual loss." 
+	slide
+		chtop=95
+		bottom=chtop-h
+		iy=bottom+h2
+		py=bottom-tsize
+		notey=chtop+0.5
+		dchart opts -yrange 0,220,110 -top chtop -bottom bottom -left chleft -right right -color red code/rometty.d
+		image "images/ginni.jpg" ix iy imw imh ims
+		ctext "Rometty" ix py tsize
+		ctext "-60.47%" tx iy tsize "sans" "red"
+		textblock romettyq notex notey tw notesize notefont notecolor
+	
+		chtop-=interval
+		bottom=chtop-h
+		iy=bottom+h2
+		py=bottom-tsize
+		notey=chtop+0.5
+		dchart opts -yrange 0,200,100 -top chtop -bottom bottom -left chleft -right right code/palmisano.d
+		image "images/palmisano.jpg" ix iy imw imh ims
+		ctext "Palmisano" ix py tsize
+		ctext "43.97%" tx iy tsize "sans" "green"
+		textblock palmisanoq notex notey tw notesize notefont notecolor
+
+		chtop-=interval
+		bottom=chtop-h
+		iy=bottom+h2
+		py=bottom-tsize
+		notey=chtop+0.5
+		dchart opts -yrange 0,140,70 -top chtop -bottom bottom -left chleft -right right code/gerstner.d
+		image "images/gerstner.jpg"  ix iy imw imh ims
+		ctext "Gerstner" ix py tsize
+		ctext "86.78%" tx iy tsize "sans" "green"
+		textblock gerstnerq notex notey tw notesize notefont notecolor
+		
+		chtop-=interval
+		bottom=chtop-h
+		iy=bottom+h2
+		py=bottom-tsize
+		notey=chtop+0.5
+		dchart opts -yrange 0,44,22 -top chtop -bottom bottom -left chleft -right right -color red code/akers.d
+		image "images/akers.jpg" ix iy imw imh ims
+		ctext "Akers" ix py tsize
+		ctext "-166.59%" tx iy tsize "sans" "red"
+		textblock akersq notex notey tw notesize notefont notecolor
+	eslide
+
 	// Forecast vs. Actuals from SWD
 	slide
 		opts="-fulldeck=f -min=0 -max=180 -yrange=0,180,20 -line -vol -bar=f -top=60 -bottom=15 -datafmt=$%v -textsize=1.8"
