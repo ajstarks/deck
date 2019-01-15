@@ -119,20 +119,16 @@ deck
 	slide
 		imx=80
 		tx=5
-		//rect 50 20 100 25 "black" 5
-		//rect 50 50 100 25 "black" 5
-		//rect 50 80 100 25 "black" 5
-
 		textfile "code/fulldeck.dsh" tx 95 1.25 "mono"
-		image "images/align.png"   imx 80 1920 1080 10
-		image "images/list.png"    imx 50 1920 1080 10
-		image "images/ironman.png" imx 20 1920 1080 10
+		image    "images/align.png"   imx 80 1920 1080 10
+		image    "images/list.png"    imx 50 1920 1080 10
+		image    "images/ironman.png" imx 20 1920 1080 10
 	eslide
 	
 	// Running
 	slide
 		lx=left
-		ly=top-10
+		ly=top-20
 		ts=titlesize*0.6
 		text "Running decksh" left top titlesize "serif"
 		lls=1.4
@@ -151,11 +147,8 @@ deck
  			li "read from file, write to stdout"
  			li "read from stdin, write to file"
  			li "read from file, write to file"
- 			li "executable deck"
+ 			li "executable deck with #!/path/to/decksh"
  		elist
-		ly-=45
-		textcode "code/hb.dsh" left ly 30 es
- 		
 	eslide
 	
 	// Keywords
@@ -164,7 +157,7 @@ deck
 		argcolor="rgb(0,0,127)"
 		optcolor="rgb(127,127,127)"
 		
-		ky=70
+		ky=top-20
 		sl=left
 		exsize=2.5
 		text "Keywords and arguments" left top titlesize "serif"
@@ -188,7 +181,7 @@ deck
 	slide
 		text "Keywords" left top titlesize "serif"  
 		hsize=ts
-		lsize=hsize*0.55			// increase the size for 4:3 to 0.6
+		lsize=hsize*0.55
 		csep=20
 		csep2=csep/2
 		rsep=40
@@ -495,16 +488,19 @@ deck
 		
 		gtop-=30
 		apiy=gtop-sep
+		arsize=0.3
+		aw=4
+		ah=5
 		ctext "arrow" lx gtop ts "mono" spotcolor
 		ctext "x1 y1 x2 y2 [linewidth] [aw] [ah] [color] [op]" lx apiy apisize "serif" apicolor
-		arrow 20 row1 10 row1 
+		arrow 20 row1 10 row1 arsize aw ah
 		circle 10 row1 spotsize spotcolor
 		circle 20 row1 spotsize spotcolor
 		lx+=25
 		
-		arrow 35 row1 45 70
-		arrow 65 row1 65 80
-		arrow 90 80   90 row1
+		arrow 35 row1 45 70 arsize aw ah
+		arrow 65 row1 65 80 arsize aw ah
+		arrow 90 80   90 row1 arsize aw ah
 		
 		circle 35 row1 spotsize spotcolor
 		circle 45 70   spotsize spotcolor
@@ -522,7 +518,7 @@ deck
 		
 		ctext "lcarrow"	lx gtop ts "mono" spotcolor
 		ctext "x1 y1 x2 y2 x3 y3 [lw] [aw] [ah] [color] [op]" lx apiy apisize "serif" apicolor
-		lcarrow 20 row2  20 40  10 40
+		lcarrow 20 row2  20 40  10 40 arsize aw ah
 		circle  20 row2 spotsize spotcolor
 		circle  20 40 spotsize spotcolor
 		circle  10 40 spotsize spotcolor
@@ -531,7 +527,7 @@ deck
 		ctext "rcarrow"	lx gtop ts "mono" spotcolor
 		ctext "..." lx apiy apisize "serif" apicolor
 
-		rcarrow 35 row2 35 40 45 40
+		rcarrow 35 row2 35 40 45 40 arsize aw ah
 		circle  35 row2 spotsize spotcolor
 		circle  35 40 spotsize spotcolor
 		circle  45 40 spotsize spotcolor
@@ -541,7 +537,7 @@ deck
 		ctext "ucarrow"	lx gtop ts "mono" spotcolor
 		ctext "..." lx apiy apisize "serif" apicolor
 
-		ucarrow 60 row2 70 row2 70 40
+		ucarrow 60 row2 70 row2 70 40 arsize aw ah
 		circle  60 row2 spotsize spotcolor
 		circle  70 row2 spotsize spotcolor
 		circle  70 40 spotsize spotcolor
@@ -550,7 +546,7 @@ deck
 		lx+=25
 		ctext "dcarrow"	lx gtop ts "mono" spotcolor
 		ctext "..." lx apiy apisize "serif" apicolor
-		dcarrow 85 40 95 40 95 row2
+		dcarrow 85 40 95 40 95 row2 arsize aw ah
 		circle  85 40 spotsize spotcolor
 		circle  95 40 spotsize spotcolor
 		circle  95 row2 spotsize spotcolor
@@ -711,12 +707,9 @@ deck
 		// Chart
 		dchart -left chartleft -right chartright -top chartop -bottom chartbottom opts code/AAPL.d 
 	eslide
-	
-	
-	codebgcolor="rgb(230,230,230)"
-	codefgcolor="black"
-	
 
+	codebgcolor="rgb(220,220,220)"
+	codefgcolor="black"
 	
 	// Examples
 	slide
@@ -748,6 +741,13 @@ deck
 		line  80 88 80 10  0.5 "red" 30
 		line  75 85 75 10 0.5 "green" 30
 		line  72.5 82 72.5 10  0.5 "blue" 30
+	eslide
+
+	// Business card + code
+	slide codebgcolor codefgcolor
+		rect 27 50 50 90 "white"
+		image "images/buscard.png"  80 50 200 350
+		textfile "code/buscard.dsh" 5 90 1.2 "mono"
 	eslide
 	
 	// horizontal business card
@@ -845,7 +845,7 @@ deck
 	h2=h/2
 	nsize=2.5
 	nx=right+5
-	opts="-fulldeck=f -bar=f -note=f -val=f -line -linewidth=0.1 -vol -volop=10 -yaxis -xlabel=6000 -xlast -color green"
+	opts="-fulldeck=f -bar=f -note=f -val=f -line -linewidth=0.1 -vol -volop=20 -yaxis -xlabel=6000 -xlast -color green"
 	slide
 		chartop=95
 		bottom=chartop-h
@@ -958,7 +958,7 @@ deck
 
 	// Forecast vs. Actuals from SWD
 	slide
-		opts="-fulldeck=f -min=0 -max=180 -yrange=0,180,20 -line -vol -bar=f -top=60 -bottom=15 -datafmt=$%v -textsize=1.8"
+		opts="-fulldeck=f -min=0 -max=180 -yrange=0,180,20 -line -vol -volop=20 -bar=f -top=60 -bottom=15 -datafmt=$%v -textsize=1.8"
 		chartop=80
 		yy=chartop-10
 		yt=yy-4
@@ -982,8 +982,8 @@ deck
 		textblock   "steady annual growth: 8-9%"         50 yt  7 notesize "serif" "gray"
 		textblock   "assumed 10% year over year growth"  70 yt 10 notesize "serif" "gray"
 
-		dchart opts -left=10 -right=65 -volop=10 -color acolor -vcolor acolor code/actual.d
-		dchart opts -left=70 -right=85 -volop=20 -color fcolor -vcolor fcolor code/forecast.d
+		dchart opts -left=10 -right=65 -color acolor -vcolor acolor code/actual.d
+		dchart opts -left=70 -right=85 -color fcolor -vcolor fcolor code/forecast.d
     eslide
 	
 	// Aggregated on one chart
@@ -1020,7 +1020,7 @@ deck
 		chartbottom=68
 		boxw=20
 		boxh=20
-		boxop=7
+		boxop=15
 		ctext bntitle 50 93 2 "sans"
 
 		ctext "Amanda"		20 top lsize
