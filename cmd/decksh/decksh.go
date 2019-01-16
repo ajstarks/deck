@@ -9,7 +9,7 @@ import (
 	"math"
 	"os"
 	"os/exec"
-	"runtime"
+	"path/filepath"
 	"strings"
 	"text/scanner"
 )
@@ -32,17 +32,6 @@ var xmlmap = strings.NewReplacer(
 	"&", "&amp;",
 	"<", "&lt;",
 	">", "&gt;")
-
-var shell = "/bin/sh"
-var shellflag = "-c"
-
-// on init, set the shell info, if on windows.
-func init() {
-	if runtime.GOOS == "windows" {
-		shell = `c:\windows\system32\cmd.exe`
-		shellflag = "/c"
-	}
-}
 
 // xmlesc escapes XML
 func xmlesc(s string) string {
@@ -827,7 +816,20 @@ func chart(w io.Writer, s string, linenumber int) error {
 	for i := 1; i < len(args); i++ {
 		s = s + " " + args[i]
 	}
-	out, err := exec.Command(shell, shellflag, s).Output()
+	// separate again
+	args = strings.Fields(s)
+
+	// exec directly without the shell to avoid injection bugs
+	name := args[0]
+	cmd := &exec.Cmd{Path: name, Args: args}
+	if filepath.Base(name) == name {
+		if lp, err := exec.LookPath(name); err != nil {
+			return err
+		} else {
+			cmd.Path = lp
+		}
+	}
+	out, err := cmd.Output()
 	if err != nil {
 		return err
 	}
