@@ -87,6 +87,7 @@ flags control the visibility of plot components.
 	-title       show title (default true)
 	-chartitle   specify the title (overiding title in the data)
 	-hline       horizontal line with optional label (value,label)
+	-noteloc     note location (c-center, r-right, l-left, default c)
 	
 	-top         top of the plot (default 80)
 	-bottom      bottom of the plot (default 30)

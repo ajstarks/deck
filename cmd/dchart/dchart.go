@@ -23,12 +23,12 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop, linewidth   float64
-	xint, pmlen                                                                           int
-	readcsv, showdot, datamin, showvolume, showscatter, showpct                           bool
-	showbar, showval, showxlast, showline, showhbar, wbar, showaxis, shownote             bool
-	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols, hline      string
+	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop, linewidth       float64
+	xint, pmlen                                                                               int
+	readcsv, showdot, datamin, showvolume, showscatter, showpct                               bool
+	showbar, showval, showxlast, showline, showhbar, wbar, showaxis, shownote                 bool
+	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes     bool
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols, hline, noteloc string
 )
 
 var blue7 = []string{
@@ -109,6 +109,7 @@ func cmdflags() {
 	flag.StringVar(&datafmt, "datafmt", defaultfmt, "data format")
 	flag.StringVar(&yaxr, "yrange", "", "y-axis range (min,max,step)")
 	flag.StringVar(&hline, "hline", "", "horizontal line value,label")
+	flag.StringVar(&noteloc, "noteloc", "c", "note location (c-center, r-right aligned, l-left aligned)")
 
 	flag.Parse()
 }
@@ -832,7 +833,19 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			}
 		}
 		if len(data.note) > 0 && shownote {
-			deck.TextMid(x, y+0.1, data.note, "serif", ts*0.6, labelcolor)
+			xoffset := ts / 2
+			yoffset := ts / 2
+			notesize := ts * 0.75
+			switch noteloc {
+			case "l", "b":
+				deck.Text(x+xoffset, y, data.note, "serif", notesize, labelcolor)
+			case "r", "e":
+				deck.TextEnd(x-xoffset, y, data.note, "serif", notesize, labelcolor)
+			case "c":
+				deck.TextMid(x, y+yoffset, data.note, "serif", notesize, labelcolor)
+			default:
+				deck.TextMid(x, y+yoffset, data.note, "serif", notesize, labelcolor)
+			}
 		}
 		// show x label every xinit times, show the last, if specified
 		if xint > 0 && (i%xint == 0 || (showxlast && i == l-1)) {
