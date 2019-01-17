@@ -1,0 +1,13 @@
+# Fairbanks
+Jan	-15
+Feb	-9
+Mar	-4
+Apr	21
+May	38
+Jun	49
+Jul	52
+Aug	46
+Sep	35
+Oct	19
+Nov	-5
+Dec	-11

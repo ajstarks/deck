@@ -1,0 +1,13 @@
+# Chicago
+Jan	21
+Feb	26
+Mar	34
+Apr	43
+May	53
+Jun	63
+Jul	70
+Aug	70
+Sep	62
+Oct	50
+Nov	39
+Dec	27

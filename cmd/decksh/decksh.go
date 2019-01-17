@@ -831,7 +831,7 @@ func chart(w io.Writer, s string, linenumber int) error {
 	}
 	out, err := cmd.Output()
 	if err != nil {
-		return err
+		return fmt.Errorf("%v - %v\n", s, err)
 	}
 	fmt.Fprintf(w, "%s\n", out)
 	return err

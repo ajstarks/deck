@@ -1067,6 +1067,43 @@ deck
 		dchart -color=salmon	-top chartop -bottom chartbottom -left=70 -right=90 opt -xlabel=40 code/Patricia.d
 	eslide
 	
+	// High/Low Temperatures
+	slide
+		opts="-title=f -xlabel=0 -grid -val=f -bar=f -line -barwidth=1 -line -fulldeck=f -min=-25 -max=100 -yrange=-25,100,25"
+		fopt="-title=t -xlabel=2 -yaxis"
+		hicolor="orangered"
+		locolor="steelblue"
+		chtop=90
+		h=20
+		mid=50
+		ctext "Average High/Low Temperatures (°F)" mid chtop 4
+		legend "Avg. High"	40 5 1 "sans" hicolor
+		legend "Avg. Low"	55 5 1 "sans" locolor
+		
+		chtop-=15
+		chbot=chtop-h
+		dchart opts fopt	-top chtop -bottom chbot -left=10 -right=30 -color hicolor code/fba-hi.d
+		dchart opts			-top chtop -bottom chbot -left=10 -right=30 -color locolor code/fba-lo.d
+
+		dchart opts fopt	-top chtop -bottom chbot -left=40 -right=60 -color hicolor code/chi-hi.d
+		dchart opts			-top chtop -bottom chbot -left=40 -right=60 -color locolor code/chi-lo.d
+
+		dchart opts fopt	-top chtop -bottom chbot -left=70 -right=90 -color hicolor code/bos-hi.d
+		dchart opts			-top chtop -bottom chbot -left=70 -right=90 -color locolor code/bos-lo.d
+
+		chtop-=40
+		chbot-=40
+
+		dchart opts fopt	-top chtop -bottom chbot -left=10 -right=30 -color hicolor code/hon-hi.d
+		dchart opts			-top chtop -bottom chbot -left=10 -right=30 -color locolor code/hon-lo.d
+
+		dchart opts fopt	-top chtop -bottom chbot -left=40 -right=60 -color hicolor code/lac-hi.d
+		dchart opts			-top chtop -bottom chbot -left=40 -right=60 -color locolor code/lac-lo.d
+
+		dchart opts fopt	-top chtop -bottom chbot -left=70 -right=90 -color hicolor code/mia-hi.d
+		dchart opts			-top chtop -bottom chbot -left=70 -right=90 -color locolor code/mia-lo.d
+	eslide
+	
 	// German fires
 	slide
 		chartop=70

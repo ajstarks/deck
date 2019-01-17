@@ -1,0 +1,13 @@
+# Honolulu
+Jan	81
+Feb	81
+Mar	82
+Apr	83
+May	85
+Jun	86
+Jul	87
+Aug	88
+Sep	88
+Oct	87
+Nov	84
+Dec	82

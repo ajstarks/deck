@@ -1,0 +1,13 @@
+# Boston
+Jan	22	
+Feb	24
+Mar	31
+Apr	41
+May	50
+Jun	59
+Jul	66
+Aug	65
+Sep	57
+Oct	47
+Nov	38
+Dec	28

@@ -1,0 +1,13 @@
+# Honolulu
+Jan	65
+Feb	65
+Mar	67
+Apr	68
+May	69
+June	72
+July	73
+Aug	73
+Sep	73
+Oct	72
+Nov	70
+Dec	67

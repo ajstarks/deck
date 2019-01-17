@@ -1,0 +1,13 @@
+# Miami
+Jan	65
+Feb	66
+Mar	69
+Apr	73
+May	76
+Jun	79
+Jul	80
+Aug	81
+Sep	80
+Oct	77
+Nov	71
+Dec	69

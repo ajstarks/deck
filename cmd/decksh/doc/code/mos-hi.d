@@ -1,0 +1,13 @@
+# Moscow
+Jan	23
+Feb	25
+Mar	36
+Apr	52
+May	65
+Jun	72
+Jul	75
+Aug	71
+Sep	60
+Oct	47
+Nov	34
+Dec	27
