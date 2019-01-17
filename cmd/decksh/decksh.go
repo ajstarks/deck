@@ -824,14 +824,14 @@ func chart(w io.Writer, s string, linenumber int) error {
 	cmd := &exec.Cmd{Path: name, Args: args}
 	if filepath.Base(name) == name {
 		if lp, err := exec.LookPath(name); err != nil {
-			return err
+			return fmt.Errorf("line: %d, %v - %v", linenumber, name, err)
 		} else {
 			cmd.Path = lp
 		}
 	}
 	out, err := cmd.Output()
 	if err != nil {
-		return fmt.Errorf("%v - %v\n", s, err)
+		return fmt.Errorf("line: %d [%v] - %v", linenumber, s, err)
 	}
 	fmt.Fprintf(w, "%s\n", out)
 	return err
