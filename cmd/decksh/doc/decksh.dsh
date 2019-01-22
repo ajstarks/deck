@@ -39,7 +39,7 @@ deck
 	eslide
 
 	slide
-		textblock `When you say “language,” most programmers think of the big ones, like FORTRAN or COBOL or Pascal. In fact, a language is any mechanism to express intent, and the input to many programs can be viewed profitably as statements in a language. This column is about those “little languages.”` left 80 70 3.5 "serif"
+		textblock `a language is any mechanism to express intent, and the input to many programs can be viewed profitably as statements in a language. This column is about those “little languages.”` left 80 70 3.5 "serif"
 		text "Jon Bentley, Little Languages, Communications of the ACM, August 1986" left 15 2.5 "sans" "black" 100 "http://staff.um.edu.mt/afra1/seminar/little-languages.pdf"
 	eslide
 	
@@ -339,7 +339,7 @@ deck
 		codesize=1.2
 		text "textcode"	lx gtop ts "mono" spotcolor
 		ctext `"filename" x y width size [color]` apix apiy apisize "serif" apicolor
-		textcode "code/hw.go" lx row2 30 codesize
+		textcode "code/hw.go" lx row2 25 codesize
 	eslide
 	
 	// Lists
@@ -1170,6 +1170,24 @@ deck
  		
  		text "Chartable blog, Weekly Chart, September 6, 2018" left 5 1.5 "serif" "steelblue" 100 "https://blog.datawrapper.de/weekly43-wildfires-germany/"
 	eslide
+	
+	// How does Go help
+	slide "black" "white"
+		ctext "How does Go help?" 50 50 8 "serif"
+	eslide
+	
+	slide "black" "white"
+		ctext "fmt" 50 50 8 "mono"
+	eslide
+	
+	slide "black" "white"
+		ctext "text/scanner" 50 50 8 "mono"
+	eslide
+
+	slide "black" "white"
+		ctext "errors" 50 50 8 "mono"
+	eslide
+	 
 
 	// References
 	slide
