@@ -89,19 +89,19 @@ deck
 		markupcolor="gray"
 		outcolor="rgb(0,0,127)"
 		ay=cy+2
-		
-		etext	"decksh"		20 cy ts "sans" dscolor
-		arrow 22 ay 32 ay
-		ctext	"deck markup"	50 cy ts "sans" markupcolor
-		arrow 67 ay 77 ay
-		text	"PDF"			80 cy ts "sans" outcolor
+		ts=titlesize*1.2
+		ctext	"decksh"		15 cy ts "sans" dscolor
+		arrow 25 ay 35 ay
+		ctext	"deck markup"	53 cy ts "sans" markupcolor
+		arrow 70 ay 80 ay
+		ctext	"PDF"			87 cy titlesize "sans" outcolor
 		cy+=10
-		text	"SVG"			80 cy ts "sans" outcolor
+		ctext	"SVG"			87 cy titlesize "sans" outcolor
 		cy-=20
-		text	"PNG" 			80 cy ts "sans" outcolor
+		ctext	"PNG" 			87 cy titlesize "sans" outcolor
 		
 		cy-=ysep
-		imy=cy-10
+		imy=cy-15
 
 		textfile	"code/example.dsh" 5  cy  0.75 "mono" dscolor
 		textfile	"code/example.xml" 35 cy  0.75 "mono" markupcolor
@@ -274,12 +274,12 @@ deck
 		elist
 	eslide
 	
-	// Assignments
+	// Variables Assignments
 	slide
 		assize=1.8
-		text "Assignments" left top titlesize "serif"
+		text "Variables and Assignments" left top titlesize "serif"
 		sy=top-10
-		textfile "code/samplecode.txt" left sy assize "mono" "black" 100 1.4 // you can increase size for 4:3
+		textfile "code/samplecode.txt" left sy assize "mono" "black" 100 1.5 // you can increase size for 4:3
 	eslide
 
 	// Text
@@ -288,7 +288,7 @@ deck
 		gtop=top
 		text "Text" left top titlesize "serif"
 		row1=gtop-20
-		row2=gtop-45
+		row2=gtop-50
 		row3=gtop-60
 		sep=5
 		
@@ -337,6 +337,7 @@ deck
 		lx+=30
 		apix=80
 		codesize=1.2
+		row2+=5
 		text "textcode"	lx gtop ts "mono" spotcolor
 		ctext `"filename" x y width size [color]` apix apiy apisize "serif" apicolor
 		textcode "code/hw.go" lx row2 25 codesize
@@ -345,16 +346,16 @@ deck
 	// Lists
 	slide
 		text "Lists" left top titlesize "serif"
-		lx=left
+		lx=15
 		ktop=top-70
 		row1=top-20
 		ls=ts*0.9
 		apiy=ktop-sep
-		apix=lx-sep
 
-		text "list" lx ktop ts "mono" spotcolor
-		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "serif" apicolor
-		list lx row1 ls 
+		kx=lx-5
+		ctext "list" lx ktop ts "mono" spotcolor
+		ctext "x y size [font] [color] [opacity] [spacing]" lx apiy apisize "serif" apicolor
+		list kx row1 ls 
 			li "One"
 			li "Two"
 			li "Three"
@@ -362,11 +363,11 @@ deck
 		elist
 		
 		lx+=30
-		apix=lx-sep
-		text "blist" lx ktop ts "mono" spotcolor
-		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "serif" apicolor
+		kx=lx-5
+		ctext "blist" lx ktop ts "mono" spotcolor
+		ctext "x y size [font] [color] [opacity] [spacing]" lx apiy apisize "serif" apicolor
 
-		blist lx row1 ls
+		blist kx row1 ls
 			li "One"
 			li "Two"
 			li "Three"
@@ -374,12 +375,11 @@ deck
 		elist
 		
 		lx+=30
-		apix=lx-sep
+		kx=lx-5
+		ctext "nlist" lx ktop ts "mono" spotcolor
+		ctext "x y size [font] [color] [opacity] [spacing]" lx apiy apisize "serif" apicolor
 
-		text "nlist" lx ktop ts "mono" spotcolor
-		text "x y size [font] [color] [opacity] [spacing]" apix apiy apisize "serif" apicolor
-
-		nlist lx row1 ls
+		nlist kx row1 ls
 			li "One"
 			li "Two"
 			li "Three"
@@ -686,23 +686,23 @@ deck
 		ns=4
 		nc="gray"
 		nf="serif"
-		nop=40
+		nop=60
 		ch=chartop-chartbottom
 		chh=ch/2
 		chy=chartop-chh
 		ctext "text"	50 95		ns nf nc nop
 		ctext "image"	72 80		ns nf nc nop
 		ctext "list"	25 80		ns nf nc nop
-		ctext "chart"	25 chy		ns nf nc nop
+		text  "chart"	10 45		ns nf nc nop
 
 		ns=2
 		notey=gy+8
-		ctext "rect"	15 notey	ns nf nc
-		ctext "ellipse"	27.5 notey	ns nf nc
-		ctext "polygon"	40 notey	ns nf nc
-		ctext "line"	55 notey	ns nf nc
-		ctext "arc"		70 notey	ns nf nc
-		ctext "curve"	85 notey	ns nf nc
+		ctext "rect"	15 notey	ns nf nc nop
+		ctext "ellipse"	27.5 notey	ns nf nc nop
+		ctext "polygon"	40 notey	ns nf nc nop
+		ctext "line"	55 notey	ns nf nc nop
+		ctext "arc"		70 notey	ns nf nc nop
+		ctext "curve"	85 notey	ns nf nc nop
 
 		// Chart
 		dchart -left chartleft -right chartright -top chartop -bottom chartbottom opts code/AAPL.d 
@@ -1191,7 +1191,7 @@ deck
 
 	// References
 	slide
-		ts=4
+		ts=titlesize*0.75
 		text "go get it"	left top titlesize "serif"
 		text "deck"			left 70 ts "mono" headcolor
 		text "decksh"		left 60 ts "mono" headcolor
