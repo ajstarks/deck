@@ -120,9 +120,9 @@ deck
 		imx=80
 		tx=5
 		textfile "code/fulldeck.dsh" tx 95 1.25 "mono"
-		image    "images/align.png"   imx 80 1920 1080 10
-		image    "images/list.png"    imx 50 1920 1080 10
-		image    "images/ironman.png" imx 20 1920 1080 10
+		image    "images/align.png"   imx 80 192 108
+		image    "images/list.png"    imx 50 192 108
+		image    "images/ironman.png" imx 20 192 108
 	eslide
 	
 	// Running
@@ -153,27 +153,11 @@ deck
 	
 	// Set up
 	slide "black" "white"
-		image "images/setup0.png" 50 50 2966 1160 25
+		image "images/setup0.png" 50 50 760 297
 	eslide
 
 	slide "black" "white"
-		image "images/setup1.png" 50 50 2966 1160 25
-	eslide
-	
-	slide "black" "white"
-		image "images/setup2.png" 50 50 3245 1240 20
-	eslide
-	
-	slide "black" "white"
-		image "images/setup3.png" 50 50 3245 1241 20
-	eslide
-	
-	slide
-		image "images/linux-setup6.png" 50 50 1336 768 60
-	eslide
-	
-	slide
-		image "images/linux-setup7.png" 50 50 1336 768 60
+		image "images/setup1.png" 50 50 760 297
 	eslide
 	
 	// Keywords
@@ -206,13 +190,13 @@ deck
 	slide
 		text "Keywords" left top titlesize "serif"  
 		hsize=ts
-		lsize=hsize*0.55
-		csep=20
+		lsize=hsize*0.67
+		csep=25
 		csep2=csep/2
-		rsep=40
+		rsep=45
 		headtop=top-10
 		listtop=headtop-sep
-		listspacing=lsize*0.85
+		listspacing=lsize*0.75
 		headcolor=spotcolor
 		
 		lx=left
