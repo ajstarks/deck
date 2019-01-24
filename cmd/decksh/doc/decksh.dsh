@@ -151,6 +151,31 @@ deck
  		elist
 	eslide
 	
+	// Set up
+	slide "black" "white"
+		image "images/setup0.png" 50 50 2966 1160 25
+	eslide
+
+	slide "black" "white"
+		image "images/setup1.png" 50 50 2966 1160 25
+	eslide
+	
+	slide "black" "white"
+		image "images/setup2.png" 50 50 3245 1240 20
+	eslide
+	
+	slide "black" "white"
+		image "images/setup3.png" 50 50 3245 1241 20
+	eslide
+	
+	slide
+		image "images/linux-setup6.png" 50 50 1336 768 60
+	eslide
+	
+	slide
+		image "images/linux-setup7.png" 50 50 1336 768 60
+	eslide
+	
 	// Keywords
 	slide
 		optx=53
