@@ -31,6 +31,7 @@ The command line options are:
 	-dot         show dot plot (default false)
 	-grid        show gridlines on the y axis (default false)
 	-val         show values (default true)
+	-rline       show a regression line (default false)
 	-pct         show percentages with values (default false)
 	-valpos      value position (t=top, b=bottom, m=middle) (default "t")
 	-vol         show volume plot (default false)
@@ -65,6 +66,7 @@ The command line options are:
 	-xlast       show the last x label
 	-color       data color (default "lightsteelblue")
 	-vcolor      value color (default "rgb(127,0,0)")
+	-rlcolor     regression line color (default "rgb(127,0,0)")
 	-volop       volume opacity (default 50)
 	-datafmt     data format for values (default "%.1f")
 	-note        show annotation (default true)

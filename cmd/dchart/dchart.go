@@ -23,12 +23,12 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop, linewidth       float64
-	xint, pmlen                                                                               int
-	readcsv, showdot, datamin, showvolume, showscatter, showpct                               bool
-	showbar, showval, showxlast, showline, showhbar, wbar, showaxis, shownote                 bool
-	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes     bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols, hline, noteloc string
+	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop, linewidth                   float64
+	xint, pmlen                                                                                           int
+	readcsv, showdot, datamin, showvolume, showscatter, showpct                                           bool
+	showbar, showval, showxlast, showline, showhbar, wbar, showaxis, shownote, showrline                  bool
+	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes                 bool
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols, hline, noteloc, rlinecolor string
 )
 
 var blue7 = []string{
@@ -91,6 +91,7 @@ func cmdflags() {
 	flag.BoolVar(&showspokes, "spokes", false, "show spokes on radial charts")
 	flag.BoolVar(&showpgrid, "pgrid", false, "show proportional grid")
 	flag.BoolVar(&shownote, "note", true, "show annotations")
+	flag.BoolVar(&showrline, "rline", false, "show regression line")
 	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
 	flag.BoolVar(&fulldeck, "fulldeck", true, "generate full markup")
 	flag.BoolVar(&datamin, "dmin", false, "zero minimum")
@@ -105,6 +106,7 @@ func cmdflags() {
 	flag.StringVar(&valpos, "valpos", "t", "value position (t=top, b=bottom, m=middle)")
 	flag.StringVar(&datacolor, "color", "lightsteelblue", "data color")
 	flag.StringVar(&valuecolor, "vcolor", "rgb(127,0,0)", "value color")
+	flag.StringVar(&rlinecolor, "rlcolor", "rgb(127,0,0)", "regression line color")
 	flag.StringVar(&bgcolor, "bgcolor", "white", "background color")
 	flag.StringVar(&datafmt, "datafmt", defaultfmt, "data format")
 	flag.StringVar(&yaxr, "yrange", "", "y-axis range (min,max,step)")
@@ -752,6 +754,12 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		yvol[l+1] = bottom
 	}
 
+	var xreg, yreg []float64
+	if showrline {
+		xreg = make([]float64, l)
+		yreg = make([]float64, l)
+	}
+
 	linespacing := ts * ls
 	spacing := ts * 1.5
 
@@ -765,7 +773,6 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 
 	if len(title) > 0 && showtitle {
 		deck.TextMid(left+((right-left)/2), top+(linespacing*1.5), title, "sans", spacing, titlecolor)
-
 	}
 
 	if showaxis {
@@ -798,6 +805,12 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			xvol[i+1] = x
 			yvol[i+1] = y
 		}
+
+		if showrline {
+			xreg[i] = float64(i)
+			yreg[i] = data.value
+		}
+
 		if showline && i > 0 {
 			deck.Line(px, py, x, y, linewidth, datacolor)
 		}
@@ -862,9 +875,63 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 	if showvolume {
 		deck.Polygon(xvol, yvol, datacolor, volop)
 	}
+
+	if showrline {
+		rline(deck, xreg, yreg, mindata, maxdata, rlinecolor)
+	}
+
 	if fulldeck {
 		deck.EndSlide()
 	}
+}
+
+// mean computes the arithmetic mean of a set of data
+func mean(x []float64) float64 {
+	sum := 0.0
+	n := len(x)
+	for i := 0; i < n; i++ {
+		sum += x[i]
+	}
+	return sum / float64(n)
+}
+
+// slope computes the slope (m, b) of a set of x, y points
+func slope(x, y []float64) (float64, float64) {
+	n := len(x) // assume x and y have the same length
+	xy := make([]float64, n)
+	for i := 0; i < n; i++ {
+		xy[i] = x[i] * y[i]
+	}
+	sqx := make([]float64, n)
+	for i := 0; i < n; i++ {
+		sqx[i] = x[i] * x[i]
+	}
+	meanxy := mean(xy)
+	meanx := mean(x)
+	meany := mean(y)
+	meanxsq := mean(sqx)
+
+	rise := (meanxy - (meanx * meany))
+	run := (meanxsq - (meanx * meanx))
+	m := rise / run
+	b := meany - (m * meanx)
+	return m, b
+}
+
+// rline makes a regression line
+func rline(deck *generate.Deck, x, y []float64, mindata, maxdata float64, color string) {
+	m, b := slope(x, y)
+	dl := len(x) - 1
+	l := float64(dl)
+	x1 := x[0]
+	x2 := x[dl]
+	y1 := m*x1 + b
+	y2 := m*x2 + b
+	rx1 := vmap(x1, 0, l, left, right)
+	rx2 := vmap(x2, 0, l, left, right)
+	ry1 := vmap(y1, mindata, maxdata, bottom, top)
+	ry2 := vmap(y2, mindata, maxdata, bottom, top)
+	deck.Line(rx1, ry1, rx2, ry2, linewidth, color)
 }
 
 // chart makes charts according to the orientation:
