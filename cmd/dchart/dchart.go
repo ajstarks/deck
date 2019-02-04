@@ -23,12 +23,12 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop, linewidth                   float64
-	xint, pmlen                                                                                           int
-	readcsv, showdot, datamin, showvolume, showscatter, showpct                                           bool
-	showbar, showval, showxlast, showline, showhbar, wbar, showaxis, shownote, showrline                  bool
-	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes                 bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols, hline, noteloc, rlinecolor string
+	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop, linewidth                               float64
+	xint, pmlen                                                                                                       int
+	readcsv, showdot, datamin, showvolume, showscatter, showpct                                                       bool
+	showbar, showval, showxlast, showline, showhbar, wbar, showaxis, shownote, showrline, showframe                   bool
+	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes                             bool
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols, hline, noteloc, rlinecolor, framecolor string
 )
 
 var blue7 = []string{
@@ -91,6 +91,7 @@ func cmdflags() {
 	flag.BoolVar(&showspokes, "spokes", false, "show spokes on radial charts")
 	flag.BoolVar(&showpgrid, "pgrid", false, "show proportional grid")
 	flag.BoolVar(&shownote, "note", true, "show annotations")
+	flag.BoolVar(&showframe, "frame", false, "show frame")
 	flag.BoolVar(&showrline, "rline", false, "show regression line")
 	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
 	flag.BoolVar(&fulldeck, "fulldeck", true, "generate full markup")
@@ -107,6 +108,7 @@ func cmdflags() {
 	flag.StringVar(&datacolor, "color", "lightsteelblue", "data color")
 	flag.StringVar(&valuecolor, "vcolor", "rgb(127,0,0)", "value color")
 	flag.StringVar(&rlinecolor, "rlcolor", "rgb(127,0,0)", "regression line color")
+	flag.StringVar(&framecolor, "framecolor", "rgb(127,127,127)", "framecolor")
 	flag.StringVar(&bgcolor, "bgcolor", "white", "background color")
 	flag.StringVar(&datafmt, "datafmt", defaultfmt, "data format")
 	flag.StringVar(&yaxr, "yrange", "", "y-axis range (min,max,step)")
@@ -741,6 +743,13 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 	var dw = (right-left)/dlen - 1
 	if barw > 0 && barw <= dw {
 		dw = barw
+	}
+
+	// show a frame if specified
+	if showframe {
+		fw := right - left
+		fh := top - bottom
+		deck.Rect(left+(fw/2), bottom+(fh/2), fw, fh, framecolor, 5)
 	}
 
 	// for volume plots, allocate, fill in the extrema

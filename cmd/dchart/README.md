@@ -70,6 +70,7 @@ flags control the visibility of plot components.
 	-scatter     show a scatter chart (default false)
 	-dot         show dot plot (default false)
 	-line        show line chart (default false)
+	-frame       show a frame outlining the chart (default false)
 	-rline       show regression line (default false)
 	-vol         show volume plot (default false)
 	-pgrid       show a proportional grid (default false)
@@ -104,7 +105,8 @@ flags control the visibility of plot components.
 	-xlabel      x axis label interval (default 1, 0 to supress all labels)
 	-xlast       show the last x label
 	-color       data color (default "lightsteelblue")
-	-rlcolor     regression line color default "rgb(127,0,0)")
+	-framecolor  frame color (default "rgb(127,0,0)")
+	-rlcolor     regression line color (default "rgb(127,0,0)")
 	-vcolor      value color (default "rgb(127,0,0)")
 	-volop       volume opacity (default 50)
 	-datafmt     data format for values (default "%.1f")
