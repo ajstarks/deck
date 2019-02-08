@@ -8,6 +8,8 @@ deck
 		efor
 	eslide
 	
+
+	
 	slide
 		hline 50 50 20
 		hline 50 55 25 0.5
@@ -139,6 +141,24 @@ deck
 		etext "two"   l3 70 ts1 "serif"
 		etext "three" l3 60 ts1 "mono" "red"
 		etext "four"  l3 50 ts1 "sans" "blue" op3
+	eslide
+	
+	// data file
+	slide
+		data "foo.d"
+		# foo
+		ten	10
+		twenty	20
+		thirty	30
+		forty	40
+		fifty	50
+		sixty	60
+		seventy	70
+		eighty	80
+		ninety	90
+		one-hundred	100
+		edata
+		dchart -fulldeck=f foo.d
 	eslide
 
 	lopts="-fulldeck=f -val=f -left 20 -right 80 -line -bar=f -scatter -max 100 -yrange 0,100,20"

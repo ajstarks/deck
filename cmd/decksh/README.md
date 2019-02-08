@@ -145,6 +145,14 @@ Begin, end a slide with optional background and text colors.
 	slide [bgcolor] [fgcolor]
 	eslide
 	
+Make a file
+	
+	data "foo.d"
+	one	100
+	two	200
+	three	300
+	edata
+	
 ## Loops
 
 Loop over ```statements```, with ```x``` starting at ```begin```, ending at ```end``` with an optional ```increment``` (if omitted the increment is 1). 
@@ -183,9 +191,6 @@ Also, show blocks of code on a gray background.
 	textblock  "text"     x y width size [font] [color] [opacity] [link]
 	textcode   "filename" x y width size [color]
 
-
-
-	
 ## Images 
 
 Plain and captioned, with optional scales and links

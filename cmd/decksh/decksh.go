@@ -207,6 +207,38 @@ func endtag(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+// loadata creates a file using the  data keyword
+func loadata(s []string, linenumber int, scanner *bufio.Scanner) error {
+	if len(s) != 2 {
+		return fmt.Errorf("line %d: data \"file\"...edata", linenumber)
+	}
+	filearg := s[1]
+	end := len(filearg) - 1
+	if len(filearg) < 3 {
+		return fmt.Errorf("line %d: %v is not a valid filename", linenumber, filearg)
+	}
+	if filearg[0] != '"' && filearg[end] != '"' {
+		return fmt.Errorf("line %d: %v is not a valid filename", linenumber, filearg)
+	}
+	dataw, err := os.Create(filearg[1:end])
+	if err != nil {
+		return fmt.Errorf("line %d: %v (%v)", linenumber, s, err)
+	}
+	for scanner.Scan() {
+		t := scanner.Text()
+		if strings.TrimSpace(t) == "edata" {
+			break
+		}
+		f := strings.Fields(t)
+		if len(f) != 2 {
+			continue
+		}
+		fmt.Fprintf(dataw, "%v\t%v\n", f[0], f[1])
+	}
+	err = dataw.Close()
+	return err
+}
+
 // fontColorOp generates markup for font, color, and opacity
 func fontColorOp(s []string) string {
 	switch len(s) {
@@ -1100,6 +1132,9 @@ func process(w io.Writer, r io.Reader) error {
 		}
 		if tokens[0] == "for" {
 			errors = append(errors, parsefor(w, tokens, n, scanner))
+		}
+		if tokens[0] == "data" {
+			errors = append(errors, loadata(tokens, n, scanner))
 		}
 		errors = append(errors, keyparse(w, tokens, t, scanner, n))
 	}
