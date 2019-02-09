@@ -855,11 +855,11 @@ func chart(w io.Writer, s string, linenumber int) error {
 	name := args[0]
 	cmd := &exec.Cmd{Path: name, Args: args}
 	if filepath.Base(name) == name {
-		if lp, err := exec.LookPath(name); err != nil {
+		lp, err := exec.LookPath(name)
+		if err != nil {
 			return fmt.Errorf("line: %d, %v - %v", linenumber, name, err)
-		} else {
-			cmd.Path = lp
 		}
+		cmd.Path = lp
 	}
 	out, err := cmd.Output()
 	if err != nil {
