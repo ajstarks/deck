@@ -15,10 +15,10 @@ deck
 	
 	// Title slide	
 	slide
-		text "decksh" 								7 50 12 "sans" "maroon"
-		text "a little language for decks"			7 40 4
-		etext "Anthony Starks"						95 10 1.5 "sans" "rgb(127,127,127)" 
-		etext "@ajstarks"							95 6  1.5 "sans" "rgb(127,127,127)" 100 "https://twitter.com/ajstarks"
+		text "decksh"						7 50 12 "sans" "maroon"
+		text "a little language for decks"	7 40 4
+		etext "Anthony Starks"				95 10 1.5 "sans" "rgb(127,127,127)" 
+		etext "@ajstarks"					95 6  1.5 "sans" "rgb(127,127,127)" 100 "https://twitter.com/ajstarks"
 		square	75 50 40     "rgb(220,220,220)"
 		rect	70 55 20 20  "rgb(127,0,0)"
 		rect	80 50 20 20  "white"
@@ -39,7 +39,7 @@ deck
 	eslide
 
 	slide
-		textblock `a language is any mechanism to express intent, and the input to many programs can be viewed profitably as statements in a language. This column is about those “little languages.”` left 80 70 3.5 "serif"
+		textblock `A language is any mechanism to express intent, and the input to many programs can be viewed profitably as statements in a language. This column is about those “little languages.”` left 80 70 3.5 "serif"
 		text "Jon Bentley, Little Languages, Communications of the ACM, August 1986" left 15 2.5 "sans" "black" 100 "http://staff.um.edu.mt/afra1/seminar/little-languages.pdf"
 	eslide
 	
@@ -88,12 +88,12 @@ deck
 		dscolor="rgb(127,0,0)"
 		markupcolor="gray"
 		outcolor="rgb(0,0,127)"
-		ay=cy+2
+		ay=cy+3
 		ts=titlesize*1.2
 		ctext	"decksh"		15 cy ts "sans" dscolor
-		arrow 25 ay 35 ay
+		arrow 25 ay 34 ay 0.4 3 6
 		ctext	"deck markup"	53 cy ts "sans" markupcolor
-		arrow 70 ay 80 ay
+		arrow 72 ay 80 ay 0.4 3 6
 		ctext	"PDF"			87 cy titlesize "sans" outcolor
 		cy+=10
 		ctext	"SVG"			87 cy titlesize "sans" outcolor
@@ -152,12 +152,20 @@ deck
 	eslide
 	
 	// Set up
-	slide "black" "white"
-		image "images/setup0.png" 50 50 760 297
+// 	slide "rgb(176,177,184)" "white"
+// 		image "images/setup0.png" 50 50 760 297
+// 	eslide
+// 
+// 	slide "rgb(176,177,184)" "white"
+// 		image "images/setup1.png" 50 50 760 297
+// 	eslide
+	
+	slide "rgb(220,220,220)" "white"
+		image "images/hwss0.png" 50 50 760 283
 	eslide
 
-	slide "black" "white"
-		image "images/setup1.png" 50 50 760 297
+	slide "rgb(220,220,220)" "white"
+		image "images/hwss1.png" 50 50 760 282
 	eslide
 	
 	// Keywords
@@ -169,7 +177,7 @@ deck
 		ky=top-20
 		sl=left
 		exsize=2.5
-		text "Keywords and arguments" left top titlesize "serif"
+		text "Keywords and arguments"	left top titlesize "serif"
 		text "text"              		sl ky exsize "mono" "maroon"
 		text `"string....."   x y n` 18 ky exsize "mono" argcolor
 		text "[font][color][op]" optx ky exsize "mono" optcolor
@@ -190,13 +198,14 @@ deck
 	slide
 		text "Keywords" left top titlesize "serif"  
 		hsize=ts
-		lsize=hsize*0.67
-		csep=25
-		csep2=csep/2
+		lsize=hsize*0.6
+		csep=18
+		csep2=csep*0.6
 		rsep=45
-		headtop=top-10
-		listtop=headtop-sep
-		listspacing=lsize*0.75
+		lsep=6
+		headtop=top-15
+		listtop=headtop-lsep
+		listspacing=lsize*0.8
 		headcolor=spotcolor
 		
 		lx=left
@@ -207,13 +216,6 @@ deck
 			li "slide"
 			li "eslide"
 			li "canvas"
-		elist
-		
-		lx+=csep
-		text "Loop" lx headtop hsize "sans" headcolor
-		list lx listtop lsize "mono" "black" 100 listspacing
-			li "for"
-			li "efor"
 		elist
 		
 		lx+=csep
@@ -237,9 +239,7 @@ deck
 			li "elist"
 		elist
 		
-		headtop-=rsep
-		listtop-=rsep
-		lx=left
+		lx+=csep
 		text "Graphics and Arrows" lx headtop hsize "sans" headcolor
 		list lx listtop lsize "mono" "black" 100 listspacing
 			li "rect"
@@ -249,7 +249,6 @@ deck
 			li "polygon"
 		elist
 		lx+=csep2
-		
 		list lx listtop lsize "mono" "black" 100 listspacing
 			li "arc"
 			li "curve"
@@ -257,9 +256,7 @@ deck
 			li "hline"
 			li "vline"
 		elist
-		
 		lx+=csep2
-		//text "Arrows" lx headtop hsize "sans" headcolor
 		list lx listtop lsize "mono" "black" 100 listspacing
 			li "arrow"
 			li "crarrow"
@@ -267,8 +264,11 @@ deck
 			li "cuarrow"
 			li "cdarrow"
 		elist
-
-		lx+=csep
+		
+		headtop-=rsep
+		listtop-=rsep
+		
+		lx=left
 		text "Images" lx headtop hsize "sans" headcolor
 		list lx listtop lsize "mono" "black" 100 listspacing
 			li "image"
@@ -280,6 +280,20 @@ deck
 		list lx listtop lsize "mono" "black" 100 listspacing
 			li "dchart"
 			li "legend"
+		elist		
+
+		lx+=csep
+		text "Loop" lx headtop hsize "sans" headcolor
+		list lx listtop lsize "mono" "black" 100 listspacing
+			li "for"
+			li "efor"
+		elist
+		
+		lx+=csep
+		text "Data" lx headtop hsize "sans" headcolor
+		list lx listtop lsize "mono" "black" 100 listspacing
+			li "data"
+			li "edata"
 		elist
 	eslide
 	
