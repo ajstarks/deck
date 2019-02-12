@@ -745,13 +745,6 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		dw = barw
 	}
 
-	// show a frame if specified
-	if showframe {
-		fw := right - left
-		fh := top - bottom
-		deck.Rect(left+(fw/2), bottom+(fh/2), fw, fh, framecolor, 5)
-	}
-
 	// for volume plots, allocate, fill in the extrema
 	var xvol, yvol []float64
 	if showvolume {
@@ -775,6 +768,14 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 	if fulldeck {
 		deck.StartSlide(bgcolor)
 	}
+
+	// show a frame if specified
+	if showframe {
+		fw := right - left
+		fh := top - bottom
+		deck.Rect(left+(fw/2), bottom+(fh/2), fw, fh, framecolor, 5)
+	}
+
 
 	if len(chartitle) > 0 {
 		title = xmlesc(chartitle)
