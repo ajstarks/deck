@@ -334,7 +334,6 @@ func yaxis(deck *generate.Deck, x, dmin, dmax float64) {
 	if step < 1 {
 		axisfmt = "%3.2f"
 	}
-	fmt.Fprintf(os.Stderr, "step=%v axisfmt=%q\n", step, axisfmt)
 	for y := axismin; y <= axismax; y += step {
 		yp := vmap(y, dmin, dmax, bottom, top)
 		deck.TextEnd(x, yp, fmt.Sprintf(axisfmt, y), "sans", ts*0.75, "black")
