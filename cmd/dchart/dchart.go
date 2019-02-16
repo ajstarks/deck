@@ -330,9 +330,14 @@ func yaxis(deck *generate.Deck, x, dmin, dmax float64) {
 	if step <= 0 {
 		return
 	}
+	var axisfmt = "%0.f"
+	if step < 1 {
+		axisfmt = "%3.2f"
+	}
+	fmt.Fprintf(os.Stderr, "step=%v axisfmt=%q\n", step, axisfmt)
 	for y := axismin; y <= axismax; y += step {
 		yp := vmap(y, dmin, dmax, bottom, top)
-		deck.TextEnd(x, yp, fmt.Sprintf("%0.f", y), "sans", ts*0.75, "black")
+		deck.TextEnd(x, yp, fmt.Sprintf(axisfmt, y), "sans", ts*0.75, "black")
 		if showgrid {
 			deck.Line(left, yp, right, yp, 0.1, "lightgray")
 		}
@@ -775,7 +780,6 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		fh := top - bottom
 		deck.Rect(left+(fw/2), bottom+(fh/2), fw, fh, framecolor, 5)
 	}
-
 
 	if len(chartitle) > 0 {
 		title = xmlesc(chartitle)
