@@ -115,7 +115,7 @@ func cmdflags() {
 	flag.StringVar(&yaxr, "yrange", "", "y-axis range (min,max,step)")
 	flag.StringVar(&hline, "hline", "", "horizontal line value,label")
 	flag.StringVar(&noteloc, "noteloc", "c", "note location (c-center, r-right aligned, l-left aligned)")
-	flag.StringVar(&datacond, "datacond", "", "data condition: [relation][value],color")
+	flag.StringVar(&datacond, "datacond", "", "data condition: relation,value,color")
 
 	flag.Parse()
 }
