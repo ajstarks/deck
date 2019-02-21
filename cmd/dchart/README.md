@@ -71,6 +71,7 @@ flags control the visibility of plot components.
 	-dot         show dot plot (default false)
 	-line        show line chart (default false)
 	-frame       show a frame outlining the chart (default false)
+	-datacond    conditional coloring (relation,value,color)
 	-rline       show regression line (default false)
 	-vol         show volume plot (default false)
 	-pgrid       show a proportional grid (default false)
