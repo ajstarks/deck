@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"strconv"
 	"text/scanner"
 )
 
@@ -72,12 +73,13 @@ func binop(s []string, linenumber int) error {
 	ls := s[2]
 	op := s[3]
 	rs := s[4]
-
-	var lv, rv float64
-	if _, err := fmt.Sscanf(eval(ls), "%f", &lv); err != nil {
+	
+	lv, err := strconv.ParseFloat(eval(ls), 64)
+	if err != nil {
 		return fmt.Errorf("line %d: %v is not a number", linenumber, ls)
 	}
-	if _, err := fmt.Sscanf(eval(rs), "%f", &rv); err != nil {
+	rv, err := strconv.ParseFloat(eval(rs), 64)
+	if err != nil {
 		return fmt.Errorf("line %d: %v is not a number", linenumber, rs)
 	}
 	switch op {
@@ -104,11 +106,13 @@ func assignop(s []string, linenumber int) error {
 	if len(s) < 4 {
 		return operr
 	}
-	var e, v float64
-	if _, err := fmt.Sscanf(eval(s[0]), "%f", &e); err != nil {
+	
+	e, err := strconv.ParseFloat(eval(s[0]), 64)
+	if err != nil {
 		return fmt.Errorf("line %d: %v is not a number", linenumber, s[0])
 	}
-	if _, err := fmt.Sscanf(s[3], "%f", &v); err != nil {
+	v, err := strconv.ParseFloat(s[3], 64)
+	if err != nil {
 		return fmt.Errorf("line %d: %v is not a number", linenumber, s[3])
 	}
 
@@ -510,11 +514,14 @@ func hline(w io.Writer, s []string, linenumber int) error {
 	if n < 4 {
 		return e
 	}
-	var x1, l float64
-	if _, err := fmt.Sscanf(s[1], "%f", &x1); err != nil {
+	
+	x1, err := strconv.ParseFloat(s[1], 64)
+	if err != nil {
 		return err
 	}
-	if _, err := fmt.Sscanf(s[3], "%f", &l); err != nil {
+	
+	l, err := strconv.ParseFloat(s[3], 64)
+	if err != nil {
 		return err
 	}
 	lc := fmt.Sprintf("xp1=%q yp1=%q xp2=\"%v\" yp2=%q", s[1], s[2], x1+l, s[2])
@@ -540,11 +547,13 @@ func vline(w io.Writer, s []string, linenumber int) error {
 	if n < 4 {
 		return e
 	}
-	var y1, l float64
-	if _, err := fmt.Sscanf(s[2], "%f", &y1); err != nil {
+	
+	y1, err := strconv.ParseFloat(s[2], 64)
+	if err != nil {
 		return err
 	}
-	if _, err := fmt.Sscanf(s[3], "%f", &l); err != nil {
+	l, err := strconv.ParseFloat(s[3], 64)
+	if err != nil {
 		return err
 	}
 	lc := fmt.Sprintf("xp1=%q yp1=%q xp2=%q yp2=\"%v\"", s[1], s[2], s[1], y1+l)
@@ -615,11 +624,13 @@ func legend(w io.Writer, s []string, linenumber int) error {
 	if n < 7 {
 		return fmt.Errorf("line %d: legend \"text\" x y size font color", linenumber)
 	}
-	var tx, cy float64
-	if _, err := fmt.Sscanf(s[2], "%f", &tx); err != nil {
+	
+	tx, err := strconv.ParseFloat(s[2], 64)
+	if err != nil {
 		return err
 	}
-	if _, err := fmt.Sscanf(s[3], "%f", &cy); err != nil {
+	cy, err := strconv.ParseFloat(s[3], 64)
+	if err != nil {
 		return err
 	}
 	fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", fmt.Sprintf("%.3f", tx+2), s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
@@ -672,29 +683,37 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	lw := "0.2"
 	color := `"gray"`
 	opacity := "100"
-	var x1, y1, x2, y2 float64
-	if _, err := fmt.Sscanf(s[1], "%f", &x1); err != nil {
+	
+	
+	x1, err := strconv.ParseFloat(s[1], 64)
+	if err != nil {
 		return err
 	}
-	if _, err := fmt.Sscanf(s[2], "%f", &y1); err != nil {
+	y1, err := strconv.ParseFloat(s[2], 64)
+	if err != nil {
 		return err
 	}
-	if _, err := fmt.Sscanf(s[3], "%f", &x2); err != nil {
+	x2, err := strconv.ParseFloat(s[3], 64)
+	if err != nil {
 		return err
 	}
-	if _, err := fmt.Sscanf(s[4], "%f", &y2); err != nil {
+	y2, err := strconv.ParseFloat(s[4], 64)
+	if err != nil {
 		return err
 	}
+
 	if ls >= 6 {
 		lw = s[5] // linewidth
 	}
 	if ls >= 7 {
-		if _, err := fmt.Sscanf(s[6], "%f", &aw); err != nil {
+		aw, err = strconv.ParseFloat(s[6], 64)
+		if err != nil {
 			return err
 		}
 	}
 	if ls >= 8 {
-		if _, err := fmt.Sscanf(s[7], "%f", &ah); err != nil {
+		ah, err = strconv.ParseFloat(s[7], 64)
+		if err != nil {
 			return err
 		}
 	}
@@ -799,24 +818,26 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 		curvestring[9] = opacity // opacity
 	}
 
-	var x, y float64
-
-	// end point of the curve is the point of the arrow
-	if _, err := fmt.Sscanf(s[5], "%f", &x); err != nil {
+	// end point of the curve is the point of the arrow	
+	x, err := strconv.ParseFloat(s[5], 64)
+	if err != nil {
 		return err
 	}
-	if _, err := fmt.Sscanf(s[6], "%f", &y); err != nil {
+	y, err := strconv.ParseFloat(s[6], 64)
+	if err != nil {
 		return nil
 	}
 
 	// override width and height of the arrow
 	if ls >= 9 {
-		if _, err := fmt.Sscanf(s[8], "%f", &aw); err != nil {
+		aw, err = strconv.ParseFloat(s[8], 64)
+		if err != nil {
 			return err
 		}
 	}
 	if ls >= 10 {
-		if _, err := fmt.Sscanf(s[9], "%f", &ah); err != nil {
+		ah, err = strconv.ParseFloat(s[9], 64)
+		if err != nil {
 			return err
 		}
 	}
@@ -936,20 +957,26 @@ func forfile(s []string) ([]string, error) {
 
 // fornum returns the arguments for for x=begin end [incr]
 func fornum(s []string, linenumber int) (float64, float64, float64, error) {
-	var begin, end, incr float64
+	var incr float64
 	if len(s) < 5 {
 		return 0, -1, 0, fmt.Errorf("line %d: for begin end [incr] ... efor", linenumber)
 	}
-	if _, err := fmt.Sscanf(s[3], "%f", &begin); err != nil {
+	
+	begin, err := strconv.ParseFloat(s[3], 64)
+	if  err != nil {
 		return 0, -1, 0, err
 	}
-	if _, err := fmt.Sscanf(s[4], "%f", &end); err != nil {
+	end, err := strconv.ParseFloat(s[4], 64)
+	if  err != nil {
 		return 0, -1, 0, err
 	}
+	
 	incr = 1.0
 	if len(s) > 5 {
-		if _, err := fmt.Sscanf(s[5], "%f", &incr); err != nil {
-			return 0, -1, 0, err
+		var ierr error
+		incr, ierr = strconv.ParseFloat(s[5], 64)
+		if ierr != nil {
+			return 0, -1, 0, ierr
 		}
 	}
 	return begin, end, incr, nil
