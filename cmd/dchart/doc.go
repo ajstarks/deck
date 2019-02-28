@@ -33,7 +33,7 @@ The command line options are:
 	-val         show values (default true)
 	-rline       show a regression line (default false)
 	-frame       show a frame outlining the chart (default false)
-	-datacond    conditional colors (relation,value,color)
+	-datacond    conditional colors (low,high,color)
 	-pct         show percentages with values (default false)
 	-valpos      value position (t=top, b=bottom, m=middle) (default "t")
 	-vol         show volume plot (default false)

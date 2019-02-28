@@ -115,7 +115,7 @@ func cmdflags() {
 	flag.StringVar(&yaxr, "yrange", "", "y-axis range (min,max,step)")
 	flag.StringVar(&hline, "hline", "", "horizontal line value,label")
 	flag.StringVar(&noteloc, "noteloc", "c", "note location (c-center, r-right aligned, l-left aligned)")
-	flag.StringVar(&datacond, "datacond", "", "data condition: relation,value,color")
+	flag.StringVar(&datacond, "datacond", "", "data condition: low,high,color")
 
 	flag.Parse()
 }
@@ -385,43 +385,23 @@ func pct(data []ChartData) []float64 {
 	return p
 }
 
-// conditionColor returns the color based on the condition
-func conditionColor(data, value float64, condition, color string) string {
-	switch condition {
-	case "eq":
-		if data == value {
-			return color
-		}
-	case "lt":
-		if data < value {
-			return color
-		}
-	case "gt":
-		if data > value {
-			return color
-		}
-	default:
-		return ""
-	}
-	return ""
-}
 
 // parsecondition parses the expression [relation],[number],[color]. For example "gt,10,red"
 // the relation may be either "eq" (equals), "lt" (less than) or "gt" (greater than)
-func parsecondition(s string) (string, float64, string, error) {
-	var ce string
-	var cc string
-	var cv float64
-	var cerr error
-	ds := strings.Split(s, ",")
-	if len(ds) != 3 {
-		return ce, cv, cc, fmt.Errorf("%s bad condition", s)
+func parsecondition(s string) (float64, float64, string, error) {
+	cs := strings.Split(s, ",")
+	if len(cs) != 3 {
+		return smallest, largest, "", fmt.Errorf("%s bad condition", s)
 	}
-	if len(ds[0]) < 2 {
-		return ce, cv, cc, fmt.Errorf("%s bad condition", s)
+	low, err := strconv.ParseFloat(cs[0], 64)
+	if err != nil {
+		return smallest, largest, "", err
 	}
-	cv, cerr = strconv.ParseFloat(ds[1], 64)
-	return ds[0], cv, ds[2], cerr
+	high, err := strconv.ParseFloat(cs[1], 64)
+	if err != nil {
+		return smallest, largest, "", err
+	}
+	return low, high, cs[2], nil
 }
 
 // pgrid makes a proportional grid with the specified rows and columns
@@ -844,11 +824,11 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		}
 	}
 
-	var cv float64
-	var ce, cc string
+	var clow, chigh float64
 	var cerr error
+	var condcolor string
 	if len(datacond) > 0 {
-		ce, cv, cc, cerr = parsecondition(datacond)
+		clow, chigh, condcolor, cerr = parsecondition(datacond)
 		if cerr != nil {
 			fmt.Fprintf(os.Stderr, "%v\n", cerr)
 			return
@@ -862,8 +842,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 
 	// for every name, value pair, make the chart elements
 	var px, py float64
-	var condcolor, defcolor string
-	defcolor = datacolor
+	var defcolor = datacolor
 	for i, data := range chartdata {
 		x := vmap(float64(i), 0, dlen, left, right)
 		y := vmap(data.value, mindata, maxdata, bottom, top)
@@ -879,8 +858,7 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 		}
 
 		if len(datacond) > 0 {
-			condcolor = conditionColor(data.value, cv, ce, cc)
-			if len(condcolor) > 0 {
+			if data.value <= chigh && data.value >= clow {
 				datacolor = condcolor
 			} else {
 				datacolor = defcolor
