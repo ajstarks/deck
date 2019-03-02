@@ -1220,7 +1220,8 @@ deck
 		text "decksh"		left 60 ts "mono" headcolor
 		text "pdfdeck"		left 50 ts "mono" headcolor
 		text "dchart"		left 40 ts "mono" headcolor
-		text "deck fonts"	left 30 ts "mono" headcolor
+		text "examples"		left 25 ts "mono" headcolor
+		text "fonts"		left 15 ts "mono" headcolor
 	
 		left+=27
 		ts*=0.7
@@ -1228,6 +1229,7 @@ deck
 		text "github.com/ajstarks/deck/cmd/decksh"	left 60 ts "mono" "black" 100 "https://github.com/ajstarks/deck/blob/master/cmd/decksh/README.md"
 		text "github.com/ajstarks/deck/cmd/pdfdeck" left 50 ts "mono" "black" 100 "https://github.com/ajstarks/deck/tree/master/cmd/pdfdeck"
 		text "github.com/ajstarks/deck/cmd/dchart"	left 40 ts "mono" "black" 100 "https://github.com/ajstarks/deck/blob/master/cmd/dchart/README.md"
-		text "github.com/ajstarks/deckfonts"        left 30 ts "mono" "black" 100 "https://github.com/ajstarks/deckfonts"
+		text "github.com/ajstarks/deckviz"			left 25 ts "mono" "black" 100 "https://github.com/ajstarks/deckviz"
+		text "github.com/ajstarks/deckfonts"        left 15 ts "mono" "black" 100 "https://github.com/ajstarks/deckfonts"
 	eslide
 edeck
