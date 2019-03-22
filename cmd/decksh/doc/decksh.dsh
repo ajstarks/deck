@@ -1,7 +1,7 @@
 // the decksh script that describes decksh
 deck
 	left=10
-	top=90
+	top=85
 	titlesize=5
 	ts=titlesize*0.7
 	namesize=titlesize/3
@@ -15,8 +15,8 @@ deck
 	
 	// Title slide	
 	slide
-		text "decksh"						7 50 12 "sans" "maroon"
-		text "a little language for decks"	7 40 4
+		text "decksh"						5 50 12 "sans" "maroon"
+		text "a little language for decks"	5 40 4
 		etext "Anthony Starks"				95 10 1.5 "sans" "rgb(127,127,127)" 
 		etext "@ajstarks"					95 6  1.5 "sans" "rgb(127,127,127)" 100 "https://twitter.com/ajstarks"
 		square	75 50 40     "rgb(220,220,220)"
@@ -139,7 +139,7 @@ deck
 			li "decksh -o out.xml in.dsh"
 			li "chmod +x in.dsh; ./in.dsh"
 		elist
-		lx+=50
+		lx+=47
 		es=ts*0.75
 		lls*=1.333
  		list lx ly es "serif" "black" 100 lls
@@ -160,11 +160,11 @@ deck
 // 		image "images/setup1.png" 50 50 760 297
 // 	eslide
 	
-	slide "rgb(220,220,220)" "white"
+	slide "steelblue" "white"
 		image "images/hwss0.png" 50 50 760 283
 	eslide
 
-	slide "rgb(220,220,220)" "white"
+	slide "steelblue" "white"
 		image "images/hwss1.png" 50 50 760 282
 	eslide
 	
