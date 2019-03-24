@@ -385,9 +385,8 @@ func pct(data []ChartData) []float64 {
 	return p
 }
 
-
-// parsecondition parses the expression [relation],[number],[color]. For example "gt,10,red"
-// the relation may be either "eq" (equals), "lt" (less than) or "gt" (greater than)
+// parsecondition parses the expression low,high,color. For example "0,10,red"
+// means color the data red if the value is between 0 and 10.
 func parsecondition(s string) (float64, float64, string, error) {
 	cs := strings.Split(s, ",")
 	if len(cs) != 3 {
@@ -559,8 +558,8 @@ func pmap(deck *generate.Deck, data []ChartData, title string) {
 			textcolor = "black"
 		}
 
-		deck.TextMid(x+(bx/2), ty+(pwidth), data[i].label, "sans", ts*0.75, textcolor)
 		if showval {
+			deck.TextMid(x+(bx/2), ty+(pwidth), data[i].label, "sans", ts*0.75, textcolor)
 			deck.TextMid(x+(bx/2), ty-pwidth, dformat(data[i].value), "mono", ts/2, valuecolor)
 		}
 		deck.TextMid(x+(bx/2), ty-(ts/2), fmt.Sprintf(datafmt+"%%", p), "sans", ts, textcolor)
