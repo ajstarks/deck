@@ -8,7 +8,35 @@ deck
 		efor
 	eslide
 	
+	slide
+		bx=10
+		ex=90
+		begyr=1958
+		endyr=2020
+		x0=vmap 1958 1958 2020 10 90
+		x1=vmap 1978 1958 2020 10 90
+		x2=vmap 1980 1958 2020 10 90
+		x3=vmap 1990 1958 2020 10 90
+		xend=vmap 2020 begyr endyr bx ex
 
+		y0=vmap 1958 1958 2020 90 60
+		y1=vmap 1978 1958 2020 90 60
+		y2=vmap 1980 1958 2020 90 60
+		y3=vmap 1990 1958 2020 90 60
+		yend=vmap 2010 1958 2020 90 60
+
+		text "1958" x0 50 1
+		text "1978" x1 50 1
+		text "1980" x2 50 1
+		text "1990" x3 50 1
+		text "end" xend 50 1
+
+		text "1958" 10 y0 1
+		text "1978" 10 y1 1
+		text "1980" 10 y2 1
+		text "1990" 10 y3 1
+		text "2020" 10 yend 1
+	eslide
 	
 	slide
 		hline 50 50 20

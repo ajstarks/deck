@@ -10,8 +10,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strings"
 	"strconv"
+	"strings"
 	"text/scanner"
 )
 
@@ -43,9 +43,11 @@ func xmlesc(s string) string {
 func assign(s []string, linenumber int) error {
 	switch len(s) {
 	case 3:
-		return simpleassign(s, linenumber)
+		return simpleassign(s, linenumber) // x=10
 	case 5:
-		return binop(s, linenumber)
+		return binop(s, linenumber) // x+=20
+	case 8:
+		return interpolate(s, linenumber) // x=interp d min1 max1 min2 max2
 	default:
 		return fmt.Errorf("line %d: %v is a illegal assignment", linenumber, s)
 	}
@@ -73,7 +75,7 @@ func binop(s []string, linenumber int) error {
 	ls := s[2]
 	op := s[3]
 	rs := s[4]
-	
+
 	lv, err := strconv.ParseFloat(eval(ls), 64)
 	if err != nil {
 		return fmt.Errorf("line %d: %v is not a number", linenumber, ls)
@@ -106,7 +108,7 @@ func assignop(s []string, linenumber int) error {
 	if len(s) < 4 {
 		return operr
 	}
-	
+
 	e, err := strconv.ParseFloat(eval(s[0]), 64)
 	if err != nil {
 		return fmt.Errorf("line %d: %v is not a number", linenumber, s[0])
@@ -131,6 +133,43 @@ func assignop(s []string, linenumber int) error {
 	default:
 		return operr
 	}
+	return nil
+}
+
+//vmap maps one interval to another
+func vmap(value float64, low1 float64, high1 float64, low2 float64, high2 float64) float64 {
+	return low2 + (high2-low2)*(value-low1)/(high1-low1)
+}
+
+// interpolate translates a value given two ranges
+func interpolate(s []string, linenumber int) error {
+	n := len(s)
+	if n < 8 || s[2] != "vmap" {
+		return fmt.Errorf("line %d: use: v = vmap data min1 max1 min2 max2", linenumber)
+	}
+	var data, min1, max1, min2, max2 float64
+	var ierr error
+	data, ierr = strconv.ParseFloat(eval(s[3]), 64)
+	if ierr != nil {
+		return ierr
+	}
+	min1, ierr = strconv.ParseFloat(eval(s[4]), 64)
+	if ierr != nil {
+		return ierr
+	}
+	max1, ierr = strconv.ParseFloat(eval(s[5]), 64)
+	if ierr != nil {
+		return ierr
+	}
+	min2, ierr = strconv.ParseFloat(eval(s[6]), 64)
+	if ierr != nil {
+		return ierr
+	}
+	max2, ierr = strconv.ParseFloat(eval(s[7]), 64)
+	if ierr != nil {
+		return ierr
+	}
+	emap[s[0]] = fmt.Sprintf("%v", vmap(data, min1, max1, min2, max2))
 	return nil
 }
 
@@ -514,12 +553,12 @@ func hline(w io.Writer, s []string, linenumber int) error {
 	if n < 4 {
 		return e
 	}
-	
+
 	x1, err := strconv.ParseFloat(s[1], 64)
 	if err != nil {
 		return err
 	}
-	
+
 	l, err := strconv.ParseFloat(s[3], 64)
 	if err != nil {
 		return err
@@ -547,7 +586,7 @@ func vline(w io.Writer, s []string, linenumber int) error {
 	if n < 4 {
 		return e
 	}
-	
+
 	y1, err := strconv.ParseFloat(s[2], 64)
 	if err != nil {
 		return err
@@ -624,7 +663,7 @@ func legend(w io.Writer, s []string, linenumber int) error {
 	if n < 7 {
 		return fmt.Errorf("line %d: legend \"text\" x y size font color", linenumber)
 	}
-	
+
 	tx, err := strconv.ParseFloat(s[2], 64)
 	if err != nil {
 		return err
@@ -683,8 +722,7 @@ func arrow(w io.Writer, s []string, linenumber int) error {
 	lw := "0.2"
 	color := `"gray"`
 	opacity := "100"
-	
-	
+
 	x1, err := strconv.ParseFloat(s[1], 64)
 	if err != nil {
 		return err
@@ -818,7 +856,7 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 		curvestring[9] = opacity // opacity
 	}
 
-	// end point of the curve is the point of the arrow	
+	// end point of the curve is the point of the arrow
 	x, err := strconv.ParseFloat(s[5], 64)
 	if err != nil {
 		return err
@@ -961,16 +999,16 @@ func fornum(s []string, linenumber int) (float64, float64, float64, error) {
 	if len(s) < 5 {
 		return 0, -1, 0, fmt.Errorf("line %d: for begin end [incr] ... efor", linenumber)
 	}
-	
+
 	begin, err := strconv.ParseFloat(s[3], 64)
-	if  err != nil {
+	if err != nil {
 		return 0, -1, 0, err
 	}
 	end, err := strconv.ParseFloat(s[4], 64)
-	if  err != nil {
+	if err != nil {
 		return 0, -1, 0, err
 	}
-	
+
 	incr = 1.0
 	if len(s) > 5 {
 		var ierr error
