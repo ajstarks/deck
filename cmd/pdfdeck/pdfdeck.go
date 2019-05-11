@@ -31,6 +31,9 @@ type PageDimen struct {
 // fontmap maps generic font names to specific implementation names
 var fontmap = map[string]string{}
 
+// transmap maps generic font names to the translation function
+var transmap = map[string]func(string) string{}
+
 // pagemap defines page dimensions
 var pagemap = map[string]PageDimen{
 	"Letter":     {792, 612, 1},
@@ -47,9 +50,6 @@ var pagemap = map[string]PageDimen{
 }
 
 var codemap = strings.NewReplacer("\t", "    ")
-
-// translate is the function that does unicode character replacement
-var translate func(string) string
 
 // pagerange returns the begin and end using a "-" string
 func pagerange(s string) (int, int) {
@@ -237,7 +237,7 @@ func dotext(doc *gofpdf.Fpdf, cw, x, y, fs, wp, spacing float64, tdata, font, co
 	}
 	if ttype == "block" {
 		tw = deck.Pwidth(wp, cw, cw/2)
-		textwrap(doc, x, y, tw, fs, fs*spacing, translate(tdata), font, tlink)
+		textwrap(doc, x, y, tw, fs, fs*spacing, transmap[font](tdata), font, tlink)
 	} else {
 		ls := spacing * fs
 		for _, t := range td {
@@ -251,7 +251,7 @@ func dotext(doc *gofpdf.Fpdf, cw, x, y, fs, wp, spacing float64, tdata, font, co
 func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align, link string) {
 	offset := 0.0
 	doc.SetFont(fontlookup(font), "", fs)
-	t := translate(s)
+	t := transmap[font](s)
 	tw := doc.GetStringWidth(t)
 	switch align {
 	case "center", "middle", "mid", "c":
@@ -280,7 +280,7 @@ func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, spacing float64, list []deck
 	tw := deck.Pwidth(lwidth, cw, cw/2)
 
 	var t string
-	
+
 	defont := font
 	for i, tl := range list {
 		doc.SetFont(fontlookup(font), "", fs)
@@ -304,7 +304,7 @@ func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, spacing float64, list []deck
 			font = defont
 		}
 		//doc.Text(x, y, translate(t))
-		yw := textwrap(doc, x, y, tw, fs, ls, translate(t), font, "")
+		yw := textwrap(doc, x, y, tw, fs, ls, transmap[font](t), font, "")
 		y += ls
 		if yw >= 1 {
 			y += ls * float64(yw)
@@ -537,16 +537,28 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) 
 	}
 }
 
+// nulltrans is the null translation function
+func nulltrans(s string) string {
+	return s
+}
+
 // doslides reads the deck file, making the PDF version
 func doslides(doc *gofpdf.Fpdf, pc gofpdf.InitType, filename, author, title string, gp float64, begin, end int) {
 	var d deck.Deck
 	var err error
 
-	translate = doc.UnicodeTranslatorFromDescriptor("")
 	w := int(pc.Size.Wd)
 	h := int(pc.Size.Ht)
-	for _, v := range fontmap {
-		doc.AddFont(v, "", v+".json")
+	for k, v := range fontmap {
+		fontfile := filepath.Join(pc.FontDirStr, v)
+		_, err := os.Stat(fontfile + ".json")
+		if err != nil {
+			doc.AddUTF8Font(v, "", fontfile+".ttf")
+			transmap[k] = nulltrans
+		} else {
+			doc.AddFont(v, "", v+".json")
+			transmap[k] = doc.UnicodeTranslatorFromDescriptor("")
+		}
 	}
 	d, err = deck.Read(filename, w, h)
 	if err != nil {
