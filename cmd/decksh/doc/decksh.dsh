@@ -160,13 +160,20 @@ deck
 // 		image "images/setup1.png" 50 50 760 297
 // 	eslide
 	
-	slide "steelblue" "white"
-		image "images/hwss0.png" 50 50 760 283
+	slide "black" "white"
+		image "images/code01.png" 50 50 1920 1080 42 
 	eslide
 
-	slide "steelblue" "white"
-		image "images/hwss1.png" 50 50 760 282
+	slide "black" "white"
+		image "images/code02.png" 50 50 1920 1080 42 
 	eslide
+//	slide "steelblue" "white"
+//		image "images/hwss0.png" 50 50 760 283
+//	eslide
+//
+//	slide "steelblue" "white"
+//		image "images/hwss1.png" 50 50 760 282
+//	eslide
 	
 	// Keywords
 	slide
@@ -216,6 +223,7 @@ deck
 			li "slide"
 			li "eslide"
 			li "canvas"
+			li "vmap"
 		elist
 		
 		lx+=csep
@@ -488,14 +496,14 @@ deck
 		
 		ctext "hline"	lx gtop ts "mono" spotcolor
 		ctext "x y len [lw] [color] [op]" lx r3a apisize "serif" apicolor
-		hline 10 25 8 lw grcolor
-		circle left 25 spotsize spotcolor spotop
+		hline 10 20 8 lw grcolor
+		circle left 20 spotsize spotcolor spotop
 		
 		lx+=25
 		ctext "vline"	lx gtop ts "mono" spotcolor
 		ctext "x y len [lw] [color] [op]" lx r3a apisize "serif" apicolor
-		vline 40 22 8 lw grcolor
-		circle 40 22 spotsize spotcolor spotop
+		vline 40 17 8 lw grcolor
+		circle 40 17 spotsize spotcolor spotop
 	eslide
 
 	// Arrows
