@@ -12,6 +12,10 @@ deck
 	spotcolor="rgb(127,0,0)"
 	apisize=1.4
 	apicolor="rgb(127,127,127)"
+
+	alice1="THE Caterpillar and Alice looked at each other for some time in silence: at last the Caterpillar took the hookah out of its mouth, and addressed her in a languid, sleepy voice. “Who are you?” said the Caterpillar. This was not an encouraging opening for a conversation. Alice replied, rather shyly, “I—I hardly know, sir, just at present—at least I know who I was when I got up this morning, but I think I must have been changed several times times since then." 
+	alice2="You promised to tell me our history, you know,” said Alice, “and why it is you hate—C and D, she added in a whisper, half afraid that it would be offended again. Mine is a long and a sad tale!” said the Mouse, turning to Alice, and sighing. “It is a long tail, certainly,” said Alice, looking down with wonder at the Mouse’s tail; “but why do you call it sad?” And she kept on puzzling about it while the Mouse was speaking, so that her idea of the tale was something like this:—"	
+
 	
 	// Title slide	
 	slide
@@ -152,29 +156,22 @@ deck
 	eslide
 	
 	// Set up
-// 	slide "rgb(176,177,184)" "white"
-// 		image "images/setup0.png" 50 50 760 297
-// 	eslide
-// 
-// 	slide "rgb(176,177,184)" "white"
-// 		image "images/setup1.png" 50 50 760 297
-// 	eslide
 	
+//	slide "black" "white"
+//		image "images/code01.png" 50 50 1920 1080 42 
+//	eslide
+//
+//	slide "black" "white"
+//		image "images/code02.png" 50 50 1920 1080 42 
+//	eslide
+//	
 	slide "black" "white"
-		image "images/code01.png" 50 50 1920 1080 42 
+		image "images/hello-world.png" 50 50 1920 1080  42 
 	eslide
 
 	slide "black" "white"
-		image "images/code02.png" 50 50 1920 1080 42 
+		image "images/hello-mars.png" 50 50 1920 1080 42 
 	eslide
-//	slide "steelblue" "white"
-//		image "images/hwss0.png" 50 50 760 283
-//	eslide
-//
-//	slide "steelblue" "white"
-//		image "images/hwss1.png" 50 50 760 282
-//	eslide
-	
 	// Keywords
 	slide
 		optx=53
@@ -309,7 +306,7 @@ deck
 	slide
 		assize=1.8
 		text "Variables and Assignments" left top titlesize "serif"
-		sy=top-10
+		sy=top-7
 		textfile "code/samplecode.txt" left sy assize "mono" "black" 100 1.5 // you can increase size for 4:3
 	eslide
 
@@ -646,7 +643,7 @@ deck
 		cy=top-80
  		textfile "code/example.dsh" 3 82 codesize "mono"
 		image    "images/example.png" 75 55 792 612 40
-		ctext	 "decksh example.dsh | pdf" cx cy 3.5 "mono"
+		ctext	 "decksh example.dsh | pdf" cx cy 3.5 "mono" "maroon"
 	eslide
 	
 	// Example deck
@@ -786,7 +783,9 @@ deck
 		rect 27 50 50 90 "white"
 		image "images/hbcard.png"  76 50 350 200
 		textfile "code/hbcard.dsh" 5 90 codesize "mono"
-	eslide	
+	eslide
+
+	
 
 	// Go module information flows
 	slide
@@ -849,6 +848,170 @@ deck
 		legend "modules/code"	col1 5 1 "sans" modcolor
 		legend "metadata"		col3 5 1 "sans" metacolor
 	eslide
+
+	// captioned
+	slide "black" "white"
+		mleft=20
+		movy=70
+		textfile "code/movies.csv" mleft 40 2.5 "mono"
+		ctext "caption movies.csv | decksh | pdf ..." 50 10 2.5 "mono" "lightgray"
+		image "images/movie01.png" 20 movy 1920 1080 12
+		image "images/movie02.png" 50 movy 1920 1080 12
+		image "images/movie04.png" 80 movy 1920 1080 12
+	eslide
+
+	slide "black" "white"
+		ctext	"BOS" 15 70 11
+		ctext	"SFO" 15 25 11
+		text	"Virgin America 351"	35 75 6.25
+		text	"Gate B38" 				35 60 6.25
+		text	"8:35am"				35 45 6.25
+		text	"On Time" 				35 25 6.25 "sans" "rgb(136,195,38)"
+		image	"images/white-plane.png" 15 55 100 100 60
+		line	30 90 30 15 0.2
+	eslide
+
+	slide "black" "white"
+		ctext	"JFK" 15 70 11
+		ctext	"IND" 15 25 11
+		text	"US Airways 1207"		35 75 6.25
+		text	"Gate C31C"				35 60 6.25
+		text	"5:35pm" 				35 45 6.25
+		text	"Delayed"				35 25 6.25 "sans" "red"
+		image	"images/white-plane.png" 15 55 100 100 60
+		line	30 90 30 15 0.2
+	eslide
+
+	slide "blue" "white"
+		ctext	"Flight Information" 50 90 3 "sans" "white"
+		etext	"Los Angeles (LAX)" 45 80 2 "sans" "white"
+		text	"New York/Newark (EWR)" 55 80 2 "sans" "white"
+		text	"Distance Traveled" 5 60 1.5 "sans" "white"
+		text	"1,958 mi" 5 55 2 "sans" "white"
+		text	"3,151 km" 5 50 2 "sans" "white"
+		text	"Distance to Destination" 30 60 1.5 "sans" "white"
+		text	"596 mi" 30 55 2 "sans" "white"
+		text	"798 km" 30 50 2 "sans" "white"
+		text	"Time to Destination" 55 60 1.5 "sans" "white"
+		etext	"1:20" 90 60 2 "sans" "white"
+		text	"Estimated time of arrival" 55 55 1.5 "sans" "white"
+		etext	"12:14 am" 90 55 2 "sans" "white"
+		etext	"12:14 am" 90 50 2 "sans" "white"
+		text	"Local time of arrival" 55 50 1.5 "sans" "white"
+		ctext	"Ground speed" 20 35 1.8 "sans" "white"
+		ctext	"547 mph" 20 20 2 "sans" "white"
+		ctext	"382 kph" 20 15 1.5 "sans" "white"
+		ctext	"Headwind" 40 35 2 "sans" "white"
+		ctext	"50 mph" 40 20 2 "sans" "white"
+		ctext	"80 kph" 40 15 1.5 "sans" "white"
+		ctext	"Outside Temperature" 60 35 2 "sans" "white"
+		ctext	"-30° F" 60 20 2 "sans" "white"
+		ctext	"-34.4 C" 60 15 1.5 "sans" "white"
+		ctext	"Current Altitude" 80 35 2 "sans" "white"
+		ctext	"25,000 ft" 80 15 2 "sans" "white"
+		ctext	"7620 m" 80 10 1.5 "sans" "white"
+		image	"images/white-plane.png" 50 81 100 100 30
+		image	"images/white-plane.png" 25 69.2 100 100 30
+		image	"images/plane-head.png" 80 25 1200 1200 6
+		line	5 65 19 65 0 "lightblue"
+		line	31 65 45 65 0 "lightblue"
+		line	55 65 70 65 0 "lightblue"
+		line	75 65 90 65 0 "lightblue"
+		line	72.5 67.5 72.5 65 0 "white"
+		line	73.5 65 72.5 65 0 "white"
+		line	75 30 75 10 0.1 "white"
+		line	75 30 74 30 0.1 "white"
+		line	75 28 74 28 0.1 "white"
+		line	75 26 74 26 0.1 "white"
+		line	75 24 74 24 0.1 "white"
+		line	75 22 74 22 0.1 "white"
+		line	75 20 74 20 0.1 "white"
+		line	75 18 74 18 0.1 "white"
+		line	75 16 74 16 0.1 "white"
+		line	75 14 74 14 0.1 "white"
+		line	75 12 74 12 0.1 "white"
+		line	75 10 74 10 0.1 "white"
+		line	85 30 85 10 0.1 "white"
+		line	85 30 86 30 0.1 "white"
+		line	85 28 86 28 0.1 "white"
+		line	85 26 86 26 0.1 "white"
+		line	85 24 86 24 0.1 "white"
+		line	85 22 86 22 0.1 "white"
+		line	85 20 86 20 0.1 "white"
+		line	85 18 86 18 0.1 "white"
+		line	85 16 86 16 0.1 "white"
+		line	85 14 86 14 0.1 "white"
+		line	85 12 86 12 0.1 "white"
+		line	85 10 86 10 0.1 "white"
+		arc	25 65 10 5 0 90 0.1 "white"
+		arc	25 65 10 5 90 180 0.1 "white"
+		circle 20 20 12 "white" 20
+		arc	20 20 12 12 40 230 1 "lightsteelblue"
+		circle	40 20 12 "white" 20
+		arc	40 20 12 12 180 230 1 "lightsteelblue"
+		circle	60 20 12 "white" 20
+		arc	60 20 12 12 210 230 1 "lightsteelblue"
+		circle	20 65 1.5  "white"
+		circle	30 65 1.5 "white"
+		circle	72.5 65 4  "white"
+		circle	72.5 65 3.5 "blue"
+	eslide
+
+	slide  
+		text	"Chapter V" 15 85 3 "serif" "rgb(127,0,0)" 100 "http://www.gutenberg.org/files/28885/28885-8.txt"
+		text	"Advice from a Caterpillar" 40 85 3 "serif" "rgb(127,0,0)" 100 "http://www.gutenberg.org/files/28885/28885-8.txt"
+		textblock alice1 40 75 40 2  "serif"
+		image	"images/Alice_05a-1116x1492.jpg" 25 50 1116 1492 20 "http://www.gutenberg.org/files/28885/28885-8.txt"
+	eslide
+
+	slide 
+		textblock alice2 10 33 40 1.5 "serif"
+		text	"Fury said to a " 70 96 1.2 "serif"
+		text	"mouse, That he" 68 93.6 1.2 "serif"
+		text	"met in the" 66 91.2 1.2 "serif"
+		text	"house, " 64 88.8 1.2 "serif"
+		text	"“Let us" 61 86.4 1.2 "serif"
+		text	"both go to" 63 84 1.2 "serif"
+		text	"law:I will" 65 81.6 1.2 "serif"
+		text	"prosecute" 67 79.2 1.2 "serif"
+		text	"YOU—Come," 70 77 1.1 "serif"
+		text	"I'll take no" 73 75 1.1 "serif"
+		text	"denial; We" 74 73 1.1 "serif"
+		text	"must have a" 71 71 1.1 "serif"
+		text	"trial:For" 67 69 1.1 "serif"
+		text	"really this" 64 67 1.1 "serif"
+		text	"morning I've" 61 65 1.1 "serif"
+		text	"nothing" 60 63 1.1 "serif"
+		text	"to do.”" 59 61 1.1 "serif"
+		text	"Said the" 61 59 1 "serif"
+		text	"mouse to the" 63 57 1 "serif"
+		text	"cur, “Such" 65 55 1 "serif"
+		text	"a trial," 67 53 1 "serif"
+		text	"dear Sir," 69 51 1 "serif"
+		text	"With no" 72 49 1 "serif"
+		text	"jury" 71 47 1 "serif"
+		text	"or judge," 68 45 1 "serif"
+		text	"would be" 66 43 1 "serif"
+		text	"wasting" 64 41 1 "serif"
+		text	"our" 63 39 1 "serif"
+		text	"breath.”" 64 37 1 "serif"
+		text	"“I‘ll be" 65 35 1 "serif"
+		text	"judge, I‘ll" 67 33 1 "serif"
+		text	"be jury," 69 31 1 "serif"
+		text	"Said" 70 29 1 "serif"
+		text	"cunning" 71 27 1 "serif"
+		text	"old Fury:" 72 25 1 "serif"
+		text	"“I‘ll try" 71 23 1 "serif"
+		text	"the whole" 72 21 1 "serif"
+		text	"cause," 76 19 1 "serif"
+		text	"and" 77 17 1 "serif"
+		text	"condemn" 74 15 1 "serif"
+		text	"you" 73 13 1 "serif"
+		text	"to" 72 11 1 "serif"
+		text	"death.’" 73 9 1 "serif"
+		image	"images/dodo.jpg" 32 68 1200 800 30
+	eslide
+
 	
 	// Mutigenerational households
 	slide
