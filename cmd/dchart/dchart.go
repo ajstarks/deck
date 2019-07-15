@@ -23,13 +23,13 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop, linewidth             float64
-	xint, pmlen                                                                                     int
-	readcsv, showdot, datamin, showvolume, showscatter, showpct                                     bool
-	showbar, showval, showxlast, showline, showhbar, wbar, showaxis, shownote, showrline, showframe bool
-	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes           bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols                       string
-	hline, noteloc, rlinecolor, framecolor, datacond                                                string
+	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop, linewidth              float64
+	xint, pmlen                                                                                      int
+	readcsv, showdot, datamin, showvolume, showscatter, showpct                                      bool
+	showbar, showval, showxlast, showline, showhbar, wbar, showaxis, shownote, showrline, showframe  bool
+	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes, solidpmap bool
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols                        string
+	hline, noteloc, rlinecolor, framecolor, datacond                                                 string
 )
 
 var blue7 = []string{
@@ -100,6 +100,7 @@ func cmdflags() {
 	flag.BoolVar(&readcsv, "csv", false, "read CSV data")
 	flag.BoolVar(&wbar, "wbar", false, "show word bar chart")
 	flag.BoolVar(&showpct, "pct", false, "show computed percentages with values")
+	flag.BoolVar(&solidpmap, "solidpmap", false, "solid pmap colors")
 	flag.IntVar(&xint, "xlabel", 1, "x axis label interval (show every n labels, 0 to show no labels)")
 	flag.IntVar(&pmlen, "pmlen", 20, "pmap label length")
 
@@ -545,7 +546,7 @@ func pmap(deck *generate.Deck, data []ChartData, title string) {
 	for i, p := range pct(data) {
 		bx := (p * bl)
 		if p < 3 || len(data[i].label) > pmlen {
-			ty = top - pwidth*1.5
+			ty = top - pwidth*1.2
 			deck.Line(x+(bx/2), ty+(ts*1.5), x+(bx/2), top, 0.1, dotlinecolor)
 		} else {
 			ty = top
@@ -574,7 +575,11 @@ func stdcolor(i int, dcolor, color string, op float64) (string, float64) {
 		return blue7[i%len(blue7)], 100
 	}
 	if len(dcolor) > 0 {
-		return dcolor, 40
+		if solidpmap {
+			return dcolor, 100
+		} else {
+			return dcolor, 40
+		}
 	}
 	return color, op
 }
