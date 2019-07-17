@@ -553,7 +553,7 @@ func doslides(doc *gofpdf.Fpdf, pc gofpdf.InitType, filename, author, title stri
 		fontfile := filepath.Join(pc.FontDirStr, v)
 		_, err := os.Stat(fontfile + ".json")
 		if err != nil {
-			doc.AddUTF8Font(v, "", fontfile+".ttf")
+			doc.AddUTF8Font(v, "", v+".ttf")
 			transmap[k] = nulltrans
 		} else {
 			doc.AddFont(v, "", v+".json")
