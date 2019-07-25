@@ -322,7 +322,7 @@ func showtext(doc *gg.Context, x, y float64, s string, fs float64, font, align s
 }
 
 // dolists places lists on the canvas
-func dolist(doc *gg.Context, cw, x, y, fs, lwidth, spacing float64, list []deck.ListItem, font, ltype, color string, opacity float64) {
+func dolist(doc *gg.Context, cw, x, y, fs, lwidth, spacing float64, list []deck.ListItem, font, ltype, align, color string, opacity float64) {
 	if font == "" {
 		font = "sans"
 	}
@@ -353,10 +353,15 @@ func dolist(doc *gg.Context, cw, x, y, fs, lwidth, spacing float64, list []deck.
 		if len(tl.Font) > 0 {
 			loadfont(doc, tl.Font, fs)
 		}
-		yw := textwrap(doc, x, y, tw, fs, ls, t, font)
-		y += ls
-		if yw >= 1 {
-			y += ls * float64(yw)
+		if align == "center" || align == "c" {
+			showtext(doc, x, y, t, fs, font, align)
+			y += ls
+		} else {
+			yw := textwrap(doc, x, y, tw, fs, ls, t, font)
+			y += ls
+			if yw >= 1 {
+				y += ls * float64(yw)
+			}
 		}
 	}
 }
@@ -552,7 +557,7 @@ func pngslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, d
 			l.Wp = listwrap
 		}
 		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
-		dolist(doc, cw, x, y, fs, l.Wp, l.Lp, l.Li, l.Font, l.Type, l.Color, l.Opacity)
+		dolist(doc, cw, x, y, fs, l.Wp, l.Lp, l.Li, l.Font, l.Type, l.Align, l.Color, l.Opacity)
 	}
 	// add a grid, if specified
 	if gp > 0 {
