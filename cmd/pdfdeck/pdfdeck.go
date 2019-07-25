@@ -267,7 +267,7 @@ func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align,
 
 // dolists places lists on the canvas
 // dolist(doc, cw, x, y, fs, l.Lp, l.Wp, l.Li, l.Font, l.Color, l.Type)
-func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, spacing float64, list []deck.ListItem, font, color, ltype string) {
+func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, spacing float64, list []deck.ListItem, font, color, align, ltype string) {
 	if font == "" {
 		font = "sans"
 	}
@@ -280,6 +280,7 @@ func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, spacing float64, list []deck
 	tw := deck.Pwidth(lwidth, cw, cw/2)
 
 	var t string
+	var yw int
 
 	defont := font
 	for i, tl := range list {
@@ -304,10 +305,17 @@ func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, spacing float64, list []deck
 			font = defont
 		}
 		//doc.Text(x, y, translate(t))
-		yw := textwrap(doc, x, y, tw, fs, ls, transmap[font](t), font, "")
-		y += ls
-		if yw >= 1 {
-			y += ls * float64(yw)
+		if align == "center" || align == "c" {
+			showtext(doc, x, y, transmap[font](t), fs, font, align, "")
+			y += ls
+		} else {
+
+			yw = textwrap(doc, x, y, tw, fs, ls, transmap[font](t), font, "")
+
+			y += ls
+			if yw >= 1 {
+				y += ls * float64(yw)
+			}
 		}
 	}
 }
@@ -529,7 +537,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) 
 		}
 		setopacity(doc, l.Opacity)
 		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
-		dolist(doc, cw, x, y, fs, l.Wp, l.Lp, l.Li, l.Font, l.Color, l.Type)
+		dolist(doc, cw, x, y, fs, l.Wp, l.Lp, l.Li, l.Font, l.Color, l.Align, l.Type)
 	}
 	// add a grid, if specified
 	if gp > 0 {
