@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"github.com/ajstarks/deck"
-	"github.com/ajstarks/svgo/float"
+	svg "github.com/ajstarks/svgo/float"
 )
 
 const (
@@ -279,7 +279,7 @@ func showtext(doc *svg.SVG, x, y float64, s string, fs float64, font, color, ali
 }
 
 // dolists places lists on the canvas
-func dolist(doc *svg.SVG, x, y, fs, lwidth, spacing float64, tlist []deck.ListItem, font, ltype, color string, opacity float64) {
+func dolist(doc *svg.SVG, x, y, fs, lwidth, spacing float64, tlist []deck.ListItem, font, ltype, align, color string, opacity float64) {
 	if font == "" {
 		font = "sans"
 	}
@@ -304,6 +304,9 @@ func dolist(doc *svg.SVG, x, y, fs, lwidth, spacing float64, tlist []deck.ListIt
 		}
 		if len(tl.Font) > 0 {
 			lifmt += ";font-family:" + tl.Font
+		}
+		if align == "center" || align == "c" {
+			lifmt += ";text-anchor:middle"
 		}
 		if len(lifmt) > 0 {
 			doc.Text(x, y, t, `xml:space="preserve"`, lifmt)
@@ -548,7 +551,7 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, cw, ch, gp float64, outname, tit
 			l.Wp = listwrap
 		}
 		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
-		dolist(doc, x, y, fs, l.Wp, l.Lp, l.Li, l.Font, l.Type, l.Color, l.Opacity)
+		dolist(doc, x, y, fs, l.Wp, l.Lp, l.Li, l.Font, l.Type, l.Align, l.Color, l.Opacity)
 	}
 	// add a grid, if specified
 	if gp > 0 {
