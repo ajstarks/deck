@@ -324,6 +324,22 @@ deck
 			li "three"
 		elist
 	eslide
+
+	slide
+		vline 50 0 100 0.1 
+		clist 50 90 3
+			li "one"
+			li "two"
+			li "three"
+			li "four"
+		elist
+		clist 50 40 3 "" "" 100 1.2
+			li "one"
+			li "two"
+			li "three"
+			li "four"
+		elist
+	eslide
 	
 	c1="red"
 	c2="blue"

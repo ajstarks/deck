@@ -199,11 +199,12 @@ Plain and captioned, with optional scales and links
 	cimage "file" "caption" x y width height [scale] [link]
 	
 ## Lists 
-(plain, bulleted, and numbered)
+(plain, bulleted, numbered, centered)
 	
 	list   x y size [font] [color] [opacity] [linespacing]
 	blist  x y size [font] [color] [opacity] [linespacing]
 	nlist  x y size [font] [color] [opacity] [linespacing]
+	clist  x y size [font] [color] [opacity] [linespacing]
 
 ### list items, and ending the list
 

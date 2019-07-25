@@ -437,6 +437,8 @@ func list(w io.Writer, s []string, linenumber int) error {
 		fmt.Fprintf(w, "<list type=\"bullet\" xp=%q yp=%q sp=%q %s>\n", s[1], s[2], s[3], fco)
 	case "nlist":
 		fmt.Fprintf(w, "<list type=\"number\" xp=%q yp=%q sp=%q %s>\n", s[1], s[2], s[3], fco)
+	case "clist":
+		fmt.Fprintf(w, "<list align=\"center\" xp=%q yp=%q sp=%q %s>\n", s[1], s[2], s[3], fco)
 	}
 	return nil
 }
@@ -1121,7 +1123,7 @@ func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) 
 	case "cimage":
 		return cimage(w, tokens, n)
 
-	case "list", "blist", "nlist":
+	case "list", "blist", "nlist", "clist":
 		return list(w, tokens, n)
 
 	case "elist", "eslide", "edeck":
