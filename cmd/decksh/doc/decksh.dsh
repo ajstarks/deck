@@ -474,7 +474,7 @@ deck
 		
 		lx+=25
 		ctext "curve"	lx gtop ts "mono" spotcolor
-		ctext "x1 y2 x2 y2 x3 y3 [color] [op]" lx r2a apisize "serif" apicolor
+		ctext "bx by cx cy ex ey [lw] [color] [op]" lx r2a apisize "serif" apicolor
 		curve 60 row2  60 55  70 row2 lw grcolor
 		circle 60 row2 spotsize spotcolor spotop
 		circle 60 55   spotsize spotcolor spotop
@@ -1364,6 +1364,137 @@ deck
  		
  		text "Chartable blog, Weekly Chart, September 6, 2018" left 5 1.5 "serif" "steelblue" 100 "https://blog.datawrapper.de/weekly43-wildfires-germany/"
 	eslide
+
+	slide
+		image "images/aid.png" 50 50 1920 1080 42
+	eslide
+
+	slide "rgb(240,240,240)"
+		image "images/slave-free.jpg"     25 50 799 1024 40
+		image "images/slave-free-dsh.png" 75 50 834 1058 40
+	eslide
+
+:// 	
+// 	opts="-hbar  -left=78 -right=95 -top=95 -datafmt=$%.5f -textsize 0.9 -color orange -fulldeck=f"
+// 	dopts="-hbar -left=60 -right=70 -top=95 -textsize 0.9 -fulldeck=f"
+// 	ls=0.25
+// 	lcolor="steelblue" // recipcolor
+// 	donorcolor="steelblue"
+// 	dtop=90
+// 	dleft=5
+// 	dsize=4
+// 	dcrad=dsize/2
+// 	dtsize=dsize*0.75
+// 	donorts=4
+// 	lop=50
+// 	dotcolor="orangered" // "red"
+// 	dotsize=1.0// ls
+// 	dotop=50
+// 	mapimage="images/ww.png"
+// 	iconw=20 // 48*0.42
+// 	iconh=20 // 48*0.42
+// 	icony=85
+// 	laby=97
+// 
+// 	slide
+// 		text "United States" dleft dtop dsize "sans" donorcolor
+// 		text "Donation Frequency" 60 laby 1 "sans" "gray"
+// 		text "Amount Received"    78 laby 1 "sans" "gray"
+// 		image mapimage 36 50 3200 1800 17 // 40
+// 		circle 15 54 dcrad donorcolor 50
+// 		ctext "$ 116.18 Billion" 15 54 dtsize
+// 		image "images/admin.png"	7 icony iconw iconh
+// 		image "images/multi.png"	12 icony iconw iconh
+// 		image "images/std.png"	17 icony iconw iconh
+// 		image "images/bio.png"	22 icony iconw iconh
+// 		image "images/industrial.png"	27 icony iconw iconh
+// 		line 15 54 58 30	ls lcolor lop	// Australia
+// 		circle 58 30		dotsize dotcolor dotop
+// 		line 15 54 36.5 58	ls lcolor lop	// Austria
+// 		circle 36.5 58		dotsize dotcolor dotop
+// 		line 15 54 34.75 59.25	ls lcolor lop	// Belgium
+// 		circle 34.75 59.25		dotsize dotcolor dotop
+// 		line 15 54 24 36	ls lcolor lop	// Brazil
+// 		circle 24 36		dotsize dotcolor dotop
+// 		line 15 54 21 61	ls lcolor lop	// Canada
+// 		circle 21 61		dotsize dotcolor dotop
+// 		line 15 54 21 31	ls lcolor lop	// Chile
+// 		circle 21 31		dotsize dotcolor dotop
+// 		line 15 54 20 42	ls lcolor lop	// Colombia
+// 		circle 20 42		dotsize dotcolor dotop
+// 		line 15 54 40 52.75	ls lcolor lop	// Cyprus
+// 		circle 40 52.75		dotsize dotcolor dotop
+// 		line 15 54 36.5 59	ls lcolor lop	// Czech Republic
+// 		circle 36.5 59		dotsize dotcolor dotop
+// 		line 15 54 35.5 61.5	ls lcolor lop	// Denmark
+// 		circle 35.5 61.5		dotsize dotcolor dotop
+// 		line 15 54 37 63	ls lcolor lop	// Estonia
+// 		circle 37 63		dotsize dotcolor dotop
+// 		line 15 54 39 66	ls lcolor lop	// Finland
+// 		circle 39 66		dotsize dotcolor dotop
+// 		line 15 54 34 58	ls lcolor lop	// France
+// 		circle 34 58		dotsize dotcolor dotop
+// 		line 15 54 38 54	ls lcolor lop	// Greece
+// 		circle 38 54		dotsize dotcolor dotop
+// 		line 15 54 37 57	ls lcolor lop	// Hungary
+// 		circle 37 57		dotsize dotcolor dotop
+// 		line 15 54 30.5 66	ls lcolor lop	// Iceland
+// 		circle 30.5 66		dotsize dotcolor dotop
+// 		line 15 54 48.5 48	ls lcolor lop	// India
+// 		circle 48.5 48		dotsize dotcolor dotop
+// 		line 15 54 32.4 60.5	ls lcolor lop	// Ireland
+// 		circle 32.4 60.5		dotsize dotcolor dotop
+// 		line 15 54 36 56	ls lcolor lop	// Italy
+// 		circle 36 56		dotsize dotcolor dotop
+// 		line 15 54 59.5 53.5	ls lcolor lop	// Japan
+// 		circle 59.5 53.5		dotsize dotcolor dotop
+// 		line 15 54 57.1 54.5	ls lcolor lop	// Korea
+// 		circle 57.1 54.5		dotsize dotcolor dotop
+// 		line 15 54 40.5 51	ls lcolor lop	// Kuwait
+// 		circle 40.5 51		dotsize dotcolor dotop
+// 		line 15 54 38.5 62	ls lcolor lop	// Latvia
+// 		circle 38.5 62		dotsize dotcolor dotop
+// 		line 15 54 35.5 57.5 	ls lcolor lop	// Liechtenstein
+// 		circle 35.5 57.5 		dotsize dotcolor dotop
+// 		line 15 54 38.25 61.5	ls lcolor lop	// Lithuania
+// 		circle 38.25 61.5		dotsize dotcolor dotop
+// 		line 15 54 35 59	ls lcolor lop	// Luxembourg
+// 		circle 35 59		dotsize dotcolor dotop
+// 		line 15 54 66 24	ls lcolor lop	// New Zealand
+// 		circle 66 24		dotsize dotcolor dotop
+// 		line 15 54 35.5 64	ls lcolor lop	// Norway
+// 		circle 35.5 64		dotsize dotcolor dotop
+// 		line 15 54 37 60	ls lcolor lop	// Poland
+// 		circle 37 60		dotsize dotcolor dotop
+// 		line 15 54 32.4 55	ls lcolor lop	// Portugal
+// 		circle 32.4 55		dotsize dotcolor dotop
+// 		line 15 54 43.25 49	ls lcolor lop	// Qatar
+// 		circle 43.25 49		dotsize dotcolor dotop
+// 		line 15 54 38.5 57	ls lcolor lop	// Romania
+// 		circle 38.5 57		dotsize dotcolor dotop
+// 		line 15 54 42 48	ls lcolor lop	// Saudi Arabia
+// 		circle 42 48		dotsize dotcolor dotop
+// 		line 15 54 37.5 58.5	ls lcolor lop	// Slovak Republic
+// 		circle 37.5 58.5		dotsize dotcolor dotop
+// 		line 15 54 36.5 57.2 	ls lcolor lop	// Slovenia
+// 		circle 36.5 57.2 		dotsize dotcolor dotop
+// 		line 15 54 38 28	ls lcolor lop	// South Africa
+// 		circle 38 28		dotsize dotcolor dotop
+// 		line 15 54 33 55	ls lcolor lop	// Spain
+// 		circle 33 55		dotsize dotcolor dotop
+// 		line 15 54 36.5 65	ls lcolor lop	// Sweden
+// 		circle 36.5 65		dotsize dotcolor dotop
+// 		line 15 54 56.1 48.5	ls lcolor lop	// Taiwan
+// 		circle 56.1 48.5		dotsize dotcolor dotop
+// 		line 15 54 52.5 45	ls lcolor lop	// Thailand
+// 		circle 52.5 45		dotsize dotcolor dotop
+// 		line 15 54 43.75 48.25	ls lcolor lop	// United Arab Emirates
+// 		circle 43.75 48.25		dotsize dotcolor dotop
+// 		line 15 54 33.5 60	ls lcolor lop	// United Kingdom
+// 		circle 33.5 60		dotsize dotcolor dotop
+// 		dchart opts  code/sorted-total-United-States-recip.d
+// 		dchart dopts code/sorted-United-States-aid.d
+// 	eslide
 	
 	// How does Go help
 	slide "black" "white"
