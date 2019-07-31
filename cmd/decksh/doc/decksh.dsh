@@ -240,6 +240,7 @@ deck
 			li "list"
 			li "blist"
 			li "nlist"
+			li "clist"
 			li "li"
 			li "elist"
 		elist
@@ -384,34 +385,46 @@ deck
 		ctext "list" lx ktop ts "mono" spotcolor
 		ctext "x y size [font] [color] [opacity] [spacing]" lx apiy apisize "serif" apicolor
 		list kx row1 ls 
-			li "One"
-			li "Two"
-			li "Three"
-			li "Four"
+			li "First thing"
+			li "Second thing"
+			li "Third thing"
+			li "Fourth"
 		elist
 		
-		lx+=30
+		lx+=24
 		kx=lx-5
 		ctext "blist" lx ktop ts "mono" spotcolor
 		ctext "x y size [font] [color] [opacity] [spacing]" lx apiy apisize "serif" apicolor
 
 		blist kx row1 ls
-			li "One"
-			li "Two"
-			li "Three"
-			li "Four"
+			li "First thing"
+			li "Second thing"
+			li "Third thing"
+			li "Fourth"
 		elist
 		
-		lx+=30
+		lx+=24
 		kx=lx-5
 		ctext "nlist" lx ktop ts "mono" spotcolor
 		ctext "x y size [font] [color] [opacity] [spacing]" lx apiy apisize "serif" apicolor
 
 		nlist kx row1 ls
-			li "One"
-			li "Two"
-			li "Three"
-			li "Four"
+			li "First thing"
+			li "Second thing"
+			li "Third thing"
+			li "Fourth"
+		elist
+
+		lx+=30
+		kx=lx-5
+		ctext "clist" kx ktop ts "mono" spotcolor
+		ctext "x y size [font] [color] [opacity] [spacing]" kx apiy apisize "serif" apicolor
+
+		clist kx row1 ls
+			li "First thing"
+			li "Second thing"
+			li "Third thing"
+			li "Fourth"
 		elist
 	eslide
 
