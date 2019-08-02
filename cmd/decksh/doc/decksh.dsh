@@ -375,7 +375,7 @@ deck
 	// Lists
 	slide
 		text "Lists" left top titlesize "serif"
-		lx=15
+		lx=12
 		ktop=top-70
 		row1=top-20
 		ls=ts*0.9
@@ -391,7 +391,7 @@ deck
 			li "Fourth"
 		elist
 		
-		lx+=24
+		lx+=25
 		kx=lx-5
 		ctext "blist" lx ktop ts "mono" spotcolor
 		ctext "x y size [font] [color] [opacity] [spacing]" lx apiy apisize "serif" apicolor
@@ -403,7 +403,7 @@ deck
 			li "Fourth"
 		elist
 		
-		lx+=24
+		lx+=25
 		kx=lx-5
 		ctext "nlist" lx ktop ts "mono" spotcolor
 		ctext "x y size [font] [color] [opacity] [spacing]" lx apiy apisize "serif" apicolor
