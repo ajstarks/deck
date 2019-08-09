@@ -721,7 +721,7 @@ func hchart(deck *generate.Deck, r io.ReadCloser) {
 	// for every name, value pair, make the chart
 	y := top
 	for _, data := range bardata {
-		deck.TextEnd(left-hts, y, data.label, "sans", ts, labelcolor)
+		deck.TextEnd(left-hts, y+(hts/2), data.label, "sans", ts, labelcolor)
 		bv := vmap(data.value, mindata, maxdata, left, right)
 		if showdot {
 			dottedhline(deck, left, y+hts, bv-left, ts/5, 1, 0.25, dotlinecolor)
