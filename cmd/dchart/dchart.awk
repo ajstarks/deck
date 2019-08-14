@@ -90,20 +90,20 @@ END {
 	# variables to be used in decksh markup
 	min=0
 	interval=width/(NR-1)
-	printf "\tcolor=\"%s\"\n",		color
-	printf "\tvalcolor=\"%s\"\n",	valcolor
-	printf "\tvalsize=%g\n",		valsize
-	printf "\tlabelsize=%g\n",		labelsize
+	printf "\tcolor=\"%s\"\n",      color
+	printf "\tvalcolor=\"%s\"\n",   valcolor
+	printf "\tvalsize=%g\n",        valsize
+	printf "\tlabelsize=%g\n",      labelsize
 	printf "\tlabelcolor=\"%s\"\n", labelcolor
-	printf "\tlinesize=%g\n",		linesize
-	printf "\tdotsize=%g\n",		dotsize
-	printf "\tbarwidth=%g\n",		barwidth
-	printf "\tleft=%g\n",			left
-	printf "\tright=%g\n",			right
-	printf "\ttop=%g\n",			top
-	printf "\tbottom=%g\n",			bottom
-	printf "\tdotop=%g\n",			dotop
-	printf "\tvolop=%g\n",			volop
+	printf "\tlinesize=%g\n",       linesize
+	printf "\tdotsize=%g\n",        dotsize
+	printf "\tbarwidth=%g\n",       barwidth
+	printf "\tleft=%g\n",           left
+	printf "\tright=%g\n",          right
+	printf "\ttop=%g\n",            top
+	printf "\tbottom=%g\n",         bottom
+	printf "\tdotop=%g\n",          dotop
+	printf "\tvolop=%g\n",          volop
 
 	# begin the slide
 	if (fulldeck == "t") {
@@ -115,7 +115,7 @@ END {
 		if (yrange == "") {
 			ymin=min
 			ymax=max
-			yint=(ymax-ymin)/7.0
+			yint=(ymax-ymin)/5
 		} else {
 			split(yrange, yr, ",")
 			ymin=yr[1]
@@ -130,6 +130,10 @@ END {
 			}
 		}
 	}
+
+	if (chartitle != "") {
+		printf "text \"%s\" left %g %g\n", chartitle, top+5, labelsize*1.5
+	} 
 
 	# for every label,data line, draw the elements of line, bar, scatter, and volume charts (each may be individually specified)
 	x=left
@@ -175,12 +179,11 @@ END {
 		lp=length(xa)
 		printf "\t\tpolygon \""
 		for (i=1; i <= lp; i++) {
-			printf "%g ", xa[i]
+			printf " %g", xa[i]
 		}
-		# printf "%g\" \"", xa[1]
 		printf "\" \""
 		for (i=1; i <= lp; i++) {
-			printf ("%g ", ya[i])
+			printf (" %g", ya[i])
 		}
 		printf "\" color volop\n"
 	}
