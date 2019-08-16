@@ -49,6 +49,12 @@ BEGIN {
 	if (color == "") {
 		color = "lightsteelblue"
 	}
+	if (val == "") {
+		val = "t"
+	}
+	if (ygrid == "") {
+		ygrid = "f"
+	}
 	if (valcolor == "") {
 		valcolor="maroon"
 	}
@@ -149,7 +155,7 @@ END {
 			printf "\t\tcircle %g %g dotsize color dotop\n", x, y
 		}
 		if (val == "t") {
-			printf "\t\tctext \"%s\" %g %g valsize \"serif\" valcolor\n", sprintf(datafmt, data[i]), x, y
+			printf "\t\tctext \"%s\" %g %g valsize \"serif\" valcolor\n", sprintf(datafmt, data[i]), x, y+1
 		}
 		# x axis labels
 		if (i%xlabel == 0 || i == 1) {
