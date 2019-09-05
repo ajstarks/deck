@@ -7,6 +7,8 @@ deck
 			line v 100 v 0 0.1 "red"
 		efor
 	eslide
+
+	include "insertme.dsh"
 	
 	slide
 		bx=10

@@ -146,6 +146,11 @@ Specify the size of the canvas.
 
     canvas w h
 
+Include decksh markup from a file
+
+    include "file"
+
+
 Begin, end a slide with optional background and text colors.
 
 
