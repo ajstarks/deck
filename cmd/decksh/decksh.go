@@ -250,16 +250,39 @@ func endtag(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+func include(w io.Writer, s []string, linenumber int) error {
+	if len(s) != 2 {
+		return fmt.Errorf("line %d: include \"file\"", linenumber)
+	}
+	filearg := s[1]
+
+	if len(filearg) < 3 {
+		return fmt.Errorf("line %d: %v is not a valid filename", linenumber, filearg)
+	}
+	end := len(filearg) - 1
+	if filearg[0] != '"' && filearg[end] != '"' {
+		return fmt.Errorf("line %d: %v is not a valid filename", linenumber, filearg)
+	}
+	r, err := os.Open(filearg[1:end])
+	if err != nil {
+		return err
+	}
+	defer r.Close()
+	return process(w, r)
+
+}
+
 // loadata creates a file using the  data keyword
 func loadata(s []string, linenumber int, scanner *bufio.Scanner) error {
 	if len(s) != 2 {
 		return fmt.Errorf("line %d: data \"file\"...edata", linenumber)
 	}
 	filearg := s[1]
-	end := len(filearg) - 1
+
 	if len(filearg) < 3 {
 		return fmt.Errorf("line %d: %v is not a valid filename", linenumber, filearg)
 	}
+	end := len(filearg) - 1
 	if filearg[0] != '"' && filearg[end] != '"' {
 		return fmt.Errorf("line %d: %v is not a valid filename", linenumber, filearg)
 	}
@@ -1104,6 +1127,9 @@ func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) 
 
 	case "canvas":
 		return canvas(w, tokens, n)
+
+	case "include":
+		return include(w, tokens, n)
 
 	case "slide":
 		return slide(w, tokens, n)
