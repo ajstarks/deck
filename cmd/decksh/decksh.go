@@ -1284,6 +1284,7 @@ func main() {
 
 	err := process(output, input)
 	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(3)
 	}
 
