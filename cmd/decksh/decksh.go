@@ -22,8 +22,11 @@ const (
 	fileloop
 	vectloop
 )
-const doublequote = 0x22
-const stdnotch = 0.75
+const (
+	maxbufsize  = 128 * 1024 // the default 64k buffer is too small
+	doublequote = 0x22
+	stdnotch    = 0.75
+)
 
 // emap is the id=expression map
 var emap = map[string]string{}
@@ -1212,6 +1215,7 @@ func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) 
 // process reads input, parses, dispatches functions for code generation
 func process(w io.Writer, r io.Reader) error {
 	scanner := bufio.NewScanner(r)
+	scanner.Buffer(make([]byte, maxbufsize), maxbufsize) // the default 64k buffer is too small
 	errors := []error{}
 
 	// For every line in the input, parse into tokens,
