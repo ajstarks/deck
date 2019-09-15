@@ -204,7 +204,7 @@ deck
 		hsize=ts
 		lsize=hsize*0.6
 		csep=18
-		csep2=csep*0.6
+		csep2=csep*0.65
 		rsep=45
 		lsep=6
 		headtop=top-15
@@ -220,6 +220,7 @@ deck
 			li "slide"
 			li "eslide"
 			li "canvas"
+			li "include"
 			li "vmap"
 		elist
 		
