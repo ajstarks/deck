@@ -1388,7 +1388,73 @@ deck
 		image "images/slave-free-dsh.png" 75 50 834 1058 40
 	eslide
 
-:// 	
+
+	slide "rgb(230,230,230)"
+		image "images/plate01-image.png" 27 50 1584 2016 20
+		image "images/plate02-image.png"  73 50 1584 2016 20
+	eslide
+	slide "rgb(230,230,230)"
+		image "images/plate03-image.png" 27 50 1584 2016 20
+		image "images/plate04-image.png"  73 50 1584 2016 20
+	eslide
+	slide "rgb(230,230,230)"
+		image "images/plate05-image.png" 27 50 1584 2016 20
+		image "images/plate06-image.png"  73 50 1584 2016 20
+	eslide
+	slide "rgb(230,230,230)"
+		image "images/plate07-image.png" 27 50 1584 2016 20
+		image "images/plate09-image.png"  73 50 1584 2016 20
+	eslide
+	slide "rgb(230,230,230)"
+		image "images/plate10-image.png" 27 50 1584 2016 20
+		image "images/plate12-image.png"  73 50 1584 2016 20
+	eslide
+	slide "rgb(230,230,230)"
+		image "images/plate13-image.png" 27 50 1584 2016 20
+		image "images/plate14-image.png"  73 50 1584 2016 20
+	eslide
+	slide "rgb(230,230,230)"
+		image "images/plate15-image.png" 27 50 1584 2016 20
+		image "images/plate16-image.png"  73 50 1584 2016 20
+	eslide
+	slide "rgb(230,230,230)"
+		image "images/plate19-image.png" 27 50 1584 2016 20
+		image "images/plate20-image.png"  73 50 1584 2016 20
+	eslide
+	slide "rgb(230,230,230)"
+		image "images/plate38-image.png" 27 50 1584 2016 20
+		image "images/plate39-image.png"  73 50 1584 2016 20
+	eslide
+	slide "rgb(230,230,230)"
+		image "images/plate41-image.png" 27 50 1584 2016 20
+		image "images/plate42-image.png"  73 50 1584 2016 20
+	eslide
+	slide "rgb(230,230,230)"
+		image "images/plate50-image.png" 27 50 1584 2016 20
+		image "images/plate51-image.png"  73 50 1584 2016 20
+	eslide
+	slide "rgb(230,230,230)"
+		image "images/plate52-image.png" 27 50 1584 2016 20
+		image "images/plate53-image.png"  73 50 1584 2016 20
+	eslide
+	slide "rgb(230,230,230)"
+		image "images/plate55-image.png" 27 50 1584 2016 20
+		image "images/plate56-image.png"  73 50 1584 2016 20
+	eslide
+	slide "rgb(230,230,230)"
+		image "images/plate57-image.png" 27 50 1584 2016 20
+		image "images/plate59-image.png"  73 50 1584 2016 20
+	eslide
+	slide "rgb(230,230,230)"
+		image "images/plate60-image.png" 27 50 1584 2016 20
+		image "images/plate61-image.png"  73 50 1584 2016 20
+	eslide
+
+slide "rgb(230,230,230)"
+	image "images/plate31-image.png" 25 50 2016 1584 18
+	image "images/layoutmap.png"     75 50 2016 1584 18
+eslide
+
 // 	opts="-hbar  -left=78 -right=95 -top=95 -datafmt=$%.5f -textsize 0.9 -color orange -fulldeck=f"
 // 	dopts="-hbar -left=60 -right=70 -top=95 -textsize 0.9 -fulldeck=f"
 // 	ls=0.25
