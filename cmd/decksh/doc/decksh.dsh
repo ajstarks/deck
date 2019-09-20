@@ -119,8 +119,32 @@ deck
 		textfile "code/hw.dsh" 15 92 3 "mono" "white"
 	eslide
 	
+	exx=5
+	exy=95
+	exts=2
+	eximx=50
+	eximy=30
+	exw=1920
+	exh=1080
+	exscale=20
+	exbg="rgb(20,20,20)"
+	slide exbg "white"
+		textfile "code/align.dsh"	  exx exy exts "mono"
+		image    "images/align.png"   eximx eximy exw exh exscale
+	eslide
+
+	slide exbg "white"
+		textfile "code/list.dsh"	  exx exy exts "mono"
+		image    "images/list.png"    eximx eximy exw exh exscale
+	eslide
+
+	slide exbg "white"
+		textfile "code/ironman.dsh"	  exx exy exts "mono"
+		image    "images/ironman.png" eximx eximy exw exh exscale
+	eslide
+
 	// full deck example
-	slide
+	slide exbg "white"
 		imx=80
 		tx=5
 		textfile "code/fulldeck.dsh" tx 95 1.25 "mono"
