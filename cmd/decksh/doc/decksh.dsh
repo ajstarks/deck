@@ -181,21 +181,21 @@ deck
 	
 	// Set up
 	
-//	slide "black" "white"
-//		image "images/code01.png" 50 50 1920 1080 42 
-//	eslide
-//
-//	slide "black" "white"
-//		image "images/code02.png" 50 50 1920 1080 42 
-//	eslide
-//	
 	slide "black" "white"
-		image "images/hello-world.png" 50 50 1920 1080  42 
+		image "images/code01.png" 50 50 1920 1080 42 
 	eslide
 
 	slide "black" "white"
-		image "images/hello-mars.png" 50 50 1920 1080 42 
+		image "images/code02.png" 50 50 1920 1080 42 
 	eslide
+	
+//	slide "black" "white"
+//		image "images/hello-world.png" 50 50 1920 1080  42 
+//	eslide
+//
+//	slide "black" "white"
+//		image "images/hello-mars.png" 50 50 1920 1080 42 
+//	eslide
 	// Keywords
 	slide
 		optx=53
