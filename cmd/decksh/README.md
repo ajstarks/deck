@@ -128,6 +128,12 @@ Division ```id=<id> / number or <id>```
 
     a=x/10
 
+## Random Number
+
+	x=random min max
+
+assign a random number in the spwcified range
+
 ## Mapping
 
 

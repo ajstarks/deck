@@ -7,12 +7,14 @@ import (
 	"fmt"
 	"io"
 	"math"
+	"math/rand"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"text/scanner"
+	"time"
 )
 
 // types of for loops
@@ -48,9 +50,12 @@ func assign(s []string, linenumber int) error {
 	case 3:
 		return simpleassign(s, linenumber) // x=10
 	case 5:
-		return binop(s, linenumber) // x+=20
+		if s[2] == "random" {
+			return random(s, linenumber)
+		}
+		return binop(s, linenumber) // x=a+b
 	case 8:
-		return interpolate(s, linenumber) // x=interp d min1 max1 min2 max2
+		return interpolate(s, linenumber) // x=vmap d min1 max1 min2 max2
 	default:
 		return fmt.Errorf("line %d: %v is a illegal assignment", linenumber, s)
 	}
@@ -139,9 +144,28 @@ func assignop(s []string, linenumber int) error {
 	return nil
 }
 
-//vmap maps one interval to another
+// vmap maps one interval to another
 func vmap(value float64, low1 float64, high1 float64, low2 float64, high2 float64) float64 {
 	return low2 + (high2-low2)*(value-low1)/(high1-low1)
+}
+
+// random returns a bounded random number
+func random(s []string, linenumber int) error {
+	if s[1] != "=" || s[2] != "random" {
+		return fmt.Errorf("line %d use: x = random min max", linenumber)
+	}
+	var min, max float64
+	var err error
+	min, err = strconv.ParseFloat(eval(s[3]), 64)
+	if err != nil {
+		return err
+	}
+	max, err = strconv.ParseFloat(eval(s[4]), 64)
+	if err != nil {
+		return err
+	}
+	emap[s[0]] = fmt.Sprintf("%v", vmap(rand.Float64(), 0, 1, min, max))
+	return nil
 }
 
 // interpolate translates a value given two ranges
@@ -151,26 +175,26 @@ func interpolate(s []string, linenumber int) error {
 		return fmt.Errorf("line %d: use: v = vmap data min1 max1 min2 max2", linenumber)
 	}
 	var data, min1, max1, min2, max2 float64
-	var ierr error
-	data, ierr = strconv.ParseFloat(eval(s[3]), 64)
-	if ierr != nil {
-		return ierr
+	var err error
+	data, err = strconv.ParseFloat(eval(s[3]), 64)
+	if err != nil {
+		return err
 	}
-	min1, ierr = strconv.ParseFloat(eval(s[4]), 64)
-	if ierr != nil {
-		return ierr
+	min1, err = strconv.ParseFloat(eval(s[4]), 64)
+	if err != nil {
+		return err
 	}
-	max1, ierr = strconv.ParseFloat(eval(s[5]), 64)
-	if ierr != nil {
-		return ierr
+	max1, err = strconv.ParseFloat(eval(s[5]), 64)
+	if err != nil {
+		return err
 	}
-	min2, ierr = strconv.ParseFloat(eval(s[6]), 64)
-	if ierr != nil {
-		return ierr
+	min2, err = strconv.ParseFloat(eval(s[6]), 64)
+	if err != nil {
+		return err
 	}
-	max2, ierr = strconv.ParseFloat(eval(s[7]), 64)
-	if ierr != nil {
-		return ierr
+	max2, err = strconv.ParseFloat(eval(s[7]), 64)
+	if err != nil {
+		return err
 	}
 	emap[s[0]] = fmt.Sprintf("%v", vmap(data, min1, max1, min2, max2))
 	return nil
@@ -1269,6 +1293,7 @@ func main() {
 	var rerr, werr error
 
 	flag.Parse()
+	rand.Seed(time.Now().UnixNano())
 
 	if len(flag.Args()) > 0 {
 		input, rerr = os.Open(flag.Args()[0])

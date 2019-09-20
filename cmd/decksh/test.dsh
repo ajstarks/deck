@@ -8,6 +8,22 @@ deck
 		efor
 	eslide
 
+	slide
+			randmin=10
+			randmax=90
+			rx1=random randmin randmax
+			rx2=random randmin randmax
+			rx3=random randmin randmax 
+			ry1=random randmin randmax
+			ry2=random randmin randmax
+			ry3=random randmin randmax 
+
+			circle rx1 ry1 10 "red" ry1
+			circle rx2 ry2 10 "green" ry2
+			circle rx3 ry3 10 "blue" ry3
+			ctext "Random" 50 50 5
+	eslide
+
 	include "insertme.dsh"
 	
 	slide

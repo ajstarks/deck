@@ -119,6 +119,7 @@ deck
 		textfile "code/hw.dsh" 15 92 3 "mono" "white"
 	eslide
 	
+	// Expanded examples
 	exx=5
 	exy=95
 	exts=2
@@ -180,7 +181,6 @@ deck
 	eslide
 	
 	// Set up
-	
 	slide "black" "white"
 		image "images/code01.png" 50 50 1920 1080 42 
 	eslide
@@ -196,6 +196,7 @@ deck
 //	slide "black" "white"
 //		image "images/hello-mars.png" 50 50 1920 1080 42 
 //	eslide
+
 	// Keywords
 	slide
 		optx=53
@@ -245,7 +246,6 @@ deck
 			li "eslide"
 			li "canvas"
 			li "include"
-			li "vmap"
 		elist
 		
 		lx+=csep
@@ -325,6 +325,13 @@ deck
 		list lx listtop lsize "mono" "black" 100 listspacing
 			li "data"
 			li "edata"
+		elist
+
+		lx+=csep
+		text "Misc." lx headtop hsize "sans" headcolor
+		list lx listtop lsize "mono" "black" 100 listspacing
+			li "vmap"
+			li "random"
 		elist
 	eslide
 	
