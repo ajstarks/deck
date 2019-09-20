@@ -121,7 +121,7 @@ deck
 	
 	// Expanded examples
 	exx=5
-	exy=95
+	exy=92
 	exts=2
 	eximx=50
 	eximy=30
@@ -179,6 +179,7 @@ deck
  			li "read from file, write to file"
  			li "executable deck with #!/path/to/decksh"
  		elist
+		text "decksh example.dsh | pdfdeck ..."  left 20 ts "mono" "maroon"
 	eslide
 	
 	// Set up
@@ -226,57 +227,79 @@ deck
 
 	// Categories
 	slide
-		text "decksh Categories" left top titlesize "serif"  
-		kleft=left+10
-		ktop=top-20
-		ksp=2.35
-		kts=ts*1.2
+		rowleft=left+3
+		kx=rowleft
+		ky=top-15
+		ktx=kx+5
+		kty=ky-1
+		kcolsp=30
+		krowsp=18
+		kimw=60
+		kimh=60
+		kts=titlesize*0.75
 		kcolor="maroon"
-		list kleft 68 kts "sans" kcolor 100 ksp
-			li "Structure"
-			li "Text"
-			li "Lists"
-			li "Graphics"
-			li "Arrows"
-		elist
 
-		kimx=kleft-5
-		kimy=ktop+5
-		kimsp=15
+		text "Categories" left top titlesize "serif" 
 
-		image "images/structure.png" kimx kimy 75 75
-		kimy-=kimsp
-		image "images/text.png"      kimx kimy 75 75
-		kimy-=kimsp
-		image "images/list.png"		kimx kimy 75 75
-		kimy-=kimsp
-		image "images/shapes.png"	kimx kimy 75 75
-		kimy-=kimsp
-		image "images/arrow.png"	kimx kimy 75 75
-		kimy-=kimsp
+		// Row 1
+		image "images/structure.png" kx ky kimw kimh
+		text "Structure" ktx kty kts "sans" kcolor
+		kx+=kcolsp
+		ktx+=kcolsp
 
-		kimx+=40
-		kleft+=40
+		image "images/text.png" kx ky kimw kimh
+		text "Text" ktx kty kts "sans" kcolor
+		kx+=kcolsp
+		ktx+=kcolsp
 
-		list kleft 68 kts "sans" kcolor 100 ksp
-			li "Images"
-			li "Charts"
-			li "Loop"
-			li "Data"
-			li "Utility"
-		elist
+		image "images/list.png" kx ky kimw kimh
+		text "Lists" ktx kty kts "sans" kcolor
 
-		kimy=ktop+5
-		image "images/img.png" kimx kimy 75 75
-		kimy-=kimsp
-		image "images/chart.png"      kimx kimy 75 75
-		kimy-=kimsp
-		image "images/loop.png"		kimx kimy 75 75
-		kimy-=kimsp
-		image "images/data.png"	kimx kimy 75 75
-		kimy-=kimsp
-		image "images/utility.png"	kimx kimy 75 75
-		kimy-=kimsp
+		kx=rowleft
+		ky-=krowsp
+		ktx=kx+5
+		kty=ky-1
+
+		// Row 2
+		image "images/shapes.png" kx ky kimw kimh
+		text "Graphics" ktx kty kts "sans" kcolor
+		kx+=kcolsp
+		ktx+=kcolsp
+
+		image "images/arrow.png" kx ky kimw kimh
+		text "Arrows" ktx kty kts "sans" kcolor
+		kx+=kcolsp
+		ktx+=kcolsp
+
+		image "images/img.png" kx ky kimw kimh
+		text "Images" ktx kty kts "sans" kcolor
+
+		kx=rowleft
+		ky-=krowsp
+		ktx=kx+5
+		kty=ky-1
+		
+		// Row 3
+		image "images/chart.png" kx ky kimw kimh
+		text "Charts" ktx kty kts "sans" kcolor
+		kx+=kcolsp
+		ktx+=kcolsp
+
+		image "images/loop.png" kx ky kimw kimh
+		text "Loop" ktx kty kts "sans" kcolor
+		kx+=kcolsp
+		ktx+=kcolsp
+
+		image "images/data.png" kx ky kimw kimh
+		text "Data" ktx kty kts "sans" kcolor
+
+		kx=rowleft+kcolsp
+		ky-=krowsp
+		ktx=kx+5
+		kty=ky-1
+
+		image "images/utility.png" kx ky kimw kimh
+		text "Utility" ktx kty kts "sans" kcolor
 	eslide
 	
 	// Keyword list
@@ -1132,52 +1155,52 @@ deck
 	eslide
 
 	// CEOs: up and to the right
-	h=15
-	w=50
-	chartleft=25
-	right=chartleft+w
-	ix=chartleft-10
-	h2=h/2
-	nsize=2.5
-	nx=right+5
-	opts="-fulldeck=f -bar=f -note=f -val=f -line -linewidth=0.1 -vol -volop=20 -yaxis -xlabel=6000 -xlast -color green"
-	slide
-		chartop=95
-		bottom=chartop-h
-		iy=bottom+h2
-		ny=bottom+2		
-		cimage  "images/pichai.jpg" "Pichai" ix iy 400 400 15
-		dchart opts -yrange=0,1200,600 -top chartop -bottom bottom -left chartleft -right right code/pichai.d
-		text "+38.19%" nx ny nsize
-		ctext "GOOG" 50 ny 3 "sans" "gray" 75
-		
-		chartop=70
-		bottom=chartop-h
-		iy=bottom+h2
-		ny=bottom+2	
-		cimage "images/nadella.jpg" "Nadella" ix iy 357 502 15 
-		dchart opts -yrange=0,120,60 -top chartop -bottom bottom -left chartleft -right right code/nadella.d
-		text "+66.79%" nx ny nsize
-		ctext "MSFT" 50 ny 3 "sans" "gray" 75
-		
-		chartop=45
-		bottom=chartop-h
-		iy=bottom+h2
-		ny=bottom+2	
-		cimage "images/cook.png" "Cook"  ix iy 575 657 10
-		dchart opts -yrange=0,200,100 -top chartop -bottom bottom -left chartleft -right right code/cook.d
-		text "+68.56%" nx ny nsize
-		ctext "AAPL" 50 ny 3 "sans" "gray" 75
-		 
-		chartop=20
-		bottom=chartop-h
-		iy=bottom+h2
-		ny=bottom+2
-		cimage "images/welch.jpg" "Welch" ix iy 200 208 30
-		dchart opts -yrange=0,60,30 -top chartop -bottom bottom -left chartleft -right right -color gray code/welch.d
-		text "+96.56%" nx ny nsize
-		ctext "GE" 50 ny 3 "sans" "gray" 75
-	eslide
+//	h=15
+//	w=50
+//	chartleft=25
+//	right=chartleft+w
+//	ix=chartleft-10
+//	h2=h/2
+//	nsize=2.5
+//	nx=right+5
+//	opts="-fulldeck=f -bar=f -note=f -val=f -line -linewidth=0.1 -vol -volop=20 -yaxis -xlabel=6000 -xlast -color green"
+//	slide
+//		chartop=95
+//		bottom=chartop-h
+//		iy=bottom+h2
+//		ny=bottom+2		
+//		cimage  "images/pichai.jpg" "Pichai" ix iy 400 400 15
+//		dchart opts -yrange=0,1200,600 -top chartop -bottom bottom -left chartleft -right right code/pichai.d
+//		text "+38.19%" nx ny nsize
+//		ctext "GOOG" 50 ny 3 "sans" "gray" 75
+//		
+//		chartop=70
+//		bottom=chartop-h
+//		iy=bottom+h2
+//		ny=bottom+2	
+//		cimage "images/nadella.jpg" "Nadella" ix iy 357 502 15 
+//		dchart opts -yrange=0,120,60 -top chartop -bottom bottom -left chartleft -right right code/nadella.d
+//		text "+66.79%" nx ny nsize
+//		ctext "MSFT" 50 ny 3 "sans" "gray" 75
+//		
+//		chartop=45
+//		bottom=chartop-h
+//		iy=bottom+h2
+//		ny=bottom+2	
+//		cimage "images/cook.png" "Cook"  ix iy 575 657 10
+//		dchart opts -yrange=0,200,100 -top chartop -bottom bottom -left chartleft -right right code/cook.d
+//		text "+68.56%" nx ny nsize
+//		ctext "AAPL" 50 ny 3 "sans" "gray" 75
+//		 
+//		chartop=20
+//		bottom=chartop-h
+//		iy=bottom+h2
+//		ny=bottom+2
+//		cimage "images/welch.jpg" "Welch" ix iy 200 208 30
+//		dchart opts -yrange=0,60,30 -top chartop -bottom bottom -left chartleft -right right -color gray code/welch.d
+//		text "+96.56%" nx ny nsize
+//		ctext "GE" 50 ny 3 "sans" "gray" 75
+//	eslide
 	
 	// IBM execs
 	imy=90
@@ -1489,7 +1512,7 @@ deck
 	eslide
 	slide "rgb(230,230,230)"
 		image "images/plate10.png" 27 50 1584 2016 dbscale
-		image "images/plate12.png"  73 50 1584 2016 dbscale
+		image "images/platexx.png"  73 50 1584 2016 dbscale
 	eslide
 	slide "rgb(230,230,230)"
 		image "images/plate13.png" 27 50 1584 2016 dbscale
