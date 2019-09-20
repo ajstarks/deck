@@ -191,14 +191,6 @@ deck
 		image "images/code02.png" 50 50 1920 1080 42 
 	eslide
 	
-//	slide "black" "white"
-//		image "images/hello-world.png" 50 50 1920 1080  42 
-//	eslide
-//
-//	slide "black" "white"
-//		image "images/hello-mars.png" 50 50 1920 1080 42 
-//	eslide
-
 	// Keywords
 	slide
 		optx=53
@@ -231,7 +223,7 @@ deck
 		kx=rowleft
 		ky=top-15
 		ktx=kx+5
-		kty=ky-1
+		kty=ky-1.5
 		kcolsp=30
 		krowsp=18
 		kimw=60
@@ -258,7 +250,7 @@ deck
 		kx=rowleft
 		ky-=krowsp
 		ktx=kx+5
-		kty=ky-1
+		kty=ky-1.5
 
 		// Row 2
 		image "images/shapes.png" kx ky kimw kimh
@@ -277,7 +269,7 @@ deck
 		kx=rowleft
 		ky-=krowsp
 		ktx=kx+5
-		kty=ky-1
+		kty=ky-1.5
 		
 		// Row 3
 		image "images/chart.png" kx ky kimw kimh
@@ -296,7 +288,7 @@ deck
 		kx=rowleft+kcolsp
 		ky-=krowsp
 		ktx=kx+5
-		kty=ky-1
+		kty=ky-1.5
 
 		image "images/utility.png" kx ky kimw kimh
 		text "Utility" ktx kty kts "sans" kcolor
@@ -1493,6 +1485,11 @@ deck
 		image "images/aid.png" 50 50 1920 1080 42
 	eslide
 
+	slide "rgb(230,230,230)"
+		image "images/plate31.png" 25 50 2016 1584 18
+		image "images/layoutmap.png"     75 50 2016 1584 18
+	eslide
+
 	dbscale=21
 	slide "rgb(230,230,230)"
 		image "images/plate01.png" 27 50 1584 2016 dbscale
@@ -1559,7 +1556,8 @@ deck
 		image "images/plate57.png"  73 50 1584 2016 dbscale
 	eslide
 	slide "rgb(230,230,230)"
-		image "images/plate58.png" 27 50 1584 2016 dbscale
+		//image "images/plate58.png" 27 50 1584 2016 dbscale
+		image "images/pauper.png"  27 50 792 1007 42
 		image "images/plate59.png"  73 50 1584 2016 dbscale
 	eslide
 	slide "rgb(230,230,230)"
@@ -1567,10 +1565,7 @@ deck
 		image "images/plate61.png"  73 50 1584 2016 dbscale
 	eslide
 
-	slide "rgb(230,230,230)"
-		image "images/plate31.png" 25 50 2016 1584 18
-		image "images/layoutmap.png"     75 50 2016 1584 18
-	eslide
+
 
 	
 	// How does Go help
