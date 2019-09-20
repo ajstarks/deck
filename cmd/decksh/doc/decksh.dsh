@@ -128,29 +128,30 @@ deck
 	exw=1920
 	exh=1080
 	exscale=20
-	exbg="rgb(20,20,20)"
-	slide exbg "white"
+	exbg="white"
+	exfg="black"
+	slide exbg exfg
 		textfile "code/align.dsh"	  exx exy exts "mono"
 		image    "images/align.png"   eximx eximy exw exh exscale
 	eslide
 
-	slide exbg "white"
+	slide exbg exfg
 		textfile "code/list.dsh"	  exx exy exts "mono"
-		image    "images/list.png"    eximx eximy exw exh exscale
+		image    "images/blist.png"    eximx eximy exw exh exscale
 	eslide
 
-	slide exbg "white"
+	slide exbg exfg
 		textfile "code/ironman.dsh"	  exx exy exts "mono"
 		image    "images/ironman.png" eximx eximy exw exh exscale
 	eslide
 
 	// full deck example
-	slide exbg "white"
+	slide exbg exfg
 		imx=80
 		tx=5
 		textfile "code/fulldeck.dsh" tx 95 1.25 "mono"
 		image    "images/align.png"   imx 80 192 108
-		image    "images/list.png"    imx 50 192 108
+		image    "images/blist.png"    imx 50 192 108
 		image    "images/ironman.png" imx 20 192 108
 	eslide
 	
@@ -221,6 +222,61 @@ deck
 		text "hello, world" sl 40 exsize "serif"
 		text "hello, world" sl 30 exsize "serif" "red"
 		text "hello, world" sl 20 exsize "serif" "red" 50
+	eslide
+
+	// Categories
+	slide
+		text "decksh Categories" left top titlesize "serif"  
+		kleft=left+10
+		ktop=top-20
+		ksp=2.35
+		kts=ts*1.2
+		kcolor="maroon"
+		list kleft 68 kts "sans" kcolor 100 ksp
+			li "Structure"
+			li "Text"
+			li "Lists"
+			li "Graphics"
+			li "Arrows"
+		elist
+
+		kimx=kleft-5
+		kimy=ktop+5
+		kimsp=15
+
+		image "images/structure.png" kimx kimy 75 75
+		kimy-=kimsp
+		image "images/text.png"      kimx kimy 75 75
+		kimy-=kimsp
+		image "images/list.png"		kimx kimy 75 75
+		kimy-=kimsp
+		image "images/shapes.png"	kimx kimy 75 75
+		kimy-=kimsp
+		image "images/arrow.png"	kimx kimy 75 75
+		kimy-=kimsp
+
+		kimx+=40
+		kleft+=40
+
+		list kleft 68 kts "sans" kcolor 100 ksp
+			li "Images"
+			li "Charts"
+			li "Loop"
+			li "Data"
+			li "Utility"
+		elist
+
+		kimy=ktop+5
+		image "images/img.png" kimx kimy 75 75
+		kimy-=kimsp
+		image "images/chart.png"      kimx kimy 75 75
+		kimy-=kimsp
+		image "images/loop.png"		kimx kimy 75 75
+		kimy-=kimsp
+		image "images/data.png"	kimx kimy 75 75
+		kimy-=kimsp
+		image "images/utility.png"	kimx kimy 75 75
+		kimy-=kimsp
 	eslide
 	
 	// Keyword list
@@ -328,7 +384,7 @@ deck
 		elist
 
 		lx+=csep
-		text "Misc." lx headtop hsize "sans" headcolor
+		text "Utility" lx headtop hsize "sans" headcolor
 		list lx listtop lsize "mono" "black" 100 listspacing
 			li "vmap"
 			li "random"
