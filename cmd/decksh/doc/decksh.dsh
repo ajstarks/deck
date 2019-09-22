@@ -1495,15 +1495,11 @@ deck
 	// DuBois Recreation examples
 
 	dbscale=21
-//	slide
-//		image "images/slave-free.jpg"      		25 47 821 1043 35
-//		image "images/slave-free-dsh.png"  		75 45 834 1058 38
-//	eslide
-//
-//	slide "rgb(230,230,230)"
-//		image "images/plate31.png" 25 50 2016 1584 18
-//		image "images/layoutmap.png"     75 50 2016 1584 18
-//	eslide
+	slide
+		image "images/slave-free.jpg"      		25 47 821 1043 35
+		image "images/slave-free-dsh.png"  		75 45 834 1058 38
+	eslide
+
 //
 //	slide "rgb(230,230,230)"
 //		image "images/plate01.png" 27 50 1584 2016 dbscale
@@ -1616,6 +1612,15 @@ deck
 //		ctext "errors" 50 50 8 "mono"
 //	eslide
 
+	slide "rgb(230,230,230)"
+		image "images/plate31.png" 50 50 2016 1584 25
+	eslide
+
+	// DuBois layout process
+	slide "rgb(230,230,230)"
+		image "images/plate31.png" 25 50 2016 1584 18
+		image "images/layoutmap.png"     75 50 2016 1584 18
+	eslide
 	// References
 	slide
 		ts=titlesize*0.75
