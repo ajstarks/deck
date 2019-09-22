@@ -21,8 +21,8 @@ deck
 	slide
 		text "decksh"						5 50 12 "sans" "maroon"
 		text "a little language for decks"	5 40 4
-		etext "Anthony Starks"				95 10 1.5 "sans" "rgb(127,127,127)" 
-		etext "@ajstarks"					95 6  1.5 "sans" "rgb(127,127,127)" 100 "https://twitter.com/ajstarks"
+		etext "Anthony Starks"				95 10 1.8 "sans" "rgb(127,127,127)" 
+		etext "@ajstarks"					95 6  1.8 "sans" "rgb(127,127,127)" 100 "https://twitter.com/ajstarks"
 		square	75 50 40     "rgb(220,220,220)"
 		rect	70 55 20 20  "rgb(127,0,0)"
 		rect	80 50 20 20  "white"
@@ -83,138 +83,6 @@ deck
 		ctext "80" 5 80 3 "mono"
 		ctext "90" 5 90 3 "mono"
 		ctext "Percent Grid" 50 50 8
-	eslide
-
-	// Overview
-	slide
-		cy=80
-		ysep=10
-		dscolor="rgb(127,0,0)"
-		markupcolor="gray"
-		outcolor="rgb(0,0,127)"
-		ay=cy+3
-		ts=titlesize*1.2
-		ctext	"decksh"		15 cy ts "sans" dscolor
-		arrow 25 ay 34 ay 0.4 3 6
-		ctext	"deck markup"	53 cy ts "sans" markupcolor
-		arrow 72 ay 80 ay 0.4 3 6
-		ctext	"PDF"			87 cy titlesize "sans" outcolor
-		cy+=10
-		ctext	"SVG"			87 cy titlesize "sans" outcolor
-		cy-=20
-		ctext	"PNG" 			87 cy titlesize "sans" outcolor
-		
-		cy-=ysep
-		imy=cy-15
-
-		textfile	"code/example.dsh" 5  cy  0.75 "mono" dscolor
-		textfile	"code/example.xml" 35 cy  0.75 "mono" markupcolor
-		image		"images/example.png" 87 imy 792 612 22
-	eslide
-		
-	// hello deck world
-	slide "black" "white"
-		ctext "hello, world" 50 25 10
-		circle 50 0 100 "blue"
-		textfile "code/hw.dsh" 15 92 3 "mono" "white"
-	eslide
-	
-	// Expanded examples
-	exx=5
-	exy=92
-	exts=2
-	eximx=50
-	eximy=30
-	exw=1920
-	exh=1080
-	exscale=20
-	exbg="white"
-	exfg="black"
-	slide exbg exfg
-		textfile "code/align.dsh"	  exx exy exts "mono"
-		image    "images/align.png"   eximx eximy exw exh exscale
-	eslide
-
-	slide exbg exfg
-		textfile "code/list.dsh"	  exx exy exts "mono"
-		image    "images/blist.png"    eximx eximy exw exh exscale
-	eslide
-
-	slide exbg exfg
-		textfile "code/ironman.dsh"	  exx exy exts "mono"
-		image    "images/ironman.png" eximx eximy exw exh exscale
-	eslide
-
-	// full deck example
-	slide exbg exfg
-		imx=80
-		tx=5
-		textfile "code/fulldeck.dsh" tx 95 1.25 "mono"
-		image    "images/align.png"   imx 80 192 108
-		image    "images/blist.png"    imx 50 192 108
-		image    "images/ironman.png" imx 20 192 108
-	eslide
-	
-	// Running
-	slide
-		lx=left
-		ly=top-20
-		ts=titlesize*0.6
-		text "Running decksh" left top titlesize "serif"
-		lls=1.4
-		list lx ly ts "mono" "black" 100 lls
-			li "decksh"
-			li "decksh in.dsh"
-			li "decksh -o out.xml"
-			li "decksh -o out.xml in.dsh"
-			li "chmod +x in.dsh; ./in.dsh"
-		elist
-		lx+=47
-		es=ts*0.75
-		lls*=1.333
- 		list lx ly es "serif" "black" 100 lls
- 			li "read from stdin, write to stdout"
- 			li "read from file, write to stdout"
- 			li "read from stdin, write to file"
- 			li "read from file, write to file"
- 			li "executable deck with #!/path/to/decksh"
- 		elist
-		text "decksh example.dsh | pdfdeck ..."  left 20 ts "mono" "maroon"
-	eslide
-	
-	// Set up
-	slide "black" "white"
-		image "images/code01.png" 50 50 1920 1080 42 
-	eslide
-
-	slide "black" "white"
-		image "images/code02.png" 50 50 1920 1080 42 
-	eslide
-	
-	// Keywords
-	slide
-		optx=53
-		argcolor="rgb(0,0,127)"
-		optcolor="rgb(127,127,127)"
-		
-		ky=top-20
-		sl=left
-		exsize=2.5
-		text "Keywords and arguments"	left top titlesize "serif"
-		text "text"              		sl ky exsize "mono" "maroon"
-		text `"string....."   x y n` 18 ky exsize "mono" argcolor
-		text "[font][color][op]" optx ky exsize "mono" optcolor
-		text `text "hello, world"  80 50 2`							sl 50 exsize "mono"
-		text `text "hello, world"  80 40 2 "serif"`					sl 40 exsize "mono"
-		text `text "hello, world"  80 30 2 "serif" "red"`			sl 30 exsize "mono"
-		text `text "hello, world"  80 20 2 "serif" "red" 50`		sl 20 exsize "mono"
-		
-		sl+=70
-		exsize*=1.3
-		text "hello, world" sl 50 exsize
-		text "hello, world" sl 40 exsize "serif"
-		text "hello, world" sl 30 exsize "serif" "red"
-		text "hello, world" sl 20 exsize "serif" "red" 50
 	eslide
 
 	// Categories
@@ -278,7 +146,7 @@ deck
 		ktx+=kcolsp
 
 		image "images/loop.png" kx ky kimw kimh
-		text "Loop" ktx kty kts "sans" kcolor
+		text "Loops" ktx kty kts "sans" kcolor
 		kx+=kcolsp
 		ktx+=kcolsp
 
@@ -293,6 +161,139 @@ deck
 		image "images/utility.png" kx ky kimw kimh
 		text "Utility" ktx kty kts "sans" kcolor
 	eslide
+
+	// Overview
+	slide
+		cy=80
+		ysep=10
+		dscolor="rgb(127,0,0)"
+		markupcolor="gray"
+		outcolor="rgb(0,0,127)"
+		ay=cy+3
+		ts=titlesize*1.2
+		ctext	"decksh"		15 cy ts "sans" dscolor
+		arrow 25 ay 34 ay 0.4 3 6
+		ctext	"deck markup"	53 cy ts "sans" markupcolor
+		arrow 72 ay 80 ay 0.4 3 6
+		ctext	"PDF"			87 cy titlesize "sans" outcolor
+		cy+=10
+		ctext	"SVG"			87 cy titlesize "sans" outcolor
+		cy-=20
+		ctext	"PNG" 			87 cy titlesize "sans" outcolor
+		
+		cy-=ysep
+		imy=cy-15
+
+		textfile	"code/example.dsh" 5  cy  0.75 "mono" dscolor
+		textfile	"code/example.xml" 35 cy  0.75 "mono" markupcolor
+		image		"images/example.png" 87 imy 792 612 22
+	eslide
+		
+	// hello deck world
+	slide "black" "white"
+		ctext "hello, world" 50 25 10
+		circle 50 0 100 "blue"
+		textfile "code/hw.dsh" 15 92 3 "mono" "white"
+	eslide
+	
+	// Expanded examples
+//	exx=5
+//	exy=92
+//	exts=2
+//	eximx=50
+//	eximy=30
+//	exw=1920
+//	exh=1080
+//	exscale=20
+//	exbg="white"
+//	exfg="black"
+//	slide exbg exfg
+//		textfile "code/align.dsh"	  exx exy exts "mono"
+//		image    "images/align.png"   eximx eximy exw exh exscale
+//	eslide
+//
+//	slide exbg exfg
+//		textfile "code/list.dsh"	  exx exy exts "mono"
+//		image    "images/blist.png"    eximx eximy exw exh exscale
+//	eslide
+//
+//	slide exbg exfg
+//		textfile "code/ironman.dsh"	  exx exy exts "mono"
+//		image    "images/ironman.png" eximx eximy exw exh exscale
+//	eslide
+//
+//	// full deck example
+//	slide exbg exfg
+//		imx=80
+//		tx=5
+//		textfile "code/fulldeck.dsh" tx 95 1.25 "mono"
+//		image    "images/align.png"   imx 80 192 108
+//		image    "images/blist.png"    imx 50 192 108
+//		image    "images/ironman.png" imx 20 192 108
+//	eslide
+	
+	// Running
+	slide
+		lx=left
+		ly=top-20
+		ts=titlesize*0.6
+		text "Running decksh" left top titlesize "serif"
+		lls=1.4
+		list lx ly ts "mono" "black" 100 lls
+			li "decksh"
+			li "decksh in.dsh"
+			li "decksh -o out.xml"
+			li "decksh -o out.xml in.dsh"
+			li "chmod +x in.dsh; ./in.dsh"
+		elist
+		lx+=47
+		es=ts*0.75
+		lls*=1.333
+ 		list lx ly es "serif" "black" 100 lls
+ 			li "read from stdin, write to stdout"
+ 			li "read from file, write to stdout"
+ 			li "read from stdin, write to file"
+ 			li "read from file, write to file"
+ 			li "executable deck with #!/path/to/decksh"
+ 		elist
+		text "decksh example.dsh | pdfdeck ..."  left 20 ts "mono" "maroon"
+	eslide
+	
+	// Set up
+	slide "black" "white"
+		image "images/code01.png" 50 50 1920 1080 42 
+	eslide
+
+	slide "black" "white"
+		image "images/code02.png" 50 50 1920 1080 42 
+	eslide
+	
+	// Keywords
+	slide
+		optx=53
+		argcolor="rgb(0,0,127)"
+		optcolor="rgb(127,127,127)"
+		
+		ky=top-20
+		sl=left
+		exsize=2.5
+		text "Keywords and arguments"	left top titlesize "serif"
+		text "text"              		sl ky exsize "mono" "maroon"
+		text `"string....."   x y n` 18 ky exsize "mono" argcolor
+		text "[font][color][op]" optx ky exsize "mono" optcolor
+		text `text "hello, world"  80 50 2`							sl 50 exsize "mono"
+		text `text "hello, world"  80 40 2 "serif"`					sl 40 exsize "mono"
+		text `text "hello, world"  80 30 2 "serif" "red"`			sl 30 exsize "mono"
+		text `text "hello, world"  80 20 2 "serif" "red" 50`		sl 20 exsize "mono"
+		
+		sl+=70
+		exsize*=1.3
+		text "hello, world" sl 50 exsize
+		text "hello, world" sl 40 exsize "serif"
+		text "hello, world" sl 30 exsize "serif" "red"
+		text "hello, world" sl 20 exsize "serif" "red" 50
+	eslide
+
 	
 	// Keyword list
 	slide
@@ -406,7 +407,7 @@ deck
 		elist
 	eslide
 	
-	// Variables Assignments
+	// Variables and Assignments
 	slide
 		assize=1.8
 		text "Variables and Assignments" left top titlesize "serif"
@@ -945,9 +946,9 @@ deck
 		cx1=col1+10
 		cx3=col3-10
 		ccx=col1-5
-		rcarrow	col1 25   col1 col2  45 my   lw aw ah modcolor		// code -> mirror
+		rcarrow	col1 25   col1 col2  45 my   lw aw ah modcolor	// code -> mirror
 		arrow	cx1 21    cx3 21 lw aw ah metacolor				// code -> index
-		rcarrow	col1 25   col1 40 45 ny lw aw ah modcolor			// code -> notary
+		rcarrow	col1 25   col1 40 45 ny lw aw ah modcolor		// code -> notary
 		
 		icx=col3
 		lcarrow	col3 25 col3 col2 55 my lw aw ah metacolor		// index -> mirror
@@ -965,16 +966,6 @@ deck
 		legend "metadata"		col3 5 1 "sans" metacolor
 	eslide
 
-	// captioned
-	slide "black" "white"
-		mleft=20
-		movy=70
-		textfile "code/movies.csv" mleft 40 2.5 "mono"
-		ctext "caption movies.csv | decksh | pdf ..." 50 10 2.5 "mono" "lightgray"
-		image "images/movie01.png" 20 movy 1920 1080 12
-		image "images/movie02.png" 50 movy 1920 1080 12
-		image "images/movie04.png" 80 movy 1920 1080 12
-	eslide
 
 	slide "black" "white"
 		ctext	"BOS" 15 70 11
@@ -1128,6 +1119,22 @@ deck
 		image	"images/dodo.jpg" 32 68 1200 800 30
 	eslide
 
+	// captioned
+	slide "black" "white"
+		movy=70
+		image "images/movie01.png" 20 movy 1920 1080 12
+		image "images/movie02.png" 50 movy 1920 1080 12
+		image "images/movie04.png" 80 movy 1920 1080 12
+	eslide
+	slide "black" "white"
+		mleft=20
+		movy=70
+		textfile "code/movies.csv" mleft 40 2.5 "mono"
+		ctext "caption movies.csv | decksh | pdf ..." 50 10 2.5 "mono" "lightgray"
+		image "images/movie01.png" 20 movy 1920 1080 12
+		image "images/movie02.png" 50 movy 1920 1080 12
+		image "images/movie04.png" 80 movy 1920 1080 12
+	eslide
 	
 	// Mutigenerational households
 	slide
@@ -1146,53 +1153,53 @@ deck
 		dchart topts -left=90 -right=95  code/wkids
 	eslide
 
-	// CEOs: up and to the right
-//	h=15
-//	w=50
-//	chartleft=25
-//	right=chartleft+w
-//	ix=chartleft-10
-//	h2=h/2
-//	nsize=2.5
-//	nx=right+5
-//	opts="-fulldeck=f -bar=f -note=f -val=f -line -linewidth=0.1 -vol -volop=20 -yaxis -xlabel=6000 -xlast -color green"
-//	slide
-//		chartop=95
-//		bottom=chartop-h
-//		iy=bottom+h2
-//		ny=bottom+2		
-//		cimage  "images/pichai.jpg" "Pichai" ix iy 400 400 15
-//		dchart opts -yrange=0,1200,600 -top chartop -bottom bottom -left chartleft -right right code/pichai.d
-//		text "+38.19%" nx ny nsize
-//		ctext "GOOG" 50 ny 3 "sans" "gray" 75
-//		
-//		chartop=70
-//		bottom=chartop-h
-//		iy=bottom+h2
-//		ny=bottom+2	
-//		cimage "images/nadella.jpg" "Nadella" ix iy 357 502 15 
-//		dchart opts -yrange=0,120,60 -top chartop -bottom bottom -left chartleft -right right code/nadella.d
-//		text "+66.79%" nx ny nsize
-//		ctext "MSFT" 50 ny 3 "sans" "gray" 75
-//		
-//		chartop=45
-//		bottom=chartop-h
-//		iy=bottom+h2
-//		ny=bottom+2	
-//		cimage "images/cook.png" "Cook"  ix iy 575 657 10
-//		dchart opts -yrange=0,200,100 -top chartop -bottom bottom -left chartleft -right right code/cook.d
-//		text "+68.56%" nx ny nsize
-//		ctext "AAPL" 50 ny 3 "sans" "gray" 75
-//		 
-//		chartop=20
-//		bottom=chartop-h
-//		iy=bottom+h2
-//		ny=bottom+2
-//		cimage "images/welch.jpg" "Welch" ix iy 200 208 30
-//		dchart opts -yrange=0,60,30 -top chartop -bottom bottom -left chartleft -right right -color gray code/welch.d
-//		text "+96.56%" nx ny nsize
-//		ctext "GE" 50 ny 3 "sans" "gray" 75
-//	eslide
+	// Blood Pressure
+
+	opts="-fulldeck=f -csv -textsize=1.4 -yrange=50,150,25 -min=50 -max=150 -left=20 -right=80 -yaxis -line -scatter=f -dot=f -val=f -bar=f -title=f"
+	bpfile="code/bp.csv"
+	scolor="red"
+	dcolor="blue"
+	bcolor="black"
+	slabel="Blood Pressure"
+	blabel="Heart Rate"
+	
+	chtop=80
+	chbot=60
+	chleft=25
+	chright=80
+	boxop=5
+	headtop=chtop+10
+	
+	chw=chright-chleft
+	chh=chtop-chbot
+	spacing=chh*1.5
+	
+	w2=chw/2
+	h2=chh/2
+	
+	rx=chleft+w2
+	ry=chbot+h2
+	labelx=chleft-15
+	labely=chtop
+	labely2=labely-3
+
+	slide
+		text "Jane Doe" chleft headtop 3
+		ctext slabel rx ry 2 "sans" "gray" 50
+		legend "Systolic"   labelx labely 1 "sans" scolor
+		legend "Diastolic"  labelx labely2 1 "sans" dcolor
+		dchart opts -xlabel=7 -csvcol=Date,SYS -left chleft -right chright -top chtop -bottom chbot -color scolor -hline 120,Normal -frame -framecolor "blue" bpfile
+		dchart opts -xlabel=0 -csvcol=Date,DIA -left chleft -right chright -top chtop -bottom chbot -color dcolor -hline 80,Normal bpfile
+		
+		chtop-=spacing
+		chbot-=spacing
+		ry-=spacing
+		
+		ctext blabel rx ry 2 "sans" "gray" 50
+		legend "Beats/Min"  labelx chtop 1 "sans" bcolor
+		dchart opts -xlabel=7 -csvcol=Date,BPM  -left chleft -right chright -top chtop -bottom chbot -min=40 -max=120 -yrange=40,120,20 -hline 70,Avg. -color bcolor -frame -framecolor "red" bpfile
+	
+	eslide
 	
 	// IBM execs
 	imy=90
@@ -1485,81 +1492,105 @@ deck
 		image "images/aid.png" 50 50 1920 1080 42
 	eslide
 
-	slide "rgb(230,230,230)"
-		image "images/plate31.png" 25 50 2016 1584 18
-		image "images/layoutmap.png"     75 50 2016 1584 18
-	eslide
+	// DuBois Recreation examples
 
 	dbscale=21
-	slide "rgb(230,230,230)"
-		image "images/plate01.png" 27 50 1584 2016 dbscale
-		image "images/plate02.png"  73 50 1584 2016 dbscale
-	eslide
-	slide "rgb(230,230,230)"
-		image "images/plate03.png" 27 50 1584 2016 dbscale
-		image "images/plate04.png"  73 50 1584 2016 dbscale
-	eslide
-	slide "rgb(230,230,230)"
-		image "images/plate05.png" 27 50 1584 2016 dbscale
-		image "images/plate06.png"  73 50 1584 2016 dbscale
-	eslide
-	slide "rgb(230,230,230)"
-		image "images/plate07.png" 27 50 1584 2016 dbscale
-		image "images/plate09.png"  73 50 1584 2016 dbscale
-	eslide
-	slide "rgb(230,230,230)"
-		image "images/plate10.png" 27 50 1584 2016 dbscale
-		image "images/platexx.png"  73 50 1584 2016 dbscale
-	eslide
-	slide "rgb(230,230,230)"
-		image "images/plate13.png" 27 50 1584 2016 dbscale
-		image "images/plate14.png"  73 50 1584 2016 dbscale
-	eslide
-	slide "rgb(230,230,230)"
-		image "images/plate15.png" 27 50 1584 2016 dbscale
-		image "images/plate16.png"  73 50 1584 2016 dbscale
-	eslide
-	slide "rgb(230,230,230)"
-		image "images/plate17.png" 27 50 1584 2016 dbscale
-		image "images/plate18.png"  73 50 1584 2016 dbscale
-	eslide
-	slide "rgb(230,230,230)"
-		image "images/plate19.png" 27 50 1584 2016 dbscale
-		image "images/plate20.png"  73 50 1584 2016 dbscale
-	eslide
-	slide "rgb(230,230,230)"
-		image "images/plate38.png" 27 50 1584 2016 dbscale
-		image "images/plate39.png"  73 50 1584 2016 dbscale
-	eslide
-	slide "rgb(230,230,230)"
-		image "images/plate40.png" 27 50 1584 2016 dbscale
-		image "images/plate41.png"  73 50 1584 2016 dbscale
-	eslide
-	slide "rgb(230,230,230)"
-		image "images/plate42.png" 27 50 1584 2016 dbscale
-		image "images/plate47.png"  73 50 1584 2016 dbscale
-	eslide
-	slide "rgb(230,230,230)"
-		image "images/plate50.png" 27 50 1584 2016 dbscale
-		image "images/plate51.png"  73 50 1584 2016 dbscale
-	eslide
+//	slide
+//		image "images/slave-free.jpg"      		25 47 821 1043 35
+//		image "images/slave-free-dsh.png"  		75 45 834 1058 38
+//	eslide
+//
+//	slide "rgb(230,230,230)"
+//		image "images/plate31.png" 25 50 2016 1584 18
+//		image "images/layoutmap.png"     75 50 2016 1584 18
+//	eslide
+//
+//	slide "rgb(230,230,230)"
+//		image "images/plate01.png" 27 50 1584 2016 dbscale
+//		image "images/plate02.png"  73 50 1584 2016 dbscale
+//	eslide
+//
+//	slide "rgb(230,230,230)"
+//		image "images/plate03.png" 27 50 1584 2016 dbscale
+//		image "images/plate04.png"  73 50 1584 2016 dbscale
+//	eslide
+//
+//	slide "rgb(230,230,230)"
+//		image "images/plate05.png" 27 50 1584 2016 dbscale
+//		image "images/plate06.png"  73 50 1584 2016 dbscale
+//	eslide
+//
+//	slide "rgb(230,230,230)"
+//		image "images/plate07.png" 27 50 1584 2016 dbscale
+//		image "images/plate09.png"  73 50 1584 2016 dbscale
+//	eslide
+//
+//	slide "rgb(230,230,230)"
+//		image "images/plate10.png" 27 50 1584 2016 dbscale
+//		image "images/platexx.png"  73 50 1584 2016 dbscale
+//	eslide
+//
+//	slide "rgb(230,230,230)"
+//		image "images/plate13.png" 27 50 1584 2016 dbscale
+//		image "images/plate14.png"  73 50 1584 2016 dbscale
+//	eslide
+//
+//	slide "rgb(230,230,230)"
+//		image "images/plate15.png" 27 50 1584 2016 dbscale
+//		image "images/plate16.png"  73 50 1584 2016 dbscale
+//	eslide
+//
+//	slide "rgb(230,230,230)"
+//		image "images/plate17.png" 27 50 1584 2016 dbscale
+//		image "images/plate18.png"  73 50 1584 2016 dbscale
+//	eslide
+//
+//	slide "rgb(230,230,230)"
+//		image "images/plate19.png" 27 50 1584 2016 dbscale
+//		image "images/plate20.png"  73 50 1584 2016 dbscale
+//	eslide
+//
+//	slide "rgb(230,230,230)"
+//		image "images/plate38.png" 27 50 1584 2016 dbscale
+//		image "images/plate39.png"  73 50 1584 2016 dbscale
+//	eslide
+//
+//	slide "rgb(230,230,230)"
+//		image "images/plate40.png" 27 50 1584 2016 dbscale
+//		image "images/plate41.png"  73 50 1584 2016 dbscale
+//	eslide
+//
+//	slide "rgb(230,230,230)"
+//		image "images/plate42.png" 27 50 1584 2016 dbscale
+//		image "images/plate47.png"  73 50 1584 2016 dbscale
+//	eslide
+//
+//	slide "rgb(230,230,230)"
+//		image "images/plate50.png" 27 50 1584 2016 dbscale
+//		image "images/plate51.png"  73 50 1584 2016 dbscale
+//	eslide
+
 	slide "rgb(230,230,230)"
 		image "images/plate52.png" 27 50 1584 2016 dbscale
 		image "images/plate53.png"  73 50 1584 2016 dbscale
 	eslide
+
 	slide "rgb(230,230,230)"
 		image "images/plate54.png" 27 50 1584 2016 dbscale
 		image "images/plate55.png"  73 50 1584 2016 dbscale
 	eslide
+
 	slide "rgb(230,230,230)"
 		image "images/plate56.png" 27 50 1584 2016 dbscale
 		image "images/plate57.png"  73 50 1584 2016 dbscale
 	eslide
+
 	slide "rgb(230,230,230)"
 		//image "images/plate58.png" 27 50 1584 2016 dbscale
 		image "images/pauper.png"  27 50 792 1007 42
 		image "images/plate59.png"  73 50 1584 2016 dbscale
 	eslide
+
 	slide "rgb(230,230,230)"
 		image "images/plate60.png" 27 50 1584 2016 dbscale
 		image "images/plate61.png"  73 50 1584 2016 dbscale
@@ -1568,23 +1599,22 @@ deck
 
 
 	
-	// How does Go help
-	slide "black" "white"
-		ctext "How does Go help?" 50 50 8 "serif"
-	eslide
-	
-	slide "black" "white"
-		ctext "fmt" 50 50 8 "mono"
-	eslide
-	
-	slide "black" "white"
-		ctext "text/scanner" 50 50 8 "mono"
-	eslide
-
-	slide "black" "white"
-		ctext "errors" 50 50 8 "mono"
-	eslide
-	 
+	// How does Go help (turn on for Go-audiences)
+//	slide "black" "white"
+//		ctext "How does Go help?" 50 50 8 "serif"
+//	eslide
+//	
+//	slide "black" "white"
+//		ctext "fmt" 50 50 8 "mono"
+//	eslide
+//	
+//	slide "black" "white"
+//		ctext "text/scanner" 50 50 8 "mono"
+//	eslide
+//
+//	slide "black" "white"
+//		ctext "errors" 50 50 8 "mono"
+//	eslide
 
 	// References
 	slide
@@ -1606,4 +1636,36 @@ deck
 		text "github.com/ajstarks/deckviz"			left 25 ts "mono" "black" 100 "https://github.com/ajstarks/deckviz"
 		text "github.com/ajstarks/deckfonts"        left 15 ts "mono" "black" 100 "https://github.com/ajstarks/deckfonts"
 	eslide
+
+	// Business Card
+
+    mx=25         // midpoint
+    tx=62         // text left
+    ix=57         // image left
+    ts=6          // base text size
+    ss=ts*0.85    // sub-head text size
+    cs=ts*0.50    // contact info text size
+    lx=50         // line x
+	imscale=4
+	ims2=imscale*10
+	ims3=ims2/4
+    slide "white" "rgb(100,100,100)"
+        image "images/starx.png"               mx 75 512 512 20
+        ctext "Anthony J. Starks"       mx 35 ts "sans" "black"
+        ctext "Art + Code"              mx 22 ss "sans" "maroon"
+        line  lx 90 lx 10 0.3 "maroon"
+
+        image "images/phone.png"        ix 80 1200 1200 imscale
+        image "images/email.png"        ix 65 1200 1200 imscale
+        image "images/twitter.png"      ix 50 1200 1200 imscale
+        image "images/github.png"       ix 35 120 120   ims2 
+        image "images/sd.png"           ix 20 512 512   ims3 
+
+        text "+1 908.548.3403"          tx 79 cs
+        text "ajstarks@gmail.com"       tx 64 cs
+        text "@ajstarks"                tx 49 cs
+        text "github.com/ajstarks"      tx 34 cs
+        text "speakerdeck.com/ajstarks" tx 19 cs
+    eslide
+
 edeck
