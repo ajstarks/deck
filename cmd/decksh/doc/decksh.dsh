@@ -756,10 +756,10 @@ deck
 	eslide
 
 	// Zoom in to overview
-	slide
+	slide "rgb(240,240,240)"
 		cy=top-80
  		textfile "code/example.dsh" 3 82 codesize "mono"
-		image    "images/example.png" 75 55 792 612 40
+		image    "images/example.png" 75 55 792 612 45
 		ctext	 "decksh example.dsh | pdf" cx cy 3.5 "mono" "maroon"
 	eslide
 	
@@ -1064,60 +1064,60 @@ deck
 		circle	72.5 65 3.5 "blue"
 	eslide
 
-	slide  
-		text	"Chapter V" 15 85 3 "serif" "rgb(127,0,0)" 100 "http://www.gutenberg.org/files/28885/28885-8.txt"
-		text	"Advice from a Caterpillar" 40 85 3 "serif" "rgb(127,0,0)" 100 "http://www.gutenberg.org/files/28885/28885-8.txt"
-		textblock alice1 40 75 40 2  "serif"
-		image	"images/Alice_05a-1116x1492.jpg" 25 50 1116 1492 20 "http://www.gutenberg.org/files/28885/28885-8.txt"
-	eslide
-
-	slide 
-		textblock alice2 10 33 40 1.5 "serif"
-		text	"Fury said to a " 70 96 1.2 "serif"
-		text	"mouse, That he" 68 93.6 1.2 "serif"
-		text	"met in the" 66 91.2 1.2 "serif"
-		text	"house, " 64 88.8 1.2 "serif"
-		text	"“Let us" 61 86.4 1.2 "serif"
-		text	"both go to" 63 84 1.2 "serif"
-		text	"law:I will" 65 81.6 1.2 "serif"
-		text	"prosecute" 67 79.2 1.2 "serif"
-		text	"YOU—Come," 70 77 1.1 "serif"
-		text	"I'll take no" 73 75 1.1 "serif"
-		text	"denial; We" 74 73 1.1 "serif"
-		text	"must have a" 71 71 1.1 "serif"
-		text	"trial:For" 67 69 1.1 "serif"
-		text	"really this" 64 67 1.1 "serif"
-		text	"morning I've" 61 65 1.1 "serif"
-		text	"nothing" 60 63 1.1 "serif"
-		text	"to do.”" 59 61 1.1 "serif"
-		text	"Said the" 61 59 1 "serif"
-		text	"mouse to the" 63 57 1 "serif"
-		text	"cur, “Such" 65 55 1 "serif"
-		text	"a trial," 67 53 1 "serif"
-		text	"dear Sir," 69 51 1 "serif"
-		text	"With no" 72 49 1 "serif"
-		text	"jury" 71 47 1 "serif"
-		text	"or judge," 68 45 1 "serif"
-		text	"would be" 66 43 1 "serif"
-		text	"wasting" 64 41 1 "serif"
-		text	"our" 63 39 1 "serif"
-		text	"breath.”" 64 37 1 "serif"
-		text	"“I‘ll be" 65 35 1 "serif"
-		text	"judge, I‘ll" 67 33 1 "serif"
-		text	"be jury," 69 31 1 "serif"
-		text	"Said" 70 29 1 "serif"
-		text	"cunning" 71 27 1 "serif"
-		text	"old Fury:" 72 25 1 "serif"
-		text	"“I‘ll try" 71 23 1 "serif"
-		text	"the whole" 72 21 1 "serif"
-		text	"cause," 76 19 1 "serif"
-		text	"and" 77 17 1 "serif"
-		text	"condemn" 74 15 1 "serif"
-		text	"you" 73 13 1 "serif"
-		text	"to" 72 11 1 "serif"
-		text	"death.’" 73 9 1 "serif"
-		image	"images/dodo.jpg" 32 68 1200 800 30
-	eslide
+//	slide  
+//		text	"Chapter V" 15 85 3 "serif" "rgb(127,0,0)" 100 "http://www.gutenberg.org/files/28885/28885-8.txt"
+//		text	"Advice from a Caterpillar" 40 85 3 "serif" "rgb(127,0,0)" 100 "http://www.gutenberg.org/files/28885/28885-8.txt"
+//		textblock alice1 40 75 40 2  "serif"
+//		image	"images/Alice_05a-1116x1492.jpg" 25 50 1116 1492 20 "http://www.gutenberg.org/files/28885/28885-8.txt"
+//	eslide
+//
+//	slide 
+//		textblock alice2 10 33 40 1.5 "serif"
+//		text	"Fury said to a " 70 96 1.2 "serif"
+//		text	"mouse, That he" 68 93.6 1.2 "serif"
+//		text	"met in the" 66 91.2 1.2 "serif"
+//		text	"house, " 64 88.8 1.2 "serif"
+//		text	"“Let us" 61 86.4 1.2 "serif"
+//		text	"both go to" 63 84 1.2 "serif"
+//		text	"law:I will" 65 81.6 1.2 "serif"
+//		text	"prosecute" 67 79.2 1.2 "serif"
+//		text	"YOU—Come," 70 77 1.1 "serif"
+//		text	"I'll take no" 73 75 1.1 "serif"
+//		text	"denial; We" 74 73 1.1 "serif"
+//		text	"must have a" 71 71 1.1 "serif"
+//		text	"trial:For" 67 69 1.1 "serif"
+//		text	"really this" 64 67 1.1 "serif"
+//		text	"morning I've" 61 65 1.1 "serif"
+//		text	"nothing" 60 63 1.1 "serif"
+//		text	"to do.”" 59 61 1.1 "serif"
+//		text	"Said the" 61 59 1 "serif"
+//		text	"mouse to the" 63 57 1 "serif"
+//		text	"cur, “Such" 65 55 1 "serif"
+//		text	"a trial," 67 53 1 "serif"
+//		text	"dear Sir," 69 51 1 "serif"
+//		text	"With no" 72 49 1 "serif"
+//		text	"jury" 71 47 1 "serif"
+//		text	"or judge," 68 45 1 "serif"
+//		text	"would be" 66 43 1 "serif"
+//		text	"wasting" 64 41 1 "serif"
+//		text	"our" 63 39 1 "serif"
+//		text	"breath.”" 64 37 1 "serif"
+//		text	"“I‘ll be" 65 35 1 "serif"
+//		text	"judge, I‘ll" 67 33 1 "serif"
+//		text	"be jury," 69 31 1 "serif"
+//		text	"Said" 70 29 1 "serif"
+//		text	"cunning" 71 27 1 "serif"
+//		text	"old Fury:" 72 25 1 "serif"
+//		text	"“I‘ll try" 71 23 1 "serif"
+//		text	"the whole" 72 21 1 "serif"
+//		text	"cause," 76 19 1 "serif"
+//		text	"and" 77 17 1 "serif"
+//		text	"condemn" 74 15 1 "serif"
+//		text	"you" 73 13 1 "serif"
+//		text	"to" 72 11 1 "serif"
+//		text	"death.’" 73 9 1 "serif"
+//		image	"images/dodo.jpg" 32 68 1200 800 30
+//	eslide
 
 	// captioned
 	slide "black" "white"
