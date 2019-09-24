@@ -603,9 +603,9 @@ func donut(deck *generate.Deck, data []ChartData, title string) {
 		bcolor, op := stdcolor(i, data[i].note, datacolor, p)
 		deck.Arc(dx, dy, psize, psize, pwidth, a1, a2, bcolor, op)
 		tx, ty := polar(dx, dy, psize*.85, mid*(math.Pi/180))
-		deck.TextMid(tx, ty, fmt.Sprintf("%s "+datafmt+"%%", data[i].label, p), "sans", ts, "black")
 		if showval {
-			deck.TextMid(tx, ty-ts*1.5, fmt.Sprintf(dformat(data[i].value)), "sans", ts, valuecolor)
+			deck.TextMid(tx, ty, fmt.Sprintf("%s "+datafmt+"%%", data[i].label, p), "sans", ts, "black")
+			//deck.TextMid(tx, ty-ts*1.5, fmt.Sprintf(dformat(data[i].value)), "sans", ts, valuecolor)
 		}
 		a1 = a2
 	}
