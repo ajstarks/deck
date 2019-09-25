@@ -1563,7 +1563,7 @@ deck
 	dbscale=21
 	slide
 		image "images/slave-free.jpg"      		25 47 821 1043 35
-		image "images/slave-free-dsh.png"  		75 45 834 1058 38
+		image "images/plate51.png"  		    75 45 1584 2016 dbscale 
 	eslide
 
 //
