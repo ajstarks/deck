@@ -13,10 +13,6 @@ deck
 	apisize=1.4
 	apicolor="rgb(127,127,127)"
 
-	alice1="THE Caterpillar and Alice looked at each other for some time in silence: at last the Caterpillar took the hookah out of its mouth, and addressed her in a languid, sleepy voice. “Who are you?” said the Caterpillar. This was not an encouraging opening for a conversation. Alice replied, rather shyly, “I—I hardly know, sir, just at present—at least I know who I was when I got up this morning, but I think I must have been changed several times times since then." 
-	alice2="You promised to tell me our history, you know,” said Alice, “and why it is you hate—C and D, she added in a whisper, half afraid that it would be offended again. Mine is a long and a sad tale!” said the Mouse, turning to Alice, and sighing. “It is a long tail, certainly,” said Alice, looking down with wonder at the Mouse’s tail; “but why do you call it sad?” And she kept on puzzling about it while the Mouse was speaking, so that her idea of the tale was something like this:—"	
-
-	
 	// Title slide	
 	slide
 		text "decksh"						5 50 12 "sans" "maroon"
@@ -85,7 +81,7 @@ deck
 		ctext "Percent Grid" 50 50 8
 	eslide
 
-	// Categories
+	// Elements
 	slide
 		rowleft=left+3
 		kx=rowleft
@@ -99,7 +95,7 @@ deck
 		kts=titlesize*0.75
 		kcolor="maroon"
 
-		text "Categories" left top titlesize "serif" 
+		text "Elements" left top titlesize "serif" 
 
 		// Row 1
 		image "images/structure.png" kx ky kimw kimh
@@ -449,7 +445,7 @@ deck
 		
 		text "etext"	lx gtop ts "mono" spotcolor
 		ctext "x y size [font] [color] [op] [link]" apix apiy apisize "serif" apicolor
-		text  hw lx row1 3
+		etext  hw 85 row1 3
 		circle 85 row1 spotsize spotcolor
 				
 		gtop-=40
@@ -1131,6 +1127,9 @@ deck
 		circle	72.5 65 3.5 "blue"
 	eslide
 
+//alice1="THE Caterpillar and Alice looked at each other for some time in silence: at last the Caterpillar took the hookah out of its mouth, and addressed her in a languid, sleepy voice. “Who are you?” said the Caterpillar. This was not an encouraging opening for a conversation. Alice replied, rather shyly, “I—I hardly know, sir, just at present—at least I know who I was when I got up this morning, but I think I must have been changed several times times since then." 
+//alice2="You promised to tell me our history, you know,” said Alice, “and why it is you hate—C and D, she added in a whisper, half afraid that it would be offended again. Mine is a long and a sad tale!” said the Mouse, turning to Alice, and sighing. “It is a long tail, certainly,” said Alice, looking down with wonder at the Mouse’s tail; “but why do you call it sad?” And she kept on puzzling about it while the Mouse was speaking, so that her idea of the tale was something like this:—"	
+
 //	slide  
 //		text	"Chapter V" 15 85 3 "serif" "rgb(127,0,0)" 100 "http://www.gutenberg.org/files/28885/28885-8.txt"
 //		text	"Advice from a Caterpillar" 40 85 3 "serif" "rgb(127,0,0)" 100 "http://www.gutenberg.org/files/28885/28885-8.txt"
@@ -1679,6 +1678,7 @@ deck
 //		ctext "errors" 50 50 8 "mono"
 //	eslide
 
+	// Layout example
 	slide "rgb(230,230,230)"
 		image "images/plate31.png" 50 50 2016 1584 25
 	eslide
@@ -1688,6 +1688,7 @@ deck
 		image "images/plate31.png" 25 50 2016 1584 18
 		image "images/layoutmap.png"     75 50 2016 1584 18
 	eslide
+
 	// References
 	slide
 		ts=titlesize*0.75
@@ -1710,7 +1711,6 @@ deck
 	eslide
 
 	// Business Card
-
     mx=25         // midpoint
     tx=62         // text left
     ix=57         // image left
