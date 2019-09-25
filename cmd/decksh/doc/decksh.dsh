@@ -93,7 +93,7 @@ deck
 		ktx=kx+5
 		kty=ky-1.5
 		kcolsp=30
-		krowsp=18
+		krowsp=20
 		kimw=60
 		kimh=60
 		kts=titlesize*0.75
@@ -741,6 +741,73 @@ deck
 		legend "Revenue" lx ly 2 "sans" "red"
 		ly-=5
 		legend "Profit" lx ly 2 "sans" "green"
+	eslide
+
+	// dchart types
+	slide
+		dcleft=left+7
+		dcx=dcleft
+		dcy=top-15
+		dxskip=30
+		dyskip=20
+		dcsize=titlesize*0.75
+		dcimx=dcx-5
+		dcimy=dcy+2
+		dcimw=60
+		dcimh=60
+		dcolor="maroon"
+
+		text "dchart types" left top titlesize "serif"
+		text "Bar" dcx dcy dcsize "sans" dcolor
+		image "images/bar.png" dcimx dcimy dcimw dcimh
+		dcx+=dxskip
+		dcimx+=dxskip
+		text "HBar" dcx dcy dcsize "sans" dcolor
+		image "images/hbar.png" dcimx dcimy dcimw dcimh
+		dcx+=dxskip
+		dcimx+=dxskip
+		text "Dot" dcx dcy dcsize "sans" dcolor
+		image "images/dot.png" dcimx dcimy dcimw dcimh
+
+		dcx=dcleft
+		dcy-=dyskip
+		dcimx=dcx-5
+		dcimy-=dyskip
+
+		text "Line" dcx dcy dcsize "sans" dcolor
+		image "images/line.png" dcimx dcimy dcimw dcimh
+		dcx+=dxskip
+		dcimx+=dxskip
+		text "Scatter" dcx dcy dcsize "sans" dcolor
+		image "images/scatter.png" dcimx dcimy dcimw dcimh
+		dcx+=dxskip
+		dcimx+=dxskip
+		text "Area" dcx dcy dcsize "sans" dcolor
+		image "images/area.png" dcimx dcimy dcimw dcimh
+		
+		dcx=dcleft
+		dcy-=dyskip
+		dcimx=dcx-5
+		dcimy-=dyskip
+		
+		text "Donut/Pie" dcx dcy dcsize "sans" dcolor
+		image "images/donut.png" dcimx dcimy dcimw dcimh
+		dcx+=dxskip
+		dcimx+=dxskip
+		text "Radial" dcx dcy dcsize "sans" dcolor
+		image "images/radial.png" dcimx dcimy dcimw dcimh
+		dcx+=dxskip
+		dcimx+=dxskip
+		text "Pmap" dcx dcy dcsize "sans" dcolor
+		image "images/pmap.png" dcimx dcimy dcimw dcimh
+
+		dcx=dcleft
+		dcy-=dyskip
+		dcimx=dcx-5
+		dcimy-=dyskip
+
+		text "Waffle" dcx dcy dcsize "sans" dcolor
+		image "images/pgrid.png" dcimx dcimy dcimw dcimh
 	eslide
 	
 	// dchart overview
