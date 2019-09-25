@@ -294,8 +294,8 @@ deck
 	// Keyword list
 	slide
 		text "Keywords" left top titlesize "serif"  
-		hsize=ts
-		lsize=hsize*0.6
+		hsize=titlesize*0.75
+		lsize=hsize*0.5
 		csep=18
 		csep2=csep*0.65
 		rsep=45
@@ -1053,9 +1053,9 @@ deck
 	eslide
 
 	slide "blue" "white"
-		ctext	"Flight Information" 50 90 3 "sans" "white"
-		etext	"Los Angeles (LAX)" 45 80 2 "sans" "white"
-		text	"New York/Newark (EWR)" 55 80 2 "sans" "white"
+		ctext	"Flight Information" 50 90 4.5 "sans" "white"
+		etext	"Los Angeles (LAX)" 45 80 3 "sans" "white"
+		text	"New York/Newark (EWR)" 55 80 3 "sans" "white"
 		text	"Distance Traveled" 5 60 1.5 "sans" "white"
 		text	"1,958 mi" 5 55 2 "sans" "white"
 		text	"3,151 km" 5 50 2 "sans" "white"
@@ -1080,7 +1080,7 @@ deck
 		ctext	"Current Altitude" 80 35 2 "sans" "white"
 		ctext	"25,000 ft" 80 15 2 "sans" "white"
 		ctext	"7620 m" 80 10 1.5 "sans" "white"
-		image	"images/white-plane.png" 50 81 100 100 30
+		image	"images/white-plane.png" 50 81 100 100 40
 		image	"images/white-plane.png" 25 69.2 100 100 30
 		image	"images/plane-head.png" 80 25 1200 1200 6
 		line	5 65 19 65 0 "lightblue"
@@ -1374,7 +1374,7 @@ deck
 		bntitle="Evolution of Baby Names in the US: 1880-2015"
 		opt="-max=100000 -title=f -fulldeck=f -vol -val=f -bar=f -xlabel=0 -yrange=0,100000,25000"
 		lsize=1.25
-		ctext bntitle 50 93 2 "sans"
+		ctext bntitle 50 93 3 "sans"
 		dchart -color=red		opt  -xlabel=20 -grid -yaxis code/Amanda.d
 		dchart -color=green		opt   code/Ashley.d
 		dchart -color=blue		opt   code/Betty.d
@@ -1404,7 +1404,7 @@ deck
 		boxw=20
 		boxh=20
 		boxop=15
-		ctext bntitle 50 93 2 "sans"
+		ctext bntitle 50 93 3 "sans"
 
 		ctext "Amanda"		20 top lsize
 		ctext "Ashley"		50 top lsize
@@ -1680,13 +1680,13 @@ deck
 
 	// Layout example
 	slide "rgb(230,230,230)"
-		image "images/plate31.png" 50 50 2016 1584 25
+		image "images/plate31.png" 50 50 2016 1584 27
 	eslide
 
 	// DuBois layout process
 	slide "rgb(230,230,230)"
-		image "images/plate31.png" 25 50 2016 1584 18
-		image "images/layoutmap.png"     75 50 2016 1584 18
+		image "images/plate31.png" 25 50 2016 1584 19
+		image "images/layoutmap.png"     75 50 2016 1584 19
 	eslide
 
 	// References
