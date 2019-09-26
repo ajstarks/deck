@@ -91,11 +91,6 @@ deck
 		kty=ky-1.5
 
 		// Row 2
-		image "images/shapes.png" kx ky kimw kimh
-		text "Graphics" ktx kty kts "sans" kcolor
-		kx+=kcolsp
-		ktx+=kcolsp
-
 		image "images/arrow.png" kx ky kimw kimh
 		text "Arrows" ktx kty kts "sans" kcolor
 		kx+=kcolsp
@@ -103,6 +98,11 @@ deck
 
 		image "images/img.png" kx ky kimw kimh
 		text "Images" ktx kty kts "sans" kcolor
+		kx+=kcolsp
+		ktx+=kcolsp
+
+		image "images/shapes.png" kx ky kimw kimh
+		text "Graphics" ktx kty kts "sans" kcolor
 
 		kx=rowleft
 		ky-=krowsp
@@ -135,32 +135,32 @@ deck
 	
 
 	// Grid
-	slide
-		for v=0 100 10
-			vline v 0 100 0.1 "blue" 40
-			hline 0 v 100 0.1 "red"  40
-		efor
-		ctext "10" 10 5 3 "mono"
-		ctext "20" 20 5 3 "mono"
-		ctext "30" 30 5 3 "mono"
-		ctext "40" 40 5 3 "mono"
-		ctext "50" 50 5 3 "mono"
-		ctext "60" 60 5 3 "mono"
-		ctext "70" 70 5 3 "mono"
-		ctext "80" 80 5 3 "mono"
-		ctext "90" 90 5 3 "mono"
-		
-		ctext "10" 5 10 3 "mono"
-		ctext "20" 5 20 3 "mono"
-		ctext "30" 5 30 3 "mono"
-		ctext "40" 5 40 3 "mono"
-		ctext "50" 5 50 3 "mono"
-		ctext "60" 5 60 3 "mono"
-		ctext "70" 5 70 3 "mono"
-		ctext "80" 5 80 3 "mono"
-		ctext "90" 5 90 3 "mono"
-		ctext "Percent Grid" 50 50 8
-	eslide
+//	slide
+//		for v=0 100 10
+//			vline v 0 100 0.1 "blue" 40
+//			hline 0 v 100 0.1 "red"  40
+//		efor
+//		ctext "10" 10 5 3 "mono"
+//		ctext "20" 20 5 3 "mono"
+//		ctext "30" 30 5 3 "mono"
+//		ctext "40" 40 5 3 "mono"
+//		ctext "50" 50 5 3 "mono"
+//		ctext "60" 60 5 3 "mono"
+//		ctext "70" 70 5 3 "mono"
+//		ctext "80" 80 5 3 "mono"
+//		ctext "90" 90 5 3 "mono"
+//		
+//		ctext "10" 5 10 3 "mono"
+//		ctext "20" 5 20 3 "mono"
+//		ctext "30" 5 30 3 "mono"
+//		ctext "40" 5 40 3 "mono"
+//		ctext "50" 5 50 3 "mono"
+//		ctext "60" 5 60 3 "mono"
+//		ctext "70" 5 70 3 "mono"
+//		ctext "80" 5 80 3 "mono"
+//		ctext "90" 5 90 3 "mono"
+//		ctext "Percent Grid" 50 50 8
+//	eslide
 
 	// Overview
 	slide
@@ -823,7 +823,7 @@ deck
 	eslide
 
 	// Zoom in to overview
-	slide "rgb(240,240,240)"
+	slide "rgb(245,245,245)"
 		cy=top-80
  		textfile "code/example.dsh" 3 82 codesize "mono"
 		image    "images/example.png" 75 55 792 612 45
@@ -1221,6 +1221,7 @@ deck
 		dchart topts -left=76 -right=81  code/hkids
 		dchart topts -left=83 -right=88  code/okids
 		dchart topts -left=90 -right=95  code/wkids
+		text "Pew Research Center, April, 2018" 5 5 1 "serif" "steelblue" 100 "http://www.pewresearch.org/fact-tank/2018/04/05/a-record-64-million-americans-live-in-multigenerational-households/"
 	eslide
 
 	// Blood Pressure
@@ -1647,7 +1648,8 @@ deck
 	eslide
 
 	slide "rgb(230,230,230)"
-		image "images/plate56.png" 27 50 1584 2016 dbscale
+		// image "images/plate27.png" 27 50 1584 2016 dbscale
+		image "images/occupation.png" 27 50 841 1076 39
 		image "images/plate57.png"  73 50 1584 2016 dbscale
 	eslide
 
