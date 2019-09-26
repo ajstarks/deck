@@ -53,33 +53,7 @@ deck
 		etext	"a Go package for presentations" 95 5 2.5
 	eslide
 	
-	// Grid
-	slide
-		for v=0 100 10
-			vline v 0 100 0.1 "blue" 40
-			hline 0 v 100 0.1 "red"  40
-		efor
-		ctext "10" 10 5 3 "mono"
-		ctext "20" 20 5 3 "mono"
-		ctext "30" 30 5 3 "mono"
-		ctext "40" 40 5 3 "mono"
-		ctext "50" 50 5 3 "mono"
-		ctext "60" 60 5 3 "mono"
-		ctext "70" 70 5 3 "mono"
-		ctext "80" 80 5 3 "mono"
-		ctext "90" 90 5 3 "mono"
-		
-		ctext "10" 5 10 3 "mono"
-		ctext "20" 5 20 3 "mono"
-		ctext "30" 5 30 3 "mono"
-		ctext "40" 5 40 3 "mono"
-		ctext "50" 5 50 3 "mono"
-		ctext "60" 5 60 3 "mono"
-		ctext "70" 5 70 3 "mono"
-		ctext "80" 5 80 3 "mono"
-		ctext "90" 5 90 3 "mono"
-		ctext "Percent Grid" 50 50 8
-	eslide
+
 
 	// Elements
 	slide
@@ -183,6 +157,34 @@ deck
 		textfile	"code/example.dsh" 5  cy  0.75 "mono" dscolor
 		textfile	"code/example.xml" 35 cy  0.75 "mono" markupcolor
 		image		"images/example.png" 87 imy 792 612 22
+	eslide
+
+	// Grid
+	slide
+		for v=0 100 10
+			vline v 0 100 0.1 "blue" 40
+			hline 0 v 100 0.1 "red"  40
+		efor
+		ctext "10" 10 5 3 "mono"
+		ctext "20" 20 5 3 "mono"
+		ctext "30" 30 5 3 "mono"
+		ctext "40" 40 5 3 "mono"
+		ctext "50" 50 5 3 "mono"
+		ctext "60" 60 5 3 "mono"
+		ctext "70" 70 5 3 "mono"
+		ctext "80" 80 5 3 "mono"
+		ctext "90" 90 5 3 "mono"
+		
+		ctext "10" 5 10 3 "mono"
+		ctext "20" 5 20 3 "mono"
+		ctext "30" 5 30 3 "mono"
+		ctext "40" 5 40 3 "mono"
+		ctext "50" 5 50 3 "mono"
+		ctext "60" 5 60 3 "mono"
+		ctext "70" 5 70 3 "mono"
+		ctext "80" 5 80 3 "mono"
+		ctext "90" 5 90 3 "mono"
+		ctext "Percent Grid" 50 50 8
 	eslide
 		
 	// hello deck world
@@ -894,7 +896,7 @@ deck
 		ns=4
 		nc="gray"
 		nf="serif"
-		nop=60
+		nop=70
 		ch=chartop-chartbottom
 		chh=ch/2
 		chy=chartop-chh
@@ -903,7 +905,7 @@ deck
 		ctext "list"	25 80		ns nf nc nop
 		text  "chart"	10 45		ns nf nc nop
 
-		ns=2
+		ns=2.5
 		notey=gy+8
 		ctext "rect"	15 notey	ns nf nc nop
 		ctext "ellipse"	27.5 notey	ns nf nc nop
