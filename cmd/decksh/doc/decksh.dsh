@@ -132,32 +132,7 @@ deck
 		text "Utility" ktx kty kts "sans" kcolor
 	eslide
 
-	// Overview
-	slide
-		cy=80
-		ysep=10
-		dscolor="rgb(127,0,0)"
-		markupcolor="gray"
-		outcolor="rgb(0,0,127)"
-		ay=cy+3
-		ts=titlesize*1.2
-		ctext	"decksh"		15 cy ts "sans" dscolor
-		arrow 25 ay 34 ay 0.4 3 6
-		ctext	"deck markup"	53 cy ts "sans" markupcolor
-		arrow 72 ay 80 ay 0.4 3 6
-		ctext	"PDF"			87 cy titlesize "sans" outcolor
-		cy+=10
-		ctext	"SVG"			87 cy titlesize "sans" outcolor
-		cy-=20
-		ctext	"PNG" 			87 cy titlesize "sans" outcolor
-		
-		cy-=ysep
-		imy=cy-15
-
-		textfile	"code/example.dsh" 5  cy  0.75 "mono" dscolor
-		textfile	"code/example.xml" 35 cy  0.75 "mono" markupcolor
-		image		"images/example.png" 87 imy 792 612 22
-	eslide
+	
 
 	// Grid
 	slide
@@ -185,6 +160,33 @@ deck
 		ctext "80" 5 80 3 "mono"
 		ctext "90" 5 90 3 "mono"
 		ctext "Percent Grid" 50 50 8
+	eslide
+
+	// Overview
+	slide
+		cy=80
+		ysep=10
+		dscolor="rgb(127,0,0)"
+		markupcolor="gray"
+		outcolor="rgb(0,0,127)"
+		ay=cy+3
+		ts=titlesize*1.2
+		ctext	"decksh"		15 cy ts "sans" dscolor
+		arrow 25 ay 34 ay 0.4 3 6
+		ctext	"deck markup"	53 cy ts "sans" markupcolor
+		arrow 72 ay 80 ay 0.4 3 6
+		ctext	"PDF"			87 cy titlesize "sans" outcolor
+		cy+=10
+		ctext	"SVG"			87 cy titlesize "sans" outcolor
+		cy-=20
+		ctext	"PNG" 			87 cy titlesize "sans" outcolor
+		
+		cy-=ysep
+		imy=cy-15
+
+		textfile	"code/example.dsh" 5  cy  0.75 "mono" dscolor
+		textfile	"code/example.xml" 35 cy  0.75 "mono" markupcolor
+		image		"images/example.png" 87 imy 792 612 22
 	eslide
 		
 	// hello deck world
