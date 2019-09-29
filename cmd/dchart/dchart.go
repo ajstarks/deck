@@ -727,7 +727,11 @@ func hchart(deck *generate.Deck, r io.ReadCloser) {
 			dottedhline(deck, left, y+hts, bv-left, ts/5, 1, 0.25, dotlinecolor)
 			deck.Circle(bv, y+hts, mts, datacolor)
 		} else {
-			deck.Line(left, y+hts, bv, y+hts, ts, datacolor)
+			bw := ts
+			if barw > 0 {
+				bw = barw
+			}
+			deck.Line(left, y+hts, bv, y+hts, bw, datacolor)
 		}
 		if showval {
 			if showpct {
