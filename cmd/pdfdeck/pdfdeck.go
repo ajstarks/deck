@@ -100,11 +100,11 @@ func whitespace(r rune) bool {
 
 // fontlookup maps font aliases to implementation font names
 func fontlookup(s string) string {
-	font, ok := fontmap[s]
-	if ok {
+	if font, ok := fontmap[s]; ok {
 		return font
+	} else {
+		return "sans"
 	}
-	return "sans"
 }
 
 // grid makes a percentage scale
@@ -251,7 +251,14 @@ func dotext(doc *gofpdf.Fpdf, cw, x, y, fs, wp, spacing float64, tdata, font, co
 func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align, link string) {
 	offset := 0.0
 	doc.SetFont(fontlookup(font), "", fs)
-	t := transmap[font](s)
+	var t string
+	tf, ok := transmap[font]
+	if ok {
+		t = tf(s)
+	} else {
+		return
+	}
+	//t := transmap[font](s)
 	tw := doc.GetStringWidth(t)
 	switch align {
 	case "center", "middle", "mid", "c":
