@@ -10,7 +10,7 @@ deck
 	cx=50
 	sep=5
 	spotcolor="rgb(127,0,0)"
-	apisize=1.4
+	apisize=1.5
 	apicolor="rgb(127,127,127)"
 
 	// Title slide	
@@ -326,6 +326,7 @@ deck
 			li "text"
 			li "ctext"
 			li "etext"
+			li "rtext"
 			li "textblock"
 			li "textfile"
 			li "textcode"
@@ -415,12 +416,13 @@ deck
 		textfile "code/samplecode.txt" left sy assize "mono" "black" 100 1.5 // you can increase size for 4:3
 	eslide
 
-	// Text
+	
+// Text
 	slide
 		lx=left
 		gtop=top
 		text "Text" left top titlesize "serif"
-		row1=gtop-20
+		row1=gtop-15
 		row2=gtop-50
 		row3=gtop-60
 		sep=5
@@ -428,7 +430,7 @@ deck
 		lw=0.5
 		hw="hello world"
 		
-		gtop-=30
+		gtop-=25
 		apix=lx+sep
 		apiy=gtop-sep
 		text "text"	lx gtop ts "mono" spotcolor
@@ -439,24 +441,41 @@ deck
 		lx+=30
 		apix=lx+sep
 		
-		text "ctext"	lx gtop ts "mono" spotcolor
-		ctext "x y size [font] [color] [op] [link]" apix apiy apisize "serif" apicolor
-		ctext hw 47 row1 3
-		circle 47 row1 spotsize spotcolor
+		ctext "ctext"	50 gtop ts "mono" spotcolor
+		ctext "x y size [font] [color] [op] [link]" 50 apiy apisize "serif" apicolor
+		ctext hw 50 row1 3
+		circle 50 row1 spotsize spotcolor
 		
-		lx+=30
+		lx+=40
 		apix=lx+sep
 		
 		text "etext"	lx gtop ts "mono" spotcolor
 		ctext "x y size [font] [color] [op] [link]" apix apiy apisize "serif" apicolor
 		etext  hw 85 row1 3
 		circle 85 row1 spotsize spotcolor
-				
-		gtop-=40
+
+		lx-=30
+		gtop-=45
+		row3=35
+		apix=lx+sep
+		apiy-=45
+		ctext "rtext"	50 gtop ts "mono" spotcolor
+		rtext "rotate"	50 row3 45 3
+		rtext "about"	50 row3 135 3
+		rtext "named"	50 row3 225 3
+		rtext "angle"	50 row3 315 3
+		circle 50 row3 spotsize spotcolor
+		ctext "x y angle size [font] [color] [op] [link]" 50 apiy apisize "serif" apicolor
+	eslide
+
+	slide
 		lx=left
-		apix=20
-		apiy=gtop-sep
-		
+		text "Text" left top titlesize "serif"
+		gtop=top-25
+		row2=gtop-10
+		row3=gtop-20
+		apix=17
+		apiy=30
 		text "textblock"	lx gtop ts "mono" spotcolor
 		textblock "The quick brown fox jump over the lazy dog" lx row2 15 2
 		ctext `"text" x y width size [font] [color] [op] [link]` apix apiy apisize "serif" apicolor
@@ -475,7 +494,7 @@ deck
 		ctext `"filename" x y width size [color]` apix apiy apisize "serif" apicolor
 		textcode "code/hw.go" lx row2 25 codesize
 	eslide
-	
+
 	// Lists
 	slide
 		text "Lists" left top titlesize "serif"
