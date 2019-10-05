@@ -136,7 +136,6 @@ assign a random number in the spwcified range
 
 ## Mapping
 
-
     x=vmap v vmin vmax min max
 
 For value ```v```, maps the range ```vmin-vmax``` to ```min-max```.
@@ -198,15 +197,16 @@ Substitution of ```x``` will occur in statements.
 
 ## Text
 
-Left, centered, end or block-aligned text or a file's contents with 
+Rotated, Left, centered, end or block-aligned text or a file's contents with 
 optional font ("sans", "serif", "mono", or "symbol"), color and opacity.
 
 Also, show blocks of code on a gray background.
 
-    text       "text"     x y size       [font] [color] [opacity] [link]
-    ctext      "text"     x y size       [font] [color] [opacity] [link]
-    etext      "text"     x y size       [font] [color] [opacity] [link]
-    textfile   "filename" x y size       [font] [color] [opacity] [linespacing]
+    text       "text"     x y       size [font] [color] [opacity] [link]
+    ctext      "text"     x y       size [font] [color] [opacity] [link]
+    etext      "text"     x y       size [font] [color] [opacity] [link]
+    rtext      "text"     x y angle size [font] [color] [opacity] [link]
+    textfile   "filename" x y       size [font] [color] [opacity] [linespacing]
     textblock  "text"     x y width size [font] [color] [opacity] [link]
     textcode   "filename" x y width size [color]
 
