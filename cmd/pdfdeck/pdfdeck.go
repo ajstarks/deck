@@ -223,10 +223,13 @@ func dopoly(doc *gofpdf.Fpdf, xc, yc, color string, cw, ch float64) {
 }
 
 // dotext places text elements on the canvas according to type
-func dotext(doc *gofpdf.Fpdf, cw, x, y, fs, wp, spacing float64, tdata, font, color, align, ttype, tlink string) {
+func dotext(doc *gofpdf.Fpdf, cw, x, y, fs, wp, rotation, spacing float64, tdata, font, color, align, ttype, tlink string) {
 	var tw float64
-
 	td := strings.Split(tdata, "\n")
+	if rotation > 0 {
+		doc.TransformBegin()
+		doc.TransformRotate(rotation, x, y)
+	}
 	red, green, blue := colorlookup(color)
 	doc.SetTextColor(red, green, blue)
 	if ttype == "code" {
@@ -244,6 +247,9 @@ func dotext(doc *gofpdf.Fpdf, cw, x, y, fs, wp, spacing float64, tdata, font, co
 			showtext(doc, x, y, t, fs, font, align, tlink)
 			y += ls
 		}
+	}
+	if rotation > 0 {
+		doc.TransformEnd()
 	}
 }
 
@@ -529,7 +535,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) 
 		if t.Lp == 0 {
 			t.Lp = linespacing
 		}
-		dotext(doc, cw, x, y, fs, t.Wp, t.Lp, tdata, t.Font, t.Color, t.Align, t.Type, t.Link)
+		dotext(doc, cw, x, y, fs, t.Wp, t.Rotation, t.Lp, tdata, t.Font, t.Color, t.Align, t.Type, t.Link)
 	}
 	// for every list element...
 	for _, l := range slide.List {

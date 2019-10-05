@@ -178,6 +178,7 @@ func BenchmarkText(b *testing.B) {
 	canvas.TextMid(50, 50, "center", "serif", 10, "gray")
 	canvas.TextEnd(50, 20, "right", "mono", 10, "white")
 	canvas.Line(50, 100, 50, 0, 0.2, "black", 20)
+	canvas.TextRotate(50, 50, "rotate", "", "sans", 45, 10, "red")
 	canvas.EndSlide()
 
 	// Code

@@ -19,6 +19,7 @@ const (
 	polygonfmt  = `<polygon xc="%s" yc="%s" opacity="%.2f" color="%s"/>`
 	textfmt     = `<text xp="%.2f" yp="%.2f" sp="%.2f" align="%s" wp="%.2f" font="%s" opacity="%.2f" color="%s" type="%s">%s</text>`
 	textlinkfmt = `<text xp="%.2f" yp="%.2f" sp="%.2f" align="%s" wp="%.2f" font="%s" opacity="%.2f" color="%s" type="%s" link="%s">%s</text>`
+	textrotfmt  = `<text xp="%.2f" yp="%.2f" sp="%.2f" align="%s" wp="%.2f" font="%s" opacity="%.2f" color="%s" type="%s" link="%s" rotation="%.2f">%s</text>`
 	imagefmt    = `<image xp="%.2f" yp="%.2f" width="%d" height="%d" name="%s" link="%s"/>`
 	listfmt     = `<list type="%s" xp="%.2f" yp="%.2f" sp="%.2f" lp="%.2f" wp="%.2f" font="%s" color="%s">`
 	lifmt       = `<li>%s</li>`
@@ -117,6 +118,11 @@ func (p *Deck) text(t deck.Text) {
 // textlink makes text markup from the deck text structure, including a link
 func (p *Deck) textlink(t deck.Text) {
 	fmt.Fprintf(p.dest, textlinkfmt, t.Xp, t.Yp, t.Sp, t.Align, t.Wp, t.Font, t.Opacity, t.Color, t.Type, t.Link, t.Tdata)
+}
+
+// textrotate makes text markup from the deck text structure, including a link
+func (p *Deck) textrotate(t deck.Text) {
+	fmt.Fprintf(p.dest, textrotfmt, t.Xp, t.Yp, t.Sp, t.Align, t.Wp, t.Font, t.Opacity, t.Color, t.Type, t.Link, t.Rotation, t.Tdata)
 }
 
 // image makes image markup from the deck image structure.
@@ -222,6 +228,26 @@ func (p *Deck) TextLink(x, y float64, s, link, font string, size float64, color 
 		t.Opacity = 100
 	}
 	p.textlink(t)
+}
+
+// TextRotate places rotated text
+func (p *Deck) TextRotate(x, y float64, s, link, font string, rotation, size float64, color string, opacity ...float64) {
+	t := deck.Text{}
+	t.Xp = x
+	t.Yp = y
+	t.Sp = size
+	t.Font = font
+	t.Tdata = s
+	t.Color = color
+	t.Link = link
+	t.Rotation = rotation
+	t.Type = "plain"
+	if len(opacity) > 0 {
+		t.Opacity = opacity[0]
+	} else {
+		t.Opacity = 100
+	}
+	p.textrotate(t)
 }
 
 // Code makes a code block at (x,y), with specified size and color (opacity is optional),

@@ -51,16 +51,17 @@ type Slide struct {
 
 // CommonAttr are the common attributes for text and list
 type CommonAttr struct {
-	Xp      float64 `xml:"xp,attr"`      // X coordinate
-	Yp      float64 `xml:"yp,attr"`      // Y coordinate
-	Sp      float64 `xml:"sp,attr"`      // size
-	Lp      float64 `xml:"lp,attr"`      // linespacing (leading) percentage
-	Type    string  `xml:"type,attr"`    // type: block, plain, code, number, bullet
-	Align   string  `xml:"align,attr"`   // alignment: center, end, begin
-	Color   string  `xml:"color,attr"`   // item color
-	Opacity float64 `xml:"opacity,attr"` // opacity percentage
-	Font    string  `xml:"font,attr"`    // font type: i.e. sans, serif, mono
-	Link    string  `xml:"link,attr"`    // reference to other content (i.e. http:// or mailto:)
+	Xp       float64 `xml:"xp,attr"`       // X coordinate
+	Yp       float64 `xml:"yp,attr"`       // Y coordinate
+	Sp       float64 `xml:"sp,attr"`       // size
+	Lp       float64 `xml:"lp,attr"`       // linespacing (leading) percentage
+	Rotation float64 `xml:"rotation,attr"` // Rotation (0-360 degrees)
+	Type     string  `xml:"type,attr"`     // type: block, plain, code, number, bullet
+	Align    string  `xml:"align,attr"`    // alignment: center, end, begin
+	Color    string  `xml:"color,attr"`    // item color
+	Opacity  float64 `xml:"opacity,attr"`  // opacity percentage
+	Font     string  `xml:"font,attr"`     // font type: i.e. sans, serif, mono
+	Link     string  `xml:"link,attr"`     // reference to other content (i.e. http:// or mailto:)
 }
 
 // Dimension describes a graphics object with width and height
@@ -157,7 +158,7 @@ type Arc struct {
 	Dimension
 	A1      float64 `xml:"a1,attr"`
 	A2      float64 `xml:"a2,attr"`
-	Sp		float64 `xml:"sp,attr"`
+	Sp      float64 `xml:"sp,attr"`
 	Opacity float64 `xml:"opacity,attr"`
 }
 
