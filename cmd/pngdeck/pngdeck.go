@@ -247,7 +247,7 @@ func dotext(doc *gg.Context, cw, x, y, fs, wp, rotation, spacing float64, tdata,
 	red, green, blue := colorlookup(color)
 	if rotation > 0 {
 		doc.Push()
-		doc.RotateAbout(gg.Radians(rotation-180), x, y)
+		doc.RotateAbout(gg.Radians(360-rotation), x, y)
 	}
 	if ttype == "code" {
 		font = "mono"
@@ -342,7 +342,7 @@ func dolist(doc *gg.Context, cw, x, y, fs, lwidth, rotation, spacing float64, li
 
 	if rotation > 0 {
 		doc.Push()
-		doc.RotateAbout(gg.Radians(rotation-180), x, y)
+		doc.RotateAbout(gg.Radians(360-rotation), x, y)
 	}
 	var t string
 	for i, tl := range list {
