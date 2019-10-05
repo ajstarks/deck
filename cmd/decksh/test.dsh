@@ -159,17 +159,21 @@ deck
 		textcode "code/hw.go" tx2 75 20 1 "red"
 	eslide
 
-	l1=20
-	l2=50
-	l3=80
-	op1=70
-	op2=50
-	op3=30
-	ts1=4
+	tlskip=30
+	l1=5
+	l2=l1+tlskip
+	l3=l2+tlskip
+	l4=l3+tlskip
+	op1=80
+	op2=60
+	op3=40
+	op4=20
+	ts1=3
 	slide  "rgb(240,240,240)"
 		line l1 0 l1 100 0.1
 		line l2 0 l2 100 0.1
 		line l3 0 l3 100 0.1
+		line l4 0 l4 100 0.1
 		
 		text "one"   l1 80 ts1
 		text "two"   l1 70 ts1 "serif"
@@ -187,6 +191,11 @@ deck
 		etext "two"   l3 70 ts1 "serif"
 		etext "three" l3 60 ts1 "mono" "red"
 		etext "four"  l3 50 ts1 "sans" "blue" op3
+
+		rtext "one (0)"   l4 60 0   ts1
+		rtext "two (90)"   l4 60 90  ts1 "serif"
+		rtext "three (180)" l4 60 180 ts1 "mono" "red"
+		rtext "four (270)"  l4 60 270 ts1 "sans" "blue" op4
 	eslide
 	
 	// data file
@@ -366,6 +375,7 @@ deck
 	
 	// Shapes
 	slide
+		l1=20
 		polygon	   "15 20 25" "90 95 90"
 		polygon	   "35 40 45" "90 95 90" c1
 		polygon	   "55 60 65" "90 95 90" c2 shapeop 
