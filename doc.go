@@ -61,6 +61,7 @@ The list, text, rect, and ellipse elements have common attributes:
 	lp: line spacing percentage
 	type: "bullet", "number" (list), "block", "code" (text)
 	align: "left", "middle", "end"
+	rotation: degree of rotation (0-360)
 	opacity: 0.0-1.0 (fully transparent - opaque)
 	color: SVG names ("maroon"), or RGB "rgb(127,0,0)"
 	font: "sans", "serif", "mono", "symbol"
