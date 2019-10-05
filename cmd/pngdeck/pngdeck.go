@@ -240,12 +240,15 @@ func dopoly(doc *gg.Context, xc, yc string, cw, ch float64, color string, opacit
 }
 
 // dotext places text elements on the canvas according to type
-func dotext(doc *gg.Context, cw, x, y, fs, wp, spacing float64, tdata, font, align, ttype, color string, opacity float64) {
+func dotext(doc *gg.Context, cw, x, y, fs, wp, rotation, spacing float64, tdata, font, align, ttype, color string, opacity float64) {
 	var tw float64
 
 	td := strings.Split(tdata, "\n")
 	red, green, blue := colorlookup(color)
-
+	if rotation > 0 {
+		doc.Push()
+		doc.RotateAbout(gg.Radians(rotation-180), x, y)
+	}
 	if ttype == "code" {
 		font = "mono"
 		ch := float64(len(td)) * spacing * fs
@@ -262,6 +265,9 @@ func dotext(doc *gg.Context, cw, x, y, fs, wp, spacing float64, tdata, font, ali
 			showtext(doc, x, y, t, fs, font, align)
 			y += ls
 		}
+	}
+	if rotation > 0 {
+		doc.Pop()
 	}
 }
 
@@ -322,7 +328,7 @@ func showtext(doc *gg.Context, x, y float64, s string, fs float64, font, align s
 }
 
 // dolists places lists on the canvas
-func dolist(doc *gg.Context, cw, x, y, fs, lwidth, spacing float64, list []deck.ListItem, font, ltype, align, color string, opacity float64) {
+func dolist(doc *gg.Context, cw, x, y, fs, lwidth, rotation, spacing float64, list []deck.ListItem, font, ltype, align, color string, opacity float64) {
 	if font == "" {
 		font = "sans"
 	}
@@ -334,6 +340,10 @@ func dolist(doc *gg.Context, cw, x, y, fs, lwidth, spacing float64, list []deck.
 	ls := spacing * fs
 	tw := deck.Pwidth(lwidth, cw, cw/2)
 
+	if rotation > 0 {
+		doc.Push()
+		doc.RotateAbout(gg.Radians(rotation-180), x, y)
+	}
 	var t string
 	for i, tl := range list {
 		loadfont(doc, font, fs)
@@ -363,6 +373,9 @@ func dolist(doc *gg.Context, cw, x, y, fs, lwidth, spacing float64, list []deck.
 				y += ls * float64(yw)
 			}
 		}
+	}
+	if rotation > 0 {
+		doc.Pop()
 	}
 }
 
@@ -543,7 +556,7 @@ func pngslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, d
 		if t.Lp == 0 {
 			t.Lp = linespacing
 		}
-		dotext(doc, cw, x, y, fs, t.Wp, t.Lp, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity)
+		dotext(doc, cw, x, y, fs, t.Wp, t.Rotation, t.Lp, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity)
 	}
 	// for every list element...
 	for _, l := range slide.List {
@@ -557,7 +570,7 @@ func pngslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, d
 			l.Wp = listwrap
 		}
 		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
-		dolist(doc, cw, x, y, fs, l.Wp, l.Lp, l.Li, l.Font, l.Type, l.Align, l.Color, l.Opacity)
+		dolist(doc, cw, x, y, fs, l.Wp, l.Rotation, l.Lp, l.Li, l.Font, l.Type, l.Align, l.Color, l.Opacity)
 	}
 	// add a grid, if specified
 	if gp > 0 {
