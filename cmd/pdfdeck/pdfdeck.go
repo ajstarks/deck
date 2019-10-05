@@ -280,7 +280,7 @@ func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align,
 
 // dolists places lists on the canvas
 // dolist(doc, cw, x, y, fs, l.Lp, l.Wp, l.Li, l.Font, l.Color, l.Type)
-func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, spacing float64, list []deck.ListItem, font, color, align, ltype string) {
+func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, rotation, spacing float64, list []deck.ListItem, font, color, align, ltype string) {
 	if font == "" {
 		font = "sans"
 	}
@@ -295,6 +295,10 @@ func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, spacing float64, list []deck
 	var t string
 	var yw int
 
+	if rotation > 0 {
+		doc.TransformBegin()
+		doc.TransformRotate(rotation, x, y)
+	}
 	defont := font
 	for i, tl := range list {
 		doc.SetFont(fontlookup(font), "", fs)
@@ -330,6 +334,9 @@ func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, spacing float64, list []deck
 				y += ls * float64(yw)
 			}
 		}
+	}
+	if rotation > 0 {
+		doc.TransformEnd()
 	}
 }
 
@@ -550,7 +557,7 @@ func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) 
 		}
 		setopacity(doc, l.Opacity)
 		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
-		dolist(doc, cw, x, y, fs, l.Wp, l.Lp, l.Li, l.Font, l.Color, l.Align, l.Type)
+		dolist(doc, cw, x, y, fs, l.Wp, l.Rotation, l.Lp, l.Li, l.Font, l.Color, l.Align, l.Type)
 	}
 	// add a grid, if specified
 	if gp > 0 {
