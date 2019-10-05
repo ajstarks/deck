@@ -132,7 +132,7 @@ Division ```id=<id> / number or <id>```
 
 	x=random min max
 
-assign a random number in the spwcified range
+assign a random number in the specified range
 
 ## Mapping
 
@@ -197,7 +197,7 @@ Substitution of ```x``` will occur in statements.
 
 ## Text
 
-Rotated, Left, centered, end or block-aligned text or a file's contents with 
+Left, centered, end, rotated, block-aligned text or a file's contents with 
 optional font ("sans", "serif", "mono", or "symbol"), color and opacity.
 
 Also, show blocks of code on a gray background.
@@ -206,8 +206,8 @@ Also, show blocks of code on a gray background.
     ctext      "text"     x y       size [font] [color] [opacity] [link]
     etext      "text"     x y       size [font] [color] [opacity] [link]
     rtext      "text"     x y angle size [font] [color] [opacity] [link]
-    textfile   "filename" x y       size [font] [color] [opacity] [linespacing]
     textblock  "text"     x y width size [font] [color] [opacity] [link]
+    textfile   "filename" x y       size [font] [color] [opacity] [linespacing]
     textcode   "filename" x y width size [color]
 
 ## Images
@@ -219,12 +219,12 @@ Plain and captioned, with optional scales and links
 
 ## Lists
 
-(plain, bulleted, numbered, centered)
+(plain, bulleted, numbered, centered). Optional arguments specify the color, opacity, line spacing, link and rotation (degrees)
 
-    list   x y size [font] [color] [opacity] [linespacing]
-    blist  x y size [font] [color] [opacity] [linespacing]
-    nlist  x y size [font] [color] [opacity] [linespacing]
-    clist  x y size [font] [color] [opacity] [linespacing]
+    list   x y size [font] [color] [opacity] [linespacing] [link] [rotation]
+    blist  x y size [font] [color] [opacity] [linespacing] [link] [rotation]
+    nlist  x y size [font] [color] [opacity] [linespacing] [link] [rotation]
+    clist  x y size [font] [color] [opacity] [linespacing] [link] [rotation]
 
 ### list items, and ending the list
 
