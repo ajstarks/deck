@@ -28,6 +28,8 @@ const (
 	maxbufsize  = 128 * 1024 // the default 64k buffer is too small
 	doublequote = 0x22
 	stdnotch    = 0.75
+	curvefmt    = "<curve xp1=\"%.2f\" yp1=\"%.2f\" xp2=\"%.2f\" yp2=\"%.2f\" xp3=\"%.2f\" yp3=\"%.2f\" %s/>\n"
+	linefmt     = "<line xp1=\"%.2f\" yp1=\"%.2f\" xp2=\"%.2f\" yp2=\"%.2f\" %s/>\n"
 )
 
 // emap is the id=expression map
@@ -361,6 +363,8 @@ func fontColorOpLp(s []string) string {
 		return fmt.Sprintf("font=%s color=%s opacity=%q lp=%q", s[0], s[1], s[2], s[3])
 	case 5:
 		return fmt.Sprintf("font=%s color=%s opacity=%q lp=%q link=%s", s[0], s[1], s[2], s[3], s[4])
+	case 6:
+		return fmt.Sprintf("font=%s color=%s opacity=%q lp=%q link=%s rotation=%q", s[0], s[1], s[2], s[3], s[4], s[5])
 	default:
 		return ""
 	}
@@ -740,6 +744,115 @@ func legend(w io.Writer, s []string, linenumber int) error {
 	fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", fmt.Sprintf("%.3f", tx+2), s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
 	fmt.Fprintf(w, "<ellipse xp=%q yp=%q wp=%q hr=\"100\" color=%s/>\n", s[2], fmt.Sprintf("%.3f", cy+.5), s[4], s[6])
 	return nil
+}
+
+// brace makes various kinds of braces: (left, right, up, down)
+func brace(w io.Writer, s []string, linenumber int) error {
+	if len(s) < 6 {
+		return fmt.Errorf("line %d: [l,r,u,d]brace x y size aw ah [linewidth] [color] [opacity]", linenumber)
+	}
+	var x, y, size, aw, ah float64
+	var err error
+
+	x, err = strconv.ParseFloat(s[1], 64)
+	if err != nil {
+		return fmt.Errorf("line %d: %s is not a number", linenumber, s[1])
+	}
+	y, err = strconv.ParseFloat(s[2], 64)
+	if err != nil {
+		return fmt.Errorf("line %d: %s is not a number", linenumber, s[2])
+	}
+	size, err = strconv.ParseFloat(s[3], 64)
+	if err != nil {
+		return fmt.Errorf("line %d: %s is not a number", linenumber, s[3])
+	}
+	aw, err = strconv.ParseFloat(s[4], 64)
+	if err != nil {
+		return fmt.Errorf("line %d: %s is not a number", linenumber, s[5])
+	}
+	ah, err = strconv.ParseFloat(s[5], 64)
+	if err != nil {
+		return fmt.Errorf("line %d: %s is not a number", linenumber, s[6])
+	}
+
+	// replace optional args, checking for validity
+	attr := ""
+	if len(s) >= 7 {
+		if _, nerr := strconv.ParseFloat(s[6], 64); nerr != nil {
+			return fmt.Errorf("line %d: %s is not a number", linenumber, s[6])
+		}
+		attr += "sp=\"" + s[6] + "\""
+	}
+	if len(s) >= 8 {
+		attr += " color=" + s[7]
+	}
+	if len(s) >= 9 {
+		if _, nerr := strconv.ParseFloat(s[8], 64); nerr != nil {
+			return fmt.Errorf("line %d: %s is not a number", linenumber, s[8])
+		}
+		attr += " opacity=\"" + s[8] + "\""
+	}
+	switch s[0] {
+	case "lbrace":
+		lbrace(w, x, y, size, aw, ah, attr)
+	case "rbrace":
+		rbrace(w, x, y, size, aw, ah, attr)
+	case "ubrace":
+		ubrace(w, x, y, size, aw, ah, attr)
+	case "dbrace":
+		dbrace(w, x, y, size, aw, ah, attr)
+	default:
+		return fmt.Errorf("line %d: use lbrace (left), rbrace (right), ubrace (up), dbrace (down)", linenumber)
+	}
+	return nil
+}
+
+func lbrace(w io.Writer, x, y, size, aw, ah float64, attr string) {
+	aw2 := aw / 2
+	h2 := size / 2
+	linelen := h2 - (ah / 2)
+	xshift := x + aw2
+	fmt.Fprintf(w, curvefmt, x, y, xshift, y, xshift, y+ah, attr)
+	fmt.Fprintf(w, curvefmt, x, y, xshift, y, xshift, y-ah, attr)
+	fmt.Fprintf(w, curvefmt, xshift, y+linelen, xshift, y+h2, x+aw, y+h2, attr)
+	fmt.Fprintf(w, curvefmt, xshift, y-linelen, xshift, y-h2, x+aw, y-h2, attr)
+	fmt.Fprintf(w, linefmt, xshift, y+ah, xshift, y+linelen, attr)
+	fmt.Fprintf(w, linefmt, xshift, y-ah, xshift, y-linelen, attr)
+}
+
+func rbrace(w io.Writer, x, y, size, aw, ah float64, attr string) {
+	aw2 := aw / 2
+	h2 := size / 2
+	linelen := h2 - (ah / 2)
+	xshift := x - aw2
+	fmt.Fprintf(w, curvefmt, x, y, xshift, y, xshift, y+ah, attr)
+	fmt.Fprintf(w, curvefmt, x, y, xshift, y, xshift, y-ah, attr)
+	fmt.Fprintf(w, curvefmt, xshift, y+linelen, xshift, y+h2, x-aw, y+h2, attr)
+	fmt.Fprintf(w, curvefmt, xshift, y-linelen, xshift, y-h2, x-aw, y-h2, attr)
+	fmt.Fprintf(w, linefmt, xshift, y+ah, xshift, y+linelen, attr)
+	fmt.Fprintf(w, linefmt, xshift, y-ah, xshift, y-linelen, attr)
+}
+
+func ubrace(w io.Writer, x, y, size, aw, ah float64, attr string) {
+	linelen := (size / 2) - aw
+	yshift := y - ah
+	fmt.Fprintf(w, curvefmt, x, y, x, yshift, x+aw, yshift, attr)
+	fmt.Fprintf(w, curvefmt, x, y, x, yshift, x-aw, yshift, attr)
+	fmt.Fprintf(w, linefmt, x+aw, yshift, x+linelen, yshift, attr)
+	fmt.Fprintf(w, linefmt, x-aw, yshift, x-linelen, yshift, attr)
+	fmt.Fprintf(w, curvefmt, x+linelen, yshift, x+linelen+aw, yshift, x+linelen+aw, y-(2*ah), attr)
+	fmt.Fprintf(w, curvefmt, x-linelen, yshift, x-linelen-aw, yshift, x-linelen-aw, y-(2*ah), attr)
+}
+
+func dbrace(w io.Writer, x, y, size, aw, ah float64, attr string) {
+	linelen := (size / 2) - aw
+	yshift := y + ah
+	fmt.Fprintf(w, curvefmt, x, y, x, yshift, x+aw, yshift, attr)
+	fmt.Fprintf(w, curvefmt, x, y, x, yshift, x-aw, yshift, attr)
+	fmt.Fprintf(w, linefmt, x+aw, yshift, x+linelen, yshift, attr)
+	fmt.Fprintf(w, linefmt, x-aw, yshift, x-linelen, yshift, attr)
+	fmt.Fprintf(w, curvefmt, x+linelen, yshift, x+linelen+aw, yshift, x+linelen+aw, y+(2*ah), attr)
+	fmt.Fprintf(w, curvefmt, x-linelen, yshift, x-linelen-aw, yshift, x-linelen-aw, y+(2*ah), attr)
 }
 
 func angle(x1, y1, x2, y2 float64) float64 {
@@ -1224,6 +1337,9 @@ func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) 
 
 	case "arrow":
 		return arrow(w, tokens, n)
+
+	case "lbrace", "rbrace", "ubrace", "dbrace":
+		return brace(w, tokens, n)
 
 	case "lcarrow", "rcarrow", "ucarrow", "dcarrow":
 		return carrow(w, tokens, n)

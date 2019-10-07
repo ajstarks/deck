@@ -24,6 +24,30 @@ deck
 			ctext "Random" 50 50 5
 	eslide
 
+	// braces
+	slide
+		ctext "Braces" 50 50 5
+		lbrace 10 50 60 5 5
+		lbrace 15 50 50 5 5 0.2
+		lbrace 20 50 40 5 5 0.2 "red"
+		lbrace 25 50 30 5 5 0.2 "red" 30
+
+		rbrace 90 50 60 5 5
+		rbrace 85 50 50 5 5 0.2
+		rbrace 80 50 40 5 5 0.2 "red"
+		rbrace 75 50 30 5 5 0.2 "red" 50
+
+		ubrace 50 95 60 5 5
+		ubrace 50 90 50 5 5 0.2
+		ubrace 50 85 40 5 5 0.2 "red"
+		ubrace 50 80 30 5 5 0.2 "red" 30
+
+		dbrace 50  5 60 5 5
+		dbrace 50 10 50 5 5 0.2
+		dbrace 50 15 40 5 5 0.2 "red"
+		dbrace 50 20 30 5 5 0.2 "red" 30
+	eslide
+
 	include "insertme.dsh"
 	
 	slide

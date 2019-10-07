@@ -273,6 +273,17 @@ The curve variants use the same syntax for specifying curves.
     ucarrow x1 y1 x2 y2 x3 y3 [linewidth] [arrowidth] [arrowheight] [color] [opacity]
     dcarrow x1 y1 x2 y2 x3 y3 [linewidth] [arrowidth] [arrowheight] [color] [opacity]
 
+## Braces
+
+Left, right, up and down-facing braces.
+(x, y) is the location of the point of the brace, and linewidth, color and opacity are optional
+(defaults are gray, 100%)
+
+    lbrace x y height aw ah [linewidth] [color] [opacity]
+    rbrace x y height aw ah [linewidth] [color] [opacity]
+    ubrace x y width  aw ah [linewidth] [color] [opacity]
+    dbrace x y width  aw ah [linewidth] [color] [opacity]
+
 ## Charts
 
 Run the [dchart](https://github.com/ajstarks/deck/blob/master/cmd/dchart/README.md) command with the specified arguments.
