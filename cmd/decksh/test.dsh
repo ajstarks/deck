@@ -1,6 +1,8 @@
 // comprehensive tests
 deck
 	canvas 1200 900
+
+	// Grid
 	slide	
 		for v=0 100 5
 			line 100 v 0 v 0.1 "blue"
@@ -8,6 +10,7 @@ deck
 		efor
 	eslide
 
+	// Random
 	slide
 			randmin=10
 			randmax=90
@@ -30,26 +33,36 @@ deck
 		lbrace 10 50 60 5 5
 		lbrace 15 50 50 5 5 0.2
 		lbrace 20 50 40 5 5 0.2 "red"
-		lbrace 25 50 30 5 5 0.2 "red" 30
+		lbrace 25 50 30 5 5 0.2 "red" 50
+		lbrace 30 50 20 5 5 0.2 "red" 40
+		lbrace 35 50 10 2 2 0.2 "red" 30
 
 		rbrace 90 50 60 5 5
 		rbrace 85 50 50 5 5 0.2
 		rbrace 80 50 40 5 5 0.2 "red"
 		rbrace 75 50 30 5 5 0.2 "red" 50
+		rbrace 70 50 20 5 5 0.2 "red" 40
+		rbrace 65 50 10 2 2 0.2 "red" 30
 
 		ubrace 50 95 60 5 5
 		ubrace 50 90 50 5 5 0.2
 		ubrace 50 85 40 5 5 0.2 "red"
-		ubrace 50 80 30 5 5 0.2 "red" 30
+		ubrace 50 80 30 5 5 0.2 "red" 50
+		ubrace 50 75 20 5 5 0.2 "red" 40
+		ubrace 50 70 10 2 2 0.2 "red" 30
 
 		dbrace 50  5 60 5 5
 		dbrace 50 10 50 5 5 0.2
 		dbrace 50 15 40 5 5 0.2 "red"
-		dbrace 50 20 30 5 5 0.2 "red" 30
+		dbrace 50 20 30 5 5 0.2 "red" 50
+		dbrace 50 25 20 5 5 0.2 "red" 40
+		dbrace 50 30 10 2 2 0.2 "red" 30
 	eslide
 
+	// include
 	include "insertme.dsh"
-	
+
+	// vmap	
 	slide
 		bx=10
 		ex=90
@@ -79,7 +92,8 @@ deck
 		text "1990" 10 y3 1
 		text "2020" 10 yend 1
 	eslide
-	
+
+	// Lines	
 	slide
 		hline 50 50 20
 		hline 50 55 25 0.5
@@ -107,6 +121,7 @@ deck
 		efor
 	eslide
 
+	// Loops
 	slide
 		cr=5
 		for cx=10 90 20
@@ -122,7 +137,8 @@ deck
 			circle cx 55 cr "blue" 100
 		efor
 	eslide
-	
+
+	// Text spacing	
 	slide
 		titlex=10
 		titley=20
@@ -183,8 +199,9 @@ deck
 		textcode "code/hw.go" tx2 75 20 1 "red"
 	eslide
 
-	tlskip=30
-	l1=5
+	// Text and Alignment
+	tlskip=25
+	l1=10
 	l2=l1+tlskip
 	l3=l2+tlskip
 	l4=l3+tlskip
@@ -216,8 +233,8 @@ deck
 		etext "three" l3 60 ts1 "mono" "red"
 		etext "four"  l3 50 ts1 "sans" "blue" op3
 
-		rtext "one (0)"   l4 60 0   ts1
-		rtext "two (90)"   l4 60 90  ts1 "serif"
+		rtext "one (0)"		l4 60 0   ts1
+		rtext "two (90)"	l4 60 90  ts1 "serif"
 		rtext "three (180)" l4 60 180 ts1 "mono" "red"
 		rtext "four (270)"  l4 60 270 ts1 "sans" "blue" op4
 	eslide
@@ -240,6 +257,7 @@ deck
 		dchart -fulldeck=f foo.d
 	eslide
 
+	// dchart
 	lopts="-fulldeck=f -val=f -left 20 -right 80 -line -bar=f -scatter -max 100 -yrange 0,100,20"
 	slide
 		dchart lopts -xlabel 1  -yaxis -grid -color red     sales.d
@@ -478,7 +496,8 @@ deck
 			circle lcx 40 1.5 "gray"
 		efor
 	eslide
-		
+	
+	// Arrows	
 	slide
 		circle 50 50 2 "blue"
 		arrow 50 50 90 50	// right

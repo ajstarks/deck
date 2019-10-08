@@ -302,7 +302,7 @@ deck
 		lsize=hsize*0.5
 		csep=18
 		csep2=csep*0.65
-		rsep=45
+		rsep=50
 		lsep=6
 		headtop=top-15
 		listtop=headtop-lsep
@@ -351,14 +351,18 @@ deck
 			li "ellipse"
 			li "circle"
 			li "polygon"
+			li "arc"
+			li "curve"
 		elist
 		lx+=csep2
 		list lx listtop lsize "mono" "black" 100 listspacing
-			li "arc"
-			li "curve"
 			li "line"
 			li "hline"
 			li "vline"
+			li "lbrace"
+			li "rbrace"
+			li "ubrace"
+			li "dbrace"
 		elist
 		lx+=csep2
 		list lx listtop lsize "mono" "black" 100 listspacing
@@ -468,6 +472,7 @@ deck
 		ctext "x y angle size [font] [color] [op] [link]" 50 apiy apisize "serif" apicolor
 	eslide
 
+	// Text (cont.)
 	slide
 		lx=left
 		text "Text" left top titlesize "serif"
@@ -633,10 +638,26 @@ deck
 		circle left 20 spotsize spotcolor spotop
 		
 		lx+=25
-		ctext "vline"	lx gtop ts "mono" spotcolor
+		ctext "vline"			lx gtop ts "mono" spotcolor
 		ctext "x y len [lw] [color] [op]" lx r3a apisize "serif" apicolor
 		vline 40 17 8 lw grcolor
 		circle 40 17 spotsize spotcolor spotop
+
+		lx+=25
+		lbx1=lx-4
+		lbx2=lx+4
+		ctext "[r-l]brace"		lx gtop ts "mono" spotcolor
+		ctext "x y size aw ah [lw] [color] [op]" lx r3a apisize "serif" apicolor
+		lbrace lbx1 20 10 2 2 lw grcolor
+		rbrace lbx2 20 10 2 2 lw grcolor
+
+		lx+=25
+
+		ctext "[u-d]brace"		lx gtop ts "mono" spotcolor
+		ctext "x y size aw ah [lw] [color] [op]" lx r3a apisize "serif" apicolor
+		ubrace lx 25 10 2 2 lw grcolor
+		dbrace lx 15 10 2 2 lw grcolor
+
 	eslide
 
 	// Arrows
