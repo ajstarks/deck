@@ -567,7 +567,7 @@ deck
 		row2=gtop-45
 		row3=gtop-60
 		grcolor="rgb(200,200,200)"
-		lw=0.5
+		lw=0.4
 		
 		
 		gtop-=25
@@ -650,6 +650,8 @@ deck
 		ctext "x y size aw ah [lw] [color] [op]" lx r3a apisize "serif" apicolor
 		lbrace lbx1 20 10 2 2 lw grcolor
 		rbrace lbx2 20 10 2 2 lw grcolor
+		circle lbx1 20 spotsize spotcolor spotop
+		circle lbx2 20 spotsize spotcolor spotop
 
 		lx+=25
 
@@ -657,7 +659,8 @@ deck
 		ctext "x y size aw ah [lw] [color] [op]" lx r3a apisize "serif" apicolor
 		ubrace lx 25 10 2 2 lw grcolor
 		dbrace lx 15 10 2 2 lw grcolor
-
+		circle lx 25 spotsize spotcolor spotop
+		circle lx 15 spotsize spotcolor spotop
 	eslide
 
 	// Arrows
@@ -798,11 +801,11 @@ deck
 		dcolor="maroon"
 
 		text "dchart types" left top titlesize "serif"
-		text "Bar" dcx dcy dcsize "sans" dcolor
+		text "Column" dcx dcy dcsize "sans" dcolor
 		image "images/bar.png" dcimx dcimy dcimw dcimh
 		dcx+=dxskip
 		dcimx+=dxskip
-		text "HBar" dcx dcy dcsize "sans" dcolor
+		text "Bar" dcx dcy dcsize "sans" dcolor
 		image "images/hbar.png" dcimx dcimy dcimw dcimh
 		dcx+=dxskip
 		dcimx+=dxskip
