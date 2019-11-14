@@ -12,19 +12,73 @@ deck
 
 	// Random
 	slide
-			randmin=10
-			randmax=90
-			rx1=random randmin randmax
-			rx2=random randmin randmax
-			rx3=random randmin randmax 
-			ry1=random randmin randmax
-			ry2=random randmin randmax
-			ry3=random randmin randmax 
+		randmin=10
+		randmax=90
+		rx1=random randmin randmax
+		rx2=random randmin randmax
+		rx3=random randmin randmax 
+		ry1=random randmin randmax
+		ry2=random randmin randmax
+		ry3=random randmin randmax 
 
-			circle rx1 ry1 10 "red" ry1
-			circle rx2 ry2 10 "green" ry2
-			circle rx3 ry3 10 "blue" ry3
-			ctext "Random" 50 50 5
+		circle rx1 ry1 10 "red" ry1
+		circle rx2 ry2 10 "green" ry2
+		circle rx3 ry3 10 "blue" ry3
+		ctext "Random" 50 50 5
+	eslide
+
+	// Polar coordinates
+	slide
+		ctext "Polar Coordinates" 50 90 5
+		Pi=3.14159265
+		a1=0
+		a2=Pi*0.25
+		a3=Pi*0.50
+		a4=Pi*0.75
+		a5=Pi
+		a6=Pi*1.25
+		a7=Pi*1.50
+		a8=Pi*1.75
+
+		px=polarx 50 50 20 a1
+		py=polary 50 50 20 a1
+		ctext "0"    px py 2
+		line 50 50 px py 0.1
+		
+		px=polarx 50 50 20 a2
+		py=polary 50 50 20 a2
+		ctext "π/4"   px py 2
+		line 50 50 px py 0.1
+
+		px=polarx 50 50 20 a3
+		py=polary 50 50 20 a3
+		ctext "π/2" px py 2 
+		line 50 50 px py 0.1
+
+		px=polarx 50 50 20 a4
+		py=polary 50 50 20 a4
+		ctext "3π/4" px py 2 
+		line 50 50 px py 0.1
+
+		px=polarx 50 50 20 a5
+		py=polary 50 50 20 a5
+		ctext "π" px py 2
+		line 50 50 px py 0.1
+
+		px=polarx 50 50 20 a6
+		py=polary 50 50 20 a6
+		ctext "π+1/4" px py 2
+		line 50 50 px py 0.1
+
+		px=polarx 50 50 20 a7
+		py=polary 50 50 20 a7
+		ctext "π+1/2" px py 2
+		line 50 50 px py 0.1
+
+		px=polarx 50 50 20 a8
+		py=polary 50 50 20 a8
+		ctext "π+3/4" px py 2
+		line 50 50 px py 0.1
 	eslide
 
 	// braces

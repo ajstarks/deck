@@ -140,6 +140,13 @@ assign a random number in the specified range
 
 For value ```v```, maps the range ```vmin-vmax``` to ```min-max```.
 
+## Polar Coordinates
+
+    x=polarx cx cy r theta
+    y=polary cx cy r theta
+
+Return the polar coordinate given a center at ```(cx, cy)```, radius ```r```, and angle ```theta``` (in radians)
+
 ## Structure
 
 Begin or end a deck.

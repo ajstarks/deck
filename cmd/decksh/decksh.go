@@ -46,7 +46,13 @@ func xmlesc(s string) string {
 	return xmlmap.Replace(s)
 }
 
+func ftoa(v float64) string {
+	return strconv.FormatFloat(v, 'g', -1, 64)
+}
+
 // assign creates an assignment by filling in the global id map
+// assignments are either simple (x=10), binary op (x=a+b), or built-ins
+// (random, polarx, polary, vmap)
 func assign(s []string, linenumber int) error {
 	switch len(s) {
 	case 3:
@@ -56,6 +62,8 @@ func assign(s []string, linenumber int) error {
 			return random(s, linenumber)
 		}
 		return binop(s, linenumber) // x=a+b
+	case 7:
+		return polarfunc(s, linenumber) // x=polar[x|y] cx cy r theta
 	case 8:
 		return interpolate(s, linenumber) // x=vmap d min1 max1 min2 max2
 	default:
@@ -96,16 +104,16 @@ func binop(s []string, linenumber int) error {
 	}
 	switch op {
 	case "+":
-		emap[target] = fmt.Sprintf("%v", lv+rv)
+		emap[target] = ftoa(lv+rv) // fmt.Sprintf("%v", lv+rv)
 	case "-":
-		emap[target] = fmt.Sprintf("%v", lv-rv)
+		emap[target] = ftoa(lv-rv) // fmt.Sprintf("%v", lv-rv)
 	case "*":
-		emap[target] = fmt.Sprintf("%v", lv*rv)
+		emap[target] = ftoa(lv*rv) // fmt.Sprintf("%v", lv*rv)
 	case "/":
 		if rv == 0 {
 			return fmt.Errorf("line %d: you cannot divide by zero (%v / %v)", linenumber, lv, rv)
 		}
-		emap[target] = fmt.Sprintf("%v", lv/rv)
+		emap[target] = ftoa(lv/rv) // fmt.Sprintf("%v", lv/rv)
 	default:
 		return es
 	}
@@ -130,18 +138,59 @@ func assignop(s []string, linenumber int) error {
 
 	switch s[1] {
 	case "+":
-		emap[s[0]] = fmt.Sprintf("%v", e+v)
+		emap[s[0]] = ftoa(e+v) // fmt.Sprintf("%v", e+v)
 	case "-":
-		emap[s[0]] = fmt.Sprintf("%v", e-v)
+		emap[s[0]] = ftoa(e-v) // fmt.Sprintf("%v", e-v)
 	case "*":
-		emap[s[0]] = fmt.Sprintf("%v", e*v)
+		emap[s[0]] = ftoa(e*v) // fmt.Sprintf("%v", e*v)
 	case "/":
 		if v == 0 {
 			return fmt.Errorf("line %d: you cannot divide by zero (%v / %v)", linenumber, e, v)
 		}
-		emap[s[0]] = fmt.Sprintf("%v", e/v)
+		emap[s[0]] = ftoa(e/v) // fmt.Sprintf("%v", e/v)
 	default:
 		return operr
+	}
+	return nil
+}
+
+// polarfunc returns polar coordinates
+func polarfunc(s []string, linenumber int) error {
+	e := fmt.Errorf("line %d use: x = polar[x|y] cx cy r theta", linenumber)
+	if s[1] != "=" || len(s) != 7 {
+		return e
+	}
+	goodkey := s[2] == "polarx" || s[2] == "polary"
+	if !goodkey {
+		return e
+	} 
+	var cx, cy, r, theta float64
+	var err error
+
+	cx, err = strconv.ParseFloat(eval(s[3]), 64)
+	if err != nil {
+		return err
+	}
+	cy, err = strconv.ParseFloat(eval(s[4]), 64)
+	if err != nil {
+		return err
+	}
+	r, err = strconv.ParseFloat(eval(s[5]), 64)
+	if err != nil {
+		return err
+	}
+	theta, err = strconv.ParseFloat(eval(s[6]), 64)
+	if err != nil {
+		return err
+	}
+	x, y := polar(cx, cy, r, theta)
+	switch s[2] {
+	case "polarx":
+		emap[s[0]] = ftoa(x) // fmt.Sprintf("%v", x)
+	case "polary":
+		emap[s[0]] = ftoa(y) // fmt.Sprintf("%v", y)
+	default:
+		return e
 	}
 	return nil
 }
@@ -166,7 +215,7 @@ func random(s []string, linenumber int) error {
 	if err != nil {
 		return err
 	}
-	emap[s[0]] = fmt.Sprintf("%v", vmap(rand.Float64(), 0, 1, min, max))
+	emap[s[0]] = ftoa(vmap(rand.Float64(), 0, 1, min, max)) // fmt.Sprintf("%v", vmap(rand.Float64(), 0, 1, min, max))
 	return nil
 }
 
@@ -198,7 +247,7 @@ func interpolate(s []string, linenumber int) error {
 	if err != nil {
 		return err
 	}
-	emap[s[0]] = fmt.Sprintf("%v", vmap(data, min1, max1, min2, max2))
+	emap[s[0]] = ftoa(vmap(data, min1, max1, min2, max2)) // fmt.Sprintf("%v", vmap(data, min1, max1, min2, max2))
 	return nil
 }
 
@@ -1060,8 +1109,8 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 	// compute the coordinates for the arrowhead
 	ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 := arrowhead(x, y, ah, aw, stdnotch, s[0][0])
 	// adjust the end point of the curve to be the notch point
-	curvestring[5] = fmt.Sprintf("%v", ax3)
-	curvestring[6] = fmt.Sprintf("%v", ay3)
+	curvestring[5] = ftoa(ax3) // fmt.Sprintf("%v", ax3)
+	curvestring[6] = ftoa(ay3) // fmt.Sprintf("%v", ay3)
 
 	curve(w, curvestring, linenumber)
 	fmt.Fprintf(w, "<polygon xc=\"%v %v %v %v\" yc=\"%v %v %v %v\" color=%s opacity=%q/>\n", ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4, color, opacity)
@@ -1228,7 +1277,7 @@ func parsefor(w io.Writer, s []string, linenumber int, scanner *bufio.Scanner) e
 		}
 		for v := begin; v <= end; v += incr {
 			for _, fb := range body {
-				evaloop(w, forvar, "%s", fmt.Sprintf("%v", v), fb, scanner, linenumber)
+				evaloop(w, forvar, "%s", ftoa(v), fb, scanner, linenumber)
 			}
 		}
 		return err
