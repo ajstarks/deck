@@ -183,7 +183,7 @@ func polarfunc(s []string, linenumber int) error {
 	if err != nil {
 		return err
 	}
-	x, y := polar(cx, cy, r, theta)
+	x, y := polar(cx, cy, r, theta*(math.Pi/180))
 	switch s[2] {
 	case "polarx":
 		emap[s[0]] = ftoa(x)

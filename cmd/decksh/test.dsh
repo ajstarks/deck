@@ -32,13 +32,13 @@ deck
 		ctext "Polar Coordinates" 50 90 5
 		Pi=3.14159265
 		a1=0
-		a2=Pi*0.25
-		a3=Pi*0.50
-		a4=Pi*0.75
-		a5=Pi
-		a6=Pi*1.25
-		a7=Pi*1.50
-		a8=Pi*1.75
+		a2=45
+		a3=90
+		a4=135
+		a5=180
+		a6=225
+		a7=270
+		a8=325
 
 		px=polarx 50 50 20 a1
 		py=polary 50 50 20 a1
@@ -47,37 +47,37 @@ deck
 		
 		px=polarx 50 50 20 a2
 		py=polary 50 50 20 a2
-		ctext "π/4"   px py 2
+		ctext "π/4 (45°)"   px py 2
 		line 50 50 px py 0.1
 
 		px=polarx 50 50 20 a3
 		py=polary 50 50 20 a3
-		ctext "π/2" px py 2 
+		ctext "π/2 (90°)" px py 2 
 		line 50 50 px py 0.1
 
 		px=polarx 50 50 20 a4
 		py=polary 50 50 20 a4
-		ctext "3π/4" px py 2 
+		ctext "3π/4 (135°)" px py 2 
 		line 50 50 px py 0.1
 
 		px=polarx 50 50 20 a5
 		py=polary 50 50 20 a5
-		ctext "π" px py 2
+		ctext "π (180°)" px py 2
 		line 50 50 px py 0.1
 
 		px=polarx 50 50 20 a6
 		py=polary 50 50 20 a6
-		ctext "π+1/4" px py 2
+		ctext "π+1/4 (225°)" px py 2
 		line 50 50 px py 0.1
 
 		px=polarx 50 50 20 a7
 		py=polary 50 50 20 a7
-		ctext "π+1/2" px py 2
+		ctext "π+1/2 (270°)" px py 2
 		line 50 50 px py 0.1
 
 		px=polarx 50 50 20 a8
 		py=polary 50 50 20 a8
-		ctext "π+3/4" px py 2
+		ctext "π+3/4 (325°)" px py 2
 		line 50 50 px py 0.1
 	eslide
 
