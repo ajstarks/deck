@@ -65,7 +65,7 @@ func assign(s []string, linenumber int) error {
 	case 7:
 		return polarfunc(s, linenumber) // x=polar[x|y] cx cy r theta
 	case 8:
-		return interpolate(s, linenumber) // x=vmap d min1 max1 min2 max2
+		return vmapfunc(s, linenumber) // x=vmap d min1 max1 min2 max2
 	default:
 		return fmt.Errorf("line %d: %v is a illegal assignment", linenumber, s)
 	}
@@ -219,8 +219,8 @@ func random(s []string, linenumber int) error {
 	return nil
 }
 
-// interpolate translates a value given two ranges
-func interpolate(s []string, linenumber int) error {
+// vmapfunc translates a value given two ranges
+func vmapfunc(s []string, linenumber int) error {
 	n := len(s)
 	if n < 8 || s[2] != "vmap" {
 		return fmt.Errorf("line %d: use: v = vmap data min1 max1 min2 max2", linenumber)
@@ -319,6 +319,7 @@ func endtag(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+// include inserts the contents of a file
 func include(w io.Writer, s []string, linenumber int) error {
 	if len(s) != 2 {
 		return fmt.Errorf("line %d: include \"file\"", linenumber)
@@ -410,7 +411,7 @@ func fontColorOpLp(s []string) string {
 	}
 }
 
-// remove quotes from a string, and XML escape it
+// qesc remove quotes from a string, and XML escape it
 func qesc(s string) string {
 	if len(s) < 3 {
 		return ""
@@ -833,6 +834,7 @@ func brace(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+// lbrace makes a left-facing brace
 func lbrace(w io.Writer, x, y, size, aw, ah float64, attr string) {
 	aw2 := aw / 2
 	h2 := size / 2
@@ -846,6 +848,7 @@ func lbrace(w io.Writer, x, y, size, aw, ah float64, attr string) {
 	fmt.Fprintf(w, linefmt, xshift, y-ah, xshift, y-linelen, attr)
 }
 
+// rbrace makes a right-facing brace
 func rbrace(w io.Writer, x, y, size, aw, ah float64, attr string) {
 	aw2 := aw / 2
 	h2 := size / 2
@@ -859,6 +862,7 @@ func rbrace(w io.Writer, x, y, size, aw, ah float64, attr string) {
 	fmt.Fprintf(w, linefmt, xshift, y-ah, xshift, y-linelen, attr)
 }
 
+// ubrace makes a upwards-facing brace
 func ubrace(w io.Writer, x, y, size, aw, ah float64, attr string) {
 	linelen := (size / 2) - aw
 	yshift := y - ah
@@ -870,6 +874,7 @@ func ubrace(w io.Writer, x, y, size, aw, ah float64, attr string) {
 	fmt.Fprintf(w, curvefmt, x-linelen, yshift, x-linelen-aw, yshift, x-linelen-aw, y-(2*ah), attr)
 }
 
+// lbrace makes a downward-facing brace
 func dbrace(w io.Writer, x, y, size, aw, ah float64, attr string) {
 	linelen := (size / 2) - aw
 	yshift := y + ah
@@ -881,20 +886,24 @@ func dbrace(w io.Writer, x, y, size, aw, ah float64, attr string) {
 	fmt.Fprintf(w, curvefmt, x-linelen, yshift, x-linelen-aw, yshift, x-linelen-aw, y+(2*ah), attr)
 }
 
+// angle computes the angle formed by a line
 func angle(x1, y1, x2, y2 float64) float64 {
 	return math.Atan2(y2-y1, x2-x1)
 }
 
+// rt returns the distance and angle of a line
 func rt(x1, y1, x2, y2 float64) (float64, float64) {
 	dx := x2 - x1
 	dy := y2 - y1
 	return math.Sqrt((dx * dx) + (dy * dy)), math.Atan2(dy, dx)
 }
 
+// polar converts polar to Cartesian coordinates
 func polar(cx, cy, r, t float64) (float64, float64) {
 	return ((r * math.Cos(t)) + cx), ((r * math.Sin(t)) + cy)
 }
 
+// genarrow returns the components of an arrow
 func genarrow(x1, y1, x2, y2, aw, ah float64) (float64, float64, float64, float64, float64, float64, float64, float64) {
 	r, t := rt(x1, y1, x2, y2)
 	n := r - (aw * 0.75)
