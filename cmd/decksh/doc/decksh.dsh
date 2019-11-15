@@ -302,6 +302,7 @@ deck
 		lsize=hsize*0.5
 		csep=18
 		csep2=csep*0.65
+		csep3=csep*0.85
 		rsep=50
 		lsep=6
 		headtop=top-15
@@ -397,6 +398,8 @@ deck
 			li "efor"
 		elist
 		
+
+		
 		lx+=csep
 		text "Data" lx headtop hsize "sans" headcolor
 		list lx listtop lsize "mono" "black" 100 listspacing
@@ -404,11 +407,16 @@ deck
 			li "edata"
 		elist
 
-		lx+=csep
+		lx+=csep3
 		text "Utility" lx headtop hsize "sans" headcolor
 		list lx listtop lsize "mono" "black" 100 listspacing
 			li "vmap"
 			li "random"
+		elist
+		lx+=8
+		list lx listtop lsize "mono" "black" 100 listspacing
+			li "polarx"
+			li "polary"
 		elist
 	eslide
 	
@@ -1767,7 +1775,7 @@ deck
     ss=ts*0.85    // sub-head text size
     cs=ts*0.50    // contact info text size
     lx=50         // line x
-	imscale=4
+	imscale=10
 	ims2=imscale*10
 	ims3=ims2/4
     slide "white" "rgb(100,100,100)"
