@@ -104,16 +104,16 @@ func binop(s []string, linenumber int) error {
 	}
 	switch op {
 	case "+":
-		emap[target] = ftoa(lv+rv) // fmt.Sprintf("%v", lv+rv)
+		emap[target] = ftoa(lv + rv)
 	case "-":
-		emap[target] = ftoa(lv-rv) // fmt.Sprintf("%v", lv-rv)
+		emap[target] = ftoa(lv - rv)
 	case "*":
-		emap[target] = ftoa(lv*rv) // fmt.Sprintf("%v", lv*rv)
+		emap[target] = ftoa(lv * rv)
 	case "/":
 		if rv == 0 {
 			return fmt.Errorf("line %d: you cannot divide by zero (%v / %v)", linenumber, lv, rv)
 		}
-		emap[target] = ftoa(lv/rv) // fmt.Sprintf("%v", lv/rv)
+		emap[target] = ftoa(lv / rv)
 	default:
 		return es
 	}
@@ -138,16 +138,16 @@ func assignop(s []string, linenumber int) error {
 
 	switch s[1] {
 	case "+":
-		emap[s[0]] = ftoa(e+v) // fmt.Sprintf("%v", e+v)
+		emap[s[0]] = ftoa(e + v)
 	case "-":
-		emap[s[0]] = ftoa(e-v) // fmt.Sprintf("%v", e-v)
+		emap[s[0]] = ftoa(e - v)
 	case "*":
-		emap[s[0]] = ftoa(e*v) // fmt.Sprintf("%v", e*v)
+		emap[s[0]] = ftoa(e * v)
 	case "/":
 		if v == 0 {
 			return fmt.Errorf("line %d: you cannot divide by zero (%v / %v)", linenumber, e, v)
 		}
-		emap[s[0]] = ftoa(e/v) // fmt.Sprintf("%v", e/v)
+		emap[s[0]] = ftoa(e / v)
 	default:
 		return operr
 	}
@@ -163,7 +163,7 @@ func polarfunc(s []string, linenumber int) error {
 	goodkey := s[2] == "polarx" || s[2] == "polary"
 	if !goodkey {
 		return e
-	} 
+	}
 	var cx, cy, r, theta float64
 	var err error
 
@@ -186,9 +186,9 @@ func polarfunc(s []string, linenumber int) error {
 	x, y := polar(cx, cy, r, theta)
 	switch s[2] {
 	case "polarx":
-		emap[s[0]] = ftoa(x) // fmt.Sprintf("%v", x)
+		emap[s[0]] = ftoa(x)
 	case "polary":
-		emap[s[0]] = ftoa(y) // fmt.Sprintf("%v", y)
+		emap[s[0]] = ftoa(y)
 	default:
 		return e
 	}
@@ -215,7 +215,7 @@ func random(s []string, linenumber int) error {
 	if err != nil {
 		return err
 	}
-	emap[s[0]] = ftoa(vmap(rand.Float64(), 0, 1, min, max)) // fmt.Sprintf("%v", vmap(rand.Float64(), 0, 1, min, max))
+	emap[s[0]] = ftoa(vmap(rand.Float64(), 0, 1, min, max))
 	return nil
 }
 
@@ -247,7 +247,7 @@ func interpolate(s []string, linenumber int) error {
 	if err != nil {
 		return err
 	}
-	emap[s[0]] = ftoa(vmap(data, min1, max1, min2, max2)) // fmt.Sprintf("%v", vmap(data, min1, max1, min2, max2))
+	emap[s[0]] = ftoa(vmap(data, min1, max1, min2, max2))
 	return nil
 }
 
@@ -790,8 +790,9 @@ func legend(w io.Writer, s []string, linenumber int) error {
 	if err != nil {
 		return err
 	}
-	fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", fmt.Sprintf("%.3f", tx+2), s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
-	fmt.Fprintf(w, "<ellipse xp=%q yp=%q wp=%q hr=\"100\" color=%s/>\n", s[2], fmt.Sprintf("%.3f", cy+.5), s[4], s[6])
+	ftoa(tx + 2)
+	fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", ftoa(tx+2), s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
+	fmt.Fprintf(w, "<ellipse xp=%q yp=%q wp=%q hr=\"100\" color=%s/>\n", s[2], ftoa(cy+.5), s[4], s[6])
 	return nil
 }
 
@@ -1109,8 +1110,8 @@ func carrow(w io.Writer, s []string, linenumber int) error {
 	// compute the coordinates for the arrowhead
 	ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4 := arrowhead(x, y, ah, aw, stdnotch, s[0][0])
 	// adjust the end point of the curve to be the notch point
-	curvestring[5] = ftoa(ax3) // fmt.Sprintf("%v", ax3)
-	curvestring[6] = ftoa(ay3) // fmt.Sprintf("%v", ay3)
+	curvestring[5] = ftoa(ax3)
+	curvestring[6] = ftoa(ay3)
 
 	curve(w, curvestring, linenumber)
 	fmt.Fprintf(w, "<polygon xc=\"%v %v %v %v\" yc=\"%v %v %v %v\" color=%s opacity=%q/>\n", ax1, ax2, ax3, ax4, ay1, ay2, ay3, ay4, color, opacity)
