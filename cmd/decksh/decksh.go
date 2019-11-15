@@ -275,15 +275,6 @@ func parse(src string) []string {
 	return tokens
 }
 
-// dumptokens show the parsed tokens
-func dumptokens(w io.Writer, s []string, linenumber int) {
-	fmt.Fprintf(w, "line %d: args=%d [ ", linenumber, len(s))
-	for i, t := range s {
-		fmt.Fprintf(w, "%d:%s ", i, t)
-	}
-	fmt.Fprintln(w, "]")
-}
-
 // deck produces the "deck" element
 func deck(w io.Writer, s []string, linenumber int) error {
 	_, err := fmt.Fprintln(w, "<deck>")
@@ -414,20 +405,6 @@ func fontColorOpLp(s []string) string {
 		return fmt.Sprintf("font=%s color=%s opacity=%q lp=%q link=%s", s[0], s[1], s[2], s[3], s[4])
 	case 6:
 		return fmt.Sprintf("font=%s color=%s opacity=%q lp=%q link=%s rotation=%q", s[0], s[1], s[2], s[3], s[4], s[5])
-	default:
-		return ""
-	}
-}
-
-func textattr(s string) string {
-	f := strings.Split(s, "/")
-	switch len(f) {
-	case 1:
-		return fmt.Sprintf("font=%q", f[0])
-	case 2:
-		return fmt.Sprintf("font=%q color=%q", f[0], f[1])
-	case 3:
-		return fmt.Sprintf("font=%q color=%q opacity=%q", f[0], f[1], f[2])
 	default:
 		return ""
 	}
@@ -790,7 +767,6 @@ func legend(w io.Writer, s []string, linenumber int) error {
 	if err != nil {
 		return err
 	}
-	ftoa(tx + 2)
 	fmt.Fprintf(w, "<text xp=%q yp=%q sp=%q %s>%s</text>\n", ftoa(tx+2), s[3], s[4], fontColorOp(s[5:]), qesc(s[1]))
 	fmt.Fprintf(w, "<ellipse xp=%q yp=%q wp=%q hr=\"100\" color=%s/>\n", s[2], ftoa(cy+.5), s[4], s[6])
 	return nil
@@ -907,12 +883,6 @@ func dbrace(w io.Writer, x, y, size, aw, ah float64, attr string) {
 
 func angle(x1, y1, x2, y2 float64) float64 {
 	return math.Atan2(y2-y1, x2-x1)
-}
-
-func distance(x1, y1, x2, y2 float64) float64 {
-	dx := x2 - x1
-	dy := y2 - y1
-	return math.Sqrt((dx * dx) + (dy * dy))
 }
 
 func rt(x1, y1, x2, y2 float64) (float64, float64) {

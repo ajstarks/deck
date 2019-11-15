@@ -1,5 +1,5 @@
 slide
 	includedx=50
 	includedy=50
-	ctext "Included data" includedx includedy 5
+	ctext "Included data from another file" includedx includedy 5
 eslide
