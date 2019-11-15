@@ -30,7 +30,6 @@ deck
 	// Polar coordinates
 	slide
 		ctext "Polar Coordinates" 50 90 5
-		Pi=3.14159265
 		a1=0
 		a2=45
 		a3=90
