@@ -1297,11 +1297,11 @@ func evaloop(w io.Writer, forvar string, format string, v string, s []string, sc
 			e[i] = fmt.Sprintf(format, v)
 		}
 	}
-	keyparse(w, e, "", scanner, linenumber)
+	keyparse(w, e, "", linenumber)
 }
 
 // keyparse parses keywords and executes
-func keyparse(w io.Writer, tokens []string, t string, sc *bufio.Scanner, n int) error {
+func keyparse(w io.Writer, tokens []string, t string, n int) error {
 	//fmt.Fprintf(os.Stderr, "%v\n", emap)
 	switch tokens[0] {
 	case "deck":
@@ -1415,7 +1415,7 @@ func process(w io.Writer, r io.Reader) error {
 		if tokens[0] == "data" {
 			errors = append(errors, loadata(tokens, n, scanner))
 		}
-		errors = append(errors, keyparse(w, tokens, t, scanner, n))
+		errors = append(errors, keyparse(w, tokens, t, n))
 	}
 	// report any collected errors
 	nerrs := 0
