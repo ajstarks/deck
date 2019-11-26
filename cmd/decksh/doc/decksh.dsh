@@ -567,15 +567,15 @@ deck
 		gtop=top
 		text "Graphics" left top titlesize "serif"
 		
-		row1=gtop-15
+		row1=gtop-10
 		r1a=row1-15
-		row2=gtop-45
+		row2=gtop-42
 		row3=gtop-60
 		grcolor="rgb(200,200,200)"
 		lw=0.4
 		
 		
-		gtop-=25
+		gtop-=20
 		r1a=gtop-sep
 		ctext "rect"	lx gtop ts "mono" spotcolor
 		ctext "x y w h [color] [op]" lx r1a apisize "serif" apicolor
@@ -600,7 +600,7 @@ deck
 		circle lx row1 6 grcolor
 		circle lx row1 spotsize spotcolor spotop
 		
-		gtop-=25
+		gtop-=27
 		lx=left+sep
 		r2a=gtop-sep
 		
@@ -634,7 +634,7 @@ deck
 		circle 95 row2 spotsize spotcolor spotop
 		
 		lx=left+sep
-		gtop-=25
+		gtop-=29
 		r3a=gtop-sep
 		
 		ctext "hline"	lx gtop ts "mono" spotcolor
