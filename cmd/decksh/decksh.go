@@ -339,7 +339,6 @@ func include(w io.Writer, s []string, linenumber int) error {
 	}
 	defer r.Close()
 	return process(w, r)
-
 }
 
 // loadata creates a file using the  data keyword
@@ -1390,7 +1389,6 @@ func keyparse(w io.Writer, tokens []string, t string, n int) error {
 			return assignop(tokens, n)
 		}
 	}
-
 	return nil
 }
 
