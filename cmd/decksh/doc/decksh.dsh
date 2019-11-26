@@ -52,8 +52,6 @@ deck
 		rect	75 45 20 20 "rgb(127,127,127)"
 		etext	"a Go package for presentations" 95 5 2.5
 	eslide
-	
-
 
 	// Elements
 	slide
@@ -294,7 +292,6 @@ deck
 		text "hello, world" sl 20 exsize "serif" "red" 50
 	eslide
 
-	
 	// Keyword list
 	slide
 		text "Keywords" left top titlesize "serif"  
@@ -1020,8 +1017,6 @@ deck
 		textfile "code/hbcard.dsh" 5 90 codesize "mono"
 	eslide
 
-	
-
 	// Go module information flows
 	slide
 		ts=3
@@ -1060,7 +1055,6 @@ deck
 		ctext "serves feed listing of Go modules & versions"	col3 15 ns "serif" "gray"
 		ctext "answer queries for goimports"					col3 11 ns "serif" "gray"
 
-		
 		cx1=col1+10
 		cx3=col3-10
 		ccx=col1-5
@@ -1485,7 +1479,6 @@ deck
 		rect 50 48 boxw boxh "purple"		boxop
 		rect 80 48 boxw boxh "steelblue" 	boxop
 
-
 		dchart -color=orange	-top chartop -bottom chartbottom -left=10 -right=30 opt  -yaxis code/Deborah.d
 		dchart -color=purple	-top chartop -bottom chartbottom -left=40 -right=60 opt  code/Dorothy.d
 		dchart -color=steelblue -top chartop -bottom chartbottom -left=70 -right=90 opt  code/Helen.d
@@ -1715,8 +1708,6 @@ deck
 		image "images/plate61.png"  73 50 1584 2016 dbscale
 	eslide
 
-
-
 	
 	// How does Go help (turn on for Go-audiences)
 //	slide "black" "white"
@@ -1775,7 +1766,7 @@ deck
     ss=ts*0.85    // sub-head text size
     cs=ts*0.50    // contact info text size
     lx=50         // line x
-	imscale=10
+	imscale=4 // 10
 	ims2=imscale*10
 	ims3=ims2/4
     slide "white" "rgb(100,100,100)"
@@ -1796,5 +1787,4 @@ deck
         text "github.com/ajstarks"      tx 34 cs
         text "speakerdeck.com/ajstarks" tx 19 cs
     eslide
-
 edeck
