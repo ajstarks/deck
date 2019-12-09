@@ -29,7 +29,7 @@ var (
 	showbar, showval, showxlast, showline, showhbar, wbar, showaxis, shownote, showrline, showframe  bool
 	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes, solidpmap bool
 	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols                        string
-	hline, noteloc, rlinecolor, framecolor, datacond                                                 string
+	hline, noteloc, labelcolor, rlinecolor, framecolor, datacond                                     string
 )
 
 var blue7 = []string{
@@ -49,7 +49,6 @@ var xmlmap = strings.NewReplacer(
 
 const (
 	titlecolor   = "black"
-	labelcolor   = "rgb(75,75,75)"
 	dotlinecolor = "lightgray"
 	defaultfmt   = "%.1f"
 	wbop         = 30.0
@@ -107,6 +106,7 @@ func cmdflags() {
 	flag.StringVar(&chartitle, "chartitle", "", "specify the title (overiding title in the data)")
 	flag.StringVar(&csvcols, "csvcol", "", "label,value from the CSV header")
 	flag.StringVar(&valpos, "valpos", "t", "value position (t=top, b=bottom, m=middle)")
+	flag.StringVar(&labelcolor, "lcolor", "rgb(75,75,75)", "label color")
 	flag.StringVar(&datacolor, "color", "lightsteelblue", "data color")
 	flag.StringVar(&valuecolor, "vcolor", "rgb(127,0,0)", "value color")
 	flag.StringVar(&rlinecolor, "rlcolor", "rgb(127,0,0)", "regression line color")
@@ -459,7 +459,7 @@ func pgrid(deck *generate.Deck, data []ChartData, title string, rows, cols int) 
 	for i, d := range data {
 		y -= ls * 1.2
 		deck.Circle(left, y, ts, d.note)
-		deck.Text(left+ts, y-(ts/2), d.label+" ("+dformat(pct[i])+"%)", "sans", ts, "black")
+		deck.Text(left+ts, y-(ts/2), d.label+" ("+dformat(pct[i])+"%)", "sans", ts, "")
 		if showval {
 			deck.TextEnd(left+cx, y-(ts/2), dformat(d.value), "sans", ts, valuecolor)
 		}
@@ -577,9 +577,8 @@ func stdcolor(i int, dcolor, color string, op float64) (string, float64) {
 	if len(dcolor) > 0 {
 		if solidpmap {
 			return dcolor, 100
-		} else {
-			return dcolor, 40
 		}
+		return dcolor, 40
 	}
 	return color, op
 }
@@ -604,7 +603,7 @@ func donut(deck *generate.Deck, data []ChartData, title string) {
 		deck.Arc(dx, dy, psize, psize, pwidth, a1, a2, bcolor, op)
 		tx, ty := polar(dx, dy, psize*.85, mid*(math.Pi/180))
 		if showval {
-			deck.TextMid(tx, ty, fmt.Sprintf("%s "+datafmt+"%%", data[i].label, p), "sans", ts, "black")
+			deck.TextMid(tx, ty, fmt.Sprintf("%s "+datafmt+"%%", data[i].label, p), "sans", ts, "")
 			//deck.TextMid(tx, ty-ts*1.5, fmt.Sprintf(dformat(data[i].value)), "sans", ts, valuecolor)
 		}
 		a1 = a2
