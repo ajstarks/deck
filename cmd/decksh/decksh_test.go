@@ -17,6 +17,10 @@ func TestMain(m *testing.M) {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(2)
 	}
-	process(w, r)
+	err = process(w, r)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(3)
+	}
 	os.Exit(m.Run())
 }
