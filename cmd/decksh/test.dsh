@@ -30,14 +30,16 @@ deck
 
 	// Grid
 	slide
-		ctext "Grid" 50 50 5
 		gx=10
 		gy=80
 		xint=10
 		yint=10
 		limit=30
+
+		ctext "Grid" 50 90 5
 		grid "grid.d" gx gy xint yint limit
-		grid "grid.d" 50 90 xint yint 90
+		gx+=limit
+		textfile "grid.d" gx gy 1.5 "mono"
 	eslide
 
 	// Polar coordinates
