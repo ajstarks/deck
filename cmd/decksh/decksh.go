@@ -275,40 +275,6 @@ func parse(src string) []string {
 	return tokens
 }
 
-// deck produces the "deck" element
-func deck(w io.Writer, s []string, linenumber int) error {
-	_, err := fmt.Fprintln(w, "<deck>")
-	return err
-}
-
-// canvas produces the "canvas" element
-func canvas(w io.Writer, s []string, linenumber int) error {
-	e := fmt.Errorf("line %d: %s width height", linenumber, s[0])
-	if len(s) != 3 {
-		return e
-	}
-	for i := 1; i < 3; i++ {
-		s[i] = eval(s[i])
-	}
-	fmt.Fprintf(w, "<canvas width=%q height=%q/>\n", s[1], s[2])
-	return nil
-}
-
-// slide produces the "slide" element
-func slide(w io.Writer, s []string, linenumber int) error {
-	switch len(s) {
-	case 1:
-		fmt.Fprintln(w, "<slide>")
-	case 2:
-		fmt.Fprintf(w, "<slide bg=%s>\n", s[1])
-	case 3:
-		fmt.Fprintf(w, "<slide bg=%s fg=%s>\n", s[1], s[2])
-	default:
-		return fmt.Errorf("line %d: slide [bgcolor] [fgcolor]", linenumber)
-	}
-	return nil
-}
-
 // elist ends a deck, slide, or list
 func endtag(w io.Writer, s []string, linenumber int) error {
 	tag := s[0]
@@ -317,61 +283,6 @@ func endtag(w io.Writer, s []string, linenumber int) error {
 	}
 	fmt.Fprintf(w, "</%s>\n", tag[1:])
 	return nil
-}
-
-// include inserts the contents of a file
-func include(w io.Writer, s []string, linenumber int) error {
-	if len(s) != 2 {
-		return fmt.Errorf("line %d: include \"file\"", linenumber)
-	}
-	filearg := s[1]
-
-	if len(filearg) < 3 {
-		return fmt.Errorf("line %d: %v is not a valid filename", linenumber, filearg)
-	}
-	end := len(filearg) - 1
-	if filearg[0] != '"' && filearg[end] != '"' {
-		return fmt.Errorf("line %d: %v is not a valid filename", linenumber, filearg)
-	}
-	r, err := os.Open(filearg[1:end])
-	if err != nil {
-		return err
-	}
-	defer r.Close()
-	return process(w, r)
-}
-
-// loadata creates a file using the  data keyword
-func loadata(s []string, linenumber int, scanner *bufio.Scanner) error {
-	if len(s) != 2 {
-		return fmt.Errorf("line %d: data \"file\"...edata", linenumber)
-	}
-	filearg := s[1]
-
-	if len(filearg) < 3 {
-		return fmt.Errorf("line %d: %v is not a valid filename", linenumber, filearg)
-	}
-	end := len(filearg) - 1
-	if filearg[0] != '"' && filearg[end] != '"' {
-		return fmt.Errorf("line %d: %v is not a valid filename", linenumber, filearg)
-	}
-	dataw, err := os.Create(filearg[1:end])
-	if err != nil {
-		return fmt.Errorf("line %d: %v (%v)", linenumber, s, err)
-	}
-	for scanner.Scan() {
-		t := scanner.Text()
-		if strings.TrimSpace(t) == "edata" {
-			break
-		}
-		f := strings.Fields(t)
-		if len(f) != 2 {
-			continue
-		}
-		fmt.Fprintf(dataw, "%v\t%v\n", f[0], f[1])
-	}
-	err = dataw.Close()
-	return err
 }
 
 // fontColorOp generates markup for font, color, and opacity
@@ -416,6 +327,164 @@ func qesc(s string) string {
 		return ""
 	}
 	return (xmlesc(s[1 : len(s)-1]))
+}
+
+// filequote gets a name from a quoted string
+func filequote(s string, linenumber int) (string, error) {
+	if len(s) < 3 {
+		return "", fmt.Errorf("line %d: %v is not a valid filename", linenumber, s)
+	}
+	end := len(s) - 1
+	if s[0] != '"' && s[end] != '"' {
+		return "", fmt.Errorf("line %d: %v is not a valid filename", linenumber, s)
+	}
+	return s[1:end], nil
+}
+
+// deck produces the "deck" element
+func deck(w io.Writer, s []string, linenumber int) error {
+	_, err := fmt.Fprintln(w, "<deck>")
+	return err
+}
+
+// canvas produces the "canvas" element
+func canvas(w io.Writer, s []string, linenumber int) error {
+	e := fmt.Errorf("line %d: %s width height", linenumber, s[0])
+	if len(s) != 3 {
+		return e
+	}
+	for i := 1; i < 3; i++ {
+		s[i] = eval(s[i])
+	}
+	fmt.Fprintf(w, "<canvas width=%q height=%q/>\n", s[1], s[2])
+	return nil
+}
+
+// slide produces the "slide" element
+func slide(w io.Writer, s []string, linenumber int) error {
+	switch len(s) {
+	case 1:
+		fmt.Fprintln(w, "<slide>")
+	case 2:
+		fmt.Fprintf(w, "<slide bg=%s>\n", s[1])
+	case 3:
+		fmt.Fprintf(w, "<slide bg=%s fg=%s>\n", s[1], s[2])
+	default:
+		return fmt.Errorf("line %d: slide [bgcolor] [fgcolor]", linenumber)
+	}
+	return nil
+}
+
+// include inserts the contents of a file
+func include(w io.Writer, s []string, linenumber int) error {
+	if len(s) != 2 {
+		return fmt.Errorf("line %d: include \"file\"", linenumber)
+	}
+
+	filearg, err := filequote(s[1], linenumber)
+	if err != nil {
+		return err
+	}
+	r, err := os.Open(filearg)
+	if err != nil {
+		return err
+	}
+	defer r.Close()
+	return process(w, r)
+}
+
+// loadata creates a file using the  data keyword
+func loadata(s []string, linenumber int, scanner *bufio.Scanner) error {
+	if len(s) != 2 {
+		return fmt.Errorf("line %d: data \"file\"...edata", linenumber)
+	}
+	filearg, err := filequote(s[1], linenumber)
+	if err != nil {
+		return err
+	}
+	dataw, err := os.Create(filearg)
+	if err != nil {
+		return fmt.Errorf("line %d: %v (%v)", linenumber, s, err)
+	}
+	for scanner.Scan() {
+		t := scanner.Text()
+		if strings.TrimSpace(t) == "edata" {
+			break
+		}
+		f := strings.Fields(t)
+		if len(f) != 2 {
+			continue
+		}
+		fmt.Fprintf(dataw, "%v\t%v\n", f[0], f[1])
+	}
+	err = dataw.Close()
+	return err
+}
+
+// grid places objects read from a file in a grid
+func grid(w io.Writer, s []string, linenumber int) error {
+	if len(s) < 7 {
+		return fmt.Errorf("line %d: %s \"file\" x y xint yint xlimit", linenumber, s[0])
+	}
+	x, err := strconv.ParseFloat(eval(s[2]), 64)
+	if err != nil {
+		return err
+	}
+	y, err := strconv.ParseFloat(eval(s[3]), 64)
+	if err != nil {
+		return err
+	}
+	xint, err := strconv.ParseFloat(eval(s[4]), 64)
+	if err != nil {
+		return err
+	}
+	yint, err := strconv.ParseFloat(eval(s[5]), 64)
+	if err != nil {
+		return err
+	}
+	limit, err := strconv.ParseFloat(eval(s[6]), 64)
+	if err != nil {
+		return err
+	}
+
+	filearg, err := filequote(s[1], linenumber)
+	if err != nil {
+		return err
+	}
+	r, err := os.Open(filearg)
+	if err != nil {
+		return err
+	}
+	defer r.Close()
+
+	scanner := bufio.NewScanner(r)
+	xp, yp := x, y
+	for scanner.Scan() {
+		if xp > limit {
+			xp = x
+			yp -= yint
+		}
+		keyparse(w, subxy(scanner.Text(), xp, yp), "", linenumber)
+		xp += xint
+	}
+	return scanner.Err()
+}
+
+// subxy replaces the "x" and "y" arguments with the named values
+func subxy(s string, x, y float64) []string {
+	args := strings.Fields(s)
+	if len(args) < 3 {
+		return nil
+	}
+	for i := 0; i < len(args); i++ {
+		if args[i] == "x" {
+			args[i] = fmt.Sprintf("%g", x)
+		}
+		if args[i] == "y" {
+			args[i] = fmt.Sprintf("%g", y)
+		}
+	}
+	return args
 }
 
 // text generates markup for text
@@ -1314,6 +1383,9 @@ func keyparse(w io.Writer, tokens []string, t string, n int) error {
 
 	case "slide":
 		return slide(w, tokens, n)
+
+	case "grid":
+		return grid(w, tokens, n)
 
 	case "text", "ctext", "etext", "textfile":
 		return text(w, tokens, n)

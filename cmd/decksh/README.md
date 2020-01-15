@@ -128,6 +128,21 @@ Division ```id=<id> / number or <id>```
 
     a=x/10
 
+## Begin or end a deck.
+
+    deck
+    edeck
+
+## Begin, end a slide with optional background and text colors.
+
+    slide [bgcolor] [fgcolor]
+    eslide
+
+## Specify the size of the canvas.
+
+    canvas w h
+
+
 ## Random Number
 
 	x=random min max
@@ -138,7 +153,7 @@ assign a random number in the specified range
 
     x=vmap v vmin vmax min max
 
-For value ```v```, maps the range ```vmin-vmax``` to ```min-max```.
+For value ```v```, map the range ```vmin-vmax``` to ```min-max```.
 
 ## Polar Coordinates
 
@@ -147,35 +162,6 @@ For value ```v```, maps the range ```vmin-vmax``` to ```min-max```.
 
 Return the polar coordinate given a center at ```(cx, cy)```, radius ```r```, and angle ```theta``` (in degrees)
 
-## Structure
-
-Begin or end a deck.
-
-    deck
-    edeck
-
-Specify the size of the canvas.
-
-    canvas w h
-
-Include decksh markup from a file
-
-    include "file"
-
-
-Begin, end a slide with optional background and text colors.
-
-
-    slide [bgcolor] [fgcolor]
-    eslide
-
-Make a file
-
-    data "foo.d"
-    one    100
-    two    200
-    three    300
-    edata
 
 
 ## Loops
@@ -302,3 +288,44 @@ Run the [dchart](https://github.com/ajstarks/deck/blob/master/cmd/dchart/README.
 Show a colored legend
 
     legend "text" x y size [font] [color]
+
+
+## Include decksh markup from a file
+
+    include "file"
+
+places the contents of ```"file"``` inline.
+
+## Data: Make a file
+
+    data "foo.d"
+    uno    100
+    dos    200
+    tres   300
+    edata
+
+makes a file named ```foo.d``` with the lines between ```data``` and ```edata```. 
+
+## Grid: Place objects on a grid
+
+    grid "file.dsh" x y xskip yskip limit
+
+The first file argument (```"file.dsh"``` above) specifies a file with decksh commands; each item in the file must include the arguments "x" and "y". For example if the contents of ```file.dsh``` has six items:
+
+    circle x y 5
+    circle x y 10
+    circle x y 15
+    square x y 5
+    square x y 10
+    square x y 15
+
+The line:
+
+    grid "file.dsh" 10 80 20 30 50
+
+creates two rows: three circles and then three squares
+
+```x, y``` specify the beginning location of the items, ```xskip``` is the horizontal spacing between items.
+```yinternal``` is the vertical spacing between items and ```limit``` the the horizontal limit. When the ```limit``` is reached, 
+a new row is created.
+

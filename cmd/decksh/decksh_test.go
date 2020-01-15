@@ -7,11 +7,16 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	f, err := os.Open("test.dsh")
+	r, err := os.Open("test.dsh")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
-	process(os.Stdout, f)
+	w, err := os.Create("test.xml")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(2)
+	}
+	process(w, r)
 	os.Exit(m.Run())
 }
