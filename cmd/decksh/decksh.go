@@ -464,7 +464,11 @@ func grid(w io.Writer, s []string, linenumber int) error {
 			xp = x
 			yp -= yint
 		}
-		keyparse(w, subxy(scanner.Text(), xp, yp), "", linenumber)
+		t := scanner.Text()
+		if len(t) == 0 {
+			continue
+		}
+		keyparse(w, subxy(t, xp, yp), "", linenumber)
 		xp += xint
 	}
 	return scanner.Err()
