@@ -316,6 +316,7 @@ deck
 			li "eslide"
 			li "canvas"
 			li "include"
+			li "grid"
 		elist
 		
 		lx+=csep
