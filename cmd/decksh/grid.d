@@ -1,6 +1,7 @@
 circle x y 1
 circle x y 2
 circle x y 4
+
 circle x y 4
 circle x y 2
 circle x y 1

@@ -33,11 +33,11 @@ deck
 		gx=10
 		gy=80
 		xint=10
-		yint=10
-		limit=30
+		yint=12
+		limit=35
 
 		ctext "Grid" 50 90 5
-		grid "grid.d" gx gy xint yint limit
+		grid     "grid.d" gx gy xint yint limit
 		gx+=limit
 		textfile "grid.d" gx gy 1.5 "mono"
 	eslide
