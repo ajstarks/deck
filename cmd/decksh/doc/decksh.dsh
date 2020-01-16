@@ -764,7 +764,27 @@ deck
 		cimage "images/cloudy.jpg" "Up in the clouds" lx imy 640 480 40
 		circle lx imy spotsize spotcolor
 	eslide
-	
+
+	// Object Grid
+	slide
+		gx=left
+		gy=75
+		xint=10
+		yint=12
+		limit=30
+
+		text "Flexible Grids" left top titlesize "serif"
+		grid "code/grid.d"     gx gy xint yint limit
+
+		gy+=4
+		textfile "code/grid.d" 40 gy 1.25 "mono"
+
+		ctext "grid" 50 10 ts "mono" spotcolor
+		ctext `grid "file" x y xskip yskip limit` 50 5 apisize "serif" apicolor 
+
+		grid "code/grid.d" 80 90 10 10 90
+
+	eslide
 
 	// Charts
 	slide
