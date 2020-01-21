@@ -765,7 +765,7 @@ deck
 		circle lx imy spotsize spotcolor
 	eslide
 
-	// Object Grid	
+	// Grid	
 	slide
 		grtop=90
 		hs=15
@@ -781,14 +781,15 @@ deck
 		ctext     "edge"            edge grtop 3
 		grid     "code/gridex.d" gx gy  hs vs edge
 		textfile "code/gridex.d" 5  80 1.2 "mono"
-		arrow     15 grtop 15 80       0.1 2 1 "maroon"
-		arrow     gx grtop gx gy       0.1 2 1 "maroon"
-		arrow     47.5 grtop 47.5 80   0.1 2 1 "maroon"
-		arrow     edge grtop edge gy   0.1 2 1 "maroon"
-		arrow     60 67.5 57.5 67.5      0.1 1 2 "maroon"
-		vline     60 67.5 20  0.1 "maroon"
-		ubrace    47.5 80 15 2 2  0.1 "maroon"
-		rbrace    57.5  67.5 15 2 2 0.1 "maroon"
+		arrow     15 grtop 15 80       0.1 2 1
+		arrow     gx grtop gx gy       0.1 2 1
+		arrow     47.5 grtop 47.5 80   0.1 2 1
+		arrow     edge grtop edge gy   0.1 2 1
+		arrow     60 67.5 57.5 67.5      0.1 1 2
+		vline     60 67.5 20  0.1
+		ubrace    47.5 80 15 2 2  0.1
+		rbrace    57.5  67.5 15 2 2 0.1
+		ctext     "grid" 50 4 ts "mono" spotcolor
 	eslide
 
 	// Charts
