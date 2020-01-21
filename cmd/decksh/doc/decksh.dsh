@@ -765,25 +765,30 @@ deck
 		circle lx imy spotsize spotcolor
 	eslide
 
-	// Object Grid
+	// Object Grid	
 	slide
-		gx=left
-		gy=75
-		xint=10
-		yint=12
-		limit=30
+		grtop=90
+		hs=15
+		vs=15
+		gx=40
+		gy=grtop-vs
+		edge=gx+45
 
-		text "Flexible Grids" left top titlesize "serif"
-		grid "code/grid.d"     gx gy xint yint limit
-
-		gy+=4
-		textfile "code/grid.d" 40 gy 1.25 "mono"
-
-		ctext "grid" 50 10 ts "mono" spotcolor
-		ctext `grid "file" x y xskip yskip limit` 50 5 apisize "serif" apicolor 
-
-		grid "code/grid.d" 80 90 10 10 90
-
+		ctext     `grid "foo.dsh"`  15   grtop 3
+		ctext     "x y"             gx   grtop 3
+		ctext     "hspace"          47.5 grtop 3
+		ctext     "vspace"          60   grtop 3
+		ctext     "edge"            edge grtop 3
+		grid     "code/gridex.d" gx gy  hs vs edge
+		textfile "code/gridex.d" 5  80 1.2 "mono"
+		arrow     15 grtop 15 80       0.1 2 1 "maroon"
+		arrow     gx grtop gx gy       0.1 2 1 "maroon"
+		arrow     47.5 grtop 47.5 80   0.1 2 1 "maroon"
+		arrow     edge grtop edge gy   0.1 2 1 "maroon"
+		arrow     60 67.5 57.5 67.5      0.1 1 2 "maroon"
+		vline     60 67.5 20  0.1 "maroon"
+		ubrace    47.5 80 15 2 2  0.1 "maroon"
+		rbrace    57.5  67.5 15 2 2 0.1 "maroon"
 	eslide
 
 	// Charts
