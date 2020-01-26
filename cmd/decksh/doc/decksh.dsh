@@ -427,7 +427,7 @@ deck
 	eslide
 
 	
-// Text
+	// Text
 	slide
 		lx=left
 		gtop=top
@@ -767,30 +767,28 @@ deck
 
 	// Grid	
 	slide
-		grtop=90
-		hs=15
-		vs=15
-		gx=40
-		gy=grtop-vs
-		edge=gx+45
+        grtop=90
+        hs=15
+        vs=15
+        gx=45
+        gy=grtop-vs
+        edge=gx+45
+		ns=2
 
-		ctext     `grid "foo.dsh"`  15   grtop 3
-		ctext     "x y"             gx   grtop 3
-		ctext     "hspace"          47.5 grtop 3
-		ctext     "vspace"          60   grtop 3
-		ctext     "edge"            edge grtop 3
-		grid     "code/gridex.d" gx gy  hs vs edge
-		textfile "code/gridex.d" 5  80 1.2 "mono"
-		arrow     15 grtop 15 80       0.1 2 1
-		arrow     gx grtop gx gy       0.1 2 1
-		arrow     47.5 grtop 47.5 80   0.1 2 1
-		arrow     edge grtop edge gy   0.1 2 1
-		arrow     60 67.5 57.5 67.5      0.1 1 2
-		vline     60 67.5 20  0.1
-		ubrace    47.5 80 15 2 2  0.1
-		rbrace    57.5  67.5 15 2 2 0.1
-		ctext     "grid" 50 4 ts "mono" spotcolor
-	eslide
+		text     "Flexible Grid" left top titlesize "serif"
+        grid     "code/gridex.d" gx gy  hs vs edge
+        textfile "code/gridex.d" left 80 1.2 "mono"
+		text     "grid"          40 85 ts "mono" spotcolor
+		text     `"foo.dsh" x y hspace vspace edge` 48 85 apisize "serif" "gray"
+
+		hline     gx 75 hs 1 "maroon" 20
+		vline     60 60 vs 1 "maroon" 20
+		vline     90  5 80 1 "maroon" 20
+        ctext     "x y"    gx 76 ns 
+        ctext     "vspace" 60 67 ns 
+        ctext     "hspace" 52 74 ns 
+        ctext     "edge"   edge 85 ns 
+    eslide
 
 	// Charts
 	slide
@@ -1640,99 +1638,6 @@ deck
 	slide
 		image "images/slave-free.jpg"      		25 47 821 1043 35
 		image "images/plate51.png"  		    75 45 1584 2016 dbscale 
-	eslide
-
-//
-//	slide "rgb(230,230,230)"
-//		image "images/plate01.png" 27 50 1584 2016 dbscale
-//		image "images/plate02.png"  73 50 1584 2016 dbscale
-//	eslide
-//
-//	slide "rgb(230,230,230)"
-//		image "images/plate03.png" 27 50 1584 2016 dbscale
-//		image "images/plate04.png"  73 50 1584 2016 dbscale
-//	eslide
-//
-//	slide "rgb(230,230,230)"
-//		image "images/plate05.png" 27 50 1584 2016 dbscale
-//		image "images/plate06.png"  73 50 1584 2016 dbscale
-//	eslide
-//
-//	slide "rgb(230,230,230)"
-//		image "images/plate07.png" 27 50 1584 2016 dbscale
-//		image "images/plate09.png"  73 50 1584 2016 dbscale
-//	eslide
-//
-//	slide "rgb(230,230,230)"
-//		image "images/plate10.png" 27 50 1584 2016 dbscale
-//		image "images/platexx.png"  73 50 1584 2016 dbscale
-//	eslide
-//
-//	slide "rgb(230,230,230)"
-//		image "images/plate13.png" 27 50 1584 2016 dbscale
-//		image "images/plate14.png"  73 50 1584 2016 dbscale
-//	eslide
-//
-//	slide "rgb(230,230,230)"
-//		image "images/plate15.png" 27 50 1584 2016 dbscale
-//		image "images/plate16.png"  73 50 1584 2016 dbscale
-//	eslide
-//
-//	slide "rgb(230,230,230)"
-//		image "images/plate17.png" 27 50 1584 2016 dbscale
-//		image "images/plate18.png"  73 50 1584 2016 dbscale
-//	eslide
-//
-//	slide "rgb(230,230,230)"
-//		image "images/plate19.png" 27 50 1584 2016 dbscale
-//		image "images/plate20.png"  73 50 1584 2016 dbscale
-//	eslide
-//
-//	slide "rgb(230,230,230)"
-//		image "images/plate38.png" 27 50 1584 2016 dbscale
-//		image "images/plate39.png"  73 50 1584 2016 dbscale
-//	eslide
-//
-//	slide "rgb(230,230,230)"
-//		image "images/plate40.png" 27 50 1584 2016 dbscale
-//		image "images/plate41.png"  73 50 1584 2016 dbscale
-//	eslide
-//
-//	slide "rgb(230,230,230)"
-//		image "images/plate42.png" 27 50 1584 2016 dbscale
-//		image "images/plate47.png"  73 50 1584 2016 dbscale
-//	eslide
-//
-//	slide "rgb(230,230,230)"
-//		image "images/plate50.png" 27 50 1584 2016 dbscale
-//		image "images/plate51.png"  73 50 1584 2016 dbscale
-//	eslide
-
-	slide "rgb(230,230,230)"
-		image "images/plate52.png" 27 50 1584 2016 dbscale
-		image "images/plate53.png"  73 50 1584 2016 dbscale
-	eslide
-
-	slide "rgb(230,230,230)"
-		image "images/plate54.png" 27 50 1584 2016 dbscale
-		image "images/plate55.png"  73 50 1584 2016 dbscale
-	eslide
-
-	slide "rgb(230,230,230)"
-		// image "images/plate27.png" 27 50 1584 2016 dbscale
-		image "images/occupation.png" 27 50 841 1076 39
-		image "images/plate57.png"  73 50 1584 2016 dbscale
-	eslide
-
-	slide "rgb(230,230,230)"
-		//image "images/plate58.png" 27 50 1584 2016 dbscale
-		image "images/pauper.png"  27 50 792 1007 42
-		image "images/plate59.png"  73 50 1584 2016 dbscale
-	eslide
-
-	slide "rgb(230,230,230)"
-		image "images/plate60.png" 27 50 1584 2016 dbscale
-		image "images/plate61.png"  73 50 1584 2016 dbscale
 	eslide
 
 	
