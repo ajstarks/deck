@@ -5,88 +5,33 @@
     },
     // symbols that are auto closed when typing
     "autoClosingPairs": [
-        [
-            "deck",
-            "\nedeck"
-        ],
-        [
-            "slide",
-            "\n\teslide"
-		],
-		[
-			"for",
-			"\n\t\tefor"
-		],
-		[
-			"list",
-			"\n\t\t\tli \"\n\t\telist"
-		],
-		[
-			"nlist",
-			"\n\t\t\tli \"\n\t\telist"
-		],
-		[
-			"blist",
-			"\n\t\t\tli \"\n\t\telist"
-		],
-		[
-			"clist",
-			"\n\t\t\tli \"\n\t\telist"
-		],
-		[
-			"`",
-			"`"
-		],
-        [
-            "\"",
-            "\""
-        ],
-        [
-            "'",
-            "'"
-        ]
+        [ "deck", "\nedeck" ],
+        [ "slide", "\n\teslide" ],
+		[ "li ", "\"\""],
+		[ "text ", "\"\""],
+		[ "ctext ", "\"\""],
+		[ "etext ", "\"\""],
+		[ "image ", "\"\""],
+		[ "for", "\n\t\t\tefor" ],
+		[ "list", "\n\t\telist" ],
+		[ "nlist", "\n\t\telist" ],
+		[ "blist", "\n\t\telist" ],
+		[ "clist", "\n\t\telist" ],
+		[ "`", "`" ],
+        [ "\"", "\"" ],
+        [ "'", "'" ]
     ],
     // symbols that that can be used to surround a selection
     "surroundingPairs": [
-        [
-            "deck",
-            "edeck"
-        ],
-        [
-            "slide",
-            "eslide"
-		],
-		[
-			"for",
-			"efor"
-		],
-		[
-			"list",
-			"elist"
-		],
-		[
-			"nlist",
-			"elist"
-		],
-		[
-			"blist",
-			"elist"
-		],
-		[
-			"clist",
-			"elist"
-		],
-		[
-			"`",
-			"`"
-		],
-        [
-            "\"",
-            "\""
-        ],
-        [
-            "'",
-            "'"
-        ]
+        [ "deck", "edeck" ],
+        [ "slide", "eslide" ],
+		[ "for", "efor" ],
+		[ "list", "elist" ],
+		[ "nlist", "elist" ],
+		[ "blist", "elist" ],
+		[ "clist", "elist" ],
+		[ "`", "`" ],
+        [ "\"", "\"" ],
+        [ "'", "'" ]
     ]
 }
