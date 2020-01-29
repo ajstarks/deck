@@ -13,7 +13,7 @@
 
 Typically, ```decksh``` acts as the head of a rendering pipeline:
 
-    $ decksh text.sh | pdf -pagesize 1200,900 
+    $ decksh text.dsh | pdf -pagesize 1200,900 
 
 ## Example input
 
@@ -310,7 +310,7 @@ makes a file named ```foo.d``` with the lines between ```data``` and ```edata```
 
     grid "file.dsh" x y xskip yskip limit
 
-The first file argument (```"file.dsh"``` above) specifies a file with decksh commands; each item in the file must include the arguments "x" and "y". For example if the contents of ```file.dsh``` has six items:
+The first file argument (```"file.dsh"``` above) specifies a file with decksh commands; each item in the file must include the arguments "x" and "y". Normal variable substitution occurs for other arguments. For example if the contents of ```file.dsh``` has six items:
 
     circle x y 5
     circle x y 10
