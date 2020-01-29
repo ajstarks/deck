@@ -1,0 +1,34 @@
+{
+    "name": "decksh",
+    "displayName": "decksh",
+    "description": "Language support for decksh -- a scripting language for deck",
+    "version": "1.0.0",
+    "engines": {
+        "vscode": "^1.41.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "decksh",
+                "aliases": [
+                    "decksh",
+                    "dsh"
+                ],
+                "extensions": [
+                    ".dsh"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "decksh",
+                "scopeName": "source.decksh",
+                "path": "./syntax/decksh.tmLanguage.json"
+            }
+        ]
+    }
+}

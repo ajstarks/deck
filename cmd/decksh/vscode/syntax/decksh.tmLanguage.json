@@ -1,0 +1,36 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "decksh",
+	"patterns": [
+		{
+			"name": "comment.line.double-slash.decksh",
+			"match": "\\s*//.*"
+		},
+		{
+			"name": "keyword.other.command.decksh",
+			"match": "(?:deck|edeck|canvas|include|grid|vmap|slide|eslide|text|ctext|etext|rtext|random|textfile|textblock|textcode|lbrace|rbrace|ubrace|dbrace|line|blist|list|nlist|clist|li|elist|data|edata|dchart|for|efor|legend|image|cimage|polygon|rect|square|ellipse|circle|curve|arc|arrow|lcarrow|dcarrow|rcarrow|ucarrow|hline|vline|polarx|polary)"
+		},
+		
+		{
+			"name": "entity.name.variable.decksh",
+			"match": "(?<=\\s)\\w+:(?=\\()"
+		},
+		{
+			"include": "#strings"
+		}
+	],
+	"repository": {
+		"strings": {
+			"name": "string.quoted.double.decksh",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.decksh",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.decksh"
+}

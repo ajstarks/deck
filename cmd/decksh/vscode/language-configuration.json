@@ -1,0 +1,92 @@
+{
+    "comments": {
+        // symbol used for single line comment. Remove this entry if your language does not support line comments
+        "lineComment": "//",
+    },
+    // symbols that are auto closed when typing
+    "autoClosingPairs": [
+        [
+            "deck",
+            "\nedeck"
+        ],
+        [
+            "slide",
+            "\n\teslide"
+		],
+		[
+			"for",
+			"\n\t\tefor"
+		],
+		[
+			"list",
+			"\n\t\t\tli \"\n\t\telist"
+		],
+		[
+			"nlist",
+			"\n\t\t\tli \"\n\t\telist"
+		],
+		[
+			"blist",
+			"\n\t\t\tli \"\n\t\telist"
+		],
+		[
+			"clist",
+			"\n\t\t\tli \"\n\t\telist"
+		],
+		[
+			"`",
+			"`"
+		],
+        [
+            "\"",
+            "\""
+        ],
+        [
+            "'",
+            "'"
+        ]
+    ],
+    // symbols that that can be used to surround a selection
+    "surroundingPairs": [
+        [
+            "deck",
+            "edeck"
+        ],
+        [
+            "slide",
+            "eslide"
+		],
+		[
+			"for",
+			"efor"
+		],
+		[
+			"list",
+			"elist"
+		],
+		[
+			"nlist",
+			"elist"
+		],
+		[
+			"blist",
+			"elist"
+		],
+		[
+			"clist",
+			"elist"
+		],
+		[
+			"`",
+			"`"
+		],
+        [
+            "\"",
+            "\""
+        ],
+        [
+            "'",
+            "'"
+        ]
+    ]
+}
