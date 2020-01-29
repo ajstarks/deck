@@ -468,7 +468,7 @@ func grid(w io.Writer, s []string, linenumber int) error {
 		if len(t) == 0 {
 			continue
 		}
-		keyparse(w, subxy(t, xp, yp), "", linenumber)
+		keyparse(w, subxy(t, xp, yp), t, linenumber)
 		xp += xint
 	}
 	return scanner.Err()
@@ -476,7 +476,7 @@ func grid(w io.Writer, s []string, linenumber int) error {
 
 // subxy replaces the "x" and "y" arguments with the named values
 func subxy(s string, x, y float64) []string {
-	args := strings.Fields(s)
+	args := parse(s)
 	if len(args) < 3 {
 		return nil
 	}
