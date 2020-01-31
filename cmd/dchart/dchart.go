@@ -23,7 +23,7 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop, linewidth              float64
+	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop, linewidth, xlabrot     float64
 	xint, pmlen                                                                                      int
 	readcsv, showdot, datamin, showvolume, showscatter, showpct                                      bool
 	showbar, showval, showxlast, showline, showhbar, wbar, showaxis, shownote, showrline, showframe  bool
@@ -74,6 +74,7 @@ func cmdflags() {
 	flag.Float64Var(&pwidth, "pwidth", ts*3, "width of the pmap/donut/radial")
 	flag.Float64Var(&linewidth, "linewidth", 0.2, "width of line for line charts")
 	flag.Float64Var(&volop, "volop", 50, "volume opacity")
+	flag.Float64Var(&xlabrot, "xlabrot", 0, "xlabel rotation (degrees)")
 
 	flag.BoolVar(&showbar, "bar", true, "show a bar chart")
 	flag.BoolVar(&showdot, "dot", false, "show a dot chart")
@@ -929,7 +930,11 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			xlabels := strings.Split(data.label, `\n`)
 			xly := bottom - (ts * 2)
 			for _, xl := range xlabels {
-				deck.TextMid(x, xly, xl, "sans", ts*0.8, labelcolor)
+				if xlabrot == 0 {
+					deck.TextMid(x, xly, xl, "sans", ts*0.8, labelcolor)
+				} else {
+					deck.TextRotate(x, xly, xl, "", "sans", xlabrot, ts*0.8, labelcolor)
+				}
 				xly -= ts * 1.2
 			}
 		}
