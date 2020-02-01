@@ -340,7 +340,7 @@ func yaxis(deck *generate.Deck, x, dmin, dmax float64) {
 	}
 	for y := axismin; y <= axismax; y += step {
 		yp := vmap(y, dmin, dmax, bottom, top)
-		deck.TextEnd(x, yp, fmt.Sprintf(axisfmt, y), "sans", ts*0.75, "black")
+		deck.TextEnd(x, yp, fmt.Sprintf(axisfmt, y), "sans", ts*0.75, labelcolor)
 		if showgrid {
 			deck.Line(left, yp, right, yp, 0.1, "lightgray")
 		}
