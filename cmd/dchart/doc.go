@@ -60,14 +60,17 @@ The command line options are:
 	-psize       diameter of the donut (default 30)
 
 	-pwidth      width of the donut or proportional map (default 3)
+	-solidpmap   use solid colors for pmaps
 	-barwidth    barwidth (default computed from the number of data points)
 	-linewidth   linewidth for line charts (default 0.2)
 	-ls          linespacing (default 2.4)
 	-textsize    text size (default 1.5)
 	-xlabel      x axis label interval (default 1, 0 to supress all labels)
+	-xlabrot     x axis label rotation (default 0, no rotation)
 	-xlast       show the last x label
 	-color       data color (default "lightsteelblue")
 	-vcolor      value color (default "rgb(127,0,0)")
+	-lcolor      axis label color (default "rgb(75,75,75)")
 	-rlcolor     regression line color (default "rgb(127,0,0)")
 	-framecolor  frame color (default "rgb(127,0,0)")
 	-volop       volume opacity (default 50)
