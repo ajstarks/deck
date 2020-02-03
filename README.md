@@ -198,35 +198,39 @@ produces deck.pdf
 
 ### DECKFONTS
 
-pdfdeck uses the DECKFONTS environment variable as the location of font files. pdfdeck can use TrueType fonts converted using 
-the makefont utility from the gofpdf package:
+pdfdeck uses the DECKFONTS environment variable as the location of font files. 
+
+You should should choose a directory for your fonts, say $HOME/deckfonts, and set the DECKFONTS environment variable to this directory.  
+
+Also, make sure you have the standard fonts installed from the gofpdf package: (these instructions assume you installed gofpdf in your GOPATH.)
+
+```sh
+mkdir $HOME/deckfonts # make the DECKFONTS directory
+export DECKFONTS=$HOME/deckfonts # you should make this permanent in your shell startup
+cp $GOPATH/src/github.com/jung-kurt/gofpdf/font/*.json $DECKFONTS
+ls $DECKFONTS
+calligra.json   DejaVuSansCondensed-BoldOblique.ttf  helvetica_1251.json  helvetica.json  zapfdingbats.json
+courierbi.json  DejaVuSansCondensed-Bold.ttf         helvetica_1253.json  timesbi.json
+courierb.json   DejaVuSansCondensed.json             helveticabi.json     timesb.json
+courieri.json   DejaVuSansCondensed-Oblique.ttf      helveticab.json      timesi.json
+courier.json    DejaVuSansCondensed.ttf              helveticai.json      times.json
+
+```
+In general you can just put TTF files obtained from anywhere in your DECKFONTS directory and then you can use them with pdfdeck:  For example, the gofpdf package has DejaVu fonts:
+
+```
+cp $GOPATH/src/github.com/jung-kurt/gofpdf/font/DejaVu*.ttf $DECKFONTS
+pdfdeck -sans DejaVuSansCondensed foo.xml
+```
+
+Also, to use the Go fonts:
 
 ```sh
 cd $HOME
-mkdir goimage
+mkdir gofonts
+cd gofonts
 git clone https://go.googlesource.com/image
-cd $DECKFONTS
-makefont -embed $HOME/goimage/image/font/gofont/ttfs/*.ttf
-Font file compressed: Go-Bold-Italic.z
-Font definition file successfully generated: Go-Bold-Italic.json
-Font file compressed: Go-Bold.z
-Font definition file successfully generated: Go-Bold.json
-Font file compressed: Go-Italic.z
-Font definition file successfully generated: Go-Italic.json
-Font file compressed: Go-Medium-Italic.z
-Font definition file successfully generated: Go-Medium-Italic.json
-Font file compressed: Go-Medium.z
-Font definition file successfully generated: Go-Medium.json
-Font file compressed: Go-Mono-Bold-Italic.z
-Font definition file successfully generated: Go-Mono-Bold-Italic.json
-Font file compressed: Go-Mono-Bold.z
-Font definition file successfully generated: Go-Mono-Bold.json
-Font file compressed: Go-Mono-Italic.z
-Font definition file successfully generated: Go-Mono-Italic.json
-Font file compressed: Go-Mono.z
-Font definition file successfully generated: Go-Mono.json
-Font file compressed: Go-Regular.z
-Font definition file successfully generated: Go-Regular.json
+cp image/font/gofont/ttfs/*.ttf $DECKFONTS
 ...
 pdfdeck -sans Go-Regular -mono Go-Mono foo.xml
 ```
