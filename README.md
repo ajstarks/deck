@@ -24,7 +24,7 @@ The [deck on Deck](http://speakerdeck.com/ajstarks/deck-a-go-package-for-present
 within slides any number of:
 
 * text: plain, textblock, or code
-* list: plain, bullet, number
+* list: plain, bullet, number, centered
 * image: JPEG or PNG images
 * line: straight line
 * rect: rectangle
@@ -79,6 +79,8 @@ type: "bullet", "number" (list), "block", "code" (text)
 align: "left", "middle", "end"
 color: SVG names ("maroon"), or RGB "rgb(127,0,0)"
 font: "sans", "serif", "mono"
+opacity: opacity percentage
+rotation: (0-360 degrees)
 link: url
 ```
 
@@ -151,7 +153,50 @@ func main() {
 }
 ```
 
-Currently there are three clients: vgdeck, pdfdeck and svgdeck.
+Currently there are four clients: pdfdeck, pngdeck, svgdeck and vgdeck.
+
+
+For PDF decks, install pdfdeck:
+
+```sh
+go get github.com/ajstarks/deck/cmd/pdfdeck
+```
+
+pdfdeck produces decks in PDF corresponding to the input file:
+
+```sh
+pdfdeck deck.xml
+```
+
+produces deck.pdf
+
+For SVG decks, install svgdeck:
+
+```sh
+go get github.com/ajstarks/deck/cmd/svgdeck
+```
+
+This command:
+
+```sh
+svgdeck deck.xml
+```
+
+produces one slide per SVG file, with each slide linked to the next.
+
+For png decks, install pngdeck:
+
+```sh
+go get github.com/ajstarks/deck/cmd/pngdeck
+```
+
+This command:
+
+```sh
+pngdeck deck.xml
+```
+
+makes one image per slide, numbered like deck-00001.png
 
 vgdeck is a program for showing presentations on the Raspberry Pi, using the openvg library.
 To install:
@@ -182,41 +227,29 @@ All commands are a single keystroke, acted on immediately
 (only the search command waits until you hit [Return] after entering your search text)
 To cycle through the deck, repeatedly tap [Return] key
 
-For PDF decks, install pdfdeck:
-
-```sh
-go get github.com/ajstarks/deck/cmd/pdfdeck
-```
-
-pdfdeck produces decks in PDF corresponding to the input file:
-
-```sh
-pdfdeck deck.xml
-```
-
-produces deck.pdf
-
 ### DECKFONTS
 
-pdfdeck uses the DECKFONTS environment variable as the location of font files. 
+pdfdeck and pngdeck use the DECKFONTS environment variable as the location of font files. Choose a directory for your fonts, say $HOME/deckfonts, and set the DECKFONTS environment variable to this directory. Note that the repository at github.com/ajstarks/deckfonts contains a set of fonts (Times, Helvetica, Courier, Zapf Dingbats, Charter, Fira, Go, IBM Plex, and Noto) for you to use:
 
-You should should choose a directory for your fonts, say $HOME/deckfonts, and set the DECKFONTS environment variable to this directory.  
+```
+export DECKFONTS=$HOME/deckfonts
+cd $HOME
+git clone https://github.com/ajstarks/deckfonts
+...
+pdfdeck foo.xml # (use helvetica as the default)
+pdfdeck -sans NotoSans-Regular -serif NotoSerif-Regular -mono NotoMono-Regular foo.xml # specify fonts
+```
 
-Also, make sure you have the standard fonts installed from the gofpdf package: (these instructions assume you installed gofpdf in your GOPATH.)
+
+Alternatively you can manually install fonts from the gofpdf package: (these instructions assume you installed gofpdf in your GOPATH.)
 
 ```sh
 mkdir $HOME/deckfonts # make the DECKFONTS directory
 export DECKFONTS=$HOME/deckfonts # you should make this permanent in your shell startup
 cp $GOPATH/src/github.com/jung-kurt/gofpdf/font/*.json $DECKFONTS
-ls $DECKFONTS
-calligra.json   DejaVuSansCondensed-BoldOblique.ttf  helvetica_1251.json  helvetica.json  zapfdingbats.json
-courierbi.json  DejaVuSansCondensed-Bold.ttf         helvetica_1253.json  timesbi.json
-courierb.json   DejaVuSansCondensed.json             helveticabi.json     timesb.json
-courieri.json   DejaVuSansCondensed-Oblique.ttf      helveticab.json      timesi.json
-courier.json    DejaVuSansCondensed.ttf              helveticai.json      times.json
 
 ```
-In general you can just put TTF files obtained from anywhere in your DECKFONTS directory and then you can use them with pdfdeck:  For example, the gofpdf package has DejaVu fonts:
+In general you can place TrueType files obtained from anywhere in your DECKFONTS directory and then you can use them with pdfdeck:  For example, the gofpdf package has DejaVu fonts:
 
 ```
 cp $GOPATH/src/github.com/jung-kurt/gofpdf/font/DejaVu*.ttf $DECKFONTS
@@ -235,38 +268,22 @@ cp image/font/gofont/ttfs/*.ttf $DECKFONTS
 pdfdeck -sans Go-Regular -mono Go-Mono foo.xml
 ```
 
-Note that the gofpdf package includes Times, Helvetica, Courier, and Zapf Dingbats in its font directory.
 you can also manually set the font directory via command line option:
 
 ```sh
 pdfdeck -fontdir $GOPATH/src/github.com/jung-kurt/gofpdf/font foo.xml
 ```
 
-For SVG decks, install svgdeck:
-
-```sh
-go get github.com/ajstarks/deck/cmd/svgdeck
-```
-
-This command:
-
-```sh
-svgdeck deck.xml
-```
-
-produces one slide per SVG file, with each slide linked to the next.
-
-The shell script, `mktbl` creates a tabular layout from tab-separated text
 
 ## API ##
 
-The command `sex` is a server program that provides an API for slide decks. 
+The command `deckd` is a server program that provides an API for slide decks. 
 The API supports deck start, stop, listing, upload, and remove. Responses are encoded in JSON.
 
 To install:
         
 ```sh
-go get github.com/ajstarks/deck/cmd/sex
+go get github.com/ajstarks/deck/cmd/deckd
 ```
 
 Command line options control the working directory and address:port
