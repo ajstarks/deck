@@ -517,7 +517,7 @@ deck
 
 		kx=lx-5
 		ctext "list" lx ktop ts "mono" spotcolor
-		ctext "x y size [font] [color] [opacity] [spacing]" lx apiy apisize "serif" apicolor
+		ctext "x y size [font] [color] [op] [spacing]" lx apiy apisize "serif" apicolor
 		list kx row1 ls 
 			li "First thing"
 			li "Second thing"
@@ -528,7 +528,7 @@ deck
 		lx+=25
 		kx=lx-5
 		ctext "blist" lx ktop ts "mono" spotcolor
-		ctext "x y size [font] [color] [opacity] [spacing]" lx apiy apisize "serif" apicolor
+		ctext "x y size [font] [color] [op] [spacing]" lx apiy apisize "serif" apicolor
 
 		blist kx row1 ls
 			li "First thing"
@@ -540,7 +540,7 @@ deck
 		lx+=25
 		kx=lx-5
 		ctext "nlist" lx ktop ts "mono" spotcolor
-		ctext "x y size [font] [color] [opacity] [spacing]" lx apiy apisize "serif" apicolor
+		ctext "x y size [font] [color] [op] [spacing]" lx apiy apisize "serif" apicolor
 
 		nlist kx row1 ls
 			li "First thing"
@@ -552,7 +552,7 @@ deck
 		lx+=30
 		kx=lx-5
 		ctext "clist" kx ktop ts "mono" spotcolor
-		ctext "x y size [font] [color] [opacity] [spacing]" kx apiy apisize "serif" apicolor
+		ctext "x y size [font] [color] [op] [spacing]" kx apiy apisize "serif" apicolor
 
 		clist kx row1 ls
 			li "First thing"
@@ -591,7 +591,7 @@ deck
 		lx+=25
 		
 		ctext "square"	lx gtop ts "mono" spotcolor
-		ctext "x y w [color] [opacity]" lx r1a apisize "serif" apicolor
+		ctext "x y w [color] [op]" lx r1a apisize "serif" apicolor
 		square lx row1 6 grcolor
 		circle lx row1 spotsize spotcolor spotop
 		lx+=25
