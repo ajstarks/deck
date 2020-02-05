@@ -33,31 +33,29 @@
 
 ## Fonts
 
-```pdfdeck``` assumes a set of standard fonts (Times, Helvetica, Courier, and Zapf Dingbats) are available from the ```gofpdf``` package.
+```pdfdeck``` assumes a set of standard fonts (Times, Helvetica, Courier, and Zapf Dingbats) are available.
+These fonts and othe TrueType fonts (Noto, Fira, Charter, Go fonts, etc) are available in the [deckfonts](https://github.com/ajstarks/deckfonts) repository.  ```pdfdeck``` also uses the DECKFONTS environment variable to indicate where fonts are stored:
 
-To use the standard fonts (assuming the DECKFONTS variable has been set, and gofpdf is in GOPATH):
+	export DECKFONTS=$HOME/deckfonts
+	cd $HOME
+	git clone https://github.com/ajstarks/deckfonts
+	...
+	pdfdeck foo.xml # (use helvetica as the default)
+	pdfdeck -sans NotoSans-Regular -serif NotoSerif-Regular -mono NotoMono-Regular foo.xml
 
-```
-cp $GOPATH/src/github.com/jung-kurt/gofpdf/font/*.json $DECKFONTS
-```
+To use other TrueType fonts, place them in the DECKFONTS directory and specify using the command options:
 
-```pdfdeck``` can also use TrueType fonts:
+	cp FancyFont.ttf $DECKFONTS
+	pdfdeck -sans FancyFont foo.xml
 
-```
-cp $GOPATH/src/github.com/jung-kurt/gofpdf/font/*.ttf  $DECKFONTS
-```
+ Alternatively you can obtain fonts from the ```gofpdf``` package. To use the standard fonts (assuming the DECKFONTS variable has been set, 
+ and gofpdf is in GOPATH):
 
-Also, to use the Go fonts:
 
-```sh
-cd $HOME
-mkdir gofonts
-cd gofonts
-git clone https://go.googlesource.com/image
-cp image/font/gofont/ttfs/*.ttf $DECKFONTS
-...
-pdfdeck -sans Go-Regular -mono Go-Mono foo.xml
-```
+	cp $GOPATH/src/github.com/jung-kurt/gofpdf/font/*.json $DECKFONTS
+	cp $GOPATH/src/github.com/jung-kurt/gofpdf/font/*.ttf $DECKFONTS
+
+
 
 ## Example uses
 
