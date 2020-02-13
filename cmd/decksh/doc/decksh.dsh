@@ -781,13 +781,13 @@ deck
 		text     "grid"          40 85 ts "mono" spotcolor
 		text     `"foo.dsh" x y hspace vspace edge` 48 85 apisize "serif" "gray"
 
-		hline     gx 75 hs 1 "maroon" 20
-		vline     60 60 vs 1 "maroon" 20
-		vline     90  5 80 1 "maroon" 20
-        ctext     "x y"    gx 76 ns 
-        ctext     "vspace" 60 67 ns 
-        ctext     "hspace" 52 74 ns 
-        ctext     "edge"   edge 85 ns 
+		hline     gx 75 hs 0.5 "maroon" 20
+		vline     60 60 vs 0.5 "maroon" 20
+		vline     90  5 80 0.5 "maroon" 20
+        ctext     "x y"    gx 76 ns "sans" "gray"
+		ctext     "hspace" 52 74 ns "sans" "gray"
+        etext     "vspace" 60 67 ns "sans" "gray"
+        ctext     "edge"   edge 85 ns  "sans" "gray"
     eslide
 
 	// Charts
