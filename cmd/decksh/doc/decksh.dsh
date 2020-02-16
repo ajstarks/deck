@@ -848,7 +848,7 @@ deck
 		ctext "x2,y2" rx2 ry2 2 "mono"
 		ctext "x3,y3" rx3 ry3 2 "mono"
 
-		textfile "randlist.txt" 10 70 2 "mono"
+		textfile "code/randlist.txt" 10 70 2 "mono"
 
 		text "value="    left ly ts "mono"
 		text  "random"   21   ly ts "mono" spotcolor
