@@ -693,8 +693,8 @@ deck
 		lx+=25
 		
 		arrow 35 row1 45 70 arsize aw ah
-		arrow 65 row1 65 80 arsize aw ah
-		arrow 90 80   90 row1 arsize aw ah
+		arrow 65 row1 65 80 arsize ah aw
+		arrow 90 80   90 row1 arsize ah aw
 		
 		circle 35 row1 spotsize spotcolor
 		circle 45 70   spotsize spotcolor
@@ -765,6 +765,66 @@ deck
 		circle lx imy spotsize spotcolor
 	eslide
 
+	// Polar
+	slide
+		text "Polar Coordinates" left top titlesize "serif"
+		cx=50
+		cy=50
+		dia=60
+		theta=60
+		rad=dia/2
+		ra=rad
+		circle cx cy 1
+		ly=cy-2
+		ctext "cx, cy" cx 45 2 "mono"
+		arc cx cy 10 5.6 0 theta
+		px=polarx cx cy ra theta
+		py=polary cx cy ra theta
+
+		ly=20
+		etext "px=" 35 ly ts "mono"
+		text "polarx" 35 ly ts "mono" spotcolor
+		text "cx cy radius theta" 48 ly ts "mono" "gray"
+		ly-=7
+		etext "py=" 35 ly ts "mono"
+		text "polary" 35 ly ts "mono" spotcolor
+		text "cx cy radius theta" 48 ly ts "mono" "gray"
+	
+		ly=py+2
+		line cx cy px py
+		hline cx cy 20
+		circle px py 1
+		ctext "px, py" px ly 2 "mono"
+		text "theta" 55 55 2 "mono"
+		etext "radius" 58 65 2 "mono"
+	eslide
+
+	// vmap
+	slide
+		text "Mapping Ranges" left top titlesize "serif"
+
+		circle 35 65 2 spotcolor
+		hline  35 65 30 2 spotcolor 20
+		circle 65 65 2 spotcolor
+		circle 50 65 2
+		ctext "min1" 35 70 2 "mono" spotcolor
+		ctext "max1" 65 70 2 "mono" spotcolor
+		ctext "data" 50 70 2 "mono"
+
+
+		circle 10 40 2 "blue"
+		hline  10 40 80 2 "blue" 20
+		circle 90 40 2 "blue"
+		circle 50 40 2
+		ctext "min2"  10 45 2 "mono" "blue"
+		ctext "max2"  90 45 2 "mono" "blue"
+		ctext "value" 50 45 2 "mono"
+
+		etext "value=" 30 20 ts "mono"
+		text  "vmap"   30 20 ts "mono" spotcolor
+		text  "data min1 max1 min2 max2" 38 20 ts "mono" "gray"
+	eslide
+
 	// Grid	
 	slide
         grtop=90
@@ -779,7 +839,7 @@ deck
         grid     "code/gridex.d" gx gy  hs vs edge
         textfile "code/gridex.d" left 80 1.2 "mono"
 		text     "grid"          40 85 ts "mono" spotcolor
-		text     `"foo.dsh" x y hspace vspace edge` 48 85 apisize "serif" "gray"
+		text     `"foo.dsh" x y hspace vspace edge` 48 85 ts "serif" "gray"
 
 		hline     gx 75 hs 0.5 "maroon" 20
 		vline     60 60 vs 0.5 "maroon" 20
