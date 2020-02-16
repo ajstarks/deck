@@ -38,6 +38,7 @@ deck
 		circle  68 53.5 0.5 "white"
 	eslide
 
+	// Little Language defintion
 	slide
 		textblock `A language is any mechanism to express intent, and the input to many programs can be viewed profitably as statements in a language. This column is about those “little languages.”` left 80 70 3.5 "serif"
 		text "Jon Bentley, Little Languages, Communications of the ACM, August 1986" left 15 2.5 "sans" "black" 100 "http://staff.um.edu.mt/afra1/seminar/little-languages.pdf"
@@ -130,8 +131,6 @@ deck
 		text "Utility" ktx kty kts "sans" kcolor
 	eslide
 
-	
-
 	// Grid
 //	slide
 //		for v=0 100 10
@@ -193,43 +192,7 @@ deck
 		circle 50 0 100 "blue"
 		textfile "code/hw.dsh" 15 92 3 "mono" "white"
 	eslide
-	
-	// Expanded examples
-//	exx=5
-//	exy=92
-//	exts=2
-//	eximx=50
-//	eximy=30
-//	exw=1920
-//	exh=1080
-//	exscale=20
-//	exbg="white"
-//	exfg="black"
-//	slide exbg exfg
-//		textfile "code/align.dsh"	  exx exy exts "mono"
-//		image    "images/align.png"   eximx eximy exw exh exscale
-//	eslide
-//
-//	slide exbg exfg
-//		textfile "code/list.dsh"	  exx exy exts "mono"
-//		image    "images/blist.png"    eximx eximy exw exh exscale
-//	eslide
-//
-//	slide exbg exfg
-//		textfile "code/ironman.dsh"	  exx exy exts "mono"
-//		image    "images/ironman.png" eximx eximy exw exh exscale
-//	eslide
-//
-//	// full deck example
-//	slide exbg exfg
-//		imx=80
-//		tx=5
-//		textfile "code/fulldeck.dsh" tx 95 1.25 "mono"
-//		image    "images/align.png"   imx 80 192 108
-//		image    "images/blist.png"    imx 50 192 108
-//		image    "images/ironman.png" imx 20 192 108
-//	eslide
-	
+
 	// Running
 	slide
 		lx=left
@@ -396,8 +359,6 @@ deck
 			li "efor"
 		elist
 		
-
-		
 		lx+=csep
 		text "Data" lx headtop hsize "sans" headcolor
 		list lx listtop lsize "mono" "black" 100 listspacing
@@ -426,7 +387,6 @@ deck
 		textfile "code/samplecode.txt" left sy assize "mono" "black" 100 1.5 // you can increase size for 4:3
 	eslide
 
-	
 	// Text
 	slide
 		lx=left
@@ -726,7 +686,6 @@ deck
 		circle  35 40 spotsize spotcolor
 		circle  45 40 spotsize spotcolor
 		
-		
 		lx+=25
 		ctext "ucarrow"	lx gtop ts "mono" spotcolor
 		ctext "..." lx apiy apisize "serif" apicolor
@@ -735,8 +694,7 @@ deck
 		circle  60 row2 spotsize spotcolor
 		circle  70 row2 spotsize spotcolor
 		circle  70 40 spotsize spotcolor
-		
-		
+
 		lx+=25
 		ctext "dcarrow"	lx gtop ts "mono" spotcolor
 		ctext "..." lx apiy apisize "serif" apicolor
@@ -781,7 +739,7 @@ deck
 		px=polarx cx cy ra theta
 		py=polary cx cy ra theta
 
-		ly=20
+		ly=15
 		text "px="    left ly ts "mono"
 		text "polarx" 15.5 ly ts "mono" spotcolor
 		text "cx cy radius theta" 27 ly ts "mono" "gray"
@@ -812,7 +770,6 @@ deck
 		ctext "max1" 65 70 2 "mono" spotcolor
 		ctext "data" 50 70 2 "mono"
 
-
 		circle 10 40 2 "blue"
 		hline  10 40 80 2 "blue" 20
 		circle 90 40 2 "blue"
@@ -823,8 +780,8 @@ deck
 
 		ly=15
 		text "value=" left ly ts "mono"
-		text  "vmap"  21   ly ts "mono" spotcolor
-		text  "data min1 max1 min2 max2" 29 ly ts "mono" "gray"
+		text "vmap"   21   ly ts "mono" spotcolor
+		text "data min1 max1 min2 max2" 29 ly ts "mono" "gray"
 	eslide
 
 	// Random
@@ -850,9 +807,9 @@ deck
 
 		textfile "code/randlist.txt" 10 70 2 "mono"
 
-		text "value="    left ly ts "mono"
-		text  "random"   21   ly ts "mono" spotcolor
-		text  "min max"  33   ly ts "mono" "gray"
+		text "value="   left ly ts "mono"
+		text "random"   21   ly ts "mono" spotcolor
+		text "min max"  33   ly ts "mono" "gray"
 	eslide
 
 	// Grid	
@@ -869,7 +826,7 @@ deck
         grid     "code/gridex.d" gx gy  hs vs edge
         textfile "code/gridex.d" left 80 1.2 "mono"
 		text     "grid"          left 15 ts "mono" spotcolor
-		text     `"foo.dsh" x y hspace vspace edge` 20 15 ts "mono" "gray"
+		text     `"foo.dsh" x y hspace vspace edge` 18 15 ts "mono" "gray"
 
 		hline     gx 75 hs 0.5 "maroon" 20
 		vline     60 60 vs 0.5 "maroon" 20
@@ -987,8 +944,8 @@ deck
 
 	// Zoom in to overview
 	slide "rgb(245,245,245)"
-		cy=top-80
- 		textfile "code/example.dsh" 3 82 codesize "mono"
+		cy=top-75
+ 		textfile "code/example.dsh" 5 82 codesize "mono"
 		image    "images/example.png" 75 55 792 612 45
 		ctext	 "decksh example.dsh | pdf" cx cy 3.5 "mono" "maroon"
 	eslide
@@ -1193,7 +1150,7 @@ deck
 		legend "metadata"		col3 5 1 "sans" metacolor
 	eslide
 
-
+	// Airport
 	slide "black" "white"
 		ctext	"BOS" 15 70 11
 		ctext	"SFO" 15 25 11
@@ -1205,6 +1162,7 @@ deck
 		line	30 90 30 15 0.2
 	eslide
 
+	// Airport (2)
 	slide "black" "white"
 		ctext	"JFK" 15 70 11
 		ctext	"IND" 15 25 11
@@ -1216,6 +1174,7 @@ deck
 		line	30 90 30 15 0.2
 	eslide
 
+	// Flight Info
 	slide "blue" "white"
 		ctext	"Flight Information" 50 90 4.5 "sans" "white"
 		etext	"Los Angeles (LAX)" 45 80 3 "sans" "white"
@@ -1385,7 +1344,6 @@ deck
 	eslide
 
 	// Blood Pressure
-
 	opts="-fulldeck=f -csv -textsize=1.4 -yrange=50,150,25 -min=50 -max=150 -left=20 -right=80 -yaxis -line -scatter=f -dot=f -val=f -bar=f -title=f"
 	bpfile="code/bp.csv"
 	scolor="red"
@@ -1718,12 +1676,12 @@ deck
  		text "Chartable blog, Weekly Chart, September 6, 2018" left 5 1.5 "serif" "steelblue" 100 "https://blog.datawrapper.de/weekly43-wildfires-germany/"
 	eslide
 
+	// Aid
 	slide
 		image "images/aid.png" 50 50 1920 1080 42
 	eslide
 
 	// DuBois Recreation examples
-
 	dbscale=21
 	slide
 		image "images/slave-free.jpg"      		25 47 821 1043 35
