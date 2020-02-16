@@ -849,8 +849,8 @@ deck
 		ns=2
 
 		text     "Flexible Grid" left top titlesize "serif"
-        grid     "code/gridex.d" gx gy  hs vs edge
-        textfile "code/gridex.d" left 80 1.2 "mono"
+        grid     "code/gridex.dsh" gx gy  hs vs edge
+        textfile "code/gridex.dsh" left 78 1.2 "mono"
 		text     "grid"          left 15 ts "mono" spotcolor
 		text     `"foo.dsh" x y hspace vspace edge` 18 15 ts "mono" "gray"
 
