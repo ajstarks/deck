@@ -238,10 +238,10 @@ deck
 		ky=top-20
 		sl=left
 		exsize=2.5
-		text "Keywords and arguments"	left top titlesize "serif"
-		text "text"              		sl ky exsize "mono" "maroon"
-		text `"string....."   x y n` 18 ky exsize "mono" argcolor
-		text "[font][color][op]" optx ky exsize "mono" optcolor
+		text "Keywords and arguments"	left top titlesize	"serif"
+		text "text"              		sl ky exsize		"mono" "maroon"
+		text `"string....." x y n`		18 ky exsize		"mono" argcolor
+		text "[font][color][op]"		optx ky exsize		"mono" optcolor
 		text `text "hello, world"  80 50 2`							sl 50 exsize "mono"
 		text `text "hello, world"  80 40 2 "serif"`					sl 40 exsize "mono"
 		text `text "hello, world"  80 30 2 "serif" "red"`			sl 30 exsize "mono"
@@ -255,13 +255,21 @@ deck
 		text "hello, world" sl 20 exsize "serif" "red" 50
 	eslide
 
+	// Variables and Assignments
+	slide
+		assize=1.8
+		text "Variables and Assignments" left top titlesize "serif"
+		sy=top-7
+		textfile "code/samplecode.txt" left sy assize "mono" "black" 100 1.5 // you can increase size for 4:3
+	eslide
+
 	// Keyword list
 	slide
 		text "Keywords" left top titlesize "serif"  
 		hsize=titlesize*0.75
 		lsize=hsize*0.5
 		csep=18
-		csep2=csep*0.65
+		csep2=csep*0.70
 		csep3=csep*0.85
 		rsep=50
 		lsep=6
@@ -379,12 +387,18 @@ deck
 		elist
 	eslide
 	
-	// Variables and Assignments
+	// Structure
 	slide
-		assize=1.8
-		text "Variables and Assignments" left top titlesize "serif"
-		sy=top-7
-		textfile "code/samplecode.txt" left sy assize "mono" "black" 100 1.5 // you can increase size for 4:3
+		text "Structure" left top titlesize "serif"
+		textfile "code/structure.txt"	20 70 3 "mono" "maroon"
+		textcode "code/hw0.dsh"			72 41 25 1.3
+		lbrace 10 45 58 2 2 0.2	// deck
+		lbrace 22 57 20 2 2 0.2 // slide 1
+		lbrace 22 35 20 2 2 0.2 // slide 2
+		lbrace 67 35 17 2 2 0.2 // include
+		etext "deck"		 9 44 2
+		etext "slide 1"		21 56 2
+		etext "slide 2"		21 34 2
 	eslide
 
 	// Text
@@ -425,19 +439,19 @@ deck
 		circle 85 row1 spotsize spotcolor
 
 		lx-=30
-		gtop-=45
-		row3=35
+		gtop-=50
+		row3=30
 		apix=lx+sep
-		apiy-=45
+		apiy-=50
 		ctext "rtext"	50 gtop ts "mono" spotcolor
-		rtext "rotate"	50 row3 45 3
-		rtext "about"	50 row3 135 3
-		rtext "named"	50 row3 225 3
-		rtext "angle"	50 row3 315 3
+		rtext "rotate(45)"	50 row3  45 3
+		rtext "about(135)"	50 row3 135 3
+		rtext "named(225)"	50 row3 225 3
+		rtext "angle(315)"	50 row3 315 3
 		circle 50 row3 spotsize spotcolor
 		ctext "x y angle size [font] [color] [op] [link]" 50 apiy apisize "serif" apicolor
 	eslide
-
+	
 	// Text (cont.)
 	slide
 		lx=left
@@ -470,13 +484,18 @@ deck
 	slide
 		text "Lists" left top titlesize "serif"
 		lx=12
-		ktop=top-70
-		row1=top-20
+		ktop=top-60
+		row1=top-15
 		ls=ts*0.9
-		apiy=ktop-sep
+		sepl=sep+12
+		apiy=ktop-sepl
 
-		kx=lx-5
-		ctext "list" lx ktop ts "mono" spotcolor
+		ktop2=ktop-6
+		ktop3=ktop-12
+		kx=7
+		text "list"			kx ktop  ts "mono" spotcolor
+		text ` li "..."`	kx ktop2 ts "mono" spotcolor
+		text  "elist"		kx ktop3 ts "mono" spotcolor
 		ctext "x y size [font] [color] [op] [spacing]" lx apiy apisize "serif" apicolor
 		list kx row1 ls 
 			li "First thing"
@@ -488,6 +507,8 @@ deck
 		lx+=25
 		kx=lx-5
 		ctext "blist" lx ktop ts "mono" spotcolor
+		text ` li "..."`	kx ktop2 ts "mono" spotcolor
+		text  "elist"		kx ktop3 ts "mono" spotcolor
 		ctext "x y size [font] [color] [op] [spacing]" lx apiy apisize "serif" apicolor
 
 		blist kx row1 ls
@@ -500,6 +521,8 @@ deck
 		lx+=25
 		kx=lx-5
 		ctext "nlist" lx ktop ts "mono" spotcolor
+		text ` li "..."`	kx ktop2 ts "mono" spotcolor
+		text  "elist"		kx ktop3 ts "mono" spotcolor
 		ctext "x y size [font] [color] [op] [spacing]" lx apiy apisize "serif" apicolor
 
 		nlist kx row1 ls
@@ -510,10 +533,13 @@ deck
 		elist
 
 		lx+=30
-		kx=lx-5
-		ctext "clist" kx ktop ts "mono" spotcolor
-		ctext "x y size [font] [color] [op] [spacing]" kx apiy apisize "serif" apicolor
+		kx=lx-10
+		text "clist" kx ktop ts "mono" spotcolor
+		text ` li "..."`	kx ktop2 ts "mono" spotcolor
+		text  "elist"		kx ktop3 ts "mono" spotcolor
 
+		kx=lx-5
+		ctext "x y size [font] [color] [op] [spacing]" kx apiy apisize "serif" apicolor
 		clist kx row1 ls
 			li "First thing"
 			li "Second thing"
@@ -652,12 +678,12 @@ deck
 		circle 20 row1 spotsize spotcolor
 		lx+=25
 		
-		arrow 35 row1 45 70 arsize aw ah
+		arrow 35 row1 45 80 arsize aw ah
 		arrow 65 row1 65 80 arsize ah aw
 		arrow 90 80   90 row1 arsize ah aw
 		
 		circle 35 row1 spotsize spotcolor
-		circle 45 70   spotsize spotcolor
+		circle 45 80   spotsize spotcolor
 		
 		circle 65 row1 spotsize spotcolor
 		circle 65 80   spotsize spotcolor
@@ -1309,12 +1335,6 @@ deck
 //	eslide
 
 	// captioned
-	slide "black" "white"
-		movy=70
-		image "images/movie01.png" 20 movy 1920 1080 12
-		image "images/movie02.png" 50 movy 1920 1080 12
-		image "images/movie04.png" 80 movy 1920 1080 12
-	eslide
 	slide "black" "white"
 		mleft=20
 		movy=70
