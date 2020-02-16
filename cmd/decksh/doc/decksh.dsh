@@ -825,6 +825,34 @@ deck
 		text  "data min1 max1 min2 max2" 38 20 ts "mono" "gray"
 	eslide
 
+	slide
+		text "Random" left top titlesize "serif"
+
+		rx1=random 40 70
+		ry1=random 60 70
+
+		rx2=random 40 50
+		ry2=random 50 60
+
+		rx3=random 60 70
+		ry3=random 35 45
+
+		rx4=random 35 85
+		ry4=random 15 30
+
+		circle rx1 ry1 3 "red"     40
+		circle rx2 ry2 3 "green"   40
+		circle rx3 ry3 3 "blue"    40
+		circle rx4 ry4 3 "orange"  40
+		
+		ctext "x1,y1" rx1 ry1 2 "mono"
+		ctext "x2,y2" rx2 ry2 2 "mono"
+		ctext "x3,y3" rx3 ry3 2 "mono"
+		ctext "x4,y4" rx4 ry4 2 "mono"
+
+		textfile "randlist.txt" 10 70 2 "mono"
+	eslide
+
 	// Grid	
 	slide
         grtop=90
