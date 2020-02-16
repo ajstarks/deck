@@ -768,35 +768,36 @@ deck
 	// Polar
 	slide
 		text "Polar Coordinates" left top titlesize "serif"
-		cx=50
-		cy=50
+		cx=30
+		cy=45
 		dia=60
 		theta=60
 		rad=dia/2
 		ra=rad
-		circle cx cy 1
+		circle cx cy 1 "maroon"
 		ly=cy-2
-		ctext "cx, cy" cx 45 2 "mono"
+		ctext "cx, cy" cx 40 2 "mono"
 		arc cx cy 10 5.6 0 theta
 		px=polarx cx cy ra theta
 		py=polary cx cy ra theta
 
 		ly=20
-		etext "px=" 35 ly ts "mono"
-		text "polarx" 35 ly ts "mono" spotcolor
-		text "cx cy radius theta" 48 ly ts "mono" "gray"
+		text "px="    left ly ts "mono"
+		text "polarx" 15.5 ly ts "mono" spotcolor
+		text "cx cy radius theta" 27 ly ts "mono" "gray"
 		ly-=7
-		etext "py=" 35 ly ts "mono"
-		text "polary" 35 ly ts "mono" spotcolor
-		text "cx cy radius theta" 48 ly ts "mono" "gray"
+		text "py="    left ly ts "mono"
+		text "polary" 15.5 ly ts "mono" spotcolor
+		text "cx cy radius theta" 27 ly ts "mono" "gray"
 	
 		ly=py+2
 		line cx cy px py
 		hline cx cy 20
-		circle px py 1
+		circle px py 1 "maroon"
+
 		ctext "px, py" px ly 2 "mono"
-		text "theta" 55 55 2 "mono"
-		etext "radius" 58 65 2 "mono"
+		text "theta"   35 47 2 "mono"
+		etext "radius" 38 60 2 "mono"
 	eslide
 
 	// vmap
@@ -820,13 +821,15 @@ deck
 		ctext "max2"  90 45 2 "mono" "blue"
 		ctext "value" 50 45 2 "mono"
 
-		etext "value=" 30 20 ts "mono"
-		text  "vmap"   30 20 ts "mono" spotcolor
-		text  "data min1 max1 min2 max2" 38 20 ts "mono" "gray"
+		ly=15
+		text "value=" left ly ts "mono"
+		text  "vmap"  21   ly ts "mono" spotcolor
+		text  "data min1 max1 min2 max2" 29 ly ts "mono" "gray"
 	eslide
 
+	// Random
 	slide
-		text "Random" left top titlesize "serif"
+		text "Random Numbers" left top titlesize "serif"
 
 		rx1=random 40 70
 		ry1=random 60 70
@@ -837,20 +840,19 @@ deck
 		rx3=random 60 70
 		ry3=random 35 45
 
-		rx4=random 35 85
-		ry4=random 15 30
-
 		circle rx1 ry1 3 "red"     40
 		circle rx2 ry2 3 "green"   40
 		circle rx3 ry3 3 "blue"    40
-		circle rx4 ry4 3 "orange"  40
 		
 		ctext "x1,y1" rx1 ry1 2 "mono"
 		ctext "x2,y2" rx2 ry2 2 "mono"
 		ctext "x3,y3" rx3 ry3 2 "mono"
-		ctext "x4,y4" rx4 ry4 2 "mono"
 
 		textfile "randlist.txt" 10 70 2 "mono"
+
+		text "value="    left ly ts "mono"
+		text  "random"   21   ly ts "mono" spotcolor
+		text  "min max"  33   ly ts "mono" "gray"
 	eslide
 
 	// Grid	
@@ -866,12 +868,12 @@ deck
 		text     "Flexible Grid" left top titlesize "serif"
         grid     "code/gridex.d" gx gy  hs vs edge
         textfile "code/gridex.d" left 80 1.2 "mono"
-		text     "grid"          40 85 ts "mono" spotcolor
-		text     `"foo.dsh" x y hspace vspace edge` 48 85 ts "serif" "gray"
+		text     "grid"          left 15 ts "mono" spotcolor
+		text     `"foo.dsh" x y hspace vspace edge` 20 15 ts "mono" "gray"
 
 		hline     gx 75 hs 0.5 "maroon" 20
 		vline     60 60 vs 0.5 "maroon" 20
-		vline     90  5 80 0.5 "maroon" 20
+		vline     90 20 65 0.5 "maroon" 20
         ctext     "x y"    gx 76 ns "sans" "gray"
 		ctext     "hspace" 52 74 ns "sans" "gray"
         etext     "vspace" 60 67 ns "sans" "gray"

@@ -1,0 +1,8 @@
+rx1=random 40 70
+ry1=random 60 70
+
+rx2=random 40 50
+ry2=random 50 60
+
+rx3=random 60 70
+ry3=random 35 45
