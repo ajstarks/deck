@@ -1,8 +1,0 @@
-deck
-	slide
-		text "first slide" 50 50 2
-	eslide
-	slide
-		include "file.dsh"
-	eslide
-edeck

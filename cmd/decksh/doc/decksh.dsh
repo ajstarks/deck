@@ -390,7 +390,7 @@ deck
 	// Structure
 	slide
 		text "Structure" left top titlesize "serif"
-		textfile "code/structure.txt"	20 70 3 "mono" "maroon"
+		textfile "code/structure.dsh"	20 70 3 "mono" "maroon"
 		textcode "code/hw0.dsh"			72 41 25 1.3
 		lbrace 10 45 58 2 2 0.2	// deck
 		lbrace 22 57 20 2 2 0.2 // slide 1
@@ -749,6 +749,18 @@ deck
 		circle lx imy spotsize spotcolor
 	eslide
 
+	// Loops
+	slide
+		ly=20
+		text     "Loops" left top titlesize "serif"
+		include  "code/loop.dsh"
+		textfile "code/loop.dsh" 10 75 2 "mono"
+		text "for"     left ly ts "mono" spotcolor
+		text "v=begin end [increment]"		17   ly ts "mono" "gray"
+		text "    ...v..."					left 15 ts "mono" "gray"
+		text "efor"							left 10 ts "mono" spotcolor
+	eslide
+
 	// Polar
 	slide
 		text "Polar Coordinates" left top titlesize "serif"
@@ -862,7 +874,7 @@ deck
         etext     "vspace" 60 67 ns "sans" "gray"
         ctext     "edge"   edge 85 ns  "sans" "gray"
     eslide
-
+	
 	// Charts
 	slide
 		text "Charts" left top titlesize "serif"

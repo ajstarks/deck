@@ -1,0 +1,6 @@
+for v=50 90 5
+	line 90 v 50 v 0.1 "blue"
+	line v 90 v 50 0.1 "red"
+	circle v 70 2 "red" 30
+	circle 70 v 2 "blue" 30
+efor
