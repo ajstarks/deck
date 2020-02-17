@@ -1,0 +1,6 @@
+for v=50 90 5
+    vline v 50 40 0.1 "red"
+    hline 50 v 40 0.1 "blue"
+    circle v 70 2 "red" 20
+    circle 70 v 2 "blue" 20
+efor

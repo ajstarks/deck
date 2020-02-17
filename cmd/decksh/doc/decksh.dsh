@@ -753,12 +753,12 @@ deck
 	slide
 		ly=20
 		text     "Loops" left top titlesize "serif"
-		include  "code/loop.dsh"
-		textfile "code/loop.dsh" 10 75 2 "mono"
+		include  "code/looper.dsh"
+		textfile "code/looper.dsh" 10 75 2 "mono"
 		text "for"     left ly ts "mono" spotcolor
-		text "v=begin end [increment]"		17   ly ts "mono" "gray"
-		text "    ...v..."					left 15 ts "mono" "gray"
-		text "efor"							left 10 ts "mono" spotcolor
+		text "v=begin end [increment]"      17   ly ts "mono" "gray"
+		text "    ...v..."                  left 15 ts "mono" "gray"
+		text "efor"                         left 10 ts "mono" spotcolor
 	eslide
 
 	// Polar
