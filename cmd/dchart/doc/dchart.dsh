@@ -77,6 +77,16 @@ deck
 		text "Radial"            80 tr ts
 	eslide
 
+	slide
+		text "Data"							 5 75 4
+		text "Markup"						28 75 4
+		text "PDF Rendition"				70 75 4
+		textfile "code/AAPL.d" 				 5 70 1.2 "mono" "maroon"
+		textfile "code/dchartgen.txt"		28 70 1.2 "mono"
+		dchart -fulldeck=f -left=70 -right=95 -top=65 -bottom=45 -xlabel=3  -textsize=1.2 code/AAPL.d
+		ctext "data | dchart | pdf" 50 20 4
+	eslide
+
 	// command line options
 	slide
 		ts=2.5
@@ -319,21 +329,25 @@ deck
 		ctext "Command Option Examples" 50 50 5
 	eslide
 
-	// data files
 	slide
-		text "Data Files" 5 90 4
-		textcode "code/AAPL.d"		 5 80 25 1.5 "mono"
-		textcode "code/browser.d"	40 80 40 1.5 "mono"
-		textcode "code/incar.d"		 5 35 27 1.5 "mono"
-		textcode "code/count.d"		40 35 22 1.5 "mono"
-		textcode "code/clock.d"		70 35 22 1.5 "mono"
-
-		text "AAPL.d"				5  84 2
-		text "browser.d"			40 84 2
-		text "incar.d"				5  39 2
-		text "count.d"				40 39 2
-		text "clock.d"				70 39 2
+	        dchart opts   -left=20 -right=80 -top=75 -bottom=30 -yaxis -grid -xlabel=2 -val  code/AAPL.d
 	eslide
+	
+	slide
+			etext "yaxis"  12 30 3 "sans" "maroon"
+			etext "left"   20 50 3 "sans" "maroon"
+			ctext "val"    20 72 3 "sans" "maroon"
+			etext "title"  40 80 3 "sans" "maroon"
+			text  "top"    50 75 3 "sans" "maroon"
+			text  "bar"    50 50 3 "sans" "maroon"
+			text  "bottom" 50 30 3 "sans" "maroon"
+			ctext "grid"   75 75 3 "sans" "maroon"
+			text  "right"  80 50 3 "sans" "maroon"
+			text  "xlabel" 80 27 3 "sans" "maroon"
+	        dchart opts   -left=20 -right=80 -top=75 -bottom=30 -yaxis -grid -xlabel=2 -val  code/AAPL.d
+			ctext "dchart -left=20 -right=80 -top=75 -bottom=30 -yaxis -grid -xlabel=2 -val AAPL.d" 50 10 2 "mono"
+	eslide
+
 
 	// Examples
 	slide "white" "steelblue"
@@ -569,5 +583,20 @@ deck
 		dchart opts -psize=10 -pwidth=25 -top=60 -radial -textsize=3 -spokes code/clock.d
 		ctext "Radial with Spokes" cap1x cap1y capsize
 		ctext "dchart -radial -psize=10 -pwidth=25 -top=60  -textsize=3 -spokes clock.d" cap1x cap2y cmdsize "mono" cmdcolor
+	eslide
+	// data files
+	slide
+		text "Data Files" 5 90 4
+		textcode "code/AAPL.d"		 5 80 25 1.5 "mono"
+		textcode "code/browser.d"	40 80 40 1.5 "mono"
+		textcode "code/incar.d"		 5 35 27 1.5 "mono"
+		textcode "code/count.d"		40 35 22 1.5 "mono"
+		textcode "code/clock.d"		70 35 22 1.5 "mono"
+
+		text "AAPL.d"				5  84 2
+		text "browser.d"			40 84 2
+		text "incar.d"				5  39 2
+		text "count.d"				40 39 2
+		text "clock.d"				70 39 2
 	eslide
 edeck
