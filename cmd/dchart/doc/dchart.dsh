@@ -14,7 +14,6 @@ deck
 		c4="-left=80 -right=98"
 
 		r2opt="-xlabel=0 -bar=f -title=f"
-
 		
 		dchart topts -bar -xlabel=0                           r1 c1 code/AAPL.d
 		dchart topts -hbar                                    r1 -left=40  -right=60 code/AAPL.d
@@ -76,6 +75,7 @@ deck
 		text "Radial"            80 tr ts
 	eslide
 
+	// data to picture
 	slide
 		text "Data"							 3 75 4
 		text "Markup"						25 75 4
@@ -86,24 +86,26 @@ deck
 		ctext "data | dchart | pdf" 50 20 4 "mono"
 	eslide
 
+	// generating data
 	slide
 		text "Generating Data for charts" 5 90 4
 		codesize=1.75
-		sineopts="-fulldeck=f -bar=f -val=f -xlabel=10 -line -vol "
+		sineopts="-fulldeck=f -bar=f -val=f -xlabel=10 -line -vol"
 		textfile "code/sine.go"    5 75 codesize "mono"
 		textfile "code/sineout.d" 75 85 codesize "mono" "maroon"
 		hline 2 60 70 40 "gray" 5
-		dchart sineopts -left=25 -right=65 -top=75 -bottom=65 code/sine.d
+		dchart sineopts -left=30 -right=65 -top=75 -bottom=65 code/sine.d
 		list 5 25 2 "mono" "rgb(100,100,100)"
 			li "go run sine.go |"
 			li "dchart -bar=f -val=f -xlabel=10 -line -vol -bottom=50 |"
 			li "pdfdeck -stdout - > sine.pdf"
  		elist
-		// ctext "sine|dchart -bar=f -val=f -xlabel=10 -line -vol -left=25 -right=65 -top=75 -bottom=65|pdf" 50 20 codesize "mono"
 	eslide
 
 	// command line options
 	slide
+		textcolor="steelblue"
+		bgcolor="white"
 		ts=2.5
 		tsp=1.45
 		tts=1.25
@@ -127,10 +129,10 @@ deck
 		rect 25 30 50 60 "steelblue" 10
 		rect 75 80 50 40 "orange" 10
 		rect 75 30 50 60 "orange" 10
-		//hline 0 60 100 0.05
-		//vline 50 0 100 0.05
-		text	"Chart Types" col1 row1 ts
-		list	col1 row1a tts "mono" "maroon" 100 tsp
+		
+		// chart types
+		text "Chart Types" col1 row1 ts
+		list col1 row1a tts "mono" "maroon" 100 tsp
 			li "-bar"
 			li "-wbar"
 			li "-hbar"
@@ -142,6 +144,19 @@ deck
 			li "-radial"
 			li "-scatter"
 			li "-vol"
+		elist
+			list col2 row1a tts "sans" "gray" 100 tsp
+			li "true"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
 		elist
 		list defcol1 row1a tts "sans" "black" 100 tsp
 			li "bar chart"
@@ -156,22 +171,10 @@ deck
 			li "scatter chart"
 			li "volume plot"
 		elist
-		list col2  row1a tts "sans" "gray" 100 tsp
-			li "true"
-			li "false"
-			li "false"
-			li "false"
-			li "false"
-			li "false"
-			li "false"
-			li "false"
-			li "false"
-			li "false"
-			li "false"
-		elist
-
-		text	"Chart Elements" col1 row2 ts
-		list	col1 row2a tts "mono" "maroon" 100 tsp
+	
+		// chart elements
+		text "Chart Elements" col1 row2 ts
+		list col1 row2a tts "mono" "maroon" 100 tsp
 			li "-csv"
 			li "-frame"
 			li "-fulldeck"
@@ -192,9 +195,28 @@ deck
 			li "-xlabel"
 			li "-yrange"
 		elist
-
-		
-		list	defcol1  row2a tts "sans" "black" 100 tsp
+		list col2 row2a tts "sans" "gray" 100 tsp
+			li "false"
+			li "false"
+			li "true"
+			li "false"
+			li "true"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+			li "true"
+			li "true"
+			li "false"
+			li "false"
+			li "override title in data"
+			li "low,high,color"
+			li "value,label"
+			li "t=top, b=bottom, m=middle"
+			li "default=1, 0 to suppress"
+			li "min,max.step"
+ 		elist
+		list defcol1 row2a tts "sans" "black" 100 tsp
 			li "read CSV files"
 			li "show a colored frame"
 			li "generate full deck markup"
@@ -216,30 +238,9 @@ deck
 			li "specify the y axis label range"
 		elist
 
-		list  col2 row2a tts "sans" "gray" 100 tsp
-			li "false"
-			li "false"
-			li "true"
-			li "false"
-			li "true"
-			li "false"
-			li "false"
-			li "false"
-			li "false"
-			li "true"
-			li "true"
-			li "false"
-			li "false"
-			li "override title in data"
-			li "low,high,color"
-			li "value,label"
-			li "t=top, b=bottom, m=middle"
-			li "default=1, 0 to suppress"
-			li "min,max.step"
- 		elist
-		
-		text	"Position and Scaling" col3  row1 ts
-		list	col3 row1a tts "mono" "maroon" 100 tsp
+		// position and scaling
+		text "Position and Scaling" col3 row1 ts
+		list col3 row1a tts "mono" "maroon" 100 tsp
 			li "-top"
 			li "-bottom"
 			li "-left"
@@ -247,15 +248,15 @@ deck
 			li "-min"
 			li "-max"
 		elist
-			list  col4 row1a tts "sans" "gray" 100 tsp
+			list col4 row1a tts "sans" "gray" 100 tsp
 			li "80"
 			li "30"
 			li "20"
 			li "80"
 			li "data min"
 			li "data max"
- 		elist	
-		list	defcol2 row1a tts "sans" "black" 100 tsp
+ 		elist 
+		list defcol2 row1a tts "sans" "black" 100 tsp
 			li "top of the chart"
 			li "bottom of the chart"
 			li "left margin"
@@ -264,8 +265,9 @@ deck
 			li "set the maximum data value"
 		elist
 
-		text	"Measures and Attributes" col3 row2 ts
-		list	col3 row2a tts "mono" "maroon" 100 tsp
+		// measures and attributes
+		text "Measures and Attributes" col3 row2 ts
+		list col3 row2a tts "mono" "maroon" 100 tsp
 			li "-bgcolor"
 			li "-barwidth"
 			li "-color"
@@ -307,7 +309,7 @@ deck
 			li "rgb(127,0,0)"
 			li "50"
 		elist
-		list	defcol2 row2a tts "sans" "black" 100 tsp
+		list defcol2 row2a tts "sans" "black" 100 tsp
 			li "background color"
 			li "barwidth"
 			li "data color"
@@ -330,7 +332,8 @@ deck
 		elist
 	eslide
 
-	
+
+	// Example Section	
 	opts="-fulldeck=f"
 	cap1x=50
 	cap1y=15
@@ -339,15 +342,16 @@ deck
 	cmdsize=capsize*0.5
 	cmdcolor="gray"
 
-	// Example Section
 	slide
-		ctext "Command Option Examples" 50 50 5
+		ctext "Command Option Examples" 50 50 6
 	eslide
 
+	// sample chart
 	slide
-	        dchart opts   -left=20 -right=80 -top=75 -bottom=30 -yaxis -grid -xlabel=2 -val  code/AAPL.d
+		dchart opts -left=20 -right=80 -top=75 -bottom=30 -yaxis -grid -xlabel=2 -val code/AAPL.d
 	eslide
 	
+	// sample chart with attributes
 	slide
 		etext "yaxis"  12 30 3 "sans" "maroon"
 		etext "left"   20 50 3 "sans" "maroon"
@@ -359,25 +363,33 @@ deck
 		ctext "grid"   75 75 3 "sans" "maroon"
 		text  "right"  80 50 3 "sans" "maroon"
 		text  "xlabel" 80 27 3 "sans" "maroon"
-		dchart opts   -left=20 -right=80 -top=75 -bottom=30 -yaxis -grid -xlabel=2 -val  code/AAPL.d
+		dchart opts   -left=20 -right=80 -top=75 -bottom=30 -yaxis -grid -xlabel=2 -val code/AAPL.d
 		ctext "dchart -left=20 -right=80 -top=75 -bottom=30 -yaxis -grid -xlabel=2 -val AAPL.d" 50 10 2 "mono"
 	eslide
 
-
 	// Examples
-	slide "white" "steelblue"
-		dchart opts  code/AAPL.d
+	slide bgcolor textcolor
+		dchart opts code/AAPL.d
 		ctext "Default Bar Chart" cap1x cap1y capsize
 		ctext "dchart AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
-		dchart opts -frame=t -framecolor=red  code/AAPL.d
+	// csv
+	slide bgcolor textcolor
+		dchart opts -csv -csvcol=Date,Volume code/AAPL.csv
+		ctext "Reading CSV files" cap1x cap1y capsize
+		ctext "dchart -csv -csvcol=Date,Volume AAPL.csv" cap1x cap2y cmdsize "mono" cmdcolor
+		textfile "code/AAPL.csv" 80 22 0.75 "mono"
+ 	eslide
+
+	// frames
+	slide bgcolor textcolor
+		dchart opts -frame=t -framecolor=red code/AAPL.d
 		ctext "Frame, Frame Color" cap1x cap1y capsize
 		ctext "dchart -frame=t -framecolor=red AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -hline=700,Target -yaxis code/AAPL.d
 		ctext "Target Line, Y-Axis" cap1x cap1y capsize
 		ctext "dchart -hline=700,Target -yaxis AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
@@ -389,229 +401,232 @@ deck
 		ctext "dchart -bgcolor=black -lcolor=white -vcolor=orange AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		mytitle="Apple-Volume-2017"
 		dchart opts -chartitle mytitle code/AAPL.d
 		ctext "Chart Title" cap1x cap1y capsize
 		ctext `dchart -chartitle="Apple-Volume-2017" AAPL.d` cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -datacond=300,450,orange code/AAPL.d
 		ctext "Data Conditions" cap1x cap1y capsize
 		ctext "dchart -datacond=300,450,orange AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
-		dchart opts -xlabrot=300  code/AAPL.d
+	slide bgcolor textcolor
+		dchart opts -xlabrot=300 code/AAPL.d
 		ctext "X-Axis Label Rotation" cap1x cap1y capsize
 		ctext "dchart -xlabrot=300 AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -vcolor=white -valpos=b code/AAPL.d
 		ctext "Value Color, Value Position Bottom" cap1x cap1y capsize
 		ctext "dchart -vcolor=white -valpos=b AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -vcolor=white -valpos=m code/AAPL.d
 		ctext "Value Color, Value Position Middle" cap1x cap1y capsize
-		ctext "dchart -vcolor=white -valpos=m  AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
+		ctext "dchart -vcolor=white -valpos=m AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -vcolor=gray code/AAPL.d
 		ctext "Value Color, Value Position Top" cap1x cap1y capsize
 		ctext "dchart -vcolor=gray AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -xlabel=2 -left 30 -right 70 -top 70 -bottom 40 code/AAPL.d
 		ctext "Scaling, X-Axis Labels" cap1x cap1y capsize
 		ctext "dchart -xlabel=2 -left 30 -right 70 -top 70 -bottom 40 AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -color gray code/AAPL.d
 		ctext "Color" cap1x cap1y capsize
 		ctext "dchart -color gray AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
-		dchart opts -grid -yaxis  code/AAPL.d
+	slide bgcolor textcolor
+		dchart opts -grid -yaxis code/AAPL.d
 		ctext "Y-Axis, Grid" cap1x cap1y capsize
 		ctext "dchart -grid -yaxis AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -yrange=0,700,50 -grid -yaxis code/AAPL.d
 		ctext "Y-Range" cap1x cap1y capsize
 		ctext "dchart -yrange=0,700,50 -grid -yaxis AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -barwidth=1 code/AAPL.d
 		ctext "Adjusting Bar Width" cap1x cap1y capsize
 		ctext "dchart -barwidth=1 AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -bar=f -dot code/AAPL.d
 		ctext "Dot Chart" cap1x cap1y capsize
 		ctext "dchart -bar=f -dot AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -bar=f -vol code/AAPL.d
 		ctext "Area Chart" cap1x cap1y capsize
 		ctext "dchart -bar=f -vol AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -bar=f -vol -volop=90 code/AAPL.d
 		ctext "Area Chart, Opacity" cap1x cap1y capsize
 		ctext "dchart -bar=f -vol -volop=90 AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -bar=f -line code/AAPL.d
 		ctext "Line Chart" cap1x cap1y capsize
 		ctext "dchart -bar=f -line AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -bar=f -line -linewidth=0.5 code/AAPL.d
 		ctext "Line Chart, Line Width" cap1x cap1y capsize
 		ctext "dchart -bar=f -line -linewidth=0.5 AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -scatter -bar=f code/AAPL.d
 		ctext "Scatter Chart" cap1x cap1y capsize
 		ctext "dchart -bar=f -scatter AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -scatter -val=f -bar=f code/AAPL.d
 		ctext "Scatter Chart, No Values" cap1x cap1y capsize
 		ctext "dchart -bar=f -scatter -val=f AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -bar=f -line -val=f -rline code/AAPL.d
 		ctext "Line Chart, No Values, Regression Line" cap1x cap1y capsize
 		ctext "dchart -bar=f -line -val=f -rline AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -bar=f -line -val=f -rline -rlcolor=orange code/AAPL.d
 		ctext "Line Chart, No Values, Regression Line Color" cap1x cap1y capsize
 		ctext "dchart -bar=f -line -val=f -rline -rlcolor=orange AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -bar=f -line -vol -dot code/AAPL.d
 		ctext "Volume, Line, Dot" cap1x cap1y capsize
 		ctext "dchart -bar=f -line -vol -dot AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -datafmt %0.3f -bar=f -dot -line code/AAPL.d
 		ctext "Dot, Line, Data Format" cap1x cap1y capsize
 		ctext "dchart -datafmt %0.3f -bar=f -dot -line AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -bar=f -line -vol -dot -grid -yaxis code/AAPL.d
 		ctext "Line, Area, Dot, Y-Axis, Grid" cap1x cap1y capsize
 		ctext "dchart -bar=f -line -vol -dot -grid -yaxis AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -hbar code/AAPL.d
 		ctext "Horizontal Bar" cap1x cap1y capsize
 		ctext "dchart -hbar AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
-		dchart opts -hbar  -pct code/AAPL.d
+	slide bgcolor textcolor
+		dchart opts -hbar -pct code/AAPL.d
 		ctext "Horizontal Bar, Show Percentages" cap1x cap1y capsize
 		ctext "dchart -hbar -pct AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
-		dchart opts -hbar  -ls 1.5 code/AAPL.d
+	slide bgcolor textcolor
+		dchart opts -hbar -ls 1.5 code/AAPL.d
 		ctext "Horizontal Bar, Line Spacing" cap1x cap1y capsize
 		ctext "dchart -hbar -ls 1.5 AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -wbar code/browser.d
 		ctext "Word Bar" cap1x cap1y capsize
 		ctext "dchart -wbar AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
-		dchart opts  -donut -color=std -pwidth=5 code/browser.d
+	slide bgcolor textcolor
+		dchart opts -donut -color=std -pwidth=5 code/browser.d
 		ctext "Donut" cap1x cap1y capsize
 		ctext "dchart -donut -color=std -pwidth=5 browser.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
-		dchart opts  -donut -color=std -title=f -top=70 -pwidth=20 -psize=20 code/browser.d
-		ctext "Pie" cap1x cap1y capsize
+	slide
+		dchart opts -donut -color=std -title=f -top=70 -pwidth=20 -psize=20 code/browser.d
+		ctext "Pie" cap1x cap1y capsize "sans" "steelblue"
 		ctext "dchart -donut -color=std -title=f -top=70 -pwidth=20 -psize=20 browser.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -pmap -pwidth=5 -textsize=1 code/browser.d
 		ctext "Pmap" cap1x cap1y capsize
 		ctext "dchart -pmap -pwidth=5 -textsize=1 browser.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -pmap -pwidth=5 -textsize=1 -solidpmap code/browser.d
 		ctext "Pmap with Solid Colors" cap1x cap1y capsize
 		ctext "dchart -pmap -pwidth=5 -textsize=1 -solidpmap browser.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -pmap -pwidth=5 -textsize=1 -solidpmap -pmlen=30 code/browser.d
 		ctext "Pmap with Solid Colors, Length Threshold" cap1x cap1y capsize
 		ctext "dchart -pmap -pwidth=5 -textsize=1 -solidpmap -pmlen=30 browser.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -left 35 -top 80 -ls 3 -pgrid -val=f code/incar.d
 		ctext "Pgrid" cap1x cap1y capsize
 		ctext "dchart -left 35 -top 80 -ls 3 -pgrid -val=f incar.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide	
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -psize=10 -pwidth=25 -top=60 -radial -textsize=3 code/count.d
 		ctext "Radial" cap1x cap1y capsize
-		ctext "dchart -radial -psize=10 -pwidth=25 -top=60  -textsize=3 count.d" cap1x cap2y cmdsize "mono" cmdcolor
+		ctext "dchart -radial -psize=10 -pwidth=25 -top=60 -textsize=3 count.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide "white" "steelblue"
+	slide bgcolor textcolor
 		dchart opts -psize=10 -pwidth=25 -top=60 -radial -textsize=3 -spokes code/clock.d
 		ctext "Radial with Spokes" cap1x cap1y capsize
-		ctext "dchart -radial -psize=10 -pwidth=25 -top=60  -textsize=3 -spokes clock.d" cap1x cap2y cmdsize "mono" cmdcolor
+		ctext "dchart -radial -psize=10 -pwidth=25 -top=60 -textsize=3 -spokes clock.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
+
 	// data files
 	slide
 		text "Data Files" 5 90 4
-		textcode "code/AAPL.d"		 5 80 25 1.5 "mono"
-		textcode "code/browser.d"	40 80 40 1.5 "mono"
-		textcode "code/incar.d"		 5 35 27 1.5 "mono"
-		textcode "code/count.d"		40 35 22 1.5 "mono"
-		textcode "code/clock.d"		70 35 22 1.5 "mono"
+		textcode "code/AAPL.d"		 5 80 22 1.5 "mono"
+		textcode "code/AAPL.csv"	35 80 22 1.5 "mono"
+		textcode "code/incar.d"		65 80 27 1.5 "mono"
+		textcode "code/browser.d"	 5 35 40 1.5 "mono"
+		textcode "code/count.d"		50 35 22 1.5 "mono"
+		textcode "code/clock.d"		75 35 22 1.5 "mono"
 
 		text "AAPL.d"				5  84 2
-		text "browser.d"			40 84 2
-		text "incar.d"				5  39 2
-		text "count.d"				40 39 2
-		text "clock.d"				70 39 2
+		text "AAPL.csv"				35 84 2
+		text "incar.d"			    65 84 2
+		text "browser.d"			5  39 2
+		text "count.d"				50 39 2
+		text "clock.d"				75 39 2
 	eslide
 edeck
