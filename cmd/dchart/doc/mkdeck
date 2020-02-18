@@ -1,2 +1,2 @@
 #!/bin/sh
-pdfdeck -sans FiraSans-Regular -mono FiraMono-Regular -pagesize 1200,900 $* dchart.xml
+decksh dchart.dsh | pdfdeck -sans FiraSans-Regular -mono FiraMono-Regular  -stdout - > dchart.pdf
