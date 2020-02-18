@@ -1,5 +1,0 @@
-#!/bin/sh
-f="-fulldeck=f -textsize=1.2 -val=f -bar=f -line -vol -left=60 -right=90 -xlabel=10"
-./mksin		| dchart $f -top=90 -bottom=80
-./mkcos		| dchart $f -top=60 -bottom=50 -color=salmon
-./mksincos  | dchart $f -top=30 -bottom=20 -color=orange

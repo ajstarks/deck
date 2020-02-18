@@ -1,9 +1,0 @@
-#!/bin/sh
-awk '
-BEGIN {
-	Pi = 3.14159265359
-	print "# y=cos(x)"
-	for (x=0.0; x <= 2*Pi; x += 0.1) {
-		printf "%.2f\t%.4f\n", x, cos(x)
-	}
-}'

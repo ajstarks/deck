@@ -1,8 +1,0 @@
-<deck>
-	<slide>
-		<text ...>AAPL Volume</text>
-		<line ... color="lightsteelblue"/>
-		<text ... color="rgb(127,0,0)">563.1</text>
-		<text ... color="rgb(75,75,75)">2017-01-01</text>
-	</slide>
-</deck>
