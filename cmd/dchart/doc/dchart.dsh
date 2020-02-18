@@ -1,0 +1,379 @@
+deck
+	// dchart title page
+	left=6
+	top=90
+	titlesize=4
+	slide
+		text "dchart: charts for deck" left top titlesize "sans" "black" 100 "https://github.com/ajstarks/deck/tree/master/cmd/dchart"
+		ctext "Bitcoin to USD" 35 79 1.5
+		dchart -fulldeck=f -textsize=1   -top=75 -left=10 -bottom=50 -right=60 -color=steelblue -title=f -bar=f -vol -val=f -xlabel=0 -yaxis -grid -csv -csvcol=Date,Close -yrange=0,20000,4000 code/BTC-USD.csv
+		dchart -fulldeck=f -textsize=1   -top=48 -left=10 -bottom=40 -right=60 -color=maroon -yaxis=f -bar -val=f -xlabel=100 -xlast -title=f -csv -csvcol=Date,Volume code/BTC-USD.csv
+		dchart -fulldeck=f -textsize=1   -top=75 -left=72 -bottom=50 -right=95 -xlabel=5  code/AAPL.d
+		dchart -fulldeck=f -textsize=0.9 -top=40 -left=72            -right=75 -pgrid  -ls=2.4 -val=f code/incar.d
+		dchart -fulldeck=f -textsize=0.9 -top=25 -left=40 -bottom=20 -right=60  -wbar  -ls=2.8 code/browser.d
+		dchart -fulldeck=f -textsize=1   -top=25 -left=5  -bottom=15 -right=30  -val=f -bar=f -vol -xlabel=10 -color=brown code/sine.d
+	eslide
+
+	// chart types
+	slide
+		topts="-fulldeck=f -textsize=0.75"
+		r1="-top=90 -bottom=70"
+		r2="-top=57 -bottom=45"
+		r3="-top=27 -bottom=20"
+
+		c1="-left=5  -right=25"
+		c2="-left=30 -right=48"
+		c3="-left=55 -right=73"
+		c4="-left=80 -right=98"
+
+		r2opt="-xlabel=0 -bar=f -title=f"
+
+		
+		dchart topts -bar -xlabel=0                           r1 c1 code/AAPL.d
+		dchart topts -hbar                                    r1 -left=40  -right=60 code/AAPL.d
+		dchart topts -wbar                                    r1 -left=70  -right=90 code/browser.d
+
+		dchart topts -scatter r2opt                           r2 c1 code/AAPL.d
+		dchart topts -dot     r2opt                           r2 c2 code/AAPL.d
+		dchart topts -line    r2opt                           r2 c3 code/AAPL.d
+		dchart topts -vol     r2opt                           r2 c4 code/AAPL.d
+
+		dchart topts -pmap   -pwidth=2                        -top=30  c1 code/browser2.d
+		dchart topts -pgrid  -ls=1.5 -val=f                   -top=32  c2 code/incar.d
+		dchart topts -donut  -psize=9 -pwidth=1 -color=std    -top=27 -left=62  code/browser.d
+		dchart topts -radial -psize=3 -pwidth=8               -top=27 -left=88  code/count.d
+
+		ts=2
+		tr=65
+		text "Column"             5 tr ts
+		text "Bar"                35 tr ts
+		text "Word Bar"           70 tr ts
+		tr-=23
+		text "Dot"                5 tr ts
+		text "Scatter"            30 tr ts
+		text "Line"               55  tr ts
+		text "Area"               80 tr ts
+		tr-=37
+		text "Proportional Map"  5 tr ts
+		text "Proportonal Grid"  30 tr ts
+		text "Donut/Pie"         55 tr ts
+		text "Radial"            80 tr ts
+	eslide
+
+	slide
+		ts=2.5
+		tsp=1.45
+		tts=1.25
+
+		col1=5
+		col2=col1+10
+		col3=col2+40
+		col4=col3+10
+
+		defcol1=col2+16
+		defcol2=col4+16
+		vskip=4				// space between headers and data
+
+		row1=92				// top: headers
+		row1a=row1-vskip	// data
+
+		row2=row1-40		// second row
+		row2a=row2-vskip	// data
+
+		rect 25 80 50 40 "red" 10
+		rect 25 30 50 60 "blue" 10
+		rect 75 80 50 40 "green" 10
+		rect 75 30 50 60 "orange" 10
+		//hline 0 60 100 0.05
+		//vline 50 0 100 0.05
+		text	"Chart Types" col1 row1 ts
+		list	col1 row1a tts "mono" "maroon" 100 tsp
+			li "-bar"
+			li "-wbar"
+			li "-hbar"
+			li "-donut"
+			li "-dot"
+			li "-line"
+			li "-pgrid"
+			li "-pmap"
+			li "-radial"
+			li "-scatter"
+			li "-vol"
+		elist
+		list defcol1 row1a tts "sans" "black" 100 tsp
+			li "bar chart"
+			li "word bar chart"
+			li "horizontal bar chart"
+			li "donut chart"
+			li "dot plot"
+			li "line chart"
+			li "proportional grid"
+			li "proportional map"
+			li "radial chart"
+			li "scatter chart"
+			li "volume plot"
+		elist
+		list col2  row1a tts "sans" "gray" 100 tsp
+			li "true"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+		elist
+
+		text	"Chart Elements" col1 row2 ts 
+		list	col1 row2a tts "mono" "maroon" 100 tsp
+			li "-csv"
+			li "-frame"
+			li "-fulldeck"
+			li "-grid"
+			li "-note"
+			li "-pct"
+			li "-rline"
+			li "-solidpmap"
+			li "-spokes"
+			li "-title"
+			li "-val"
+			li "-xlast"
+			li "-yaxis"
+			li "-chartitle"
+			li "-datacond"
+			li "-hline"
+			li "-valpos"
+			li "-xlabel"
+			li "-yrange"
+		elist
+
+		
+		list	defcol1  row2a tts "sans" "black" 100 tsp
+			li "read CSV files"
+			li "show a colored frame"
+			li "generate full deck markup"
+			li "show gridlines on the y axis"
+			li "show annotations"
+			li "show computed percentage"
+			li "show a regression line"
+			li "show solid pmap colors"
+			li "show spokes in radial chart"
+			li "show the title"
+			li "show values"
+			li "show the last x label"
+			li "show a y axis"
+			li "specify the title"
+			li "conditional data colors"
+			li "label horizontal line at value"
+			li "value position"
+			li "x axis label interval"
+			li "specify the y axis label range"
+		elist
+
+		list  col2 row2a tts "sans" "gray" 100 tsp
+			li "false"
+			li "false"
+			li "true"
+			li "false"
+			li "true"
+			li "false"
+			li "false"
+			li "false"
+			li "false"
+			li "true"
+			li "true"
+			li "false"
+			li "false"
+			li "override title in data"
+			li "low,high,color"
+			li "value,label"
+			li "t=top, b=bottom, m=middle"
+			li "1, 0 to suppress labels"
+			li "min,max.step"
+ 		elist
+		
+		text	"Position and Scaling" col3  row1 ts
+		list	col3 row1a tts "mono" "maroon" 100 tsp
+			li "-top"
+			li "-bottom"
+			li "-left"
+			li "-right"
+			li "-min"
+			li "-max"
+		elist
+			list  col4 row1a tts "sans" "gray" 100 tsp
+			li "80"
+			li "30"
+			li "20"
+			li "80"
+			li "data min"
+			li "data max"
+ 		elist	
+		list	defcol2 row1a tts "sans" "black" 100 tsp
+			li "top of the chart"
+			li "bottom of the chart"
+			li "left margin"
+			li "right margin"
+			li "set the minimum data value"
+			li "set the maximum data value"
+		elist
+
+		text	"Measures and Attributes" col3 row2 ts
+		list	col3 row2a tts "mono" "maroon" 100 tsp
+			li "-bgcolor"
+			li "-barwidth"
+			li "-color"
+			li "-csvcol"
+			li "-datafmt"
+			li "-dmin"
+			li "-framecolor"
+			li "-lcolor"
+			li "-linewidth"
+			li "-ls"
+			li "-noteloc"
+			li "-pmlen"
+			li "-psize"
+			li "-pwidth"
+			li "-rlcolor"
+			li "-textsize"
+			li "-xlabrot"
+			li "-vcolor"
+			li "-volop"
+		elist
+			list col4 row2a tts "sans" "gray" 100 tsp
+			li "white"
+			li "computed from data size"
+			li "lightsteelblue"
+			li "labe1,label2"
+			li "%.1f"
+			li "false"
+			li "rgb(127,127,127)"
+			li "rgb(75,75,75)"
+			li "0.2"
+			li "2.4"
+			li "c=center, r=right, l=left"
+			li "20"
+			li "30"
+			li "3"
+			li "rgb(127,0,0)"
+			li "1.5"
+			li "0"
+			li "rgb(127,0,0)"
+			li "50"
+		elist
+		list	defcol2 row2a tts "sans" "black" 100 tsp
+			li "background color"
+			li "barwidth"
+			li "data color"
+			li "specify csv columns"
+			li "data format for values"
+			li "use data minimum, not zero"
+			li "frame color"
+			li "label color"
+			li "linewidth"
+			li "linespacing"
+			li "annotation location"
+			li "pmap label length"
+			li "diameter of the donut"
+			li "width of the donut or pmap"
+			li "regression line color"
+			li "text size"
+			li "xlabel rotation (deg.)"
+			li "value color"
+			li "volume opacity %"
+		elist
+	eslide
+
+	
+	opts="-fulldeck=f"
+	slide
+		dchart opts    code/AAPL.d
+	eslide
+
+	slide
+		 dchart opts  -xlabel=2 -left 30 -right 70 -top 70 -bottom 40  code/AAPL.d
+	eslide
+
+	slide
+		 dchart opts  -color gray  code/AAPL.d
+	eslide
+
+	slide
+		 dchart opts  -grid -yaxis   code/AAPL.d 
+	eslide
+
+	slide
+		 dchart opts  -yrange=0,700,50 -grid -yaxis  code/AAPL.d
+	eslide
+
+	slide
+		 dchart opts  -grid -barwidth=1  code/AAPL.d 
+	eslide
+
+	slide
+		 dchart opts  -bar=f -dot  code/AAPL.d 
+	eslide
+
+	slide
+		 dchart opts  -bar=f -vol  code/AAPL.d 
+	eslide
+
+	slide
+		 dchart opts  -datafmt %0.2f -bar=f -dot -line  code/AAPL.d
+	eslide
+
+	slide
+		 dchart opts  -bar=f -line  code/AAPL.d 
+	eslide
+
+	slide
+		 dchart opts  -scatter -val=f -bar=f  code/AAPL.d
+	eslide
+
+	slide
+		 dchart opts  -scatter -val=f -bar=f -rline  code/AAPL.d
+	eslide
+
+	slide
+		 dchart opts  -bar=f -line  -val=f  code/AAPL.d 
+	eslide
+
+	slide
+		 dchart opts  -bar=f -line -vol -dot  code/AAPL.d 
+	eslide
+
+	slide
+		 dchart opts  -bar=f -line -vol -dot -grid -yaxis  code/AAPL.d
+	eslide
+
+	slide
+		 dchart opts  -hbar -left=30  code/AAPL.d
+	eslide
+
+	slide
+		 dchart opts  -wbar code/browser.d
+	eslide
+
+	slide
+		 dchart opts   -donut -color=std -pwidth=5 code/browser.d 
+	eslide
+
+	slide
+		 dchart opts  -pmap -pwidth=5 -textsize=1 code/browser.d
+	eslide
+
+	slide
+		 dchart opts  -left 35 -top 80 -ls 3 -bgcolor lightsteelblue -pgrid -val=f code/incar.d
+	eslide	
+
+	slide
+		dchart opts -psize=10 -pwidth=30 -left=50 -top=50 -radial -textsize=3 code/count.d
+	eslide
+
+	slide
+		dchart opts -psize=10 -pwidth=30 -left=50 -top=50 -radial -textsize=3 -spokes code/clock.d
+	eslide
+edeck
