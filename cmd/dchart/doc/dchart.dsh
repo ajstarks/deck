@@ -1,4 +1,11 @@
 deck
+	top=90
+	left=5
+	titlesize=5
+	datacolor="maroon"
+	cmdcolor="rgb(75,75,75)"
+	chartcolor="steelblue"
+
 	// Title Page
 	slide "black"
 		ctext "dchart"						50 60 8 "sans" "white"
@@ -77,25 +84,29 @@ deck
 
 	// data to picture
 	slide
-		text "Data"							 3 75 4
-		text "Markup"						25 75 4
-		text "PDF Rendition"				65 75 4
-		textfile "code/AAPL.d" 				 3 70 1.2 "mono" "maroon"
-		textfile "code/dchartgen.txt"		25 70 1.2 "mono"
-		dchart -fulldeck=f -left=65 -right=95 -top=65 -bottom=45 -xlabel=3  -textsize=1.2 code/AAPL.d
-		ctext "data | dchart | pdf" 50 20 4 "mono"
+		ctext "Data to Chart" 50 top titlesize
+		ctext "Data"						10 35 3   "sans" datacolor
+		ctext "Markup"						40 35 3   "sans" cmdcolor
+		ctext "PDF Rendition"				82 35 3   "sans" chartcolor
+		textfile "code/AAPL.d" 				 3 70 1.2 "mono" datacolor
+		textfile "code/dchartgen.txt"		22 70 1.2 "mono" cmdcolor
+		dchart -fulldeck=f -left=65 -right=97 -top=65 -bottom=45 -xlabel=3  -textsize=1.2 code/AAPL.d
+		etext "dchart "45 15 3 "mono"
+		ctext "AAPL.d" 50 15 3 "mono" datacolor
+		text " | pdf"  55 15 3 "mono" chartcolor
 	eslide
 
 	// generating data
 	slide
-		text "Generating Data for charts" 5 90 4
+		ctext "Generating data for charts" 50 top titlesize
 		codesize=1.75
 		sineopts="-fulldeck=f -bar=f -val=f -xlabel=10 -line -vol"
 		textfile "code/sine.go"    5 75 codesize "mono"
-		textfile "code/sineout.d" 75 85 codesize "mono" "maroon"
-		hline 2 60 70 40 "gray" 5
+		textfile "code/sineout.d" 75 85 codesize "mono" datacolor
+		hline 2 60 70 40 cmdcolor 5
 		dchart sineopts -left=30 -right=65 -top=75 -bottom=65 code/sine.d
-		list 5 25 2 "mono" "rgb(100,100,100)"
+		//dchart sineopts -left=75 -right=95 -top=20 -bottom=15 code/sine.d
+		list 5 25 2 "mono" "rgb(100,100,100)" 100 1.4
 			li "go run sine.go |"
 			li "dchart -bar=f -val=f -xlabel=10 -line -vol -bottom=50 |"
 			li "pdfdeck -stdout - > sine.pdf"
@@ -104,7 +115,7 @@ deck
 
 	// command line options
 	slide
-		textcolor="steelblue"
+		textcolor=chartcolor
 		bgcolor="white"
 		ts=2.5
 		tsp=1.45
@@ -125,14 +136,16 @@ deck
 		row2=row1-40		// second row
 		row2a=row2-vskip	// data
 
-		rect 25 80 50 40 "steelblue" 10
-		rect 25 30 50 60 "steelblue" 10
+		rect 25 80 50 40 chartcolor 10
+		rect 25 30 50 60 chartcolor 10
 		rect 75 80 50 40 "orange" 10
 		rect 75 30 50 60 "orange" 10
+
+		vline 50 0 100 0.1
 		
 		// chart types
 		text "Chart Types" col1 row1 ts
-		list col1 row1a tts "mono" "maroon" 100 tsp
+		list col1 row1a tts "mono" datacolor 100 tsp
 			li "-bar"
 			li "-wbar"
 			li "-hbar"
@@ -145,7 +158,7 @@ deck
 			li "-scatter"
 			li "-vol"
 		elist
-			list col2 row1a tts "sans" "gray" 100 tsp
+			list col2 row1a tts "sans" cmdcolor 100 tsp
 			li "true"
 			li "false"
 			li "false"
@@ -174,7 +187,7 @@ deck
 	
 		// chart elements
 		text "Chart Elements" col1 row2 ts
-		list col1 row2a tts "mono" "maroon" 100 tsp
+		list col1 row2a tts "mono" datacolor 100 tsp
 			li "-csv"
 			li "-frame"
 			li "-fulldeck"
@@ -195,7 +208,7 @@ deck
 			li "-xlabel"
 			li "-yrange"
 		elist
-		list col2 row2a tts "sans" "gray" 100 tsp
+		list col2 row2a tts "sans" cmdcolor 100 tsp
 			li "false"
 			li "false"
 			li "true"
@@ -240,7 +253,7 @@ deck
 
 		// position and scaling
 		text "Position and Scaling" col3 row1 ts
-		list col3 row1a tts "mono" "maroon" 100 tsp
+		list col3 row1a tts "mono" datacolor 100 tsp
 			li "-top"
 			li "-bottom"
 			li "-left"
@@ -248,7 +261,7 @@ deck
 			li "-min"
 			li "-max"
 		elist
-			list col4 row1a tts "sans" "gray" 100 tsp
+			list col4 row1a tts "sans" cmdcolor 100 tsp
 			li "80"
 			li "30"
 			li "20"
@@ -267,7 +280,7 @@ deck
 
 		// measures and attributes
 		text "Measures and Attributes" col3 row2 ts
-		list col3 row2a tts "mono" "maroon" 100 tsp
+		list col3 row2a tts "mono" datacolor 100 tsp
 			li "-bgcolor"
 			li "-barwidth"
 			li "-color"
@@ -288,7 +301,7 @@ deck
 			li "-vcolor"
 			li "-volop"
 		elist
-			list col4 row2a tts "sans" "gray" 100 tsp
+			list col4 row2a tts "sans" cmdcolor 100 tsp
 			li "white"
 			li "computed from data size"
 			li "lightsteelblue"
@@ -332,7 +345,6 @@ deck
 		elist
 	eslide
 
-
 	// Example Section	
 	opts="-fulldeck=f"
 	cap1x=50
@@ -340,7 +352,6 @@ deck
 	cap2y=cap1y-10
 	capsize=4
 	cmdsize=capsize*0.5
-	cmdcolor="gray"
 
 	slide
 		ctext "Command Option Examples" 50 50 6
@@ -353,18 +364,19 @@ deck
 	
 	// sample chart with attributes
 	slide
-		etext "yaxis"  12 30 3 "sans" "maroon"
-		etext "left"   20 50 3 "sans" "maroon"
-		ctext "val"    20 72 3 "sans" "maroon"
-		etext "title"  40 80 3 "sans" "maroon"
-		text  "top"    50 75 3 "sans" "maroon"
-		text  "bar"    50 50 3 "sans" "maroon"
-		text  "bottom" 50 30 3 "sans" "maroon"
-		ctext "grid"   75 75 3 "sans" "maroon"
-		text  "right"  80 50 3 "sans" "maroon"
-		text  "xlabel" 80 27 3 "sans" "maroon"
+		ctext "Chart Attributes" 50 top titlesize
+		etext "yaxis"  12 30 3 "sans" cmdcolor
+		etext "left"   20 50 3 "sans" cmdcolor
+		ctext "val"    20 72 3 "sans" cmdcolor
+		etext "title"  40 80 3 "sans" cmdcolor
+		text  "top"    50 75 3 "sans" cmdcolor
+		text  "bar"    50 50 3 "sans" cmdcolor
+		text  "bottom" 50 30 3 "sans" cmdcolor
+		ctext "grid"   75 75 3 "sans" cmdcolor
+		text  "right"  80 50 3 "sans" cmdcolor
+		text  "xlabel" 80 27 3 "sans" cmdcolor
+		ctext "dchart -left=20 -right=80 -top=75 -bottom=30 -yaxis -grid -xlabel=2 -val AAPL.d" 50 10 2 "mono" cmdcolor
 		dchart opts   -left=20 -right=80 -top=75 -bottom=30 -yaxis -grid -xlabel=2 -val code/AAPL.d
-		ctext "dchart -left=20 -right=80 -top=75 -bottom=30 -yaxis -grid -xlabel=2 -val AAPL.d" 50 10 2 "mono"
 	eslide
 
 	// Examples
@@ -379,7 +391,7 @@ deck
 		dchart opts -csv -csvcol=Date,Volume code/AAPL.csv
 		ctext "Reading CSV files" cap1x cap1y capsize
 		ctext "dchart -csv -csvcol=Date,Volume AAPL.csv" cap1x cap2y cmdsize "mono" cmdcolor
-		textfile "code/AAPL.csv" 80 22 0.75 "mono"
+		textfile "code/AAPL.csv" 80 22 0.75 "mono" datacolor
  	eslide
 
 	// frames
@@ -572,7 +584,7 @@ deck
 
 	slide
 		dchart opts -donut -color=std -title=f -top=70 -pwidth=20 -psize=20 code/browser.d
-		ctext "Pie" cap1x cap1y capsize "sans" "steelblue"
+		ctext "Pie" cap1x cap1y capsize "sans" chartcolor
 		ctext "dchart -donut -color=std -title=f -top=70 -pwidth=20 -psize=20 browser.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
@@ -614,7 +626,7 @@ deck
 
 	// data files
 	slide
-		text "Data Files" 5 90 4
+		ctext "Data Files" 50 top titlesize
 		textcode "code/AAPL.d"		 5 80 22 1.5 "mono"
 		textcode "code/AAPL.csv"	35 80 22 1.5 "mono"
 		textcode "code/incar.d"		65 80 27 1.5 "mono"
