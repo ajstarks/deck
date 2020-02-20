@@ -8,7 +8,7 @@ r2=l2+cw            // close chart right
 
 opts="-fulldeck=f -xlabel=2 -title=f -bar=f"
 copts="-dot -line -csv -csvcol Date,Close"
-dchart opts -vol  -top t -bottom b -left l1 -right r1 code/AAPL.d
+dchart opts -vol  -top t -bottom b -left l1 -right r1 code/AAPL-vol.d
 dchart opts copts -top t -bottom b -left l2 -right r2 code/AAPL.csv
 text "APPL volume" l1 b 2
 text "APPL close"  l2 b 2
