@@ -427,9 +427,9 @@ deck
 
 	// data conditions
 	slide bgcolor textcolor
-		dchart opts -datacond=300,450,orange code/AAPL.d
+		dchart opts -datacond=400,500,orange code/AAPL.d
 		ctext "Data Conditions" cap1x cap1y capsize
-		ctext "dchart -datacond=300,450,orange AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
+		ctext "dchart -datacond=400,500,orange AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
 	// x axis label rotation

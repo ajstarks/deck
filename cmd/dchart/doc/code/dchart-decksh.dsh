@@ -1,10 +1,10 @@
 cw=40               // chart width
 t=80                // top
 b=t-20              // bottom
-l1=5                // Chart 1 left
-r1=l1+cw            // Chart 1 right
-l2=r1+10            // Chart 2 left
-r2=l2+cw            // Chart 2 right
+l1=5                // volume chart left
+r1=l1+cw            // volume chart right
+l2=r1+10            // close chart left
+r2=l2+cw            // close chart right
 
 opts="-fulldeck=f -xlabel=2 -title=f -bar=f"
 copts="-dot -line -csv -csvcol Date,Close"
