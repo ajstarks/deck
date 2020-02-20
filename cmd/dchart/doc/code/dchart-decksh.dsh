@@ -1,0 +1,15 @@
+t=80       // top
+b=t-20     // bottom
+l1=10      // Chart 1 left
+r1=l1+35   // Chart 1 right
+l2=r1+10   // Chart 2 left
+r2=l2+40   // Chart 2 right
+ny=b-10    // note y-coordinate
+
+opts="-fulldeck=f -xlabel=2 -title=f"
+dchart opts                      -top t -bottom b -left l1 -right r1 code/AAPL.d
+dchart opts -bar=f -line -val=f  -top t -bottom b -left l2 -right r2 code/AAPL.d
+text "Chart #1" l1 ny 3
+text "Chart #2" l2 ny 3
+arrow l2 b l2 t 0.2 2 1 "red"
+text "The Top" l2 t 1 "sans" "gray"

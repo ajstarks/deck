@@ -35,7 +35,7 @@ deck
 		dchart topts -pmap   -pwidth=2                        -top=30  c1 code/browser2.d
 		dchart topts -pgrid  -ls=1.5 -val=f                   -top=32  c2 code/incar.d
 		dchart topts -donut  -psize=9 -pwidth=1 -color=std    -top=27 -left=62  code/browser.d
-		dchart topts -radial -psize=3 -pwidth=8               -top=27 -left=88  code/count.d
+		dchart topts -radial -psize=2 -pwidth=8               -top=27 -left=88  code/count.d
 	eslide
 
 	// chart types
@@ -64,7 +64,7 @@ deck
 		dchart topts -pmap   -pwidth=2                        -top=30  c1 code/browser2.d
 		dchart topts -pgrid  -ls=1.5 -val=f                   -top=32  c2 code/incar.d
 		dchart topts -donut  -psize=9 -pwidth=1 -color=std    -top=27 -left=62  code/browser.d
-		dchart topts -radial -psize=3 -pwidth=8               -top=27 -left=88  code/count.d
+		dchart topts -radial -psize=2 -pwidth=8               -top=27 -left=88  code/count.d
 
 		ts=2
 		tr=65
@@ -354,7 +354,7 @@ deck
 	capsize=4
 	cmdsize=capsize*0.5
 
-	// Option section
+// Option section
 	slide
 		ctext "Command Option Examples" 50 50 6
 	eslide
@@ -663,21 +663,27 @@ deck
 		ctext "dchart -radial -psize=10 -pwidth=25 -top=60 -textsize=3 -spokes clock.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	// data files
 	slide
-		ctext "Data Files" 50 top titlesize
-		textcode "code/AAPL.d"      5 80 22 1.5 "mono"
-		textcode "code/AAPL.csv"    35 80 22 1.5 "mono"
-		textcode "code/incar.d"     65 80 27 1.5 "mono"
-		textcode "code/browser.d"    5 35 40 1.5 "mono"
-		textcode "code/count.d"     50 35 22 1.5 "mono"
-		textcode "code/clock.d"     75 35 22 1.5 "mono"
-
-		text "AAPL.d"        	5  84 2
-		text "AAPL.csv"        	35 84 2
-		text "incar.d"          65 84 2
-		text "browser.d"        5  39 2
-		text "count.d"        	50 39 2
-		text "clock.d"        	75 39 2
+		ctext    "Using dchart with decksh"   50 top titlesize
+		include  "code/dchart-decksh.dsh"
+		textcode "code/dchart-decksh.dsh"     10 42 80 1.5 "mono"
 	eslide
+
+	// // data files
+	// slide
+	// 	ctext "Data Files" 50 top titlesize
+	// 	textcode "code/AAPL.d"      5 80 22 1.5 "mono"
+	// 	textcode "code/AAPL.csv"    35 80 22 1.5 "mono"
+	// 	textcode "code/incar.d"     65 80 27 1.5 "mono"
+	// 	textcode "code/browser.d"    5 35 40 1.5 "mono"
+	// 	textcode "code/count.d"     50 35 22 1.5 "mono"
+	// 	textcode "code/clock.d"     75 35 22 1.5 "mono"
+
+	// 	text "AAPL.d"        	5  84 2
+	// 	text "AAPL.csv"        	35 84 2
+	// 	text "incar.d"          65 84 2
+	// 	text "browser.d"        5  39 2
+	// 	text "count.d"        	50 39 2
+	// 	text "clock.d"        	75 39 2
+	// eslide
 edeck
