@@ -393,7 +393,7 @@ deck
 		dchart opts -csv -csvcol=Date,Volume code/AAPL.csv
 		ctext "Reading CSV files" cap1x cap1y capsize
 		ctext "dchart -csv -csvcol=Date,Volume AAPL.csv" cap1x cap2y cmdsize "mono" cmdcolor
-		textfile "code/AAPL.csv" 80 22 0.75 "mono" datacolor
+		textfile "code/AAPL.csv" 75 20 0.5 "mono" datacolor
  	eslide
 
 	// frames
@@ -483,9 +483,9 @@ deck
 
 	// y range
 	slide bgcolor textcolor
-		dchart opts -yrange=0,700,50 -grid -yaxis code/AAPL.d
+		dchart opts -yrange=0,900,100 -grid -yaxis code/AAPL.d
 		ctext "Y-Range" cap1x cap1y capsize
-		ctext "dchart -yrange=0,700,50 -grid -yaxis AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
+		ctext "dchart -yrange=0,900,100 -grid -yaxis AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
 	// barwidth
@@ -666,7 +666,7 @@ deck
 	slide
 		ctext    "Using dchart with decksh"   50 top titlesize
 		include  "code/dchart-decksh.dsh"
-		textcode "code/dchart-decksh.dsh"     10 42 80 1.5 "mono"
+		textcode "code/dchart-decksh.dsh"     20 45 65 1.5 "mono"
 	eslide
 
 	// // data files
