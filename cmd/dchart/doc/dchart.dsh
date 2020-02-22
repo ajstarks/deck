@@ -114,6 +114,20 @@ deck
  		elist
 	eslide
 
+	// dchart with decksh
+	slide
+		ctext    "Using dchart with decksh"   50 top titlesize
+		include  "code/dchart-decksh.dsh"
+		textcode "code/dchart-decksh.dsh"     20 45 65 1.5
+	eslide
+
+	// Composite Chart
+	slide
+		ctext    "Composite Charts"             50 top titlesize
+		include  "code/composite.dsh"
+		textcode "code/composite.dsh"           20 30 65 1.5
+	eslide
+
 	// command line options
 	slide
 		textcolor=chartcolor
@@ -661,11 +675,7 @@ deck
 		ctext "dchart -radial -psize=10 -pwidth=25 -top=60 -textsize=3 -spokes clock.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	slide
-		ctext    "Using dchart with decksh"   50 top titlesize
-		include  "code/dchart-decksh.dsh"
-		textcode "code/dchart-decksh.dsh"     20 45 65 1.5 "mono"
-	eslide
+	
 
 	// // data files
 	// slide

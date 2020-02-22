@@ -1,0 +1,6 @@
+// go run mfunc.go -f cos > code/cos.d
+// go run mfunc.go -f sin > code/sin.d
+dim="-top=80 -bottom=60 -left=20 -right=80"
+copt="-fulldeck=f -title=f -val=f -bar=f -line -vol"
+dchart copt dim -xlabel=10 -color orange code/cos.d
+dchart copt dim -xlabel=0                code/sin.d
