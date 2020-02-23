@@ -125,7 +125,7 @@ deck
 	slide
 		ctext    "Composite Charts"             50 top titlesize
 		include  "code/composite.dsh"
-		textcode "code/composite.dsh"           20 30 65 1.5
+		textcode "code/composite.dsh"           10 30 85 1.5
 	eslide
 
 	// command line options
@@ -191,13 +191,13 @@ deck
 			li "word bar chart"
 			li "horizontal bar chart"
 			li "donut chart"
-			li "dot plot"
+			li "dot chart"
 			li "line chart"
 			li "proportional grid"
 			li "proportional map"
 			li "radial chart"
 			li "scatter chart"
-			li "volume plot"
+			li "volume (area) chart"
 		elist
 	
 		// chart elements
@@ -383,7 +383,7 @@ deck
 		ctext "Chart Attributes" 50 top titlesize
 		etext "yaxis"  12 30 3 "sans" cmdcolor
 		etext "left"   20 50 3 "sans" cmdcolor
-		ctext "val"    20 72 3 "sans" cmdcolor
+		ctext "val"    20 60 3 "sans" cmdcolor
 		etext "title"  40 80 3 "sans" cmdcolor
 		text  "top"    50 75 3 "sans" cmdcolor
 		text  "bar"    50 50 3 "sans" cmdcolor
@@ -414,13 +414,6 @@ deck
 		dchart opts -frame=t -framecolor=red code/AAPL.d
 		ctext "Frame, Frame Color" cap1x cap1y capsize
 		ctext "dchart -frame=t -framecolor=red AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
-	eslide
-
-	// target line
-	slide bgcolor textcolor
-		dchart opts -hline=700,Target -yaxis code/AAPL.d
-		ctext "Target Line, Y-Axis" cap1x cap1y capsize
-		ctext "dchart -hline=700,Target -yaxis AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
 	// bgcolor
@@ -484,6 +477,13 @@ deck
 		dchart opts -color gray code/AAPL.d
 		ctext "Color" cap1x cap1y capsize
 		ctext "dchart -color gray AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
+	eslide
+
+	// target line
+	slide bgcolor textcolor
+		dchart opts -hline=250,Target -yaxis code/AAPL.d
+		ctext "Target Line, Y-Axis" cap1x cap1y capsize
+		ctext "dchart -hline=250,Target -yaxis AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
 	// y axis, grid
