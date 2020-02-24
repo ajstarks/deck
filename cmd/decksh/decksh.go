@@ -1454,7 +1454,7 @@ func keyparse(w io.Writer, tokens []string, t string, n int) error {
 	case "hline":
 		return hline(w, tokens, n)
 
-	case "dchart", "chart":
+	case "dchart":
 		return chart(w, t, n)
 
 	default: // not a keyword, process assignments
