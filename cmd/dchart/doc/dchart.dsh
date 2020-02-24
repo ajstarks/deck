@@ -7,35 +7,17 @@ deck
 	cmdcolor="rgb(75,75,75)"
 	chartcolor="steelblue"
 
-	// Title Page
-	slide "black"
-		ctext "dchart"						50 60 8 "sans" "white"
-		ctext "deck/decksh charting"		50 37 6 "sans" "white"
-		topts="-fulldeck=f -textsize=0.75"
-		r1="-top=90 -bottom=70"
-		r2="-top=57 -bottom=45"
-		r3="-top=27 -bottom=20"
-
-		c1="-left=5  -right=25"
-		c2="-left=30 -right=48"
-		c3="-left=55 -right=73"
-		c4="-left=80 -right=98"
-
-		r2opt="-xlabel=0 -bar=f -title=f"
-		
-		dchart topts -bar -xlabel=0                           r1 c1 code/AAPL.d
-		dchart topts -hbar                                    r1 -left=40  -right=60 code/AAPL.d
-		dchart topts -wbar                                    r1 -left=70  -right=90 code/browser.d
-
-		dchart topts -scatter r2opt                           r2 c1 code/AAPL.d
-		dchart topts -dot     r2opt                           r2 c2 code/AAPL.d
-		dchart topts -line    r2opt                           r2 c3 code/AAPL.d
-		dchart topts -vol     r2opt                           r2 c4 code/AAPL.d
-
-		dchart topts -pmap   -pwidth=2                        -top=30  c1 code/browser2.d
-		dchart topts -pgrid  -ls=1.5 -val=f                   -top=32  c2 code/incar.d
-		dchart topts -donut  -psize=9 -pwidth=1 -color=std    -top=27 -left=62  code/browser.d
-		dchart topts -radial -psize=2 -pwidth=8               -top=27 -left=88  code/count.d
+	// dchart overview
+	slide
+		text "dchart: charts for deck/decksh" left top titlesize "sans" "black" 100 "https://github.com/ajstarks/deck/tree/master/cmd/dchart"
+		ctext "Bitcoin to USD" 35 79 1.5
+		topts="-fulldeck=f -textsize=1"
+		dchart topts  -top=75 -left=10 -bottom=50 -right=60 -color=steelblue -title=f -bar=f -vol -val=f -xlabel=0 -yaxis -grid -csv -csvcol=Date,Close -yrange=0,20000,4000 code/BTC-USD.csv
+		dchart topts  -top=48 -left=10 -bottom=40 -right=60 -color=maroon -yaxis=f -bar -val=f -xlabel=100 -xlast -title=f -csv -csvcol=Date,Volume code/BTC-USD.csv
+		dchart topts  -top=75 -left=72 -bottom=50 -right=95 -xlabel=5  code/AAPL.d
+		dchart topts  -top=40 -left=72            -right=75 -pgrid  -ls=2.4 -val=f code/incar.d
+		dchart topts  -top=25 -left=40 -bottom=20 -right=60  -wbar  -ls=2.8 code/browser.d
+		dchart topts  -top=25 -left=5  -bottom=15 -right=30  -val=f -bar=f -vol -xlabel=10 -color=brown code/sine.d
 	eslide
 
 	// chart types
@@ -126,6 +108,10 @@ deck
 		ctext    "Composite Charts"             50 top titlesize
 		include  "code/composite.dsh"
 		textcode "code/composite.dsh"           10 30 85 1.5
+	eslide
+
+	slide
+		ctext "Command Line Options" 50 50 6
 	eslide
 
 	// command line options
@@ -370,7 +356,7 @@ deck
 
 // Option section
 	slide
-		ctext "Command Option Examples" 50 50 6
+		ctext "Command Examples" 50 50 6
 	eslide
 
 	// sample chart
