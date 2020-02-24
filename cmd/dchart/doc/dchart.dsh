@@ -65,18 +65,30 @@ deck
 		text "Radial"            80 tr ts
 	eslide
 
+	// data
+	slide
+		tcapy=35
+		capsize=titlesize/2
+		ctext    "Data" 50 top titlesize
+		textfile "code/AAPL.d"           5 70 1.2 "mono" datacolor
+		textfile "code/AAPL.csv"        40 70 1.2 "mono" datacolor
+		text     "Tab-Separated"          5 tcapy capsize
+		text     "Comma-Separated (CSV)" 40 tcapy capsize 
+	eslide
+
 	// data to picture
 	slide
-		ctext "Data to Chart" 50 top titlesize
-		ctext "Data"                  10 35 3   "sans" datacolor
-		ctext "Markup"                40 35 3   "sans" cmdcolor
-		ctext "PDF Rendition"         82 35 3   "sans" chartcolor
-		textfile "code/AAPL.d"        3 70 1.2 "mono" datacolor
-		textfile "code/dchartgen.txt" 22 70 1.2 "mono" cmdcolor
+		ctext     "Data to Chart" 50 top titlesize
+		ctext     "Data"                  10 tcapy capsize   "sans" datacolor
+		ctext     "Markup"                40 tcapy capsize   "sans" cmdcolor
+		ctext     "PDF Rendition"         82 tcapy capsize   "sans" chartcolor
+		textfile  "code/AAPL.d"        3 70 1.2 "mono" datacolor
+		textfile  "code/dchartgen.txt" 22 70 1.2 "mono" cmdcolor
 		dchart -fulldeck=f -left=65 -right=97 -top=65 -bottom=45 -xlabel=3  -textsize=1.2 code/AAPL.d
-		etext "dchart "45 15 3 "mono"
-		ctext "AAPL.d" 50 15 3 "mono" datacolor
-		text " | pdf"  55 15 3 "mono" chartcolor
+		etext     "dchart "45 15 capsize "mono"
+		ctext     "AAPL.d" 50 15 capsize "mono" datacolor
+		arrow 22 60 65 60 1.5 4 5 "rgb(240,240,240)"
+		text      " | pdf"  55 15 capsize "mono" chartcolor
 	eslide
 
 	// generating data
@@ -397,9 +409,9 @@ deck
 
 	// frames
 	slide bgcolor textcolor
-		dchart opts -frame=t -framecolor=red code/AAPL.d
+		dchart opts -frame=t -framecolor=blue code/AAPL.d
 		ctext "Frame, Frame Color" cap1x cap1y capsize
-		ctext "dchart -frame=t -framecolor=red AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
+		ctext "dchart -frame=t -framecolor=blue AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
 	// bgcolor
@@ -660,24 +672,4 @@ deck
 		ctext "Radial with Spokes" cap1x cap1y capsize
 		ctext "dchart -radial -psize=10 -pwidth=25 -top=60 -textsize=3 -spokes clock.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
-
-	
-
-	// // data files
-	// slide
-	// 	ctext "Data Files" 50 top titlesize
-	// 	textcode "code/AAPL.d"      5 80 22 1.5 "mono"
-	// 	textcode "code/AAPL.csv"    35 80 22 1.5 "mono"
-	// 	textcode "code/incar.d"     65 80 27 1.5 "mono"
-	// 	textcode "code/browser.d"    5 35 40 1.5 "mono"
-	// 	textcode "code/count.d"     50 35 22 1.5 "mono"
-	// 	textcode "code/clock.d"     75 35 22 1.5 "mono"
-
-	// 	text "AAPL.d"        	5  84 2
-	// 	text "AAPL.csv"        	35 84 2
-	// 	text "incar.d"          65 84 2
-	// 	text "browser.d"        5  39 2
-	// 	text "count.d"        	50 39 2
-	// 	text "clock.d"        	75 39 2
-	// eslide
 edeck
