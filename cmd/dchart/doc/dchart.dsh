@@ -69,6 +69,13 @@ deck
 	slide
 		tcapy=35
 		capsize=titlesize/2
+		ctext "X Label"              9 76 1.5
+		ctext "Y Value"             19 76 1.5
+		ctext "Columns (pick two)"  55 76 1.5
+		ubrace  9 75  8 1 1 0.1
+		ubrace 19 75  8 1 1 0.1
+		ubrace 55 75 30 1 1 0.1
+
 		ctext    "Data" 50 top titlesize
 		textfile "code/AAPL.d"           5 70 1.2 "mono" datacolor
 		textfile "code/AAPL.csv"        40 70 1.2 "mono" datacolor
