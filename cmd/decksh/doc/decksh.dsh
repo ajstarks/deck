@@ -468,7 +468,7 @@ deck
 		lx+=30
 		apix=50
 		text "textfile"		lx gtop ts "mono" spotcolor
-		ctext `"file" x y size [font] [color] [op] [sp]` apix apiy apisize "serif" apicolor
+		ctext `"filename" x y size [font] [color] [op] [sp]` apix apiy apisize "serif" apicolor
 		textfile "code/example.txt"	lx row2 2
 	
 		lx+=30
@@ -738,13 +738,13 @@ deck
 		imy=row1+35
 		apiy=row1-sep
 		ctext "image" lx row1 ts "mono" spotcolor
-		ctext `"file" x y w h [scale] [link]` lx apiy apisize "serif" apicolor
+		ctext `"filename" x y w h [scale] [link]` lx apiy apisize "serif" apicolor
 		image "images/follow.jpg" lx imy 640 480 40
 		circle lx imy spotsize spotcolor
 		
 		lx+=40
 		ctext "cimage" lx row1 ts "mono" spotcolor
-		ctext `"file" "caption" x y w h [scale] [link]` lx apiy apisize "serif" apicolor
+		ctext `"filename" "caption" x y w h [scale] [link]` lx apiy apisize "serif" apicolor
 		cimage "images/cloudy.jpg" "Up in the clouds" lx imy 640 480 40
 		circle lx imy spotsize spotcolor
 	eslide
@@ -973,7 +973,7 @@ deck
 		text "dchart: charts for deck" left top titlesize "serif" "black" 100 "https://github.com/ajstarks/deck/tree/master/cmd/dchart"
 		ctext "Bitcoin to USD" 35 79 1.5
 		dchart -fulldeck=f -textsize=1   -top=75 -left=10 -bottom=50 -right=60 -color=steelblue -title=f -bar=f -vol -val=f -xlabel=0 -yaxis -grid -csv -csvcol=Date,Close -yrange=0,20000,4000 code/BTC-USD.csv
-		dchart -fulldeck=f -textsize=1   -top=48 -left=10 -bottom=40 -right=60 -color=maroon -yaxis=f -bar -val=f -xlabel=100 -xlast -title=f -csv -csvcol=Date,Volume code/BTC-USD.csv
+		dchart -fulldeck=f -textsize=1   -top=48 -left=10 -bottom=40 -right=60 -color=maroon -yaxis=f -bar=f -vol -val=f -xlabel=100 -xlast -title=f -csv -csvcol=Date,Volume code/BTC-USD.csv
 		dchart -fulldeck=f -textsize=1   -top=75 -left=72 -bottom=50 -right=95 -xlabel=5  code/AAPL.d
 		dchart -fulldeck=f -textsize=0.9 -top=40 -left=72            -right=75 -pgrid  -ls=2.4 -val=f code/incar.d
 		dchart -fulldeck=f -textsize=0.9 -top=25 -left=40 -bottom=20 -right=60  -wbar  -ls=2.8 code/browser.d
