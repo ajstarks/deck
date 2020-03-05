@@ -445,10 +445,10 @@ deck
 		ctext "dchart -datacond=150,200,orange AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	// stagger x axis labels
+	// x axis label interval
 	slide bgcolor textcolor
 		dchart opts -xlabel=2 code/AAPL.d
-		ctext "X-Axis Labels Skip" cap1x cap1y capsize
+		ctext "X-Axis Label Interval" cap1x cap1y capsize
 		ctext "dchart -xlabel=2 AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
@@ -487,11 +487,11 @@ deck
 		ctext "dchart -vcolor=gray AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
-	// value scaling, x axis labels
+	// scaling, x axis labels
 	slide bgcolor textcolor
-		dchart opts -left 30 -right 70 -top 70 -bottom 40 code/AAPL.d
+		dchart opts -xlabel=2 -left 30 -right 70 -top 70 -bottom 40 code/AAPL.d
 		ctext "Scaling" cap1x cap1y capsize
-		ctext "dchart -left 30 -right 70 -top 70 -bottom 40 AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
+		ctext "dchart -xlabel=2 -left 30 -right 70 -top 70 -bottom 40 AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
 	// data color
