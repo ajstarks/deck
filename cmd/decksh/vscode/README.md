@@ -5,7 +5,6 @@ Place the contents of the vscode directory into ```<home>/.vscode/extensions/ajs
 The support includes syntax coloring by adding:
 
 ```
-{
     "editor.tokenColorCustomizations": {
         "textMateRules": [
             {

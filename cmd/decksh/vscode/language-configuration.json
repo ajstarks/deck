@@ -5,18 +5,16 @@
     },
     // symbols that are auto closed when typing
     "autoClosingPairs": [
-        [ "deck", "\nedeck" ],
         [ "slide", "\n\teslide" ],
 		[ "li ", "\"\""],
 		[ "text ", "\"\""],
 		[ "ctext ", "\"\""],
 		[ "etext ", "\"\""],
 		[ "image ", "\"\""],
-		[ "for", "\n\t\t\tefor" ],
-		[ "list", "\n\t\telist" ],
-		[ "nlist", "\n\t\telist" ],
-		[ "blist", "\n\t\telist" ],
-		[ "clist", "\n\t\telist" ],
+		[ "list ", "\n\t\telist" ],
+		[ "nlist ", "\n\t\telist" ],
+		[ "blist ", "\n\t\telist" ],
+		[ "clist ", "\n\t\telist" ],
 		[ "`", "`" ],
         [ "\"", "\"" ],
         [ "'", "'" ]

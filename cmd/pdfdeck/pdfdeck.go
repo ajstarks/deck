@@ -713,5 +713,6 @@ func main() {
 	fontmap["serif"] = *serifont
 	fontmap["mono"] = *monofont
 	fontmap["symbol"] = *symbolfont
+	//defer profile.Start(profile.CPUProfile, profile.ProfilePath(".")).Stop()
 	dodeck(flag.Args(), pageconfig, pw, ph, *stdout, *outdir, *author, *title, *gridpct, begin, end)
 }

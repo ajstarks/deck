@@ -1,7 +1,6 @@
 // comprehensive tests
 deck
-	canvas 1200 900
-
+	canvas 792 612
 	// Grid
 	slide
 		ctext "Loops" 50 50 5
@@ -93,6 +92,8 @@ deck
 		py=polary 50 50 20 a8
 		ctext "π+3/4 (325°)" px py 2
 		line 50 50 px py 0.1
+
+		circle 50 50 40 "gray" 20
 	eslide
 
 	// braces

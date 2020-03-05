@@ -28,6 +28,7 @@ var (
 	readcsv, showdot, datamin, showvolume, showscatter, showpct                                      bool
 	showbar, showval, showxlast, showline, showhbar, wbar, showaxis, shownote, showrline, showframe  bool
 	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes, solidpmap bool
+	showxstagger                                                                                     bool
 	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols                        string
 	hline, noteloc, labelcolor, rlinecolor, framecolor, datacond                                     string
 )
@@ -95,6 +96,7 @@ func cmdflags() {
 	flag.BoolVar(&showframe, "frame", false, "show frame")
 	flag.BoolVar(&showrline, "rline", false, "show regression line")
 	flag.BoolVar(&showxlast, "xlast", false, "show the last label")
+	flag.BoolVar(&showxstagger, "xstagger", false, "stagger x axis labels")
 	flag.BoolVar(&fulldeck, "fulldeck", true, "generate full markup")
 	flag.BoolVar(&datamin, "dmin", false, "zero minimum")
 	flag.BoolVar(&readcsv, "csv", false, "read CSV data")
@@ -930,6 +932,9 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 			xlabels := strings.Split(data.label, `\n`)
 			xly := bottom - (ts * 2)
 			for _, xl := range xlabels {
+				if showxstagger && (i+1)%2 == 0 {
+					xly -= (ts * 2)
+				}
 				if xlabrot == 0 {
 					deck.TextMid(x, xly, xl, "sans", ts*0.8, labelcolor)
 				} else {

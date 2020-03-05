@@ -67,6 +67,7 @@ The command line options are:
 	-textsize    text size (default 1.5)
 	-xlabel      x axis label interval (default 1, 0 to supress all labels)
 	-xlabrot     x axis label rotation (default 0, no rotation)
+	-xstagger    stagger x axis labels
 	-xlast       show the last x label
 	-color       data color (default "lightsteelblue")
 	-vcolor      value color (default "rgb(127,0,0)")

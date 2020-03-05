@@ -235,10 +235,13 @@ func dopoly(doc *svg.SVG, xc, yc string, cw, ch float64, color string, opacity f
 }
 
 // dotext places text elements on the canvas according to type
-func dotext(doc *svg.SVG, cw, x, y, fs, wp, ls float64, tdata, font, align, ttype, color string, opacity float64) {
+func dotext(doc *svg.SVG, cw, x, y, fs, wp, rotation, ls float64, tdata, font, align, ttype, color string, opacity float64) {
 	var tw float64
 	ls *= fs
 	td := strings.Split(tdata, "\n")
+	if rotation > 0 {
+		doc.RotateTranslate(x, y, rotation)
+	}
 	if ttype == "code" {
 		font = "mono"
 		ch := float64(len(td)) * ls
@@ -257,6 +260,9 @@ func dotext(doc *svg.SVG, cw, x, y, fs, wp, ls float64, tdata, font, align, ttyp
 			showtext(doc, x, y, t, fs, font, color, align)
 			y += ls
 		}
+	}
+	if rotation > 0 {
+		doc.Gend()
 	}
 }
 
@@ -279,9 +285,12 @@ func showtext(doc *svg.SVG, x, y float64, s string, fs float64, font, color, ali
 }
 
 // dolists places lists on the canvas
-func dolist(doc *svg.SVG, x, y, fs, lwidth, spacing float64, tlist []deck.ListItem, font, ltype, align, color string, opacity float64) {
+func dolist(doc *svg.SVG, x, y, fs, rotation, lwidth, spacing float64, tlist []deck.ListItem, font, ltype, align, color string, opacity float64) {
 	if font == "" {
 		font = "sans"
+	}
+	if rotation > 0 {
+		doc.RotateTranslate(x, y, rotation)
 	}
 	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%.2fpx", setop(opacity), color, fontlookup(font), fs))
 	if ltype == "bullet" {
@@ -315,7 +324,11 @@ func dolist(doc *svg.SVG, x, y, fs, lwidth, spacing float64, tlist []deck.ListIt
 		}
 		y += ls
 	}
+
 	doc.Gend()
+	if rotation > 0 {
+		doc.Gend()
+	}
 }
 
 // textwrap draws text at location, wrapping at the specified width
@@ -537,7 +550,7 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, cw, ch, gp float64, outname, tit
 			t.Lp = linespacing
 		}
 		x, y, fs = dimen(cw, ch, t.Xp, t.Yp, t.Sp)
-		dotext(doc, cw, x, y, fs, t.Wp, t.Lp, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity)
+		dotext(doc, cw, x, y, fs, t.Wp, t.Rotation, t.Lp, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity)
 	}
 	// for every list element...
 	for _, l := range slide.List {
@@ -551,7 +564,7 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, cw, ch, gp float64, outname, tit
 			l.Wp = listwrap
 		}
 		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
-		dolist(doc, x, y, fs, l.Wp, l.Lp, l.Li, l.Font, l.Type, l.Align, l.Color, l.Opacity)
+		dolist(doc, x, y, fs, l.Wp, l.Rotation, l.Lp, l.Li, l.Font, l.Type, l.Align, l.Color, l.Opacity)
 	}
 	// add a grid, if specified
 	if gp > 0 {
