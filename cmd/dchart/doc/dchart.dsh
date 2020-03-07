@@ -103,7 +103,7 @@ deck
 		ctext "Generating data for charts" 50 top titlesize
 		codesize=1.75
 		sineopts="-fulldeck=f -bar=f -val=f -xlabel=10 -line -vol"
-		textfile "code/sine.go"    5 75 codesize "mono"
+		textfile "code/sine.gocode"    5 75 codesize "mono"
 		textfile "code/sineout.d" 75 85 codesize "mono" datacolor
 		hline 2 58 70 42 cmdcolor 5
 		dchart sineopts -left=30 -right=65 -top=75 -bottom=65 code/sine.d
@@ -176,10 +176,12 @@ deck
 			li "-pmap"
 			li "-radial"
 			li "-scatter"
+			li "-slope"
 			li "-vol"
 		elist
 			list col2 row1a tts "sans" cmdcolor 100 tsp
 			li "true"
+			li "false"
 			li "false"
 			li "false"
 			li "false"
@@ -202,6 +204,7 @@ deck
 			li "proportional map"
 			li "radial chart"
 			li "scatter chart"
+			li "slope chart"
 			li "volume (area) chart"
 		elist
 	
@@ -639,6 +642,13 @@ deck
 		dchart opts -wbar code/browser.d
 		ctext "Word Bar" cap1x cap1y capsize
 		ctext "dchart -wbar AAPL.d" cap1x cap2y cmdsize "mono" cmdcolor
+	eslide
+
+	// slope chart (multiple)
+	slide bgcolor textcolor
+		dchart opts -left=10 -right=25 -top=80 -bottom=60 -slope code/slope.d
+		ctext "Slope Chart" cap1x cap1y capsize
+		ctext "dchart -left=10 -right=25 -top=80 -bottom=60 -slope slope.d" cap1x cap2y cmdsize "mono" cmdcolor
 	eslide
 
 	// donut

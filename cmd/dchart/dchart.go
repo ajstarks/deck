@@ -23,14 +23,14 @@ type ChartData struct {
 }
 
 var (
-	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop, linewidth, xlabrot     float64
-	xint, pmlen                                                                                      int
-	readcsv, showdot, datamin, showvolume, showscatter, showpct                                      bool
-	showbar, showval, showxlast, showline, showhbar, wbar, showaxis, shownote, showrline, showframe  bool
-	showgrid, showtitle, fulldeck, showdonut, showpmap, showpgrid, showradial, showspokes, solidpmap bool
-	showxstagger                                                                                     bool
-	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols                        string
-	hline, noteloc, labelcolor, rlinecolor, framecolor, datacond                                     string
+	ts, left, right, top, bottom, ls, barw, umin, umax, psize, pwidth, volop, linewidth, xlabrot float64
+	xint, pmlen                                                                                  int
+	readcsv, showdot, datamin, showvolume, showscatter, showpct                                  bool
+	showbar, showval, showxlast, showline, showhbar, wbar, showslope                             bool
+	showaxis, shownote, showrline, showframe, showgrid, showtitle, fulldeck                      bool
+	showdonut, showpmap, showpgrid, showradial, showspokes, solidpmap, showxstagger              bool
+	bgcolor, datacolor, datafmt, chartitle, valpos, valuecolor, yaxr, csvcols                    string
+	hline, noteloc, labelcolor, rlinecolor, framecolor, datacond                                 string
 )
 
 var blue7 = []string{
@@ -86,6 +86,7 @@ func cmdflags() {
 	flag.BoolVar(&showhbar, "hbar", false, "show a horizontal bar chart")
 	flag.BoolVar(&showval, "val", true, "show data values")
 	flag.BoolVar(&showaxis, "yaxis", false, "show y axis")
+	flag.BoolVar(&showslope, "slope", false, "show a slope graph")
 	flag.BoolVar(&showtitle, "title", true, "show title")
 	flag.BoolVar(&showgrid, "grid", false, "show y axis grid")
 	flag.BoolVar(&showscatter, "scatter", false, "show scatter chart")
@@ -529,6 +530,83 @@ func radial(deck *generate.Deck, data []ChartData, title string, maxd float64) {
 			deck.Line(tx, ty, px, py, 0.05, "gray", 50)
 		}
 		t -= step
+	}
+}
+
+// slopechart draws a slope chart
+func slopechart(deck *generate.Deck, r io.ReadCloser) {
+	data, mindata, maxdata, title := getdata(r)
+	if len(data) < 2 {
+		fmt.Fprintf(os.Stderr, "slope graphs need at least two data points")
+		return
+	}
+
+	if !datamin {
+		mindata = 0
+	}
+
+	if umin >= 0 {
+		mindata = umin
+	}
+
+	if umax >= 0 && umax > mindata {
+		maxdata = umax
+	}
+
+	if len(chartitle) > 0 {
+		title = xmlesc(chartitle)
+	}
+
+	if fulldeck {
+		deck.StartSlide(bgcolor)
+	}
+
+	lw := linewidth / 2
+	lsize := ts * 0.75
+	tsize := ts * 1.5
+	w := right - left
+	h := top - bottom
+	if len(title) > 0 && showtitle {
+		hsize := ts * 2
+		deck.Text(left, top+10, title, "sans", hsize, titlecolor)
+	}
+
+	// these are magical
+	hskip := w * .60
+	vskip := h * 1.4
+
+	x1 := left
+	x2 := right
+	// Process the data in pairs
+	for i := 0; i < len(data)-1; i += 2 {
+		if len(data[i].label) > 0 {
+			deck.TextMid(x1+(w/2), top+3, data[i].note, "sans", tsize, titlecolor)
+		}
+		v1 := data[i].value
+		v2 := data[i+1].value
+		v1y := vmap(v1, mindata, maxdata, bottom, top)
+		v2y := vmap(v2, mindata, maxdata, bottom, top)
+		deck.Line(x1, bottom, x1, top, lw, "black")
+		deck.Line(x2, bottom, x2, top, lw, "black")
+		deck.Circle(x1, v1y, ts, datacolor)
+		deck.Circle(x2, v2y, ts, datacolor)
+		deck.Line(x1, v1y, x2, v2y, linewidth, datacolor)
+		deck.TextMid(x1, bottom-2, data[i].label, "sans", ts, labelcolor)
+		deck.TextMid(x2, bottom-2, data[i+1].label, "sans", ts, labelcolor)
+		deck.TextEnd(x1-1, top, dformat(maxdata), "sans", lsize, labelcolor)
+		deck.TextEnd(x1-1, v1y, dformat(v1), "sans", lsize, valuecolor)
+		deck.Text(x2+1, v2y, dformat(v2), "sans", lsize, valuecolor)
+		x1 += w + hskip
+		x2 += w + hskip
+		if x2 > 100 {
+			x1 = left
+			x2 = right
+			top -= vskip
+			bottom -= vskip
+		}
+	}
+	if fulldeck {
+		deck.EndSlide()
 	}
 }
 
@@ -1018,6 +1096,8 @@ func chart(deck *generate.Deck, r io.ReadCloser) {
 		wbchart(deck, r)
 	case showdonut, showpmap, showpgrid, showradial:
 		pchart(deck, r)
+	case showslope:
+		slopechart(deck, r)
 	default:
 		vchart(deck, r)
 	}

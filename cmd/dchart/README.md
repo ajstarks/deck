@@ -70,6 +70,7 @@ flags control the visibility of plot components.
 	-scatter     show a scatter chart (default false)
 	-dot         show dot plot (default false)
 	-line        show line chart (default false)
+	-slope       show a slope chart (default false)
 	-frame       show a frame outlining the chart (default false)
 	-datacond    conditional coloring (low,high,color)
 	-rline       show regression line (default false)
@@ -226,8 +227,9 @@ here are views of proportional data:
 	
 ![wbar](images/wbar.png)
 	
-	$ dchart -donut -color=std -pwidth=5 browser.d 
-	
+	$ dchart -donut -color=std -pwidth=5 browser.d
+
+
 ![donut](images/donut.png)
 
 	$ dchart -pmap -pwidth=5 -textsize=1 browser.d
@@ -245,6 +247,33 @@ Using this data in incar.d:
 the note field may be used to specify the color
 
 	$ dchart -ls 3 -val=f -pgrid incar.d
+
+Using this data in slope.d
+
+	# Test Slope Graphs
+	one     20      First
+	two     80
+
+	three   0       Second
+	four    0
+
+	five    100     Third
+	six     0
+
+	seven   0       Fourth
+	eight   100
+
+	nine    50      Fifth
+	ten     50
+
+	eleven  100     Sixth
+	twelve  100
+
+
+![slope](images/slopechart.png)
+
+	$ dchart -slope -left=10 -right=30 -top=80 -bottom=60 slope.d
+	
 
 ![pgrid](images/pgrid.png)
 
