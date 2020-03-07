@@ -22,7 +22,7 @@ deck
 
 	// chart types
 	slide
-		topts="-fulldeck=f -textsize=0.75"
+		topts="-fulldeck=f -textsize=0.75 -title=f"
 		r1="-top=90 -bottom=70"
 		r2="-top=57 -bottom=45"
 		r3="-top=27 -bottom=20"
@@ -32,11 +32,12 @@ deck
 		c3="-left=55 -right=73"
 		c4="-left=80 -right=98"
 
-		r2opt="-xlabel=0 -bar=f -title=f"
+		r2opt="-xlabel=0 -bar=f"
 
 		dchart topts -bar -xlabel=0                           r1 c1 code/AAPL.d
-		dchart topts -hbar                                    r1 -left=40  -right=60 code/AAPL.d
-		dchart topts -wbar                                    r1 -left=70  -right=90 code/browser.d
+		dchart topts -hbar                                    r1 -left=35 -right=48 code/AAPL.d
+		dchart topts -wbar                                    r1 c3 code/browser.d
+		dchart topts -slope -max=100                          r1 -left=80 -right=95 code/slope1.d
 
 		dchart topts -scatter r2opt                           r2 c1 code/AAPL.d
 		dchart topts -dot     r2opt                           r2 c2 code/AAPL.d
@@ -50,16 +51,17 @@ deck
 
 		ts=2
 		tr=65
-		text "Column"             5 tr ts
+		text "Column"             5  tr ts
 		text "Bar"                35 tr ts
-		text "Word Bar"           70 tr ts
+		text "Word Bar"           55 tr ts
+		text "Slope"              80 tr ts
 		tr-=23
-		text "Dot"                5 tr ts
+		text "Dot"                5  tr ts
 		text "Scatter"            30 tr ts
-		text "Line"               55  tr ts
+		text "Line"               55 tr ts
 		text "Area"               80 tr ts
 		tr-=37
-		text "Proportional Map"  5 tr ts
+		text "Proportional Map"  5  tr ts
 		text "Proportonal Grid"  30 tr ts
 		text "Donut/Pie"         55 tr ts
 		text "Radial"            80 tr ts
