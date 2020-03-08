@@ -898,7 +898,8 @@ func vchart(deck *generate.Deck, r io.ReadCloser) {
 	}
 
 	if showaxis {
-		yaxis(deck, left-spacing-(dw*0.5), mindata, maxdata)
+		// yaxis(deck, left-spacing-(dw*0.5), mindata, maxdata)
+		yaxis(deck, left-spacing, mindata, maxdata)
 	}
 
 	if len(hline) > 0 {
