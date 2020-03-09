@@ -549,8 +549,10 @@ func slopechart(deck *generate.Deck, r io.ReadCloser) {
 		mindata = umin
 	}
 
+	var showslopemax bool
 	if umax >= 0 && umax > mindata {
 		maxdata = umax
+		showslopemax = true
 	}
 
 	if len(chartitle) > 0 {
@@ -580,7 +582,7 @@ func slopechart(deck *generate.Deck, r io.ReadCloser) {
 	// Process the data in pairs
 	for i := 0; i < len(data)-1; i += 2 {
 		if len(data[i].label) > 0 {
-			deck.TextMid(x1+(w/2), top+3, data[i].note, "sans", tsize, titlecolor)
+			deck.TextMid(x1+(w/2), top+3, data[i].note, "sans", tsize, labelcolor)
 		}
 		v1 := data[i].value
 		v2 := data[i+1].value
@@ -593,7 +595,10 @@ func slopechart(deck *generate.Deck, r io.ReadCloser) {
 		deck.Line(x1, v1y, x2, v2y, linewidth, datacolor)
 		deck.TextMid(x1, bottom-2, data[i].label, "sans", ts, labelcolor)
 		deck.TextMid(x2, bottom-2, data[i+1].label, "sans", ts, labelcolor)
-		deck.TextEnd(x1-1, top, dformat(maxdata), "sans", lsize, labelcolor)
+		// only show max value id user-specified
+		if showslopemax {
+			deck.TextEnd(x1-1, top, dformat(maxdata), "sans", lsize, labelcolor)
+		}
 		deck.TextEnd(x1-1, v1y, dformat(v1), "sans", lsize, valuecolor)
 		deck.Text(x2+1, v2y, dformat(v2), "sans", lsize, valuecolor)
 		x1 += w + hskip
