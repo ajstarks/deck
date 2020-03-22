@@ -226,14 +226,19 @@ Plain and captioned, with optional scales and links
 
 ## Graphics
 
-Rectangles, ellipses, squares and circles: specify the location and dimensions with optional color and opacity.
+Rectangles, ellipses, squares, circles: specify the location and dimensions with optional color and opacity.
 The default color and opacity is gray, 100%
 
     rect    x y w h [color] [opacity]
     ellipse x y w h [color] [opacity]
 
+
     square  x y w   [color] [opacity]
     circle  x y w   [color] [opacity]
+
+Rounded rectangles are similar, with the added radius for the corners: (solid colors only)
+
+    rrect   x y w h r [color]
 
 For polygons, specify the x and y coordinates as a series of numbers, with optional color and opacity.
 

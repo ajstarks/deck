@@ -2,7 +2,7 @@ deck
 	slide
 		text "first slide" 50 50 2
 	eslide
-	slide
+	slide "black" "white"
 		include "file.dsh"
 	eslide
 edeck

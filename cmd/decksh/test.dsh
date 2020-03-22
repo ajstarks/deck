@@ -186,6 +186,14 @@ deck
 		efor
 	eslide
 
+	// Rounded Rectangles
+	slide
+		ctext "Rounded Rectangles" 50 90 5
+		rrect 30 50 30 30 10
+		rrect 70 50 20 30 5 "red"
+		rrect 50 15 50 10 5 "blue"
+	eslide
+
 	// Loops
 	slide
 		cr=5

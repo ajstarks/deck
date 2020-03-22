@@ -236,6 +236,12 @@ The default color and opacity is gray, 100%
     square  x y w   [color] [opacity]
     circle  x y w   [color] [opacity]
 
+
+Rounded rectangles are similar, with the added radius for the corners: (solid colors only)
+
+    rrect   x y w h r [color]
+
+
 For polygons, specify the x and y coordinates as a series of numbers, with optional color and opacity.
 
     polygon "xcoords" "ycoords" [color] [opacity]

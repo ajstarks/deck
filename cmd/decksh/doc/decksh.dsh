@@ -317,25 +317,28 @@ deck
 		text "Graphics and Arrows" lx headtop hsize "sans" headcolor
 		list lx listtop lsize "mono" "black" 100 listspacing
 			li "rect"
+			li "rrect"
 			li "square"
 			li "ellipse"
 			li "circle"
 			li "polygon"
 			li "arc"
-			li "curve"
+			
 		elist
 		lx+=csep2
 		list lx listtop lsize "mono" "black" 100 listspacing
+			li "curve"
 			li "line"
 			li "hline"
 			li "vline"
 			li "lbrace"
 			li "rbrace"
 			li "ubrace"
-			li "dbrace"
+			
 		elist
 		lx+=csep2
 		list lx listtop lsize "mono" "black" 100 listspacing
+			li "dbrace"
 			li "arrow"
 			li "crarrow"
 			li "clarrow"
@@ -564,8 +567,11 @@ deck
 		
 		gtop-=20
 		r1a=gtop-sep
-		ctext "rect"	lx gtop ts "mono" spotcolor
+		r1b=r1a-3
+		ctext "rect/rrect"	lx gtop ts "mono" spotcolor
 		ctext "x y w h [color] [op]" lx r1a apisize "serif" apicolor
+		ctext "x y w h r [color]" lx r1b apisize "serif" apicolor
+
 		rect lx row1 10 5 grcolor
 		circle lx row1 spotsize spotcolor spotop
 		lx+=25

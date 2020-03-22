@@ -41,6 +41,11 @@ var xmlmap = strings.NewReplacer(
 	"<", "&lt;",
 	">", "&gt;")
 
+var (
+	canvasWidth  = 792.0
+	canvasHeight = 612.0
+)
+
 // xmlesc escapes XML
 func xmlesc(s string) string {
 	return xmlmap.Replace(s)
@@ -355,6 +360,14 @@ func canvas(w io.Writer, s []string, linenumber int) error {
 	}
 	for i := 1; i < 3; i++ {
 		s[i] = eval(s[i])
+	}
+	canvasWidth, e = strconv.ParseFloat(s[1], 64)
+	if e != nil {
+		return e
+	}
+	canvasHeight, e = strconv.ParseFloat(s[2], 64)
+	if e != nil {
+		return e
 	}
 	fmt.Fprintf(w, "<canvas width=%q height=%q/>\n", s[1], s[2])
 	return nil
@@ -671,6 +684,54 @@ func regshapes(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+func roundrect(w io.Writer, s []string, linenumber int) error {
+	n := len(s)
+	if n < 6 {
+		return fmt.Errorf("line %d: %s x y w h r [color]", linenumber, s[0])
+	}
+	x, err := strconv.ParseFloat(eval(s[1]), 64)
+	if err != nil {
+		return err
+	}
+
+	y, err := strconv.ParseFloat(eval(s[2]), 64)
+	if err != nil {
+		return err
+	}
+
+	width, err := strconv.ParseFloat(eval(s[3]), 64)
+	if err != nil {
+		return err
+	}
+
+	height, err := strconv.ParseFloat(eval(s[4]), 64)
+	if err != nil {
+		return err
+	}
+
+	radius, err := strconv.ParseFloat(eval(s[5]), 64)
+	if err != nil {
+		return err
+	}
+	var endtag string
+	if n > 6 {
+		endtag = `color=` + s[6]
+	}
+	rx := x
+	ry := y
+
+	x -= (width / 2)
+	y += (height / 2)
+	fmt.Fprintf(w, "<ellipse xp=\"%v\" yp=\"%v\" wp=\"%v\" hr=\"100\" %s/>\n", x, y, radius, endtag)
+	fmt.Fprintf(w, "<ellipse xp=\"%v\" yp=\"%v\" wp=\"%v\" hr=\"100\" %s/>\n", x+width, y, radius, endtag)
+	fmt.Fprintf(w, "<ellipse xp=\"%v\" yp=\"%v\" wp=\"%v\" hr=\"100\" %s/>\n", x, y-height, radius, endtag)
+	fmt.Fprintf(w, "<ellipse xp=\"%v\" yp=\"%v\" wp=\"%v\" hr=\"100\" %s/>\n", x+width, y-height, radius, endtag)
+	fmt.Fprintf(w, "<line xp1=\"%v\" yp1=\"%v\" xp2=\"%v\" yp2=\"%v\" sp=\"%v\" %s/>\n", x, y, x+width, y, radius, endtag)
+	fmt.Fprintf(w, "<line xp1=\"%v\" yp1=\"%v\" xp2=\"%v\" yp2=\"%v\" sp=\"%v\" %s/>\n", x, y-height, x+width, y-height, radius, endtag)
+	fmt.Fprintf(w, "<rect xp=\"%v\" yp=\"%v\" wp=\"%v\" hp=\"%v\" %s/>\n", rx, ry, width+radius, height, endtag)
+	return nil
+}
+
 // polygon generates markup for polygons
 func polygon(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
@@ -972,7 +1033,12 @@ func rt(x1, y1, x2, y2 float64) (float64, float64) {
 
 // polar converts polar to Cartesian coordinates
 func polar(cx, cy, r, t float64) (float64, float64) {
-	return ((r * math.Cos(t)) + cx), ((r * math.Sin(t)) + cy)
+	//haspect := canvasHeight/canvasWidth
+	//waspect := 1.0 //Width/canvasHeight
+	//rx := r * waspect
+	//ry := r * waspect
+	return ((r * math.Cos(t)) + (cx)), ((r * math.Sin(t)) + (cy))
+
 }
 
 // genarrow returns the components of an arrow
@@ -1423,6 +1489,9 @@ func keyparse(w io.Writer, tokens []string, t string, n int) error {
 
 	case "circle", "square":
 		return regshapes(w, tokens, n)
+
+	case "rrect", "roundrect":
+		return roundrect(w, tokens, n)
 
 	case "polygon", "poly":
 		return polygon(w, tokens, n)
