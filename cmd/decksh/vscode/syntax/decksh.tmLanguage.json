@@ -8,7 +8,7 @@
 		},
 		{
 			"name": "keyword.other.command.decksh",
-			"match": "(?:deck|edeck|canvas|include|grid|vmap|slide|eslide|textblock|textfile|textcode|text|ctext|etext|rtext|random|lbrace|rbrace|ubrace|dbrace|line|blist|list|nlist|clist|li|elist|data|edata|dchart|for|efor|legend|image|cimage|polygon|rect||roundrect|rrect|square|ellipse|circle|curve|arc|arrow|lcarrow|dcarrow|rcarrow|ucarrow|hline|vline|polarx|polary)"
+			"match": "(?:deck|edeck|canvas|include|grid|vmap|slide|eslide|textblock|textfile|textcode|text|ctext|etext|rtext|random|lbrace|rbrace|ubrace|dbrace|line|blist|list|nlist|clist|li|elist|data|edata|dchart|for|efor|legend|image|cimage|polygon|rect|roundrect|rrect|square|ellipse|circle|curve|arc|arrow|lcarrow|dcarrow|rcarrow|ucarrow|hline|vline|polarx|polary)"
 		},
 		
 		{
