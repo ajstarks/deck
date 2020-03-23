@@ -253,6 +253,10 @@ Line thickness, color and opacity are optional, with defaults
     line    x1 y1 x2 y2 [size] [color] [opacity]
     hline   x y length  [size] [color] [opacity]
     vline   x y length  [size] [color] [opacity]
+    pill    x y length  [size] [color]
+
+A "pill" shape is a line with rounded ends.
+
 
 Curve is a quadratic bezier: specify the beginning location, the control point, and ending location.
 For arcs, specify the location of the center point, the width and height, and the beginning and ending angles.

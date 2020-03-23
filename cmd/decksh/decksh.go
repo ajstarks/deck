@@ -684,6 +684,7 @@ func regshapes(w io.Writer, s []string, linenumber int) error {
 	return nil
 }
 
+// roundrect makes a rounded rectangle centered at (x,y) with dimensions (w, h), r is the corner radius
 func roundrect(w io.Writer, s []string, linenumber int) error {
 	n := len(s)
 	if n < 6 {
@@ -717,9 +718,10 @@ func roundrect(w io.Writer, s []string, linenumber int) error {
 	if n > 6 {
 		endtag = `color=` + s[6]
 	}
+
+	// Adjust coordinates so that the reference point is the middle of the rectangle
 	rx := x
 	ry := y
-
 	x -= (width / 2)
 	y += (height / 2)
 	fmt.Fprintf(w, "<ellipse xp=\"%v\" yp=\"%v\" wp=\"%v\" hr=\"100\" %s/>\n", x, y, radius, endtag)
@@ -729,6 +731,42 @@ func roundrect(w io.Writer, s []string, linenumber int) error {
 	fmt.Fprintf(w, "<line xp1=\"%v\" yp1=\"%v\" xp2=\"%v\" yp2=\"%v\" sp=\"%v\" %s/>\n", x, y, x+width, y, radius, endtag)
 	fmt.Fprintf(w, "<line xp1=\"%v\" yp1=\"%v\" xp2=\"%v\" yp2=\"%v\" sp=\"%v\" %s/>\n", x, y-height, x+width, y-height, radius, endtag)
 	fmt.Fprintf(w, "<rect xp=\"%v\" yp=\"%v\" wp=\"%v\" hp=\"%v\" %s/>\n", rx, ry, width+radius, height, endtag)
+	return nil
+}
+
+// pill makes a horizontal  pill shape
+func pill(w io.Writer, s []string, linenumber int) error {
+	n := len(s)
+	if n < 5 {
+		return fmt.Errorf("line %d: %s x y w h [color]", linenumber, s[0])
+	}
+	x, err := strconv.ParseFloat(eval(s[1]), 64)
+	if err != nil {
+		return err
+	}
+
+	y, err := strconv.ParseFloat(eval(s[2]), 64)
+	if err != nil {
+		return err
+	}
+
+	width, err := strconv.ParseFloat(eval(s[3]), 64)
+	if err != nil {
+		return err
+	}
+
+	height, err := strconv.ParseFloat(eval(s[4]), 64)
+	if err != nil {
+		return err
+	}
+	var endtag string
+	if n > 5 {
+		endtag = `color=` + s[5]
+	}
+
+	fmt.Fprintf(w, "<ellipse xp=\"%v\" yp=\"%v\" wp=\"%v\" hr=\"100\" %s/>\n", x, y, height, endtag)
+	fmt.Fprintf(w, "<line xp1=\"%v\" yp1=\"%v\" xp2=\"%v\" yp2=\"%v\" sp=\"%v\" hp=\"100\" %s/>\n", x, y, x+width, y, height, endtag)
+	fmt.Fprintf(w, "<ellipse xp=\"%v\" yp=\"%v\" wp=\"%v\" hr=\"100\" %s/>\n", x+width, y, height, endtag)
 	return nil
 }
 
@@ -1492,6 +1530,9 @@ func keyparse(w io.Writer, tokens []string, t string, n int) error {
 
 	case "rrect", "roundrect":
 		return roundrect(w, tokens, n)
+
+	case "pill":
+		return pill(w, tokens, n)
 
 	case "polygon", "poly":
 		return polygon(w, tokens, n)

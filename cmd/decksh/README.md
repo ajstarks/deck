@@ -246,11 +246,14 @@ For polygons, specify the x and y coordinates as a series of numbers, with optio
 
 For lines, specify the coordinates for the beginning and end points. 
 For horizonal and vertical lines specify the initial point and the length.
-Line thickness, color and opacity are optional, with defaults 
+Line thickness, color and opacity are optional, with defaults.
+
+A "pill" shape has is a line with rounded ends.
 
     line    x1 y1 x2 y2 [size] [color] [opacity]
     hline   x y length  [size] [color] [opacity]
     vline   x y length  [size] [color] [opacity]
+    pill    x w length  size   [color]
 
 Curve is a quadratic bezier: specify the beginning location, the control point, and ending location.
 For arcs, specify the location of the center point, the width and height, and the beginning and ending angles.
