@@ -579,18 +579,19 @@ deck
 		ctext "x y w h r [color]" lx r1a apisize "serif" apicolor
 		rrect lx row1 10 5 2 grcolor
 		circle lx row1 spotsize spotcolor spotop
-		lx+=25 
+		lx+=25
+
+		ctext "square"	lx gtop ts "mono" spotcolor
+		ctext "x y w [color] [op]" lx r1a apisize "serif" apicolor
+		square lx row1 6 grcolor
+		circle lx row1 spotsize spotcolor spotop
+		lx+=25
 
 		ctext "ellipse"	lx gtop ts "mono" spotcolor
 		ctext "x y w h [color] [op]" lx r1a apisize "serif" apicolor
 		ellipse lx row1 10 5 grcolor
 		circle lx row1 spotsize spotcolor spotop
-		lx+=25
 		
-		ctext "square"	lx gtop ts "mono" spotcolor
-		ctext "x y w [color] [op]" lx r1a apisize "serif" apicolor
-		square lx row1 6 grcolor
-		circle lx row1 spotsize spotcolor spotop
 
 		gtop-=29
 		lx=left+sep
