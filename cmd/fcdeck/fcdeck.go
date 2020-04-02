@@ -158,22 +158,21 @@ func dopoly(doc *fc.Canvas, xc, yc string, cw, ch float64, color string, opacity
 }
 
 // dotext places text elements on the canvas according to type
-func dotext(doc *fc.Canvas, cw, x, y, fs, wp, rotation, spacing float64, tdata, font, align, ttype, color string, opacity float64) {
-	var tw float64
-
+func dotext(doc *fc.Canvas, x, y, fs, wp, rotation, spacing float64, tdata, font, align, ttype, color string, opacity float64) {
 	td := strings.Split(tdata, "\n")
 	c := fc.ColorLookup(color)
+
 	//if rotation > 0 {
 	//}
 	if ttype == "code" {
 		font = "mono"
 		ch := float64(len(td)) * spacing * fs
-		tw = deck.Pwidth(wp, cw, cw-x-20)
-		dorect(doc, x-fs, y-fs, tw, ch, "rgb(240,240,240)", 100)
+		bx := (x + (wp / 2))
+		by := (y - (ch / 2)) + (spacing * fs)
+		dorect(doc, bx, by, wp+fs, ch+fs, "rgb(240,240,240)", 100)
 	}
 	if ttype == "block" {
-		tw = deck.Pwidth(wp, cw, cw/2)
-		textwrap(doc, x, y, tw, fs, fs*spacing, tdata, c, font)
+		textwrap(doc, x, y, wp, fs, fs*spacing, tdata, c, font)
 	} else {
 		ls := spacing * fs
 		for _, t := range td {
@@ -213,7 +212,7 @@ func textwrap(doc *fc.Canvas, x, y, w, fs, leading float64, s string, color colo
 		xp += tw + (wordspacing * factor)
 		if xp > edge {
 			xp = x
-			yp += leading
+			yp -= leading
 			nbreak++
 		}
 	}
@@ -268,7 +267,7 @@ func dolist(doc *fc.Canvas, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 	//}
 }
 
-// fcslide makes a slide, one slide per generated PNG
+// fcslide makes a slide
 func fcslide(doc *fc.Canvas, d deck.Deck, n int, gp float64, showslide bool) {
 	if n < 0 || n > len(d.Slide)-1 || !showslide {
 		return
@@ -413,7 +412,7 @@ func fcslide(doc *fc.Canvas, d deck.Deck, n int, gp float64, showslide bool) {
 		if t.Lp == 0 {
 			t.Lp = linespacing
 		}
-		dotext(doc, cw, t.Xp, t.Yp, t.Sp, t.Wp, t.Rotation, t.Lp, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity)
+		dotext(doc, t.Xp, t.Yp, t.Sp, t.Wp, t.Rotation, t.Lp, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity)
 	}
 	// for every list element...
 	for _, l := range slide.List {
@@ -435,7 +434,7 @@ func fcslide(doc *fc.Canvas, d deck.Deck, n int, gp float64, showslide bool) {
 	doc.EndRun()
 }
 
-// doslides reads the deck file, making a series of PNGs
+// doslides reads the deck file, rendering to the canvas
 func doslides(filename string, w, h int, gp float64, begin, end int) error {
 	d, err := deck.Read(filename, w, h)
 	if err != nil {

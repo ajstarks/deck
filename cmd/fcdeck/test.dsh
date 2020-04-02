@@ -1,0 +1,60 @@
+deck
+	slide
+		
+		poem="For, lo, the winter is past the rain is over and gone. The flowers appear on the earth, the time for the singing of birds is come."
+		include "include.dsh"
+		hline 80 50 10 1 "red"
+		vline 80 40 10 1 "blue"
+		line  80 40 90 30 1 "orange"
+		square 25 90 10 "green"
+		rect 50 90 30 10 "red"
+		circle 80 90 10 "blue"
+		circle 50 10 1 "maroon"
+		circle 20 10 1 "maroon"
+		circle 80 10 1 "maroon"
+		ctext "hello" 50 10 5 
+		text  "hello" 20 10 5 "sans" "red"
+		etext "hello" 80 10 5 "sans" "blue"
+		cimage "cloudy.jpg"  "Clouds"  35 50 640 480 20
+		image  "follow.jpg"            65 50 640 480 20
+		textfile "qb.txt" 80 70 1.5
+		textcode "hw" 35 75 25 1.5
+		textblock poem 25 30 30 2
+
+		bx=10
+		by=90
+		bs=2
+		list bx by bs
+			li "one"
+			li "two"
+			li "three"
+			li "four"
+		elist
+
+		by -=20
+		blist bx by bs
+			li "one"
+			li "two"
+			li "three"
+			li "four"
+		elist
+
+		by -=20
+		nlist bx by bs
+			li "one"
+			li "two"
+			li "three"
+			li "four"
+		elist
+
+		by -=20
+		clist bx by bs
+			li "one"
+			li "two"
+			li "three"
+			li "four"
+		elist
+
+
+	eslide
+edeck
