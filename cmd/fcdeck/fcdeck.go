@@ -17,7 +17,7 @@ import (
 
 const (
 	mm2pt       = 2.83464 // mm to pt conversion
-	linespacing = 1.4
+	linespacing = 1.8
 	listspacing = 2.0
 	fontfactor  = 1.0
 	listwrap    = 95.0
@@ -435,7 +435,7 @@ func fcslide(doc *fc.Canvas, d deck.Deck, n int, gp float64, showslide bool) {
 }
 
 // doslides reads the deck file, rendering to the canvas
-func doslides(filename string, w, h int, gp float64, begin, end int) error {
+func doslides(filename, title string, w, h int, gp float64, begin, end int) error {
 	d, err := deck.Read(filename, w, h)
 	if err != nil {
 		return err
@@ -443,17 +443,20 @@ func doslides(filename string, w, h int, gp float64, begin, end int) error {
 	d.Canvas.Width = w
 	d.Canvas.Height = h
 
+	if len(title) == 0 {
+		title = filename
+	}
 	for i := 0; i < len(d.Slide); i++ {
-		doc := fc.NewCanvas(filename, w, h)
+		doc := fc.NewCanvas(title, w, h)
 		fcslide(&doc, d, i, gp, (i+1 >= begin && i+1 <= end))
 	}
 	return nil
 }
 
 // dodeck show deck markup
-func dodeck(files []string, w, h float64, gp float64, begin, end int) {
+func dodeck(files []string, w, h float64, title string, gp float64, begin, end int) {
 	for _, filename := range files {
-		if err := doslides(filename, int(w), int(h), gp, begin, end); err != nil {
+		if err := doslides(filename, title, int(w), int(h), gp, begin, end); err != nil {
 			fmt.Fprintf(os.Stderr, "fcdeck: %v\n", err)
 			continue
 		}
@@ -467,6 +470,7 @@ func main() {
 		serifont   = flag.String("serif", "Charter-Regular", "serif font")
 		monofont   = flag.String("mono", "FiraMono-Regular", "mono font")
 		symbolfont = flag.String("symbol", "ZapfDingbats", "symbol font")
+		title      = flag.String("title", "", "slide title")
 		pagesize   = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
 		fontdir    = flag.String("fontdir", os.Getenv("DECKFONTS"), "directory for fonts (defaults to DECKFONTS environment variable)")
 		gridpct    = flag.Float64("grid", 0, "draw a percentage grid on each slide")
@@ -492,5 +496,5 @@ func main() {
 	fontmap["serif"] = filepath.Join(*fontdir, *serifont+".ttf")
 	fontmap["mono"] = filepath.Join(*fontdir, *monofont+".ttf")
 	fontmap["symbol"] = filepath.Join(*fontdir, *symbolfont+".ttf")
-	dodeck(flag.Args(), pw, ph, *gridpct, begin, end)
+	dodeck(flag.Args(), pw, ph, *title, *gridpct, begin, end)
 }
