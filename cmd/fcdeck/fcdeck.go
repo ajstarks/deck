@@ -52,6 +52,8 @@ var pagemap = map[string]PageDimen{
 
 var codemap = strings.NewReplacer("\t", "    ")
 
+var gridstate bool
+
 // pagerange returns the begin and end using a "-" string
 func pagerange(s string) (int, int) {
 	p := strings.Split(s, "-")
@@ -96,6 +98,7 @@ func fontlookup(s string) string {
 // grid makes a percentage scale
 func grid(doc *fc.Canvas, w, h float64, color string, percent float64) {
 	c := fc.ColorLookup(color)
+	c.A = 100
 	fs := pct(1.5, w)
 	for x, pl := 0.0, 0.0; x <= w; x += percent {
 		doc.Line(x, 0, x, h, 0.1, c)
@@ -467,11 +470,22 @@ func reload(filename string, c *fc.Canvas, w, h int) {
 	showslide(c, d, 0)
 }
 
+func gridtoggle(c *fc.Canvas, size float64, d deck.Deck, slidenumber int) {
+	if gridstate {
+		grid(c, 100, 100, d.Slide[slidenumber].Fg, size)
+	} else {
+		showslide(c, d, slidenumber)
+	}
+	gridstate = !gridstate
+	c.Container.Refresh()
+}
+
 // for every file, make a deck
 func main() {
 	var (
 		title    = flag.String("title", "", "slide title")
 		pagesize = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
+		sans     = flag.String("sans", "", "default font")
 	)
 	flag.Parse()
 
@@ -488,13 +502,19 @@ func main() {
 		pw = p.width * p.unit
 		ph = p.height * p.unit
 	}
-
-	width, height := int(pw), int(ph)
-	filename := flag.Args()[0]
-
+	if *sans != "" {
+		os.Setenv("FYNE_FONT", fmt.Sprintf("%s/%s.ttf", os.Getenv("DECKFONTS"), *sans))
+	}
+	var filename string
+	if len(flag.Args()) < 1 {
+		filename = "-"
+	} else {
+		filename = flag.Args()[0]
+	}
 	if *title == "" {
 		*title = filename
 	}
+	width, height := int(pw), int(ph)
 	c := fc.NewCanvas(*title, width, height)
 	w := c.Window
 	d, err := readDeck(filename, width, height)
@@ -507,11 +527,12 @@ func main() {
 	showslide(canvas, d, 0)
 	slidenumber := 0
 	nslides := len(d.Slide) - 1
-
+	gridstate = true
 	toolbar := widget.NewToolbar(
 		widget.NewToolbarAction(theme.NavigateBackIcon(), func() { back(canvas, d, &slidenumber, 1) }),
 		widget.NewToolbarAction(theme.NavigateNextIcon(), func() { forward(canvas, d, &slidenumber, nslides) }),
 		widget.NewToolbarAction(theme.MediaReplayIcon(), func() { reload(filename, canvas, width, height) }),
+		widget.NewToolbarAction(theme.VisibilityIcon(), func() { gridtoggle(canvas, 10, d, slidenumber) }),
 	)
 	w.SetContent(fyne.NewContainerWithLayout(layout.NewBorderLayout(toolbar, nil, nil, nil), toolbar, c.Container))
 	w.Resize(fyne.NewSize(width, height+toolbar.Size().Height))
