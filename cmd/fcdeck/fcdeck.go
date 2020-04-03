@@ -463,6 +463,15 @@ func forward(c *fc.Canvas, d deck.Deck, n *int, gp float64, limit int) {
 	showslide(c, d, *n, gp)
 }
 
+func reload(filename string, c *fc.Canvas, w, h int) {
+	d, err := readDeck(filename, w, h)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return
+	}
+	showslide(c, d, 0, 0)
+}
+
 // for every file, make a deck
 func main() {
 	var (
@@ -516,7 +525,7 @@ func main() {
 	toolbar := widget.NewToolbar(
 		widget.NewToolbarAction(theme.NavigateBackIcon(), func() { back(canvas, d, &slidenumber, *gridpct, 1) }),
 		widget.NewToolbarAction(theme.NavigateNextIcon(), func() { forward(canvas, d, &slidenumber, *gridpct, nslides) }),
-		widget.NewToolbarAction(theme.MediaReplayIcon(), func() { showslide(canvas, d, slidenumber, *gridpct) }),
+		widget.NewToolbarAction(theme.MediaReplayIcon(), func() { reload(filename, canvas, width, height) }),
 	)
 	w.SetContent(fyne.NewContainerWithLayout(layout.NewBorderLayout(toolbar, nil, nil, nil), toolbar, c.Container))
 	w.Resize(fyne.NewSize(width, height+toolbar.Size().Height))
