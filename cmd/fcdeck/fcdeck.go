@@ -486,6 +486,7 @@ func main() {
 		title    = flag.String("title", "", "slide title")
 		pagesize = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
 		sans     = flag.String("sans", "", "default font")
+		gp       = flag.Float64("grid", 10, "grid percent")
 	)
 	flag.Parse()
 
@@ -532,7 +533,7 @@ func main() {
 		widget.NewToolbarAction(theme.NavigateBackIcon(), func() { back(canvas, d, &slidenumber, 1) }),
 		widget.NewToolbarAction(theme.NavigateNextIcon(), func() { forward(canvas, d, &slidenumber, nslides) }),
 		widget.NewToolbarAction(theme.MediaReplayIcon(), func() { reload(filename, canvas, width, height) }),
-		widget.NewToolbarAction(theme.VisibilityIcon(), func() { gridtoggle(canvas, 10, d, slidenumber) }),
+		widget.NewToolbarAction(theme.VisibilityIcon(), func() { gridtoggle(canvas, *gp, d, slidenumber) }),
 	)
 	w.SetContent(fyne.NewContainerWithLayout(layout.NewBorderLayout(toolbar, nil, nil, nil), toolbar, c.Container))
 	w.Resize(fyne.NewSize(width, height+toolbar.Size().Height))
