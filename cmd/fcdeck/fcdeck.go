@@ -11,6 +11,10 @@ import (
 	"strconv"
 	"strings"
 
+	"fyne.io/fyne"
+	"fyne.io/fyne/layout"
+	"fyne.io/fyne/theme"
+	"fyne.io/fyne/widget"
 	"github.com/ajstarks/deck"
 	"github.com/ajstarks/fc"
 )
@@ -267,9 +271,9 @@ func dolist(doc *fc.Canvas, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 	//}
 }
 
-// fcslide makes a slide
-func fcslide(doc *fc.Canvas, d deck.Deck, n int, gp float64, showslide bool) {
-	if n < 0 || n > len(d.Slide)-1 || !showslide {
+// showslide shows a slide
+func showslide(doc *fc.Canvas, d deck.Deck, n int, gp float64) {
+	if n < 0 || n > len(d.Slide)-1 {
 		return
 	}
 	cw := float64(d.Canvas.Width)
@@ -279,7 +283,7 @@ func fcslide(doc *fc.Canvas, d deck.Deck, n int, gp float64, showslide bool) {
 	if slide.Bg == "" {
 		slide.Bg = "white"
 	}
-	background(doc, cw, ch, slide.Bg)
+	doc.CornerRect(0, 100, cw, ch, fc.ColorLookup(slide.Bg))
 
 	if slide.GradPercent <= 0 || slide.GradPercent > 100 {
 		slide.GradPercent = 100
@@ -431,36 +435,32 @@ func fcslide(doc *fc.Canvas, d deck.Deck, n int, gp float64, showslide bool) {
 	if gp > 0 {
 		grid(doc, 100, 100, slide.Fg, gp)
 	}
-	doc.EndRun()
+	doc.Container.Refresh()
+
 }
 
 // doslides reads the deck file, rendering to the canvas
-func doslides(filename, title string, w, h int, gp float64, begin, end int) error {
+func readDeck(filename string, w, h int) (deck.Deck, error) {
 	d, err := deck.Read(filename, w, h)
-	if err != nil {
-		return err
-	}
-	d.Canvas.Width = w
-	d.Canvas.Height = h
-
-	if len(title) == 0 {
-		title = filename
-	}
-	for i := 0; i < len(d.Slide); i++ {
-		doc := fc.NewCanvas(title, w, h)
-		fcslide(&doc, d, i, gp, (i+1 >= begin && i+1 <= end))
-	}
-	return nil
+	d.Canvas.Width = int(w)
+	d.Canvas.Height = int(h)
+	return d, err
 }
 
-// dodeck show deck markup
-func dodeck(files []string, w, h float64, title string, gp float64, begin, end int) {
-	for _, filename := range files {
-		if err := doslides(filename, title, int(w), int(h), gp, begin, end); err != nil {
-			fmt.Fprintf(os.Stderr, "fcdeck: %v\n", err)
-			continue
-		}
+func back(c *fc.Canvas, d deck.Deck, n *int, gp float64, limit int) {
+	*n--
+	if *n < limit {
+		*n = 0
 	}
+	showslide(c, d, *n, gp)
+}
+
+func forward(c *fc.Canvas, d deck.Deck, n *int, gp float64, limit int) {
+	*n++
+	if *n > limit {
+		*n = 0
+	}
+	showslide(c, d, *n, gp)
 }
 
 // for every file, make a deck
@@ -474,13 +474,11 @@ func main() {
 		pagesize   = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
 		fontdir    = flag.String("fontdir", os.Getenv("DECKFONTS"), "directory for fonts (defaults to DECKFONTS environment variable)")
 		gridpct    = flag.Float64("grid", 0, "draw a percentage grid on each slide")
-		pr         = flag.String("pages", "1-1000000", "page range (first-last)")
 	)
 	flag.Parse()
 
 	var pw, ph float64
 	nd, err := fmt.Sscanf(*pagesize, "%g,%g", &pw, &ph)
-	begin, end := pagerange(*pr)
 	if nd != 2 || err != nil {
 		pw, ph = 0.0, 0.0
 	}
@@ -496,5 +494,31 @@ func main() {
 	fontmap["serif"] = filepath.Join(*fontdir, *serifont+".ttf")
 	fontmap["mono"] = filepath.Join(*fontdir, *monofont+".ttf")
 	fontmap["symbol"] = filepath.Join(*fontdir, *symbolfont+".ttf")
-	dodeck(flag.Args(), pw, ph, *title, *gridpct, begin, end)
+
+	width, height := int(pw), int(ph)
+	filename := flag.Args()[0]
+
+	if *title == "" {
+		*title = filename
+	}
+	c := fc.NewCanvas(*title, width, height)
+	w := c.Window
+	d, err := readDeck(filename, width, height)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
+	slidenumber := 0
+	canvas := &c
+	showslide(canvas, d, slidenumber, *gridpct)
+	nslides := len(d.Slide) - 1
+
+	toolbar := widget.NewToolbar(
+		widget.NewToolbarAction(theme.NavigateBackIcon(), func() { back(canvas, d, &slidenumber, *gridpct, 1) }),
+		widget.NewToolbarAction(theme.NavigateNextIcon(), func() { forward(canvas, d, &slidenumber, *gridpct, nslides) }),
+		widget.NewToolbarAction(theme.MediaReplayIcon(), func() { showslide(canvas, d, slidenumber, *gridpct) }),
+	)
+	w.SetContent(fyne.NewContainerWithLayout(layout.NewBorderLayout(toolbar, nil, nil, nil), toolbar, c.Container))
+	w.Resize(fyne.NewSize(width, height+toolbar.Size().Height))
+	w.ShowAndRun()
 }

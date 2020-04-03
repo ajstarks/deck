@@ -54,7 +54,24 @@ deck
 			li "three"
 			li "four"
 		elist
+	eslide
+	slide "red" "white"
 
-
+		bx=10
+		by=90
+		bs=2
+		list bx by bs
+			li "one"
+			li "two"
+			li "three"
+			li "four"
+		elist
+		ctext "Slide 2" 50 50 10
+	eslide
+	slide "blue" "white"
+		ctext "Slide 3" 50 50 10
+	eslide
+	slide "green" "white"
+		ctext "Slide 4" 50 50 10
 	eslide
 edeck
