@@ -7,7 +7,6 @@ import (
 	"image/color"
 	"io/ioutil"
 	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -272,7 +271,7 @@ func dolist(doc *fc.Canvas, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 }
 
 // showslide shows a slide
-func showslide(doc *fc.Canvas, d deck.Deck, n int, gp float64) {
+func showslide(doc *fc.Canvas, d deck.Deck, n int) {
 	if n < 0 || n > len(d.Slide)-1 {
 		return
 	}
@@ -431,10 +430,6 @@ func showslide(doc *fc.Canvas, d deck.Deck, n int, gp float64) {
 		}
 		dolist(doc, cw, l.Xp, l.Yp, l.Sp, l.Wp, l.Rotation, l.Lp, l.Li, l.Font, l.Type, l.Align, l.Color, l.Opacity)
 	}
-	// add a grid, if specified
-	if gp > 0 {
-		grid(doc, 100, 100, slide.Fg, gp)
-	}
 	doc.Container.Refresh()
 
 }
@@ -447,20 +442,20 @@ func readDeck(filename string, w, h int) (deck.Deck, error) {
 	return d, err
 }
 
-func back(c *fc.Canvas, d deck.Deck, n *int, gp float64, limit int) {
+func back(c *fc.Canvas, d deck.Deck, n *int, limit int) {
 	*n--
 	if *n < limit {
 		*n = 0
 	}
-	showslide(c, d, *n, gp)
+	showslide(c, d, *n)
 }
 
-func forward(c *fc.Canvas, d deck.Deck, n *int, gp float64, limit int) {
+func forward(c *fc.Canvas, d deck.Deck, n *int, limit int) {
 	*n++
 	if *n > limit {
 		*n = 0
 	}
-	showslide(c, d, *n, gp)
+	showslide(c, d, *n)
 }
 
 func reload(filename string, c *fc.Canvas, w, h int) {
@@ -469,20 +464,14 @@ func reload(filename string, c *fc.Canvas, w, h int) {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return
 	}
-	showslide(c, d, 0, 0)
+	showslide(c, d, 0)
 }
 
 // for every file, make a deck
 func main() {
 	var (
-		sansfont   = flag.String("sans", "FiraSans-Regular", "sans font")
-		serifont   = flag.String("serif", "Charter-Regular", "serif font")
-		monofont   = flag.String("mono", "FiraMono-Regular", "mono font")
-		symbolfont = flag.String("symbol", "ZapfDingbats", "symbol font")
-		title      = flag.String("title", "", "slide title")
-		pagesize   = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
-		fontdir    = flag.String("fontdir", os.Getenv("DECKFONTS"), "directory for fonts (defaults to DECKFONTS environment variable)")
-		gridpct    = flag.Float64("grid", 0, "draw a percentage grid on each slide")
+		title    = flag.String("title", "", "slide title")
+		pagesize = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
 	)
 	flag.Parse()
 
@@ -499,10 +488,6 @@ func main() {
 		pw = p.width * p.unit
 		ph = p.height * p.unit
 	}
-	fontmap["sans"] = filepath.Join(*fontdir, *sansfont+".ttf")
-	fontmap["serif"] = filepath.Join(*fontdir, *serifont+".ttf")
-	fontmap["mono"] = filepath.Join(*fontdir, *monofont+".ttf")
-	fontmap["symbol"] = filepath.Join(*fontdir, *symbolfont+".ttf")
 
 	width, height := int(pw), int(ph)
 	filename := flag.Args()[0]
@@ -517,14 +502,15 @@ func main() {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
-	slidenumber := 0
+
 	canvas := &c
-	showslide(canvas, d, slidenumber, *gridpct)
+	showslide(canvas, d, 0)
+	slidenumber := 0
 	nslides := len(d.Slide) - 1
 
 	toolbar := widget.NewToolbar(
-		widget.NewToolbarAction(theme.NavigateBackIcon(), func() { back(canvas, d, &slidenumber, *gridpct, 1) }),
-		widget.NewToolbarAction(theme.NavigateNextIcon(), func() { forward(canvas, d, &slidenumber, *gridpct, nslides) }),
+		widget.NewToolbarAction(theme.NavigateBackIcon(), func() { back(canvas, d, &slidenumber, 1) }),
+		widget.NewToolbarAction(theme.NavigateNextIcon(), func() { forward(canvas, d, &slidenumber, nslides) }),
 		widget.NewToolbarAction(theme.MediaReplayIcon(), func() { reload(filename, canvas, width, height) }),
 	)
 	w.SetContent(fyne.NewContainerWithLayout(layout.NewBorderLayout(toolbar, nil, nil, nil), toolbar, c.Container))

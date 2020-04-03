@@ -1,71 +1,8 @@
 deck
 	slide
-		
-		poem="For, lo, the winter is past the rain is over and gone. The flowers appear on the earth, the time for the singing of birds is come."
-		include "include.dsh"
-		hline 80 50 10 1 "red"
-		vline 80 40 10 1 "blue"
-		line  80 40 90 30 1 "orange"
-		square 25 90 10 "green"
-		rect 50 90 30 10 "red"
-		circle 80 90 10 "blue"
-		circle 50 10 1 "maroon"
-		circle 20 10 1 "maroon"
-		circle 80 10 1 "maroon"
-		ctext "hello" 50 10 5 
-		text  "hello" 20 10 5 "sans" "red"
-		etext "hello" 80 10 5 "sans" "blue"
-		cimage "cloudy.jpg"  "Clouds"  35 50 640 480 20
-		image  "follow.jpg"            65 50 640 480 20
-		textfile "qb.txt" 80 70 1.5
-		textcode "hw" 35 75 25 1.2
-		textblock poem 25 30 30 1.5
-
-		bx=10
-		by=90
-		bs=2
-		list bx by bs
-			li "one"
-			li "two"
-			li "three"
-			li "four"
-		elist
-
-		by -=20
-		blist bx by bs
-			li "one"
-			li "two"
-			li "three"
-			li "four"
-		elist
-
-		by -=20
-		nlist bx by bs
-			li "one"
-			li "two"
-			li "three"
-			li "four"
-		elist
-
-		by -=20
-		clist bx by bs
-			li "one"
-			li "two"
-			li "three"
-			li "four"
-		elist
-	eslide
+		ctext "Slide 1" 50 50 10
+ 	eslide
 	slide "red" "white"
-
-		bx=10
-		by=90
-		bs=2
-		list bx by bs
-			li "one"
-			li "two"
-			li "three"
-			li "four"
-		elist
 		ctext "Slide 2" 50 50 10
 	eslide
 	slide "blue" "white"
@@ -74,4 +11,66 @@ deck
 	slide "green" "white"
 		ctext "Slide 4" 50 50 10
 	eslide
+	slide "orange"
+		ctext "Slide 5" 50 50 10
+ 	eslide
+	slide
+		dchart -fulldeck=f -xlabel=5 -yaxis -yrange=0,100,20 -grid -bar -val=f  -min=0 -max=100 -vcolor=maroon  -datacond=20,50,orange  rand.d 
+	eslide
+
+	// slide
+	// 	poem="For, lo, the winter is past the rain is over and gone. The flowers appear on the earth, the time for the singing of birds is come."
+	// 	include "include.dsh"
+	// 	hline 80 50 10 1 "red"
+	// 	vline 80 40 10 1 "blue"
+	// 	line  80 40 90 30 1 "orange"
+	// 	square 25 90 10 "green"
+	// 	rect 50 90 30 10 "red"
+	// 	circle 80 90 10 "blue"
+	// 	circle 50 10 1 "maroon"
+	// 	circle 20 10 1 "maroon"
+	// 	circle 80 10 1 "maroon"
+	// 	ctext "hello" 50 10 5 
+	// 	text  "hello" 20 10 5 "sans" "red"
+	// 	etext "hello" 80 10 5 "sans" "blue"
+	// 	cimage "cloudy.jpg"  "Clouds"  35 45 640 480 20
+	// 	image  "follow.jpg"            65 45 640 480 20
+	// 	textfile "qb.txt" 80 70 1.5
+	// 	textcode "hw" 35 75 25 1.2
+	// 	textblock poem 25 30 30 1.5
+
+	// 	bx=10
+	// 	by=90
+	// 	bs=2
+	// 	list bx by bs
+	// 		li "one"
+	// 		li "two"
+	// 		li "three"
+	// 		li "four"
+	// 	elist
+
+	// 	by -=20
+	// 	blist bx by bs
+	// 		li "one"
+	// 		li "two"
+	// 		li "three"
+	// 		li "four"
+	// 	elist
+
+	// 	by -=20
+	// 	nlist bx by bs
+	// 		li "one"
+	// 		li "two"
+	// 		li "three"
+	// 		li "four"
+	// 	elist
+
+	// 	by -=20
+	// 	clist bx by bs
+	// 		li "one"
+	// 		li "two"
+	// 		li "three"
+	// 		li "four"
+	// 	elist
+	// eslide
 edeck
