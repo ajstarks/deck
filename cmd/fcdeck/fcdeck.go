@@ -115,7 +115,6 @@ func grid(doc *fc.Canvas, w, h float64, color string, percent float64) {
 		pl += percent
 	}
 	doc.Container.Refresh()
-
 }
 
 // setop sets the opacity as a truncated fraction of 255
@@ -242,11 +241,6 @@ func dolist(doc *fc.Canvas, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 	}
 	c := fc.ColorLookup(color)
 	ls := listspacing * fs
-
-	// do rotation here
-	// if rotation > 0 {
-	//
-	//}
 	for i, tl := range list {
 		loadfont(doc, font, fs)
 		if len(tl.Color) > 0 {
@@ -265,9 +259,6 @@ func dolist(doc *fc.Canvas, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 		}
 		y -= ls
 	}
-	// end rotation here
-	//if rotation > 0 {
-	//}
 }
 
 // showslide shows a slide
@@ -442,6 +433,7 @@ func readDeck(filename string, w, h int) (deck.Deck, error) {
 	return d, err
 }
 
+// back shows the previous slide
 func back(c *fc.Canvas, d deck.Deck, n *int, limit int) {
 	*n--
 	if *n < limit {
@@ -450,6 +442,7 @@ func back(c *fc.Canvas, d deck.Deck, n *int, limit int) {
 	showslide(c, d, *n)
 }
 
+// forward shows the next slide
 func forward(c *fc.Canvas, d deck.Deck, n *int, limit int) {
 	*n++
 	if *n > limit {
@@ -458,6 +451,7 @@ func forward(c *fc.Canvas, d deck.Deck, n *int, limit int) {
 	showslide(c, d, *n)
 }
 
+// reload reloads the content and shows the first slide
 func reload(filename string, c *fc.Canvas, w, h int) {
 	d, err := readDeck(filename, w, h)
 	if err != nil {
@@ -467,6 +461,7 @@ func reload(filename string, c *fc.Canvas, w, h int) {
 	showslide(c, d, 0)
 }
 
+// gridtoggle toggles a grid overlay
 func gridtoggle(c *fc.Canvas, size float64, d deck.Deck, slidenumber int) {
 	if gridstate {
 		grid(c, 100, 100, d.Slide[slidenumber].Fg, size)
@@ -476,7 +471,6 @@ func gridtoggle(c *fc.Canvas, size float64, d deck.Deck, slidenumber int) {
 	gridstate = !gridstate
 }
 
-// for every file, make a deck
 func main() {
 	var (
 		title    = flag.String("title", "", "slide title")
@@ -486,6 +480,7 @@ func main() {
 	)
 	flag.Parse()
 
+	// define the page dimensions
 	var pw, ph float64
 	nd, err := fmt.Sscanf(*pagesize, "%g,%g", &pw, &ph)
 	if nd != 2 || err != nil {
@@ -499,9 +494,11 @@ func main() {
 		pw = p.width * p.unit
 		ph = p.height * p.unit
 	}
+	// set the font
 	if *sans != "" {
 		os.Setenv("FYNE_FONT", fmt.Sprintf("%s/%s.ttf", os.Getenv("DECKFONTS"), *sans))
 	}
+	// get the filename
 	var filename string
 	if len(flag.Args()) < 1 {
 		filename = "-"
@@ -511,6 +508,7 @@ func main() {
 	if *title == "" {
 		*title = filename
 	}
+	// initialize the canvas, read the data
 	width, height := int(pw), int(ph)
 	c := fc.NewCanvas(*title, width, height)
 	w := c.Window
@@ -519,19 +517,24 @@ func main() {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
-
+	// set initial values
 	canvas := &c
 	showslide(canvas, d, 0)
 	slidenumber := 0
 	nslides := len(d.Slide) - 1
 	gridstate = true
+
+	// define the toolbar (back, forward, reload, grid)
 	toolbar := widget.NewToolbar(
 		widget.NewToolbarAction(theme.NavigateBackIcon(), func() { back(canvas, d, &slidenumber, 1) }),
 		widget.NewToolbarAction(theme.NavigateNextIcon(), func() { forward(canvas, d, &slidenumber, nslides) }),
 		widget.NewToolbarAction(theme.MediaReplayIcon(), func() { reload(filename, canvas, width, height) }),
 		widget.NewToolbarAction(theme.VisibilityIcon(), func() { gridtoggle(canvas, *gp, d, slidenumber) }),
 	)
+	// add the content
 	w.SetContent(fyne.NewContainerWithLayout(layout.NewBorderLayout(toolbar, nil, nil, nil), toolbar, c.Container))
 	w.Resize(fyne.NewSize(width, height+toolbar.Size().Height))
+
+	// run it!
 	w.ShowAndRun()
 }
