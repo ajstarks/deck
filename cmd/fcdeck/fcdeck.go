@@ -114,6 +114,8 @@ func grid(doc *fc.Canvas, w, h float64, color string, percent float64) {
 		}
 		pl += percent
 	}
+	doc.Container.Refresh()
+
 }
 
 // setop sets the opacity as a truncated fraction of 255
@@ -167,9 +169,6 @@ func dopoly(doc *fc.Canvas, xc, yc string, cw, ch float64, color string, opacity
 func dotext(doc *fc.Canvas, x, y, fs, wp, rotation, spacing float64, tdata, font, align, ttype, color string, opacity float64) {
 	td := strings.Split(tdata, "\n")
 	c := fc.ColorLookup(color)
-
-	//if rotation > 0 {
-	//}
 	if ttype == "code" {
 		font = "mono"
 		ch := float64(len(td)) * spacing * fs
@@ -186,8 +185,6 @@ func dotext(doc *fc.Canvas, x, y, fs, wp, rotation, spacing float64, tdata, font
 			y -= ls
 		}
 	}
-	//if rotation > 0 {
-	//}
 }
 
 // whitespace determines if a rune is whitespace
@@ -244,7 +241,7 @@ func dolist(doc *fc.Canvas, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 		font = "sans"
 	}
 	c := fc.ColorLookup(color)
-	ls := spacing * fs
+	ls := listspacing * fs
 
 	// do rotation here
 	// if rotation > 0 {
@@ -418,7 +415,7 @@ func showslide(doc *fc.Canvas, d deck.Deck, n int) {
 		if t.Lp == 0 {
 			t.Lp = linespacing
 		}
-		dotext(doc, t.Xp, t.Yp, t.Sp, t.Wp, t.Rotation, t.Lp, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity)
+		dotext(doc, t.Xp, t.Yp, t.Sp, t.Wp, t.Rotation, t.Lp*1.2, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity)
 	}
 	// for every list element...
 	for _, l := range slide.List {
@@ -437,7 +434,7 @@ func showslide(doc *fc.Canvas, d deck.Deck, n int) {
 
 }
 
-// doslides reads the deck file, rendering to the canvas
+// ReadDeck reads the deck file, rendering to the canvas
 func readDeck(filename string, w, h int) (deck.Deck, error) {
 	d, err := deck.Read(filename, w, h)
 	d.Canvas.Width = int(w)
@@ -477,7 +474,6 @@ func gridtoggle(c *fc.Canvas, size float64, d deck.Deck, slidenumber int) {
 		showslide(c, d, slidenumber)
 	}
 	gridstate = !gridstate
-	c.Container.Refresh()
 }
 
 // for every file, make a deck
