@@ -20,7 +20,7 @@ import (
 const (
 	mm2pt       = 2.83464 // mm to pt conversion
 	linespacing = 1.8
-	listspacing = 2.0
+	listspacing = 1.8
 	fontfactor  = 1.0
 	listwrap    = 95.0
 )
