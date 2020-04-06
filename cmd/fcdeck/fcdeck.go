@@ -7,7 +7,6 @@ import (
 	"image/color"
 	"io/ioutil"
 	"os"
-	"strconv"
 	"strings"
 
 	"fyne.io/fyne"
@@ -54,21 +53,22 @@ var codemap = strings.NewReplacer("\t", "    ")
 
 var gridstate bool
 
-// pagerange returns the begin and end using a "-" string
-func pagerange(s string) (int, int) {
-	p := strings.Split(s, "-")
-	if len(p) != 2 {
-		return 0, 0
+// pagedim converts a named pagesize to width, height
+func pagedim(s string) (int, int) {
+	var pw, ph float64
+	nd, err := fmt.Sscanf(s, "%g,%g", &pw, &ph)
+	if nd != 2 || err != nil {
+		pw, ph = 0.0, 0.0
 	}
-	b, berr := strconv.Atoi(p[0])
-	e, err := strconv.Atoi(p[1])
-	if berr != nil || err != nil {
-		return 0, 0
+	if pw == 0 && ph == 0 {
+		p, ok := pagemap[s]
+		if !ok {
+			p = pagemap["Letter"]
+		}
+		pw = p.width * p.unit
+		ph = p.height * p.unit
 	}
-	if b > e {
-		return 0, 0
-	}
-	return b, e
+	return int(pw), int(ph)
 }
 
 // includefile returns the contents of a file as string
@@ -480,20 +480,6 @@ func main() {
 	)
 	flag.Parse()
 
-	// define the page dimensions
-	var pw, ph float64
-	nd, err := fmt.Sscanf(*pagesize, "%g,%g", &pw, &ph)
-	if nd != 2 || err != nil {
-		pw, ph = 0.0, 0.0
-	}
-	if pw == 0 && ph == 0 {
-		p, ok := pagemap[*pagesize]
-		if !ok {
-			p = pagemap["Letter"]
-		}
-		pw = p.width * p.unit
-		ph = p.height * p.unit
-	}
 	// set the font
 	if *sans != "" {
 		os.Setenv("FYNE_FONT", fmt.Sprintf("%s/%s.ttf", os.Getenv("DECKFONTS"), *sans))
@@ -509,7 +495,7 @@ func main() {
 		*title = filename
 	}
 	// initialize the canvas, read the data
-	width, height := int(pw), int(ph)
+	width, height := pagedim(*pagesize)
 	c := fc.NewCanvas(*title, width, height)
 	w := c.Window
 	d, err := readDeck(filename, width, height)
