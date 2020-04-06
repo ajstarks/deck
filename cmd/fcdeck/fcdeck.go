@@ -476,7 +476,8 @@ func main() {
 		title    = flag.String("title", "", "slide title")
 		pagesize = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
 		sans     = flag.String("sans", "", "default font")
-		gp       = flag.Float64("grid", 10, "grid percent")
+		initpage = flag.Int("page", 1, "initial page")
+		gp       = flag.Float64("grid", 5, "grid percent")
 	)
 	flag.Parse()
 
@@ -504,10 +505,14 @@ func main() {
 		os.Exit(1)
 	}
 	// set initial values
-	canvas := &c
-	showslide(canvas, d, 0)
-	slidenumber := 0
 	nslides := len(d.Slide) - 1
+	if *initpage > nslides+1 || *initpage < 1 {
+		*initpage = 1
+	}
+	canvas := &c
+	slidenumber := *initpage - 1
+	showslide(canvas, d, slidenumber)
+
 	gridstate = true
 
 	// define the toolbar (back, forward, reload, grid)
