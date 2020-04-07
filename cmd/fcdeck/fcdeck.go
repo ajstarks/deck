@@ -471,15 +471,6 @@ func gridtoggle(c *fc.Canvas, size float64, d deck.Deck, slidenumber int) {
 	gridstate = !gridstate
 }
 
-func dokeys(k *fyne.KeyEvent) {
-	switch k.Name {
-	case "Left":
-		println("left")
-	case "Right":
-		println("right")
-	}
-}
-
 func main() {
 	var (
 		title    = flag.String("title", "", "slide title")
@@ -527,7 +518,7 @@ func main() {
 	// Define keyboard shortcuts (back, forward, reload, grid, home, end, quit)
 	canvas.Window.Canvas().SetOnTypedKey(func(k *fyne.KeyEvent) {
 		switch k.Name {
-		case fyne.KeyRight, fyne.KeyDown, fyne.KeySpace, fyne.KeyReturn, fyne.KeyPageDown:
+		case fyne.KeyRight, fyne.KeyDown, fyne.KeySpace, fyne.KeyEqual, fyne.KeyReturn, fyne.KeyPageDown:
 			forward(canvas, d, &slidenumber, nslides)
 
 		case fyne.KeyLeft, fyne.KeyUp, fyne.KeyMinus, fyne.KeyBackspace, fyne.KeyPageUp:
@@ -557,7 +548,9 @@ func main() {
 		widget.NewToolbarAction(theme.NavigateBackIcon(), func() { back(canvas, d, &slidenumber, 1) }),
 		widget.NewToolbarAction(theme.NavigateNextIcon(), func() { forward(canvas, d, &slidenumber, nslides) }),
 		widget.NewToolbarAction(theme.MediaReplayIcon(), func() { reload(filename, canvas, width, height) }),
-		widget.NewToolbarAction(theme.ViewRestoreIcon(), func() { gridtoggle(canvas, *gp, d, slidenumber) }),
+		widget.NewToolbarAction(theme.MediaSkipPreviousIcon(), func() { slidenumber = 0; showslide(canvas, d, slidenumber) }),
+		widget.NewToolbarAction(theme.MediaSkipNextIcon(), func() { slidenumber = nslides; showslide(canvas, d, slidenumber) }),
+		widget.NewToolbarAction(theme.VisibilityIcon(), func() { gridtoggle(canvas, *gp, d, slidenumber) }),
 	)
 	// add the content
 	w.SetContent(fyne.NewContainerWithLayout(layout.NewBorderLayout(toolbar, nil, nil, nil), toolbar, c.Container))
