@@ -379,6 +379,9 @@ func showslide(doc *fc.Canvas, d deck.Deck, n int) {
 		if line.Color == "" {
 			line.Color = defaultColor
 		}
+		if line.Sp == 0 {
+			line.Sp = 0.2
+		}
 		doline(doc, line.Xp1, line.Yp1, line.Xp2, line.Yp2, line.Sp, line.Color, line.Opacity)
 	}
 	// polygon
