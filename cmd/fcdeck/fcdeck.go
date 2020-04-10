@@ -7,7 +7,9 @@ import (
 	"image/color"
 	"io/ioutil"
 	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 
 	"fyne.io/fyne"
 	"fyne.io/fyne/layout"
@@ -428,6 +430,23 @@ func showslide(doc *fc.Canvas, d *deck.Deck, n int) {
 
 }
 
+// hup processes the hangup (SIGHUP) signal
+// re-read the input, adjust the number of slides, show the first slide
+func hup(sigch chan os.Signal, filename string, c *fc.Canvas, d *deck.Deck, w, h int, n *int) {
+	for range sigch {
+		newdeck, err := readDeck(filename, w, h)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%v\n", err)
+			return
+		}
+		nd := len(newdeck.Slide)
+		d.Slide = make([]deck.Slide, nd)
+		copy(d.Slide, newdeck.Slide)
+		*n = nd - 1
+		showslide(c, d, 0)
+	}
+}
+
 // ReadDeck reads the deck file, rendering to the canvas
 func readDeck(filename string, w, h int) (deck.Deck, error) {
 	d, err := deck.Read(filename, w, h)
@@ -518,6 +537,9 @@ func main() {
 	showslide(canvas, &d, slidenumber)
 
 	gridstate = true
+	sigch := make(chan os.Signal, 1)
+	signal.Notify(sigch, syscall.SIGHUP)
+	go hup(sigch, filename, canvas, &d, width, height, &nslides)
 
 	// Define keyboard shortcuts (back, forward, reload, grid, home, end, quit)
 	canvas.Window.Canvas().SetOnTypedKey(func(k *fyne.KeyEvent) {
