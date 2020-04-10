@@ -262,7 +262,7 @@ func dolist(doc *fc.Canvas, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 }
 
 // showslide shows a slide
-func showslide(doc *fc.Canvas, d deck.Deck, n int) {
+func showslide(doc *fc.Canvas, d *deck.Deck, n int) {
 	if n < 0 || n > len(d.Slide)-1 {
 		return
 	}
@@ -437,16 +437,16 @@ func readDeck(filename string, w, h int) (deck.Deck, error) {
 }
 
 // back shows the previous slide
-func back(c *fc.Canvas, d deck.Deck, n *int, limit int) {
+func back(c *fc.Canvas, d *deck.Deck, n *int, limit int) {
 	*n--
-	if *n < limit {
-		*n = 0
+	if *n < 0 {
+		*n = limit
 	}
 	showslide(c, d, *n)
 }
 
 // forward shows the next slide
-func forward(c *fc.Canvas, d deck.Deck, n *int, limit int) {
+func forward(c *fc.Canvas, d *deck.Deck, n *int, limit int) {
 	*n++
 	if *n > limit {
 		*n = 0
@@ -455,17 +455,18 @@ func forward(c *fc.Canvas, d deck.Deck, n *int, limit int) {
 }
 
 // reload reloads the content and shows the first slide
-func reload(filename string, c *fc.Canvas, w, h int) {
+func reload(filename string, c *fc.Canvas, w, h, n int) (deck.Deck, int) {
 	d, err := readDeck(filename, w, h)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return
+		return d, 0
 	}
-	showslide(c, d, 0)
+	showslide(c, &d, n)
+	return d, len(d.Slide) - 1
 }
 
 // gridtoggle toggles a grid overlay
-func gridtoggle(c *fc.Canvas, size float64, d deck.Deck, slidenumber int) {
+func gridtoggle(c *fc.Canvas, size float64, d *deck.Deck, slidenumber int) {
 	if gridstate {
 		grid(c, 100, 100, d.Slide[slidenumber].Fg, size)
 	} else {
@@ -514,7 +515,7 @@ func main() {
 	}
 	canvas := &c
 	slidenumber := *initpage - 1
-	showslide(canvas, d, slidenumber)
+	showslide(canvas, &d, slidenumber)
 
 	gridstate = true
 
@@ -522,24 +523,24 @@ func main() {
 	canvas.Window.Canvas().SetOnTypedKey(func(k *fyne.KeyEvent) {
 		switch k.Name {
 		case fyne.KeyRight, fyne.KeyDown, fyne.KeySpace, fyne.KeyEqual, fyne.KeyReturn, fyne.KeyPageDown:
-			forward(canvas, d, &slidenumber, nslides)
+			forward(canvas, &d, &slidenumber, nslides)
 
 		case fyne.KeyLeft, fyne.KeyUp, fyne.KeyMinus, fyne.KeyBackspace, fyne.KeyPageUp:
-			back(canvas, d, &slidenumber, 1)
+			back(canvas, &d, &slidenumber, nslides)
 
 		case fyne.KeyR:
-			reload(filename, canvas, width, height)
+			d, nslides = reload(filename, canvas, width, height, slidenumber)
 
 		case fyne.KeyG:
-			gridtoggle(canvas, *gp, d, slidenumber)
+			gridtoggle(canvas, *gp, &d, slidenumber)
 
 		case fyne.KeyHome:
 			slidenumber = 0
-			showslide(canvas, d, slidenumber)
+			showslide(canvas, &d, slidenumber)
 
 		case fyne.KeyEnd:
 			slidenumber = nslides
-			showslide(canvas, d, slidenumber)
+			showslide(canvas, &d, slidenumber)
 
 		case fyne.KeyQ, fyne.KeyEscape:
 			os.Exit(0)
@@ -548,12 +549,12 @@ func main() {
 
 	// define the toolbar (back, forward, reload, grid)
 	toolbar := widget.NewToolbar(
-		widget.NewToolbarAction(theme.NavigateBackIcon(), func() { back(canvas, d, &slidenumber, 1) }),
-		widget.NewToolbarAction(theme.NavigateNextIcon(), func() { forward(canvas, d, &slidenumber, nslides) }),
-		widget.NewToolbarAction(theme.MediaReplayIcon(), func() { reload(filename, canvas, width, height) }),
-		widget.NewToolbarAction(theme.MediaSkipPreviousIcon(), func() { slidenumber = 0; showslide(canvas, d, slidenumber) }),
-		widget.NewToolbarAction(theme.MediaSkipNextIcon(), func() { slidenumber = nslides; showslide(canvas, d, slidenumber) }),
-		widget.NewToolbarAction(theme.VisibilityIcon(), func() { gridtoggle(canvas, *gp, d, slidenumber) }),
+		widget.NewToolbarAction(theme.NavigateBackIcon(), func() { back(canvas, &d, &slidenumber, nslides) }),
+		widget.NewToolbarAction(theme.NavigateNextIcon(), func() { forward(canvas, &d, &slidenumber, nslides) }),
+		widget.NewToolbarAction(theme.MediaReplayIcon(), func() { d, nslides = reload(filename, canvas, width, height, slidenumber) }),
+		widget.NewToolbarAction(theme.MediaSkipPreviousIcon(), func() { slidenumber = 0; showslide(canvas, &d, slidenumber) }),
+		widget.NewToolbarAction(theme.MediaSkipNextIcon(), func() { slidenumber = nslides; showslide(canvas, &d, slidenumber) }),
+		widget.NewToolbarAction(theme.VisibilityIcon(), func() { gridtoggle(canvas, *gp, &d, slidenumber) }),
 	)
 	// add the content
 	w.SetContent(fyne.NewContainerWithLayout(layout.NewBorderLayout(toolbar, nil, nil, nil), toolbar, c.Container))
