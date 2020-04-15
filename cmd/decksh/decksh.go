@@ -62,8 +62,10 @@ func assign(s []string, linenumber int) error {
 	switch len(s) {
 	case 3:
 		return simpleassign(s, linenumber) // x=10
+	case 4:
+		return areafunc(s, linenumber) // v=area x
 	case 5:
-		if s[2] == "random" {
+		if s[2] == "random" { // x=random min max
 			return random(s, linenumber)
 		}
 		return binop(s, linenumber) // x=a+b
@@ -203,6 +205,19 @@ func polarfunc(s []string, linenumber int) error {
 // vmap maps one interval to another
 func vmap(value float64, low1 float64, high1 float64, low2 float64, high2 float64) float64 {
 	return low2 + (high2-low2)*(value-low1)/(high1-low1)
+}
+
+// area returns the diameter, given the area measure
+func areafunc(s []string, linenumber int) error {
+	if s[1] != "=" || s[2] != "area" {
+		return fmt.Errorf("line %d use: x = area v", linenumber)
+	}
+	v, err := strconv.ParseFloat(eval(s[3]), 64)
+	if err != nil {
+		return err
+	}
+	emap[s[0]] = ftoa(area(v))
+	return nil
 }
 
 // random returns a bounded random number
@@ -669,6 +684,13 @@ func regshapes(w io.Writer, s []string, linenumber int) error {
 		s[0] = "rect"
 	case "circle":
 		s[0] = "ellipse"
+	case "acircle":
+		s[0] = "ellipse"
+		v, err := strconv.ParseFloat(s[3], 64)
+		if err != nil {
+			return err
+		}
+		s[3] = ftoa(area(v))
 	}
 	dim := fmt.Sprintf("xp=%q yp=%q wp=%q hr=\"100\"", s[1], s[2], s[3])
 	switch n {
@@ -1077,6 +1099,16 @@ func polar(cx, cy, r, t float64) (float64, float64) {
 	//ry := r * waspect
 	return ((r * math.Cos(t)) + (cx)), ((r * math.Sin(t)) + (cy))
 
+}
+
+// area computes the diameter from a given area
+// Area = Pi * (r*r), so given an area the diameter = sqrt ( area / pi) * 2
+// usecase:
+// x=somevalue
+// d=area x
+// circle x y d
+func area(v float64) float64 {
+	return math.Sqrt((v / math.Pi)) * 2
 }
 
 // genarrow returns the components of an arrow
@@ -1525,7 +1557,7 @@ func keyparse(w io.Writer, tokens []string, t string, n int) error {
 	case "ellipse", "rect":
 		return shapes(w, tokens, n)
 
-	case "circle", "square":
+	case "circle", "square", "acircle":
 		return regshapes(w, tokens, n)
 
 	case "rrect", "roundrect":

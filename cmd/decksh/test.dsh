@@ -133,6 +133,7 @@ deck
 
 	// vmap	
 	slide
+		ctext "Map Ranges" 50 50 5
 		bx=10
 		ex=90
 		begyr=1958
@@ -158,8 +159,29 @@ deck
 		text "2020" 10 yend 2
 	eslide
 
+	// area
+	slide
+		ctext "Areas" 50 90 5
+		nya=vmap 8.399 0 330 0 1000
+		cca=vmap 2.024 0 330 0 1000
+		cda=vmap  0.129106 0 330 0 1000
+
+		acircle 50 50 nya "gray"
+		acircle 60 50 cca  "orange"
+		acircle 67 50 cda  "red"
+
+		nyd=area nya
+		ccd=area cca
+		cdd=area cda
+
+		circle 50 30 nyd
+		circle 60 30 ccd
+		circle 67 30 cdd
+	eslide
+
 	// Lines	
 	slide
+		ctext "Lines" 50 90 5
 		hline 50 50 20
 		hline 50 55 25 0.5
 		hline 50 60 30 1 "red"

@@ -162,6 +162,12 @@ For value ```v```, map the range ```vmin-vmax``` to ```min-max```.
 
 Return the polar coordinate given a center at ```(cx, cy)```, radius ```r```, and angle ```theta``` (in degrees)
 
+## Area
+
+    a=area d
+
+return the circular area, ```a``` for the diameter ```d```.
+
 
 
 ## Loops
@@ -227,7 +233,8 @@ Plain and captioned, with optional scales and links
 ## Graphics
 
 Rectangles, ellipses, squares, circles: specify the location and dimensions with optional color and opacity.
-The default color and opacity is gray, 100%
+The default color and opacity is gray, 100%.  In the case of the ```acircle``` keyword, the ```a``` argument
+is the area, not the diameter.
 
     rect    x y w h [color] [opacity]
     ellipse x y w h [color] [opacity]
@@ -235,6 +242,7 @@ The default color and opacity is gray, 100%
 
     square  x y w   [color] [opacity]
     circle  x y w   [color] [opacity]
+    acircle x y a   [color] [opacity]
 
 Rounded rectangles are similar, with the added radius for the corners: (solid colors only)
 
