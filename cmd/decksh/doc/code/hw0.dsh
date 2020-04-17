@@ -1,5 +1,0 @@
-ctext "hello, world" 50 25 10
-circle 50 0 100 "blue"
-for x=20 80 10
-	circle x 75 2
-efor

@@ -1,2 +1,0 @@
-#!/bin/sh
-decksh decksh.dsh | pdfdeck  -author "Anthony Starks" -title "decksh overview" -pagesize 800,450 -sans GillSans -mono NotoMono-Regular -serif GillSans-Italic -stdout $*  - > decksh.pdf

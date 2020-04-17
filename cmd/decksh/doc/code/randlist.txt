@@ -1,8 +1,0 @@
-x1=random 40 70
-y1=random 60 70
-
-x2=random 40 50
-y2=random 50 60
-
-x3=random 60 70
-y3=random 35 45

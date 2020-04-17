@@ -1,7 +1,0 @@
-// picture with text annotation
-slide
-	quote="Tony Stark was able to build this in a cave. With a box of scraps!"
-	image "cave.jpg" 50 50 1920 1080 100 "https://youtu.be/MtntTvuv8Aw"
-	rect 70 60 40 40 "black" 40
-	textblock quote 45 70 45 5 "sans" "white"
-eslide

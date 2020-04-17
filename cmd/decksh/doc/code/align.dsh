@@ -1,7 +1,0 @@
-// text alignment
-slide "rgb(180,180,180)"
-	text  "Left"   50 80 10 "sans" "black"
-	ctext "Center" 50 50 10 "sans" "gray"
-	etext "Right"  50 20 10 "sans" "white"
-	vline 50 0 100 0.2 "black" 20
-eslide
