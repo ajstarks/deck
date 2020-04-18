@@ -1,2 +1,0 @@
-#!/bin/sh
-decksh dchart.dsh | pdfdeck "$@" -sans FiraSans-Regular -mono FiraMono-Regular  -stdout - > dchart.pdf
