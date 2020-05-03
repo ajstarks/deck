@@ -1,6 +1,6 @@
 #!/bin/bash
 base="github.com/ajstarks/deck/cmd"
-for b in dchart decksh pdfdeck pngdeck svgdeck
+for b in pdfdeck pngdeck svgdeck
 do
 	echo -n "$b - "
 	for o in "linux/amd64" "darwin/amd64" "windows/amd64" "windows/386"
