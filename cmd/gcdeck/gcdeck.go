@@ -85,7 +85,7 @@ func includefile(filename string) string {
 }
 
 // pct converts percentages to canvas measures
-func pct(p, m float32) float32 {
+func pct(p, m float64) float64 {
 	return (p / 100.0) * m
 }
 
@@ -99,7 +99,7 @@ func fontlookup(s string) string {
 }
 
 // setop sets the opacity as a truncated fraction of 255
-func setop(v float32) uint8 {
+func setop(v float64) uint8 {
 	if v > 0.0 {
 		return uint8(255.0 * (v / 100.0))
 	}
@@ -107,43 +107,43 @@ func setop(v float32) uint8 {
 }
 
 // gradient sets the background color gradient
-func gradient(doc *gc.Canvas, w, h float32, gc1, gc2 string, gp float32) {
+func gradient(doc *gc.Canvas, w, h float64, gc1, gc2 string, gp float64) {
 }
 
 // doline draws a line
-func doline(doc *gc.Canvas, xp1, yp1, xp2, yp2, sw float32, color string, opacity float32) {
+func doline(doc *gc.Canvas, xp1, yp1, xp2, yp2, sw float64, color string, opacity float64) {
 	c := gc.ColorLookup(color)
 	c.A = setop(opacity)
-	doc.Line(xp1, yp1, xp2, yp2, sw, c)
+	doc.Line(float32(xp1), float32(yp1), float32(xp2), float32(yp2), float32(sw), c)
 }
 
 // doarc draws an arc
-func doarc(doc *gc.Canvas, x, y, w, h, a1, a2, sw float32, color string, opacity float32) {
+func doarc(doc *gc.Canvas, x, y, w, h, a1, a2, sw float64, color string, opacity float64) {
 }
 
 // docurve draws a bezier curve
-func docurve(doc *gc.Canvas, xp1, yp1, xp2, yp2, xp3, yp3, sw float32, color string, opacity float32) {
+func docurve(doc *gc.Canvas, xp1, yp1, xp2, yp2, xp3, yp3, sw float64, color string, opacity float64) {
 	c := gc.ColorLookup(color)
 	c.A = setop(opacity)
-	doc.Curve(xp1, yp1, xp2, yp2, xp3, yp3, c)
+	doc.Curve(float32(xp1), float32(yp1), float32(xp2), float32(yp2), float32(xp3), float32(yp3), c)
 }
 
 // dorect draws a rectangle
-func dorect(doc *gc.Canvas, x, y, w, h float32, color string, opacity float32) {
+func dorect(doc *gc.Canvas, x, y, w, h float64, color string, opacity float64) {
 	c := gc.ColorLookup(color)
 	c.A = setop(opacity)
-	doc.CenterRect(x, y, w, h, c)
+	doc.CenterRect(float32(x), float32(y), float32(w), float32(h), c)
 }
 
 // doellipse draws an ellipse
-func doellipse(doc *gc.Canvas, x, y, w, h float32, color string, opacity float32) {
+func doellipse(doc *gc.Canvas, x, y, w, h float64, color string, opacity float64) {
 	c := gc.ColorLookup(color)
 	c.A = setop(opacity)
-	doc.Ellipse(x, y, w, h, c)
+	doc.Ellipse(float32(x), float32(y), float32(w), float32(h), c)
 }
 
 // dopoly draws a polygon
-func dopoly(doc *gc.Canvas, xc, yc string, cw, ch float32, color string, opacity float32) {
+func dopoly(doc *gc.Canvas, xc, yc string, cw, ch float64, color string, opacity float64) {
 	xs := strings.Split(xc, " ")
 	ys := strings.Split(yc, " ")
 	if len(xs) != len(ys) {
@@ -159,13 +159,13 @@ func dopoly(doc *gc.Canvas, xc, yc string, cw, ch float32, color string, opacity
 		if err != nil {
 			px[i] = 0
 		} else {
-			px[i] = pct(float32(x), cw)
+			px[i] = float32(pct(x, cw))
 		}
 		y, err := strconv.ParseFloat(ys[i], 32)
 		if err != nil {
 			py[i] = 0
 		} else {
-			py[i] = pct(100-float32(y), ch)
+			py[i] = float32(pct(100-y, ch))
 		}
 	}
 	c := gc.ColorLookup(color)
@@ -174,17 +174,17 @@ func dopoly(doc *gc.Canvas, xc, yc string, cw, ch float32, color string, opacity
 }
 
 // textwidth returns the width of text
-func textwidth(c *gc.Canvas, s string, size float32) float32 {
-	return float32(len(s)) * (size * 0.65)
+func textwidth(c *gc.Canvas, s string, size float64) float64 {
+	return float64(len(s)) * (size * 0.65)
 }
 
 // dotext places text elements on the canvas according to type
-func dotext(doc *gc.Canvas, x, y, fs, wp, rotation, spacing float32, tdata, font, align, ttype, color string, opacity float32) {
+func dotext(doc *gc.Canvas, x, y, fs, wp, rotation, spacing float64, tdata, font, align, ttype, color string, opacity float64) {
 	td := strings.Split(tdata, "\n")
 	c := gc.ColorLookup(color)
 	if ttype == "code" {
 		font = "mono"
-		ch := float32(len(td)) * spacing * fs
+		ch := float64(len(td)) * spacing * fs
 		bx := (x + (wp / 2))
 		by := (y - (ch / 2)) + (spacing * fs)
 		dorect(doc, bx, by, wp+fs, ch+fs, "rgb(240,240,240)", 100)
@@ -206,12 +206,12 @@ func whitespace(r rune) bool {
 }
 
 // loadfont loads a font at the specified size
-func loadfont(doc *gc.Canvas, s string, size float32) {
+func loadfont(doc *gc.Canvas, s string, size float64) {
 }
 
 // textwrap draws text at location, wrapping at the specified width
-func textwrap(doc *gc.Canvas, x, y, w, fs, leading float32, s string, color color.RGBA, font string) int {
-	var factor float32 = 0.03
+func textwrap(doc *gc.Canvas, x, y, w, fs, leading float64, s string, color color.RGBA, font string) int {
+	var factor float64 = 0.03
 	if font == "mono" {
 		factor = 1.0
 	}
@@ -224,7 +224,7 @@ func textwrap(doc *gc.Canvas, x, y, w, fs, leading float32, s string, color colo
 	edge := x + w
 	for _, s := range words {
 		tw := textwidth(doc, s, fs)
-		doc.Text(xp, yp, fs, s, color)
+		doc.Text(float32(xp), float32(yp), float32(fs), s, color)
 		xp += tw + (wordspacing * factor)
 		if xp > edge {
 			xp = x
@@ -236,20 +236,23 @@ func textwrap(doc *gc.Canvas, x, y, w, fs, leading float32, s string, color colo
 }
 
 // showtext places fully attributed text at the specified location
-func showtext(doc *gc.Canvas, x, y float32, s string, fs float32, color color.RGBA, font, align string) {
+func showtext(doc *gc.Canvas, x, y float64, s string, fs float64, color color.RGBA, font, align string) {
 	loadfont(doc, font, fs)
+	tx := float32(x)
+	ty := float32(y)
+	tfs := float32(fs)
 	switch align {
 	case "center", "middle", "mid", "c":
-		doc.TextMid(x, y, fs, s, color)
+		doc.TextMid(tx, ty, tfs, s, color)
 	case "right", "end", "e":
-		doc.TextEnd(x, y, fs, s, color)
+		doc.TextEnd(tx, ty, tfs, s, color)
 	default:
-		doc.Text(x, y, fs, s, color)
+		doc.Text(tx, ty, tfs, s, color)
 	}
 }
 
 // dolist places lists on the canvas
-func dolist(doc *gc.Canvas, cw, x, y, fs, lwidth, rotation, spacing float32, list []deck.ListItem, font, ltype, align, color string, opacity float32) {
+func dolist(doc *gc.Canvas, cw, x, y, fs, lwidth, rotation, spacing float64, list []deck.ListItem, font, ltype, align, color string, opacity float64) {
 	if font == "" {
 		font = "sans"
 	}
@@ -264,7 +267,7 @@ func dolist(doc *gc.Canvas, cw, x, y, fs, lwidth, rotation, spacing float32, lis
 		case "number":
 			showtext(doc, x, y, fmt.Sprintf("%d. ", i+1)+tl.ListText, fs, c, font, align)
 		case "bullet":
-			doc.Circle(x, y+fs/3, fs/4, c)
+			doc.Circle(float32(x), float32(y+fs/3), float32(fs/4), c)
 			showtext(doc, x+fs, y, tl.ListText, fs, c, font, align)
 		case "center":
 			showtext(doc, x, y, tl.ListText, fs, c, font, align)
@@ -280,8 +283,8 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 	if n < 0 || n > len(d.Slide)-1 {
 		return
 	}
-	cw := float32(d.Canvas.Width)
-	ch := float32(d.Canvas.Height)
+	cw := float64(d.Canvas.Width)
+	ch := float64(d.Canvas.Height)
 	slide := d.Slide[n]
 	// set default background
 	if slide.Bg == "" {
@@ -294,7 +297,7 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 	}
 	// set gradient background, if specified. You need both colors
 	if len(slide.Gradcolor1) > 0 && len(slide.Gradcolor2) > 0 {
-		gradient(doc, cw, ch, slide.Gradcolor1, slide.Gradcolor2, float32(slide.GradPercent))
+		gradient(doc, cw, ch, slide.Gradcolor1, slide.Gradcolor2, slide.GradPercent)
 	}
 	// set the default foreground
 	if slide.Fg == "" {
@@ -304,7 +307,7 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 	for _, im := range slide.Image {
 		doc.Image(im.Name, float32(im.Xp), float32(im.Yp), im.Width, im.Height, float32(im.Scale))
 		if len(im.Caption) > 0 {
-			capsize := float32(1.5)
+			capsize := 1.5
 			if im.Font == "" {
 				im.Font = "sans"
 			}
@@ -314,19 +317,19 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 			if im.Align == "" {
 				im.Align = "center"
 			}
-			var cx, cy float32
-			iw := float32(im.Width) * (float32(im.Scale) / 100)
-			ih := float32(im.Height) * (float32(im.Scale) / 100)
-			cimx := float32(im.Xp)
+			var cx, cy float64
+			iw := float64(im.Width) * (im.Scale / 100)
+			ih := float64(im.Height) * (im.Scale / 100)
+			cimx := im.Xp
 			switch im.Align {
 			case "center", "c", "mid":
-				cx = float32(im.Xp)
+				cx = im.Xp
 			case "end", "e", "right":
-				cx = cimx + float32(pct((iw/2), cw))
+				cx = cimx + pct((iw/2), cw)
 			default:
-				cx = cimx - float32(pct((iw/2), cw))
+				cx = cimx - pct((iw/2), cw)
 			}
-			cy = float32(im.Yp) - ((float32(ih/2) / ch) * 100) - (capsize * 2)
+			cy = im.Yp - (ih/2)/ch*100 - (capsize * 2)
 			showtext(doc, cx, cy, im.Caption, capsize, gc.ColorLookup(im.Color), im.Font, im.Align)
 		}
 	}
@@ -339,10 +342,10 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 		}
 		if rect.Hr == 100 {
 			c := gc.ColorLookup(rect.Color)
-			c.A = setop(float32(rect.Opacity))
-			doc.Rect(float32(rect.Xp), float32(rect.Yp), float32(rect.Wp), float32(rect.Wp)*(cw/ch), c)
+			c.A = setop(rect.Opacity)
+			doc.Rect(float32(rect.Xp), float32(rect.Yp), float32(rect.Wp), float32((rect.Wp)*(cw/ch)), c)
 		} else {
-			dorect(doc, float32(rect.Xp), float32(rect.Yp), float32(rect.Wp), float32(rect.Hp), rect.Color, float32(rect.Opacity))
+			dorect(doc, rect.Xp, rect.Yp, rect.Wp, rect.Hp, rect.Color, rect.Opacity)
 		}
 	}
 	// ellipse
@@ -352,10 +355,10 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 		}
 		if ellipse.Hr == 100 {
 			c := gc.ColorLookup(ellipse.Color)
-			c.A = setop(float32(ellipse.Opacity))
+			c.A = setop(ellipse.Opacity)
 			doc.Circle(float32(ellipse.Xp), float32(ellipse.Yp), float32(ellipse.Wp)/2, c)
 		} else {
-			doellipse(doc, float32(ellipse.Xp), float32(ellipse.Yp), float32(ellipse.Wp), float32(ellipse.Hp), ellipse.Color, float32(ellipse.Opacity))
+			doellipse(doc, ellipse.Xp, ellipse.Yp, ellipse.Wp, ellipse.Hp, ellipse.Color, ellipse.Opacity)
 		}
 	}
 	// curve
@@ -366,7 +369,7 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 		if curve.Sp == 0 {
 			curve.Sp = 2.0
 		}
-		docurve(doc, float32(curve.Xp1), float32(curve.Yp1), float32(curve.Xp2), float32(curve.Yp2), float32(curve.Xp3), float32(curve.Yp3), float32(curve.Sp), curve.Color, float32(curve.Opacity))
+		docurve(doc, curve.Xp1, curve.Yp1, curve.Xp2, curve.Yp2, curve.Xp3, curve.Yp3, curve.Sp, curve.Color, curve.Opacity)
 	}
 	// arc
 	for _, arc := range slide.Arc {
@@ -378,7 +381,7 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 		if arc.Sp == 0 {
 			arc.Sp = 2.0
 		}
-		doarc(doc, float32(arc.Xp), float32(arc.Yp), float32(w/2), float32(h/2), float32(arc.A1), float32(arc.A2), float32(arc.Sp), arc.Color, float32(arc.Opacity))
+		doarc(doc, arc.Xp, arc.Yp, w/2, h/2, arc.A1, arc.A2, arc.Sp, arc.Color, arc.Opacity)
 	}
 	// line
 	for _, line := range slide.Line {
@@ -388,14 +391,14 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 		if line.Sp == 0 {
 			line.Sp = 0.2
 		}
-		doline(doc, float32(line.Xp1), float32(line.Yp1), float32(line.Xp2), float32(line.Yp2), float32(line.Sp), line.Color, float32(line.Opacity))
+		doline(doc, line.Xp1, line.Yp1, line.Xp2, line.Yp2, line.Sp, line.Color, line.Opacity)
 	}
 	// polygon
 	for _, poly := range slide.Polygon {
 		if poly.Color == "" {
 			poly.Color = defaultColor
 		}
-		dopoly(doc, poly.XC, poly.YC, cw, ch, poly.Color, float32(poly.Opacity))
+		dopoly(doc, poly.XC, poly.YC, cw, ch, poly.Color, poly.Opacity)
 	}
 
 	// for every text element...
@@ -415,7 +418,7 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 		if t.Lp == 0 {
 			t.Lp = linespacing
 		}
-		dotext(doc, float32(t.Xp), float32(t.Yp), float32(t.Sp), float32(t.Wp), float32(t.Rotation), float32(t.Lp*1.2), tdata, t.Font, t.Align, t.Type, t.Color, float32(t.Opacity))
+		dotext(doc, t.Xp, t.Yp, t.Sp, t.Wp, t.Rotation, t.Lp*1.2, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity)
 	}
 	// for every list element...
 	for _, l := range slide.List {
@@ -428,7 +431,7 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 		if l.Wp == 0 {
 			l.Wp = listwrap
 		}
-		dolist(doc, cw, float32(l.Xp), float32(l.Yp), float32(l.Sp), float32(l.Wp), float32(l.Rotation), float32(l.Lp), l.Li, l.Font, l.Type, l.Align, l.Color, float32(l.Opacity))
+		dolist(doc, cw, l.Xp, l.Yp, l.Sp, l.Wp, l.Rotation, l.Lp, l.Li, l.Font, l.Type, l.Align, l.Color, l.Opacity)
 	}
 
 }
