@@ -159,13 +159,13 @@ func dopoly(doc *gc.Canvas, xc, yc string, cw, ch float64, color string, opacity
 		if err != nil {
 			px[i] = 0
 		} else {
-			px[i] = float32(pct(x, cw))
+			px[i] = float32(x)
 		}
 		y, err := strconv.ParseFloat(ys[i], 32)
 		if err != nil {
 			py[i] = 0
 		} else {
-			py[i] = float32(pct(100-y, ch))
+			py[i] = float32(y)
 		}
 	}
 	c := gc.ColorLookup(color)
@@ -343,7 +343,7 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 		if rect.Hr == 100 {
 			c := gc.ColorLookup(rect.Color)
 			c.A = setop(rect.Opacity)
-			doc.Rect(float32(rect.Xp), float32(rect.Yp), float32(rect.Wp), float32((rect.Wp)*(cw/ch)), c)
+			doc.CenterRect(float32(rect.Xp), float32(rect.Yp), float32(rect.Wp), float32((rect.Wp)*(cw/ch)), c)
 		} else {
 			dorect(doc, rect.Xp, rect.Yp, rect.Wp, rect.Hp, rect.Color, rect.Opacity)
 		}
