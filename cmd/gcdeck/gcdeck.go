@@ -139,7 +139,7 @@ func dorect(doc *gc.Canvas, x, y, w, h float64, color string, opacity float64) {
 func doellipse(doc *gc.Canvas, x, y, w, h float64, color string, opacity float64) {
 	c := gc.ColorLookup(color)
 	c.A = setop(opacity)
-	doc.Ellipse(float32(x), float32(y), float32(w), float32(h), c)
+	doc.Ellipse(float32(x), float32(y), float32(w/2), float32(h/2), c)
 }
 
 // dopoly draws a polygon
@@ -356,7 +356,7 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 		if ellipse.Hr == 100 {
 			c := gc.ColorLookup(ellipse.Color)
 			c.A = setop(ellipse.Opacity)
-			doc.Circle(float32(ellipse.Xp), float32(ellipse.Yp), float32(ellipse.Wp)/2, c)
+			doc.Circle(float32(ellipse.Xp), float32(ellipse.Yp), float32(ellipse.Wp/2), c)
 		} else {
 			doellipse(doc, ellipse.Xp, ellipse.Yp, ellipse.Wp, ellipse.Hp, ellipse.Color, ellipse.Opacity)
 		}
