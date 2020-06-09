@@ -13,7 +13,6 @@ import (
 	"syscall"
 
 	"gioui.org/app"
-	"gioui.org/font/gofont"
 	"gioui.org/io/system"
 	"gioui.org/unit"
 	"github.com/ajstarks/deck"
@@ -174,8 +173,10 @@ func dopoly(doc *gc.Canvas, xc, yc string, cw, ch float64, color string, opacity
 }
 
 // textwidth returns the width of text
-func textwidth(c *gc.Canvas, s string, size float64) float64 {
-	return float64(len(s)) * (size * 0.65)
+func textwidth(doc *gc.Canvas, s string, size float64) float64 {
+	asize := float32(pct(size, float64(doc.Width)))
+	fmt.Fprintf(os.Stderr, "%q at %v = %v\n", s, asize, doc.TextWidth(s, asize))
+	return size * float64(len(s))
 }
 
 // dotext places text elements on the canvas according to type
@@ -526,8 +527,6 @@ func main() {
 }
 
 func slidedeck(s string, initpage int, filename, pagesize string) {
-	gofont.Register()
-
 	width, height := pagedim(pagesize)
 	deck, err := readDeck(filename, width, height)
 	if err != nil {
