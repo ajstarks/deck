@@ -520,7 +520,7 @@ func slidedeck(s string, initpage int, filename, pagesize string) {
 	win := app.NewWindow(app.Title(s), app.Size(unit.Dp(width), unit.Dp(height)))
 	for we := range win.Events() {
 		if e, ok := we.(system.FrameEvent); ok {
-			canvas := gc.NewCanvas(width, height, e.Config, e.Queue, e.Size)
+			canvas := gc.NewCanvas(width, height, e)
 			go hup(sigch, filename, canvas, &deck, width, height, &nslides)
 			showslide(canvas, &deck, slidenumber)
 			e.Frame(canvas.Context.Ops)
