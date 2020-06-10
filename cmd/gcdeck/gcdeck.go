@@ -172,13 +172,6 @@ func dopoly(doc *gc.Canvas, xc, yc string, cw, ch float64, color string, opacity
 	doc.Polygon(px, py, c)
 }
 
-// textwidth returns the width of text
-func textwidth(doc *gc.Canvas, s string, size float64) float64 {
-	asize := float32(pct(size, float64(doc.Width)))
-	fmt.Fprintf(os.Stderr, "%q at %v = %v\n", s, asize, doc.TextWidth(s, asize))
-	return size * float64(len(s))
-}
-
 // dotext places text elements on the canvas according to type
 func dotext(doc *gc.Canvas, x, y, fs, wp, rotation, spacing float64, tdata, font, align, ttype, color string, opacity float64) {
 	td := strings.Split(tdata, "\n")
@@ -191,7 +184,7 @@ func dotext(doc *gc.Canvas, x, y, fs, wp, rotation, spacing float64, tdata, font
 		dorect(doc, bx, by, wp+fs, ch+fs, "rgb(240,240,240)", 100)
 	}
 	if ttype == "block" {
-		textwrap(doc, x, y, wp, fs, fs*spacing, tdata, c, font)
+		textwrap(doc, x, y, fs, wp, tdata, color, opacity)
 	} else {
 		ls := spacing * fs
 		for _, t := range td {
@@ -201,6 +194,13 @@ func dotext(doc *gc.Canvas, x, y, fs, wp, rotation, spacing float64, tdata, font
 	}
 }
 
+// textwrap places and wraps text at a width
+func textwrap(doc *gc.Canvas, x, y, fs, wp float64, tdata, color string, opacity float64) {
+	c := gc.ColorLookup(color)
+	c.A = setop(opacity)
+	doc.TextWrap(float32(x), float32(y), float32(fs), float32(wp), tdata, c)
+}
+
 // whitespace determines if a rune is whitespace
 func whitespace(r rune) bool {
 	return r == ' ' || r == '\n' || r == '\t'
@@ -208,32 +208,6 @@ func whitespace(r rune) bool {
 
 // loadfont loads a font at the specified size
 func loadfont(doc *gc.Canvas, s string, size float64) {
-}
-
-// textwrap draws text at location, wrapping at the specified width
-func textwrap(doc *gc.Canvas, x, y, w, fs, leading float64, s string, color color.RGBA, font string) int {
-	var factor float64 = 0.03
-	if font == "mono" {
-		factor = 1.0
-	}
-	nbreak := 0
-	loadfont(doc, font, fs)
-	wordspacing := textwidth(doc, "M", fs)
-	words := strings.FieldsFunc(s, whitespace)
-	xp := x
-	yp := y
-	edge := x + w
-	for _, s := range words {
-		tw := textwidth(doc, s, fs)
-		doc.Text(float32(xp), float32(yp), float32(fs), s, color)
-		xp += tw + (wordspacing * factor)
-		if xp > edge {
-			xp = x
-			yp -= leading
-			nbreak++
-		}
-	}
-	return nbreak
 }
 
 // showtext places fully attributed text at the specified location

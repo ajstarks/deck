@@ -6,7 +6,6 @@
 <ellipse xp="75" yp="90" wp="10" hr="100" color="blue"/>
 <text file="qb.txt" xp="75" yp="70" sp="2" />
 <text type="code" file="hw" xp="35" yp="75" wp="25" sp="1"/>
-<text type="block" xp="25" yp="55" wp="40" sp="2" >For, lo, the winter is past the rain is over and gone. The flowers appear on the earth, the time for the singing of birds is come.</text>
 <line xp1="80" yp1="50" xp2="90" yp2="50" sp="1" color="red"/>
 <line xp1="80" yp1="40" xp2="80" yp2="50" sp="1" color="blue"/>
 <line xp1="80" yp1="40" xp2="90" yp2="30" sp="1" color="orange"/>
@@ -16,6 +15,7 @@
 <text align="c" xp="50" yp="5" sp="5" >hello</text>
 <text xp="20" yp="5" sp="5" font="sans" color="red">hello</text>
 <text align="e" xp="80" yp="5" sp="5" font="sans" color="blue">hello</text>
+<text type="block" xp="30" yp="55" wp="40" sp="2" >For, lo, the winter is past the rain is over and gone. The flowers appear on the earth, the time for the singing of birds is come.</text>
 <ellipse xp="50" yp="5" wp="3" hr="100" color="maroon" opacity="20"/>
 <ellipse xp="20" yp="5" wp="3" hr="100" color="maroon" opacity="20"/>
 <ellipse xp="80" yp="5" wp="3" hr="100" color="maroon" opacity="20"/>
