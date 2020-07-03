@@ -512,6 +512,7 @@ func main() {
 	var filename string
 	if len(flag.Args()) < 1 {
 		filename = "-"
+		*title = "Standard Input"
 	} else {
 		filename = flag.Args()[0]
 	}

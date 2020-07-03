@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"image/color"
 	"io/ioutil"
+	"math"
 	"os"
 	"os/signal"
 	"strconv"
@@ -13,7 +14,9 @@ import (
 	"syscall"
 
 	"gioui.org/app"
+	"gioui.org/io/key"
 	"gioui.org/io/system"
+	"gioui.org/op"
 	"gioui.org/unit"
 	"github.com/ajstarks/deck"
 	gc "github.com/ajstarks/giocanvas"
@@ -176,6 +179,10 @@ func dopoly(doc *gc.Canvas, xc, yc string, cw, ch float64, color string, opacity
 func dotext(doc *gc.Canvas, x, y, fs, wp, rotation, spacing float64, tdata, font, align, ttype, color string, opacity float64) {
 	td := strings.Split(tdata, "\n")
 	c := gc.ColorLookup(color)
+	var tstack op.StackOp
+	if rotation > 0 {
+		tstack = doc.Rotate(float32(x), float32(y), float32(rotation*(math.Pi/180)))
+	}
 	if ttype == "code" {
 		font = "mono"
 		ch := float64(len(td)) * spacing * fs
@@ -191,6 +198,9 @@ func dotext(doc *gc.Canvas, x, y, fs, wp, rotation, spacing float64, tdata, font
 			showtext(doc, x, y, t, fs, c, font, align)
 			y -= ls
 		}
+	}
+	if rotation > 0 {
+		gc.EndTransform(tstack)
 	}
 }
 
@@ -231,6 +241,10 @@ func dolist(doc *gc.Canvas, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 	if font == "" {
 		font = "sans"
 	}
+	var tstack op.StackOp
+	if rotation > 0 {
+		tstack = doc.Rotate(float32(x), float32(y), float32(rotation*(math.Pi/180)))
+	}
 	c := gc.ColorLookup(color)
 	ls := listspacing * fs
 	for i, tl := range list {
@@ -250,6 +264,9 @@ func dolist(doc *gc.Canvas, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 			showtext(doc, x, y, tl.ListText, fs, c, font, align)
 		}
 		y -= ls
+	}
+	if rotation > 0 {
+		gc.EndTransform(tstack)
 	}
 }
 
@@ -501,6 +518,7 @@ func main() {
 }
 
 func slidedeck(s string, initpage int, filename, pagesize string) {
+	defer os.Exit(0)
 	width, height := pagedim(pagesize)
 	deck, err := readDeck(filename, width, height)
 	if err != nil {
@@ -518,12 +536,30 @@ func slidedeck(s string, initpage int, filename, pagesize string) {
 	sigch := make(chan os.Signal, 1)
 	signal.Notify(sigch, syscall.SIGHUP)
 	win := app.NewWindow(app.Title(s), app.Size(unit.Dp(width), unit.Dp(height)))
-	for we := range win.Events() {
-		if e, ok := we.(system.FrameEvent); ok {
+	for e := range win.Events() {
+		switch e := e.(type) {
+		case system.FrameEvent:
 			canvas := gc.NewCanvas(width, height, e)
 			go hup(sigch, filename, canvas, &deck, width, height, &nslides)
 			showslide(canvas, &deck, slidenumber)
 			e.Frame(canvas.Context.Ops)
+		case key.Event:
+			switch e.Name {
+			case "Q", key.NameEscape:
+				os.Exit(0)
+			case "N":
+				slidenumber++
+				if slidenumber > nslides {
+					slidenumber = 0
+				}
+				println(slidenumber)
+			case "P":
+				slidenumber--
+				if slidenumber < 0 {
+					slidenumber = nslides - 1
+				}
+				println(slidenumber)
+			}
 		}
 	}
 }

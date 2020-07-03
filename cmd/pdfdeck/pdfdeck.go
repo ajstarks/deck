@@ -102,9 +102,8 @@ func whitespace(r rune) bool {
 func fontlookup(s string) string {
 	if font, ok := fontmap[s]; ok {
 		return font
-	} else {
-		return "sans"
 	}
+	return "sans"
 }
 
 // grid makes a percentage scale

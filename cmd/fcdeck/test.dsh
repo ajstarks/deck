@@ -1,6 +1,6 @@
 deck
-	slide
-		ctext "Slide 1" 50 50 10
+	slide "red" "white"
+		ctext "First Slide" 50 50 10
  	eslide
 
 	slide "red" "white"
@@ -18,7 +18,6 @@ deck
 	slide "orange"
 		ctext "Slide 5" 50 50 10
  	eslide
-
 	slide
 	 	for x=5 95 5
 		 	circle x 50 4 "maroon" x
@@ -29,9 +28,21 @@ deck
 		etext "Slide 6" 95 5 2
 	eslide
 
-	opts="-fulldeck=f -xlabel=5 -yaxis -yrange=0,100,20 -grid -bar -val=f -min=0 -max=100 -vcolor=maroon -datacond=20,50,orange"
+	opts="-fulldeck=f -xlabel=5 -yaxis -yrange=0,100,20 -grid -val -bar -val=f -min=0 -max=100 -vcolor=maroon -datacond=20,50,orange"
 	slide
 		dchart opts rand.d
 		etext "Slide 7" 95 5 2
+	eslide
+
+	slide
+		ctext "Slide 8" 50 50 10
+	eslide
+
+	slide
+		ctext "Slide 9" 50 50 10
+ 	eslide
+
+	slide "purple" "white"
+		ctext "Slide 10" 50 50 10
 	eslide
 edeck
