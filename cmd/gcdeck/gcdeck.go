@@ -91,6 +91,11 @@ func pct(p, m float64) float64 {
 	return (p / 100.0) * m
 }
 
+// radians converts degrees to radians
+func radians(degrees float64) float64 {
+	return degrees * math.Pi / 180
+}
+
 // fontlookup maps font aliases to implementation font names
 func fontlookup(s string) string {
 	font, ok := fontmap[s]
@@ -121,6 +126,9 @@ func doline(doc *gc.Canvas, xp1, yp1, xp2, yp2, sw float64, color string, opacit
 
 // doarc draws an arc
 func doarc(doc *gc.Canvas, x, y, w, h, a1, a2, sw float64, color string, opacity float64) {
+	c := gc.ColorLookup(color)
+	c.A = setop(opacity)
+	doc.Arc(float32(x), float32(y), float32(w), radians(360-a1), radians(360-a2), c)
 }
 
 // docurve draws a bezier curve
