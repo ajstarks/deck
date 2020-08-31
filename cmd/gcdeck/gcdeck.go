@@ -128,7 +128,8 @@ func doline(doc *gc.Canvas, xp1, yp1, xp2, yp2, sw float64, color string, opacit
 func doarc(doc *gc.Canvas, x, y, w, h, a1, a2, sw float64, color string, opacity float64) {
 	c := gc.ColorLookup(color)
 	c.A = setop(opacity)
-	doc.Arc(float32(x), float32(y), float32(w), radians(360-a1), radians(360-a2), c)
+	doc.Arc(float32(x), float32(y), float32(w), radians(a1), radians(a2), c)
+	//doc.ArcLine(float32(x), float32(y), float32(w), radians(a1), radians(a2), 0.1, c)
 }
 
 // docurve draws a bezier curve
