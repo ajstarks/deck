@@ -173,13 +173,7 @@ func colorlookup(s string) (int, int, int) {
 	// rgb(r, g, b)
 	if strings.HasPrefix(s, "rgb(") && strings.HasSuffix(s, ")") && ls > 5 {
 		v := strings.Split(s[4:ls-1], ",")
-		switch len(v) {
-		case 1:
-			red, _ = strconv.Atoi(v[0])
-		case 2:
-			red, _ = strconv.Atoi(v[0])
-			green, _ = strconv.Atoi(v[1])
-		case 3:
+		if len(v) == 3 {
 			red, _ = strconv.Atoi(v[0])
 			green, _ = strconv.Atoi(v[1])
 			blue, _ = strconv.Atoi(v[2])
