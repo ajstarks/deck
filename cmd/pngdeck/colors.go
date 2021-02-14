@@ -161,39 +161,33 @@ var colornames = map[string]RGB{
 	"yellowgreen":          {154, 205, 50},
 }
 
-// cc converts a color string to number
-func cc(s string) int {
-	v, err := strconv.Atoi(s)
-	if err != nil {
-		return 0
-	}
-	return v
-}
-
 // colorlookup returns a RGB triple corresponding to the named color, "rgb(r,g,b)" or "#rrggbb" string.
 // On error, return black.
 func colorlookup(s string) (int, int, int) {
-	var red, green, blue int
 	color, ok := colornames[s]
 	if ok {
 		return color.red, color.green, color.blue
 	}
-	if strings.HasPrefix(s, "rgb(") && strings.HasSuffix(s, ")") && len(s) > 5 {
-		v := strings.Split(s[4:len(s)-1], ",")
+	var red, green, blue int
+	ls := len(s)
+	// rgb(r, g, b)
+	if strings.HasPrefix(s, "rgb(") && strings.HasSuffix(s, ")") && ls > 5 {
+		v := strings.Split(s[4:ls-1], ",")
 		switch len(v) {
 		case 1:
-			red = cc(v[0])
+			red, _ = strconv.Atoi(v[0])
 		case 2:
-			red = cc(v[0])
-			green = cc(v[1])
+			red, _ = strconv.Atoi(v[0])
+			green, _ = strconv.Atoi(v[1])
 		case 3:
-			red = cc(v[0])
-			green = cc(v[1])
-			blue = cc(v[2])
+			red, _ = strconv.Atoi(v[0])
+			green, _ = strconv.Atoi(v[1])
+			blue, _ = strconv.Atoi(v[2])
 		}
 		return red, green, blue
 	}
-	if strings.HasPrefix(s, "#") && len(s) == 7 {
+	// #rrggbb
+	if strings.HasPrefix(s, "#") && ls == 7 {
 		r, _ := strconv.ParseInt(s[1:3], 16, 32)
 		g, _ := strconv.ParseInt(s[3:5], 16, 32)
 		b, _ := strconv.ParseInt(s[5:7], 16, 32)
