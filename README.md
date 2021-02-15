@@ -77,7 +77,7 @@ sp: font size percentage
 lp: line spacing percentage
 type: "bullet", "number" (list), "block", "code" (text)
 align: "left", "middle", "end"
-color: SVG names ("maroon"), or RGB "rgb(127,0,0)"
+color: SVG names ("maroon"), RGB "rgb(127,0,0)" or hex ("#rrggbb")
 font: "sans", "serif", "mono"
 opacity: opacity percentage
 rotation: (0-360 degrees)
