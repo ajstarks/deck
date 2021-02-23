@@ -3,7 +3,7 @@ base="github.com/ajstarks/deck/cmd"
 for b in pdfdeck pngdeck svgdeck
 do
 	echo -n "$b - "
-	for o in "linux/amd64" "darwin/amd64" "windows/amd64" "windows/386"
+	for o in "linux/amd64" "darwin/amd64" "darwin/arm64" "windows/amd64" "windows/386"
 	do
 		echo -n "$o "
 		goos=$(echo $o|cut -f1 -d /)
