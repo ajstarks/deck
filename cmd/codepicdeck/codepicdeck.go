@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"image"
 	_ "image/png"
-	"io/ioutil"
 	"os"
 	"strings"
 
@@ -22,7 +21,7 @@ var codemap = strings.NewReplacer(
 
 // includefile returns the content of a file as a tab-expanded, XML-escaped string
 func includefile(filename string) string {
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return ""
