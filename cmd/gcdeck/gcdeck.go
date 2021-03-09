@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"image/color"
-	"io/ioutil"
 	"math"
 	"os"
 	"os/signal"
@@ -78,7 +77,7 @@ func pagedim(s string) (float32, float32) {
 
 // includefile returns the contents of a file as string
 func includefile(filename string) string {
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return ""
@@ -128,8 +127,7 @@ func doline(doc *gc.Canvas, xp1, yp1, xp2, yp2, sw float64, color string, opacit
 func doarc(doc *gc.Canvas, x, y, w, h, a1, a2, sw float64, color string, opacity float64) {
 	c := gc.ColorLookup(color)
 	c.A = setop(opacity)
-	doc.Arc(float32(x), float32(y), float32(w), radians(a1), radians(a2), c)
-	//doc.ArcLine(float32(x), float32(y), float32(w), radians(a1), radians(a2), 0.1, c)
+	doc.Arc(float32(x), float32(y), float32(w*2), radians(a1), radians(a2), c)
 }
 
 // docurve draws a bezier curve
@@ -188,7 +186,7 @@ func dopoly(doc *gc.Canvas, xc, yc string, cw, ch float64, color string, opacity
 func dotext(doc *gc.Canvas, x, y, fs, wp, rotation, spacing float64, tdata, font, align, ttype, color string, opacity float64) {
 	td := strings.Split(tdata, "\n")
 	c := gc.ColorLookup(color)
-	var tstack op.StackOp
+	var tstack op.StateOp
 	if rotation > 0 {
 		tstack = doc.Rotate(float32(x), float32(y), float32(rotation*(math.Pi/180)))
 	}
@@ -230,7 +228,7 @@ func loadfont(doc *gc.Canvas, s string, size float64) {
 }
 
 // showtext places fully attributed text at the specified location
-func showtext(doc *gc.Canvas, x, y float64, s string, fs float64, color color.RGBA, font, align string) {
+func showtext(doc *gc.Canvas, x, y float64, s string, fs float64, color color.NRGBA, font, align string) {
 	loadfont(doc, font, fs)
 	tx := float32(x)
 	ty := float32(y)
@@ -250,7 +248,7 @@ func dolist(doc *gc.Canvas, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 	if font == "" {
 		font = "sans"
 	}
-	var tstack op.StackOp
+	var tstack op.StateOp
 	if rotation > 0 {
 		tstack = doc.Rotate(float32(x), float32(y), float32(rotation*(math.Pi/180)))
 	}

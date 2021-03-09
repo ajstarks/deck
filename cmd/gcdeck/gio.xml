@@ -1,0 +1,26 @@
+<deck>
+<canvas width="1200" height="1900"/>
+<slide>
+<text align="c" xp="50" yp="90" sp="8" >Gio Canvas API</text>
+<text align="c" xp="20" yp="80" sp="2.0" >Line</text>
+<line xp1="10" yp1="75" xp2="20" yp2="65" sp="0.2" color="maroon"/>
+<line xp1="20" yp1="70" xp2="35" yp2="75" sp="0.2" color="rgb(0,0,128)"/>
+<text align="c" xp="20" yp="55" sp="2.0" >Circle</text>
+<ellipse xp="20" yp="45" wp="10" hr="100" color="rgb(0,0,128)" opacity="50"/>
+<text align="c" xp="20" yp="30" sp="2.0" >Ellipse</text>
+<ellipse xp="20" yp="15" wp="10" hp="20" color="maroon" opacity="50"/>
+<ellipse xp="20" yp="15" wp="20" hp="10" color="rgb(0,0,128)" opacity="50"/>
+<text align="c" xp="60" yp="80" sp="2.0" >Quadratic Bezier Curve</text>
+<curve xp1="45" yp1="65" xp2="70" yp2="85" xp3="70" yp3="65" sp="0.5" color="maroon" opacity="50"/>
+<text align="c" xp="60" yp="55" sp="2.0" >Arc</text>
+<arc xp="60" yp="45" wp="5" hp="5" a1="0" a2="270" sp="5" color="maroon" opacity="50"/>
+<text align="c" xp="60" yp="30" sp="2.0" >Polygon</text>
+<polygon xc="45 60 70 70 60 45" yc="25 20 25 5 10 5" color="rgb(0,0,128)" opacity="50"/>
+<text align="c" xp="90" yp="80" sp="2.0" >Rectangle</text>
+<rect xp="90" yp="70" wp="5" hp="15" color="rgb(0,0,128)" opacity="50"/>
+<text align="c" xp="90" yp="55" sp="2.0" >Square</text>
+<rect xp="90" yp="45" wp="10" hr="100" color="maroon" opacity="50"/>
+<text align="c" xp="90" yp="30" sp="2.0" >Image</text>
+<image name="earth.jpg" xp="90" yp="15" width="1000" height="1000" scale="10"/>
+</slide>
+</deck>

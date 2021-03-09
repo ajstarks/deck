@@ -3,7 +3,7 @@ deck
 	ch=1900
 	canvas cw ch
 	slide
-		labelsize = 1.5
+		labelsize = 2.0
 		titlesize = labelsize * 4
 		subsize = labelsize * 0.7
 		tcolor = "maroon"
@@ -25,8 +25,8 @@ deck
 
 		// Ellipse
 		ctext "Ellipse" col1x 30 labelsize
-		ellipse col1x 15 5 10 tcolor op
-		ellipse col1x 15 10 5 fcolor op
+		ellipse col1x 15 10 20 tcolor op
+		ellipse col1x 15 20 10 fcolor op
 
 		// Curve
 		ctext "Quadratic Bezier Curve" 60 80 labelsize
@@ -34,7 +34,7 @@ deck
 
 		// Arc
 		ctext "Arc" 60 55 labelsize
-		arc 60 45 10 10 0 270 10 tcolor op
+		arc 60 45 5 5 0 270 5 tcolor op
 
 		// Polygon
 		ctext "Polygon" 60 30 labelsize
@@ -46,9 +46,9 @@ deck
 		ctext "Square" 90 55 labelsize
 		square 90 45 10 tcolor op
 
-		imw=cw*0.15
-		imh=imw
+		imw=1000
+		imh=1000
 		ctext "Image" 90 30 labelsize
-		image "earth.jpg" 90 15 imw imh 100
+		image "earth.jpg" 90 15 imw imh 10
 	eslide
 edeck
