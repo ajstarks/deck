@@ -14,6 +14,7 @@ import (
 
 	"gioui.org/app"
 	"gioui.org/io/key"
+	"gioui.org/io/pointer"
 	"gioui.org/io/system"
 	"gioui.org/op"
 	"gioui.org/unit"
@@ -543,29 +544,23 @@ func slidedeck(s string, initpage int, filename, pagesize string) {
 	sigch := make(chan os.Signal, 1)
 	signal.Notify(sigch, syscall.SIGHUP)
 	win := app.NewWindow(app.Title(s), app.Size(unit.Dp(width), unit.Dp(height)))
+	canvas := gc.NewCanvas(width, height, system.FrameEvent{})
 	for e := range win.Events() {
 		switch e := e.(type) {
 		case system.FrameEvent:
-			canvas := gc.NewCanvas(width, height, e)
 			go hup(sigch, filename, canvas, &deck, width, height, &nslides)
+			gtx := canvas.Context
+			pointer.InputOp{Tag: win, Grab: false, Types: pointer.Press}.Add(gtx.Ops)
+			if slidenumber > nslides {
+				slidenumber = 0
+			}
 			showslide(canvas, &deck, slidenumber)
+			slidenumber++
 			e.Frame(canvas.Context.Ops)
 		case key.Event:
 			switch e.Name {
 			case "Q", key.NameEscape:
 				os.Exit(0)
-			case "N":
-				slidenumber++
-				if slidenumber > nslides {
-					slidenumber = 0
-				}
-				println(slidenumber)
-			case "P":
-				slidenumber--
-				if slidenumber < 0 {
-					slidenumber = nslides - 1
-				}
-				println(slidenumber)
 			}
 		}
 	}
