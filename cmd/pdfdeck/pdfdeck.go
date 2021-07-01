@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/ajstarks/deck"
-	"github.com/jung-kurt/gofpdf"
+	"github.com/go-pdf/fpdf"
 )
 
 const (
@@ -81,7 +81,7 @@ func dimen(w, h, xp, yp, sp float64) (float64, float64, float64) {
 // 0 == default value (opaque)
 // -1 == fully transparent
 // > 0 set opacity percent
-func setopacity(doc *gofpdf.Fpdf, v float64) {
+func setopacity(doc *fpdf.Fpdf, v float64) {
 	switch {
 	case v < 0:
 		doc.SetAlpha(0, "Normal")
@@ -106,7 +106,7 @@ func fontlookup(s string) string {
 }
 
 // grid makes a percentage scale
-func grid(doc *gofpdf.Fpdf, w, h float64, color string, percent float64) {
+func grid(doc *fpdf.Fpdf, w, h float64, color string, percent float64) {
 	pw := w * (percent / 100)
 	ph := h * (percent / 100)
 	doc.SetLineWidth(0.5)
@@ -131,7 +131,7 @@ func grid(doc *gofpdf.Fpdf, w, h float64, color string, percent float64) {
 }
 
 // bullet draws a bullet
-func bullet(doc *gofpdf.Fpdf, x, y, size float64, color string) {
+func bullet(doc *fpdf.Fpdf, x, y, size float64, color string) {
 	rs := size / 2
 	r, g, b := colorlookup(color)
 	doc.SetFillColor(r, g, b)
@@ -140,12 +140,12 @@ func bullet(doc *gofpdf.Fpdf, x, y, size float64, color string) {
 }
 
 // background places a colored rectangle
-func background(doc *gofpdf.Fpdf, w, h float64, color string) {
+func background(doc *fpdf.Fpdf, w, h float64, color string) {
 	dorect(doc, 0, 0, w, h, color)
 }
 
 // gradient sets the background color gradient
-func gradient(doc *gofpdf.Fpdf, w, h float64, gc1, gc2 string, gp float64) {
+func gradient(doc *fpdf.Fpdf, w, h float64, gc1, gc2 string, gp float64) {
 	r1, g1, b1 := colorlookup(gc1)
 	r2, g2, b2 := colorlookup(gc2)
 	gp /= 100.0
@@ -153,7 +153,7 @@ func gradient(doc *gofpdf.Fpdf, w, h float64, gc1, gc2 string, gp float64) {
 }
 
 // doline draws a line
-func doline(doc *gofpdf.Fpdf, xp1, yp1, xp2, yp2, sw float64, color string) {
+func doline(doc *fpdf.Fpdf, xp1, yp1, xp2, yp2, sw float64, color string) {
 	r, g, b := colorlookup(color)
 	doc.SetLineWidth(sw)
 	doc.SetDrawColor(r, g, b)
@@ -161,7 +161,7 @@ func doline(doc *gofpdf.Fpdf, xp1, yp1, xp2, yp2, sw float64, color string) {
 }
 
 // doarc draws a line
-func doarc(doc *gofpdf.Fpdf, x, y, w, h, a1, a2, sw float64, color string) {
+func doarc(doc *fpdf.Fpdf, x, y, w, h, a1, a2, sw float64, color string) {
 	r, g, b := colorlookup(color)
 	doc.SetLineWidth(sw)
 	doc.SetDrawColor(r, g, b)
@@ -169,7 +169,7 @@ func doarc(doc *gofpdf.Fpdf, x, y, w, h, a1, a2, sw float64, color string) {
 }
 
 // docurve draws a bezier curve
-func docurve(doc *gofpdf.Fpdf, xp1, yp1, xp2, yp2, xp3, yp3, sw float64, color string) {
+func docurve(doc *fpdf.Fpdf, xp1, yp1, xp2, yp2, xp3, yp3, sw float64, color string) {
 	r, g, b := colorlookup(color)
 	doc.SetLineWidth(sw)
 	doc.SetDrawColor(r, g, b)
@@ -177,21 +177,21 @@ func docurve(doc *gofpdf.Fpdf, xp1, yp1, xp2, yp2, xp3, yp3, sw float64, color s
 }
 
 // dorect draws a rectangle
-func dorect(doc *gofpdf.Fpdf, x, y, w, h float64, color string) {
+func dorect(doc *fpdf.Fpdf, x, y, w, h float64, color string) {
 	r, g, b := colorlookup(color)
 	doc.SetFillColor(r, g, b)
 	doc.Rect(x, y, w, h, "F")
 }
 
 // doellipse draws a rectangle
-func doellipse(doc *gofpdf.Fpdf, x, y, w, h float64, color string) {
+func doellipse(doc *fpdf.Fpdf, x, y, w, h float64, color string) {
 	r, g, b := colorlookup(color)
 	doc.SetFillColor(r, g, b)
 	doc.Ellipse(x, y, w, h, 0, "F")
 }
 
 // dopoly draws a polygon
-func dopoly(doc *gofpdf.Fpdf, xc, yc, color string, cw, ch float64) {
+func dopoly(doc *fpdf.Fpdf, xc, yc, color string, cw, ch float64) {
 	xs := strings.Split(xc, " ")
 	ys := strings.Split(yc, " ")
 	if len(xs) != len(ys) {
@@ -200,7 +200,7 @@ func dopoly(doc *gofpdf.Fpdf, xc, yc, color string, cw, ch float64) {
 	if len(xs) < 3 || len(ys) < 3 {
 		return
 	}
-	poly := make([]gofpdf.PointType, len(xs))
+	poly := make([]fpdf.PointType, len(xs))
 	for i := 0; i < len(xs); i++ {
 		x, err := strconv.ParseFloat(xs[i], 64)
 		if err != nil {
@@ -221,7 +221,7 @@ func dopoly(doc *gofpdf.Fpdf, xc, yc, color string, cw, ch float64) {
 }
 
 // dotext places text elements on the canvas according to type
-func dotext(doc *gofpdf.Fpdf, cw, x, y, fs, wp, rotation, spacing float64, tdata, font, color, align, ttype, tlink string) {
+func dotext(doc *fpdf.Fpdf, cw, x, y, fs, wp, rotation, spacing float64, tdata, font, color, align, ttype, tlink string) {
 	var tw float64
 	td := strings.Split(tdata, "\n")
 	if rotation > 0 {
@@ -252,7 +252,7 @@ func dotext(doc *gofpdf.Fpdf, cw, x, y, fs, wp, rotation, spacing float64, tdata
 }
 
 // showtext places fully attributed text at the specified location
-func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align, link string) {
+func showtext(doc *fpdf.Fpdf, x, y float64, s string, fs float64, font, align, link string) {
 	offset := 0.0
 	doc.SetFont(fontlookup(font), "", fs)
 	var t string
@@ -278,7 +278,7 @@ func showtext(doc *gofpdf.Fpdf, x, y float64, s string, fs float64, font, align,
 
 // dolists places lists on the canvas
 // dolist(doc, cw, x, y, fs, l.Lp, l.Wp, l.Li, l.Font, l.Color, l.Type)
-func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, rotation, spacing float64, list []deck.ListItem, font, color, align, ltype string) {
+func dolist(doc *fpdf.Fpdf, cw, x, y, fs, lwidth, rotation, spacing float64, list []deck.ListItem, font, color, align, ltype string) {
 	if font == "" {
 		font = "sans"
 	}
@@ -339,7 +339,7 @@ func dolist(doc *gofpdf.Fpdf, cw, x, y, fs, lwidth, rotation, spacing float64, l
 }
 
 // textwrap draws text at location, wrapping at the specified width
-func textwrap(doc *gofpdf.Fpdf, x, y, w, fs, leading float64, s, font, link string) int {
+func textwrap(doc *fpdf.Fpdf, x, y, w, fs, leading float64, s, font, link string) int {
 	var factor = 0.3
 	if font == "mono" {
 		factor = 1.0
@@ -368,13 +368,13 @@ func textwrap(doc *gofpdf.Fpdf, x, y, w, fs, leading float64, s, font, link stri
 }
 
 // pdfslide makes a slide, one slide per PDF page
-func pdfslide(doc *gofpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) {
+func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) {
 	if n < 0 || n > len(d.Slide)-1 || !showslide {
 		return
 	}
 
 	var x, y, fs float64
-	var imgopt gofpdf.ImageOptions
+	var imgopt fpdf.ImageOptions
 	imgopt.AllowNegativePosition = true
 
 	doc.AddPage()
@@ -569,7 +569,7 @@ func nulltrans(s string) string {
 }
 
 // doslides reads the deck file, making the PDF version
-func doslides(doc *gofpdf.Fpdf, pc gofpdf.InitType, filename, author, title string, gp float64, begin, end int) {
+func doslides(doc *fpdf.Fpdf, pc fpdf.InitType, filename, author, title string, gp float64, begin, end int) {
 	var d deck.Deck
 	var err error
 
@@ -627,10 +627,10 @@ func doslides(doc *gofpdf.Fpdf, pc gofpdf.InitType, filename, author, title stri
 // dodeck turns deck input files into PDFs
 // if the sflag is set, all output goes to the standard output file,
 // otherwise, PDFs are written the destination directory, to filenames based on the input name.
-func dodeck(files []string, pageconfig gofpdf.InitType, w, h float64, sflag bool, outdir, author, title string, gp float64, begin, end int) {
+func dodeck(files []string, pageconfig fpdf.InitType, w, h float64, sflag bool, outdir, author, title string, gp float64, begin, end int) {
 	pc := &pageconfig
 	if sflag { // combined output to standard output
-		doc := gofpdf.NewCustom(pc)
+		doc := fpdf.NewCustom(pc)
 		for _, filename := range files {
 			doslides(doc, pageconfig, filename, author, title, gp, begin, end)
 		}
@@ -646,7 +646,7 @@ func dodeck(files []string, pageconfig gofpdf.InitType, w, h float64, sflag bool
 				fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
 				continue
 			}
-			doc := gofpdf.NewCustom(pc)
+			doc := fpdf.NewCustom(pc)
 			doslides(doc, pageconfig, filename, author, title, gp, begin, end)
 			err = doc.Output(out)
 			if err != nil {
@@ -701,10 +701,10 @@ func main() {
 		ph = p.height * p.unit
 	}
 
-	pageconfig := gofpdf.InitType{
+	pageconfig := fpdf.InitType{
 		UnitStr:    "pt",
 		SizeStr:    *pagesize,
-		Size:       gofpdf.SizeType{Wd: pw, Ht: ph},
+		Size:       fpdf.SizeType{Wd: pw, Ht: ph},
 		FontDirStr: *fontdir,
 	}
 	fontmap["sans"] = *sansfont

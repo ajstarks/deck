@@ -12,6 +12,7 @@ require (
 	github.com/ajstarks/svgo v0.0.0-20210406150507-75cfd577ce75
 	github.com/disintegration/gift v1.2.1
 	github.com/fogleman/gg v1.3.0
+	github.com/go-pdf/fpdf v0.4.1 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/jung-kurt/gofpdf v1.16.2
 	golang.org/x/exp v0.0.0-20210417010653-0739314eea07 // indirect
