@@ -1,0 +1,2 @@
+#!/bin/bash
+pdfdeck -stdout "$@" - > f.pdf
