@@ -346,7 +346,7 @@ func dolist(doc *gg.Context, cw, x, y, fs, lwidth, rotation, spacing float64, li
 	var t string
 	for i, tl := range list {
 		loadfont(doc, font, fs)
-		doc.SetRGB255(red, green, blue)
+		doc.SetRGBA255(red, green, blue, setop(tl.Opacity))
 		if ltype == "number" {
 			t = fmt.Sprintf("%d. ", i+1) + tl.ListText
 		} else {
