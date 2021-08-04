@@ -288,9 +288,9 @@ func dolist(doc *svg.SVG, x, y, fs, rotation, lwidth, spacing float64, tlist []d
 	if font == "" {
 		font = "sans"
 	}
-	if rotation > 0 {
-		doc.RotateTranslate(x, y, rotation)
-	}
+	//if rotation > 0 {
+	//		doc.RotateTranslate(x, y, rotation)
+	//	}
 	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%.2fpx", setop(opacity), color, fontlookup(font), fs))
 	if ltype == "bullet" {
 		x += fs
@@ -325,9 +325,9 @@ func dolist(doc *svg.SVG, x, y, fs, rotation, lwidth, spacing float64, tlist []d
 	}
 
 	doc.Gend()
-	if rotation > 0 {
-		doc.Gend()
-	}
+	//if rotation > 0 {
+	//	doc.Gend()
+	//}
 }
 
 // textwrap draws text at location, wrapping at the specified width
