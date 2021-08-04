@@ -301,6 +301,7 @@ func dolist(doc *fpdf.Fpdf, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 	for i, tl := range list {
 		doc.SetFont(fontlookup(font), "", fs)
 		doc.SetTextColor(red, green, blue)
+		setopacity(doc, tl.Opacity)
 		if ltype == "number" {
 			t = fmt.Sprintf("%d. ", i+1) + tl.ListText
 		} else {
