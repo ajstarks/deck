@@ -306,7 +306,7 @@ func dolist(doc *svg.SVG, x, y, fs, rotation, lwidth, spacing float64, tlist []d
 		if ltype == "bullet" {
 			bullet(doc, x, y, fs, color)
 		}
-		lifmt := ""
+		lifmt := fmt.Sprintf("fill-opacity:%.2f;", setop(tl.Opacity))
 		if len(tl.Color) > 0 {
 			lifmt += "fill:" + tl.Color
 		}
