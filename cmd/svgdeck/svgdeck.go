@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"unicode"
 
 	"github.com/ajstarks/deck"
 	svg "github.com/ajstarks/svgo/float"
@@ -66,6 +67,25 @@ func pagerange(s string) (int, int) {
 		return 0, 0
 	}
 	return b, e
+}
+
+// setpagesize parses the page size string (wxh)
+func setpagesize(s string) (float64, float64) {
+	var width, height float64
+	var err error
+	d := strings.FieldsFunc(s, func(c rune) bool { return !unicode.IsNumber(c) })
+	if len(d) != 2 {
+		return 0, 0
+	}
+	width, err = strconv.ParseFloat(d[0], 64)
+	if err != nil {
+		return 0, 0
+	}
+	height, err = strconv.ParseFloat(d[1], 64)
+	if err != nil {
+		return 0, 0
+	}
+	return width, height
 }
 
 // grid makes a labeled grid
@@ -601,11 +621,8 @@ func main() {
 	)
 	flag.Parse()
 	begin, end := pagerange(*pr)
-	var pw, ph float64
-	nd, err := fmt.Sscanf(*pagesize, "%g,%g", &pw, &ph)
-	if nd != 2 || err != nil {
-		pw, ph = 0, 0
-	}
+	pw, ph := setpagesize(*pagesize)
+
 	if pw == 0 && ph == 0 {
 		p, ok := pagemap[*pagesize]
 		if !ok {

@@ -19,10 +19,9 @@ the -outdir option specifies the directory where SVG files are written; defaults
 
 the -title options adds title metadata.
 
-the -pagesize option specifies the page dimensions (Letter, Legal, A3, A4, A5).
+the -pagesize option specifies the page dimensions (wxh or Letter, Legal, A3, A4, A5, ArchA, 4R, Index, Widescreen).
 
 the -stdout option specified that output goes to the standard output file.
 
-the -pagewidth and -pageheight options specify the slide canvas width and height.
 */
 package main
