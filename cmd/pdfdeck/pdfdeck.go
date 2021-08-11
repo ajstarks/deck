@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"unicode"
 
 	"github.com/ajstarks/deck"
 	"github.com/go-pdf/fpdf"
@@ -669,6 +670,25 @@ func includefile(filename string) string {
 	return codemap.Replace(string(data))
 }
 
+// canvasSize parses the canvas string (wxh)
+func canvasSize(s string) (float64, float64) {
+	var width, height float64
+	var err error
+	d := strings.FieldsFunc(s, func(c rune) bool { return !unicode.IsNumber(c) })
+	if len(d) != 2 {
+		return 0, 0
+	}
+	width, err = strconv.ParseFloat(d[0], 64)
+	if err != nil {
+		return 0, 0
+	}
+	height, err = strconv.ParseFloat(d[1], 64)
+	if err != nil {
+		return 0, 0
+	}
+	return width, height
+}
+
 // for every file, make a deck
 func main() {
 	var (
@@ -687,12 +707,9 @@ func main() {
 	)
 	flag.Parse()
 
-	var pw, ph float64
-	nd, err := fmt.Sscanf(*pagesize, "%g,%g", &pw, &ph)
+	pw, ph := canvasSize(*pagesize)
 	begin, end := pagerange(*pr)
-	if nd != 2 || err != nil {
-		pw, ph = 0.0, 0.0
-	}
+
 	if pw == 0 && ph == 0 {
 		p, ok := pagemap[*pagesize]
 		if !ok {
