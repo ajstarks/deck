@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -689,6 +690,21 @@ func canvasSize(s string) (float64, float64) {
 	return width, height
 }
 
+// setfontdir determines the font directory:
+// if the string argument is non-empty, use that, otherwise
+// use the contents of the DECKFONT environment variable,
+// if that is not set, or empty, use $HOME/deckfonts
+func setfontdir(s string) string {
+	if len(s) > 0 {
+		return s
+	}
+	envdef := os.Getenv("DECKFONTS")
+	if len(envdef) > 0 {
+		return envdef
+	}
+	return path.Join(os.Getenv("HOME"), "deckfonts")
+}
+
 // for every file, make a deck
 func main() {
 	var (
@@ -697,7 +713,7 @@ func main() {
 		monofont   = flag.String("mono", "courier", "mono font")
 		symbolfont = flag.String("symbol", "zapfdingbats", "symbol font")
 		pagesize   = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
-		fontdir    = flag.String("fontdir", os.Getenv("DECKFONTS"), "directory for fonts (defaults to DECKFONTS environment variable)")
+		fontdir    = flag.String("fontdir", setfontdir(""), "directory for fonts")
 		outdir     = flag.String("outdir", ".", "output directory")
 		title      = flag.String("title", "", "document title")
 		author     = flag.String("author", "", "document author")
@@ -723,12 +739,11 @@ func main() {
 		UnitStr:    "pt",
 		SizeStr:    *pagesize,
 		Size:       fpdf.SizeType{Wd: pw, Ht: ph},
-		FontDirStr: *fontdir,
+		FontDirStr: setfontdir(*fontdir),
 	}
 	fontmap["sans"] = *sansfont
 	fontmap["serif"] = *serifont
 	fontmap["mono"] = *monofont
 	fontmap["symbol"] = *symbolfont
-	//defer profile.Start(profile.CPUProfile, profile.ProfilePath(".")).Stop()
 	dodeck(flag.Args(), pageconfig, pw, ph, *stdout, *outdir, *author, *title, *gridpct, begin, end)
 }
