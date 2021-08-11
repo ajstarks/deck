@@ -7,9 +7,11 @@ import (
 	"image"
 	"image/color"
 	"os"
+	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
+	"unicode"
 
 	"github.com/ajstarks/deck"
 	"github.com/disintegration/gift"
@@ -605,6 +607,40 @@ func dodeck(files []string, w, h float64, outdir string, gp float64, begin, end 
 	}
 }
 
+// setpagesize parses the page size string (wxh)
+func setpagesize(s string) (float64, float64) {
+	var width, height float64
+	var err error
+	d := strings.FieldsFunc(s, func(c rune) bool { return !unicode.IsNumber(c) })
+	if len(d) != 2 {
+		return 0, 0
+	}
+	width, err = strconv.ParseFloat(d[0], 64)
+	if err != nil {
+		return 0, 0
+	}
+	height, err = strconv.ParseFloat(d[1], 64)
+	if err != nil {
+		return 0, 0
+	}
+	return width, height
+}
+
+// setfontdir determines the font directory:
+// if the string argument is non-empty, use that, otherwise
+// use the contents of the DECKFONT environment variable,
+// if that is not set, or empty, use $HOME/deckfonts
+func setfontdir(s string) string {
+	if len(s) > 0 {
+		return s
+	}
+	envdef := os.Getenv("DECKFONTS")
+	if len(envdef) > 0 {
+		return envdef
+	}
+	return path.Join(os.Getenv("HOME"), "deckfonts")
+}
+
 // for every file, make a deck
 func main() {
 	var (
@@ -613,19 +649,16 @@ func main() {
 		monofont   = flag.String("mono", "FiraMono-Regular", "mono font")
 		symbolfont = flag.String("symbol", "ZapfDingbats", "symbol font")
 		pagesize   = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
-		fontdir    = flag.String("fontdir", os.Getenv("DECKFONTS"), "directory for fonts (defaults to DECKFONTS environment variable)")
+		fontdir    = flag.String("fontdir", setfontdir(""), "directory for fonts")
 		outdir     = flag.String("outdir", ".", "output directory")
 		gridpct    = flag.Float64("grid", 0, "draw a percentage grid on each slide")
 		pr         = flag.String("pages", "1-1000000", "page range (first-last)")
 	)
 	flag.Parse()
 
-	var pw, ph float64
-	nd, err := fmt.Sscanf(*pagesize, "%g,%g", &pw, &ph)
+	pw, ph := setpagesize(*pagesize)
 	begin, end := pagerange(*pr)
-	if nd != 2 || err != nil {
-		pw, ph = 0.0, 0.0
-	}
+
 	if pw == 0 && ph == 0 {
 		p, ok := pagemap[*pagesize]
 		if !ok {
@@ -634,9 +667,10 @@ func main() {
 		pw = p.width * p.unit
 		ph = p.height * p.unit
 	}
-	fontmap["sans"] = filepath.Join(*fontdir, *sansfont+".ttf")
-	fontmap["serif"] = filepath.Join(*fontdir, *serifont+".ttf")
-	fontmap["mono"] = filepath.Join(*fontdir, *monofont+".ttf")
-	fontmap["symbol"] = filepath.Join(*fontdir, *symbolfont+".ttf")
+	fd := setfontdir(*fontdir)
+	fontmap["sans"] = filepath.Join(fd, *sansfont+".ttf")
+	fontmap["serif"] = filepath.Join(fd, *serifont+".ttf")
+	fontmap["mono"] = filepath.Join(fd, *monofont+".ttf")
+	fontmap["symbol"] = filepath.Join(fd, *symbolfont+".ttf")
 	dodeck(flag.Args(), pw, ph, *outdir, *gridpct, begin, end)
 }

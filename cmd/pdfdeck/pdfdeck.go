@@ -671,8 +671,8 @@ func includefile(filename string) string {
 	return codemap.Replace(string(data))
 }
 
-// canvasSize parses the canvas string (wxh)
-func canvasSize(s string) (float64, float64) {
+// setpagesize parses the page size string (wxh)
+func setpagesize(s string) (float64, float64) {
 	var width, height float64
 	var err error
 	d := strings.FieldsFunc(s, func(c rune) bool { return !unicode.IsNumber(c) })
@@ -723,7 +723,7 @@ func main() {
 	)
 	flag.Parse()
 
-	pw, ph := canvasSize(*pagesize)
+	pw, ph := setpagesize(*pagesize)
 	begin, end := pagerange(*pr)
 
 	if pw == 0 && ph == 0 {
