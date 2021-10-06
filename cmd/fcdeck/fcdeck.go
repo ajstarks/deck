@@ -10,10 +10,10 @@ import (
 	"strings"
 	"syscall"
 
-	"fyne.io/fyne"
-	"fyne.io/fyne/layout"
-	"fyne.io/fyne/theme"
-	"fyne.io/fyne/widget"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/theme"
+	"fyne.io/fyne/v2/widget"
 	"github.com/ajstarks/deck"
 	"github.com/ajstarks/fc"
 )
@@ -580,7 +580,7 @@ func main() {
 	)
 	// add the content
 	w.SetContent(fyne.NewContainerWithLayout(layout.NewBorderLayout(toolbar, nil, nil, nil), toolbar, c.Container))
-	w.Resize(fyne.NewSize(width, height+toolbar.Size().Height))
+	w.Resize(fyne.NewSize(float32(width), float32(height)+toolbar.Size().Height))
 
 	// run it!
 	w.ShowAndRun()
