@@ -6,7 +6,7 @@ require (
 	fyne.io/fyne/v2 v2.1.0
 	gioui.org v0.0.0-20211006074027-3c34a39d88bc
 	github.com/ajstarks/deck/generate v0.0.0-20200831202436-30c9fc6549a9
-	github.com/ajstarks/fc v0.0.0-20210921191204-d367d53388c5
+	github.com/ajstarks/fc v0.0.0-20211006201048-48d2eb3e2832
 	github.com/ajstarks/giocanvas v0.0.0-20211006160555-6508b59158ac
 	github.com/ajstarks/openvg v0.0.0-20191008131700-c6885d824eb8
 	github.com/ajstarks/svgo v0.0.0-20210406150507-75cfd577ce75
@@ -24,6 +24,6 @@ require (
 	github.com/yuin/goldmark v1.4.1 // indirect
 	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d // indirect
 	golang.org/x/net v0.0.0-20211006190231-62292e806868 // indirect
-	golang.org/x/sys v0.0.0-20211004093028-2c5d950f24ef // indirect
+	golang.org/x/sys v0.0.0-20211006194710-c8a6f5223071 // indirect
 	golang.org/x/text v0.3.7 // indirect
 )
