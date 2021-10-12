@@ -135,7 +135,7 @@ func doarc(doc *gc.Canvas, x, y, w, h, a1, a2, sw float64, color string, opacity
 func docurve(doc *gc.Canvas, xp1, yp1, xp2, yp2, xp3, yp3, sw float64, color string, opacity float64) {
 	c := gc.ColorLookup(color)
 	c.A = setop(opacity)
-	doc.Curve(float32(xp1), float32(yp1), float32(xp2), float32(yp2), float32(xp3), float32(yp3), c)
+	doc.StrokedCurve(float32(xp1), float32(yp1), float32(xp2), float32(yp2), float32(xp3), float32(yp3), float32(sw), c)
 }
 
 // dorect draws a rectangle
@@ -187,7 +187,7 @@ func dopoly(doc *gc.Canvas, xc, yc string, cw, ch float64, color string, opacity
 func dotext(doc *gc.Canvas, x, y, fs, wp, rotation, spacing float64, tdata, font, align, ttype, color string, opacity float64) {
 	td := strings.Split(tdata, "\n")
 	c := gc.ColorLookup(color)
-	var tstack op.StateOp
+	var tstack op.TransformStack
 	if rotation > 0 {
 		tstack = doc.Rotate(float32(x), float32(y), float32(rotation*(math.Pi/180)))
 	}
@@ -249,7 +249,7 @@ func dolist(doc *gc.Canvas, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 	if font == "" {
 		font = "sans"
 	}
-	var tstack op.StateOp
+	var tstack op.TransformStack
 	if rotation > 0 {
 		tstack = doc.Rotate(float32(x), float32(y), float32(rotation*(math.Pi/180)))
 	}
