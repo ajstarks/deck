@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"syscall"
+	"unicode"
 
 	"gioui.org/app"
 	"gioui.org/io/key"
@@ -58,13 +59,28 @@ var codemap = strings.NewReplacer("\t", "    ")
 
 var gridstate bool
 
+// setpagesize parses the page size string (wxh)
+func setpagesize(s string) (float64, float64) {
+	var width, height float64
+	var err error
+	d := strings.FieldsFunc(s, func(c rune) bool { return !unicode.IsNumber(c) })
+	if len(d) != 2 {
+		return 0, 0
+	}
+	width, err = strconv.ParseFloat(d[0], 64)
+	if err != nil {
+		return 0, 0
+	}
+	height, err = strconv.ParseFloat(d[1], 64)
+	if err != nil {
+		return 0, 0
+	}
+	return width, height
+}
+
 // pagedim converts a named pagesize to width, height
 func pagedim(s string) (float32, float32) {
-	var pw, ph float64
-	nd, err := fmt.Sscanf(s, "%g,%g", &pw, &ph)
-	if nd != 2 || err != nil {
-		pw, ph = 0.0, 0.0
-	}
+	pw, ph := setpagesize(s)
 	if pw == 0 && ph == 0 {
 		p, ok := pagemap[s]
 		if !ok {
