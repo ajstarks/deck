@@ -367,7 +367,7 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 			curve.Color = defaultColor
 		}
 		if curve.Sp == 0 {
-			curve.Sp = 2.0
+			curve.Sp = 0.2
 		}
 		docurve(doc, curve.Xp1, curve.Yp1, curve.Xp2, curve.Yp2, curve.Xp3, curve.Yp3, curve.Sp, curve.Color, curve.Opacity)
 	}
@@ -379,7 +379,7 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 		w := arc.Wp
 		h := arc.Hp
 		if arc.Sp == 0 {
-			arc.Sp = 2.0
+			arc.Sp = 0.2
 		}
 		doarc(doc, arc.Xp, arc.Yp, w/2, h/2, arc.A1, arc.A2, arc.Sp, arc.Color, arc.Opacity)
 	}
