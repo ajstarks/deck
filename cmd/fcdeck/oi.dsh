@@ -1,0 +1,183 @@
+	labelcolor="#aa0000"
+	ltop=95
+	top=ltop-10
+	bottom=5
+	left=10
+	right=85
+	hskip=10
+	vskip=20
+	slide
+
+		etext "decksh object index" right bottom 3 "serif"
+		for v=5 95 5
+			vline v 0 100 0.05 "blue" 20
+			hline 0 v 100 0.05 "red"  20
+		efor
+
+		grid "objlabels.dsh" left ltop hskip vskip right
+
+		xind=left
+		yind=top
+
+		// row 1
+		text "left" xind yind 2
+		xind+=hskip
+		ctext "center" xind yind 2
+		xind+=hskip
+		etext "right" xind yind 2
+		xind+=hskip
+		rtext "rotate" xind yind 45 2
+		xind+=hskip
+		arctext "hello, world" xind yind 5 90 0 1 "mono"
+		xind+=hskip
+		tyind=yind+5
+		textblock "Now is the time for all good men to come" xind tyind 5 1
+		xind+=hskip
+		textfile "code/example.txt" xind tyind 0.7
+		xind+=hskip
+		textcode "code/hw.go" xind tyind 15 0.75
+
+		// row 2
+		xind=left
+		yind-=vskip
+		x2=xind+5
+		y2=yind+3
+		line xind yind x2 y2
+		xind+=hskip
+		hline xind yind 5
+		xind+=hskip
+		vline xind yind 5
+		xind+=hskip
+		arc xind yind 5 5 0 180
+		xind+=hskip
+		bxind=xind-2 
+		byind=yind
+		cxind=bxind
+		cyind=yind+10
+		exind=xind+5
+		eyind=yind 
+		curve bxind byind cxind cyind exind eyind
+		xind+=hskip
+		circle xind yind 4
+		xind+=hskip
+		acircle xind yind 4
+		xind+=hskip
+		ellipse xind yind 7 5
+
+		// row 3
+		xind=left
+		yind-=vskip
+		square xind yind 5
+		xind+=hskip
+		rect xind yind 7 4
+		xind+=hskip
+		rrect xind yind 6 3 2
+		xind+=hskip
+		pill xind yind 3 2
+		xind+=hskip
+
+		x1=xind-2
+		x2=xind+2
+		x3=xind
+		y1=yind-2 
+		y2=yind-2 
+		y3=yind+3
+		polygon "x1 x2 x3" "y1 y2 y3"
+		xind+=hskip
+		star xind yind 5 1 3
+		xind+=hskip
+		image "images/cloudy.jpg" xind yind 640 480 10
+		xind+=hskip
+		cimage "images/cloudy.jpg" "sky" xind yind 640 480 10 "" 1.2
+
+		// row 4
+		xind=left
+		yind-=vskip
+		lbrace xind yind 7 1 1
+		xind+=hskip
+		rbrace xind yind 7 1 1
+		xind+=hskip
+		ubrace xind yind 7 1 1
+		xind+=hskip
+		dbrace xind yind 7 1 1
+		xind+=hskip
+		y2=yind+5
+		arrow xind yind xind y2 0.2 1 1
+		xind+=hskip
+
+		hs2=hskip/2
+		bxind=xind
+		byind=yind
+		cxind=xind
+		cyind=yind+hs2
+		exind=xind-hs2
+		eyind=yind+hs2
+		lcarrow bxind byind cxind cyind exind eyind 0.2 1 1
+
+		xind+=hskip
+
+		bxind=xind
+		byind=yind 
+		cxind=xind
+		cyind=yind+hs2
+		exind=xind+hs2
+		eyind=yind+hs2
+		rcarrow bxind byind cxind cyind exind eyind 0.2 1 1
+
+		xind+=hskip
+
+		bxind=xind
+		byind=yind+hs2 
+		cxind=xind+hs2
+		cyind=yind+hs2
+		exind=xind+hs2 
+		eyind=yind
+		dcarrow bxind byind cxind cyind exind eyind 0.2 1 1
+
+		// row 5
+		xind=left
+		yind-=vskip
+
+		bxind=xind
+		byind=yind
+		cxind=xind+hs2 
+		cyind=yind
+		exind=xind+hs2 
+		eyind=yind+hs2 
+		ucarrow bxind byind cxind cyind exind eyind 0.2 1 1
+
+		xind+=hskip
+
+		lyind=yind+5
+		lxind=xind-1.5
+
+		list lxind lyind 1.5 "sans" "" 100 1.2
+			li "one"
+			li "two"
+			li "three"
+		elist
+
+		xind+=hskip
+		lxind+=hskip
+		blist lxind lyind 1.5 "sans" "" 100 1.2
+			li "one"
+			li "two"
+			li "three"
+		elist
+
+		xind+=hskip
+		lxind+=hskip
+		nlist lxind lyind 1.5 "sans" "" 100 1.2
+			li "one"
+			li "two"
+			li "three"
+		elist
+
+		xind+=hskip
+		lxind+=hskip
+		clist xind lyind 1.5 "sans" "" 100 1.2
+			li "first"
+			li "second item"
+			li "thrid"
+		elist
+	eslide
