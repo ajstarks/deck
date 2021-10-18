@@ -156,7 +156,7 @@ func gradient(doc *fpdf.Fpdf, x, y, w, h float64, gc1, gc2 string, gp float64) {
 	r1, g1, b1 := colorlookup(gc1)
 	r2, g2, b2 := colorlookup(gc2)
 	gp /= 100.0
-	doc.LinearGradient(x, y, w, h, r1, g1, b1, r2, g2, b2, 0, gp, 0, 0)
+	doc.LinearGradient(x, y, w, h, r1, g1, b1, r2, g2, b2, 0, gp, 1, 1)
 }
 
 // doline draws a line
