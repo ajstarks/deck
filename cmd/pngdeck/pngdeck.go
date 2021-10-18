@@ -148,16 +148,21 @@ func background(doc *gg.Context, w, h float64, color string) {
 	doc.Clear()
 }
 
-// gradient sets the background color gradient
-func gradient(doc *gg.Context, w, h float64, gc1, gc2 string, gp float64) {
+// gradientbg sets the background color gradient
+func gradientbg(doc *gg.Context, w, h float64, gc1, gc2 string, gp float64) {
+	gradient(doc, 0, 0, w, h, gc1, gc2, gp)
+}
+
+// gradient sets the rect color gradient
+func gradient(doc *gg.Context, x, y, w, h float64, gc1, gc2 string, gp float64) {
 	r1, g1, b1 := colorlookup(gc1)
 	r2, g2, b2 := colorlookup(gc2)
 	gp /= 100.0
-	grad := gg.NewLinearGradient(0, 0, 100, 100)
+	grad := gg.NewLinearGradient(x, y, x+w, y+h)
 	grad.AddColorStop(0, color.RGBA{uint8(r1), uint8(g1), uint8(b1), 1})
-	grad.AddColorStop(0, color.RGBA{uint8(r2), uint8(g2), uint8(b2), 1})
+	grad.AddColorStop(1, color.RGBA{uint8(r2), uint8(g2), uint8(b2), 1})
 	doc.SetFillStyle(grad)
-	doc.DrawRectangle(0, 0, w, h)
+	doc.DrawRectangle(x, y, w, h)
 	doc.Fill()
 }
 
@@ -402,7 +407,7 @@ func pngslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, d
 	}
 	// set gradient background, if specified. You need both colors
 	if len(slide.Gradcolor1) > 0 && len(slide.Gradcolor2) > 0 {
-		gradient(doc, cw, ch, slide.Gradcolor1, slide.Gradcolor2, slide.GradPercent)
+		gradientbg(doc, cw, ch, slide.Gradcolor1, slide.Gradcolor2, slide.GradPercent)
 	}
 	// set the default foreground
 	if slide.Fg == "" {
@@ -476,7 +481,11 @@ func pngslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, d
 		if rect.Color == "" {
 			rect.Color = defaultColor
 		}
-		dorect(doc, x-(w/2), y-(h/2), w, h, rect.Color, rect.Opacity)
+		if len(rect.Gradcolor1) > 0 && len(rect.Gradcolor2) > 0 {
+			gradient(doc, x-(w/2), y-(h/2), w, h, rect.Gradcolor1, rect.Gradcolor2, rect.GradPercent)
+		} else {
+			dorect(doc, x-(w/2), y-(h/2), w, h, rect.Color, rect.Opacity)
+		}
 	}
 	// ellipse
 	for _, ellipse := range slide.Ellipse {
