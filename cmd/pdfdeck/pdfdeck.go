@@ -1,4 +1,4 @@
-// pdfdeck: make PDF slide decks
+// pdfdeck: make PDF slide decks from deck markup
 package main
 
 import (
@@ -146,12 +146,17 @@ func background(doc *fpdf.Fpdf, w, h float64, color string) {
 	dorect(doc, 0, 0, w, h, color)
 }
 
-// gradient sets the background color gradient
-func gradient(doc *fpdf.Fpdf, w, h float64, gc1, gc2 string, gp float64) {
+// gradientbg  sets the background color gradient
+func gradientbg(doc *fpdf.Fpdf, w, h float64, gc1, gc2 string, gp float64) {
+	gradient(doc, 0, 0, w, h, gc1, gc2, gp)
+}
+
+// gradient  sets the background color gradient
+func gradient(doc *fpdf.Fpdf, x, y, w, h float64, gc1, gc2 string, gp float64) {
 	r1, g1, b1 := colorlookup(gc1)
 	r2, g2, b2 := colorlookup(gc2)
 	gp /= 100.0
-	doc.LinearGradient(0, 0, w, h, r1, g1, b1, r2, g2, b2, 0, gp, 0, 0)
+	doc.LinearGradient(x, y, w, h, r1, g1, b1, r2, g2, b2, 0, gp, 0, 0)
 }
 
 // doline draws a line
@@ -395,7 +400,7 @@ func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) {
 	}
 	// set gradient background, if specified. You need both colors
 	if len(slide.Gradcolor1) > 0 && len(slide.Gradcolor2) > 0 {
-		gradient(doc, cw, ch, slide.Gradcolor1, slide.Gradcolor2, slide.GradPercent)
+		gradientbg(doc, cw, ch, slide.Gradcolor1, slide.Gradcolor2, slide.GradPercent)
 	}
 	// set the default foreground
 	if slide.Fg == "" {
@@ -455,8 +460,12 @@ func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) {
 		if rect.Color == "" {
 			rect.Color = defaultColor
 		}
-		setopacity(doc, rect.Opacity)
-		dorect(doc, x-(w/2), y-(h/2), w, h, rect.Color)
+		if len(rect.Gradcolor1) > 0 && len(rect.Gradcolor2) > 0 {
+			gradient(doc, x-(w/2), y-(h/2), w, h, rect.Gradcolor1, rect.Gradcolor2, rect.GradPercent)
+		} else {
+			setopacity(doc, rect.Opacity)
+			dorect(doc, x-(w/2), y-(h/2), w, h, rect.Color)
+		}
 	}
 	// ellipse
 	for _, ellipse := range slide.Ellipse {
