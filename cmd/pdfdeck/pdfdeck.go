@@ -94,6 +94,10 @@ func setopacity(doc *fpdf.Fpdf, v float64) {
 	}
 }
 
+func linesettings(doc *fpdf.Fpdf) {
+	doc.SetLineCapStyle("square")
+}
+
 // whitespace determines if a rune is whitespace
 func whitespace(r rune) bool {
 	return r == ' ' || r == '\n' || r == '\t'
@@ -643,6 +647,7 @@ func dodeck(files []string, pageconfig fpdf.InitType, w, h float64, sflag bool, 
 	pc := &pageconfig
 	if sflag { // combined output to standard output
 		doc := fpdf.NewCustom(pc)
+		linesettings(doc)
 		for _, filename := range files {
 			doslides(doc, pageconfig, filename, author, title, gp, begin, end)
 		}
