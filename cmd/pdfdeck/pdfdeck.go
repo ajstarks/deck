@@ -95,7 +95,7 @@ func setopacity(doc *fpdf.Fpdf, v float64) {
 }
 
 func linesettings(doc *fpdf.Fpdf) {
-	doc.SetLineCapStyle("square")
+	doc.SetLineCapStyle("butt")
 }
 
 // whitespace determines if a rune is whitespace
