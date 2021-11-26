@@ -14,7 +14,7 @@ do
 		else
 			exe="${goos}-${goarch}-${b}"
 		fi
-		GOOS=$goos GOARCH=$goarch go build -o $exe $base/$b
+		CGO_ENABLED=0 GOOS=$goos GOARCH=$goarch go build  -o $exe $base/$b
 	done
 	echo
 done
