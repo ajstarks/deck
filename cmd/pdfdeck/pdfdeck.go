@@ -719,6 +719,29 @@ func setfontdir(s string) string {
 	return path.Join(os.Getenv("HOME"), "deckfonts")
 }
 
+var usage = `
+pdfdeck [options] file...
+
+options     default           description
+...........................................................................................
+-sans       helvetica         Sans Serif font
+-serif      times             Serif font
+-mono       courier           Monospace font
+-symbol     zapfdingbats      Symbol font
+-pages      1-1000000         Pages to output (first-last)
+-pagesize   Letter            Page size (w,h) or Legal, Tabloid, A[3-5], ArchA, 4R, Index)
+-grid       0                 Draw a grid at specified % (0 for no grid)
+-fontdir    $HOME/deckfonts   Font directory
+-outdir     Current directory Output directory
+-stdout     false             Output to standard output
+-author     ""                Document author
+-title      ""                Document title
+...........................................................................................`
+
+func cmdUsage() {
+	fmt.Fprintln(flag.CommandLine.Output(), usage)
+}
+
 // for every file, make a deck
 func main() {
 	var (
@@ -735,6 +758,7 @@ func main() {
 		stdout     = flag.Bool("stdout", false, "output to standard output")
 		pr         = flag.String("pages", "1-1000000", "page range (first-last)")
 	)
+	flag.Usage = cmdUsage
 	flag.Parse()
 
 	pw, ph := setpagesize(*pagesize)
