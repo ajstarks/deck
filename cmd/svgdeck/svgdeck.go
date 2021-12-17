@@ -607,6 +607,25 @@ func dodeck(files []string, pw, ph float64, outdir, title string, gp float64, be
 	}
 }
 
+var usage = `
+svgdeck [options] file...
+
+options     default           description
+...........................................................................................
+-sans       helvetica         Sans Serif font
+-serif      times             Serif font
+-mono       courier           Monospace font
+-pages      1-1000000         Pages to output (first-last)
+-pagesize   Letter            Page size (w,h) or Legal, Tabloid, A[3-5], ArchA, 4R, Index)
+-grid       0                 Draw a grid at specified % (0 for no grid)
+-outdir     Current directory Output directory
+-title      ""                Document title
+...........................................................................................`
+
+func cmdUsage() {
+	fmt.Fprintln(flag.CommandLine.Output(), usage)
+}
+
 // for every file, make a deck
 func main() {
 	var (
@@ -619,6 +638,7 @@ func main() {
 		gridpct  = flag.Float64("grid", 0, "place percentage grid on each slide")
 		pr       = flag.String("pages", "1-1000000", "page range (first-last)")
 	)
+	flag.Usage = cmdUsage
 	flag.Parse()
 	begin, end := pagerange(*pr)
 	pw, ph := setpagesize(*pagesize)
