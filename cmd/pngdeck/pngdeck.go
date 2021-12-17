@@ -655,10 +655,10 @@ pngdeck [options] file...
 
 options     default           description
 ...........................................................................................
--sans       helvetica         Sans Serif font
--serif      times             Serif font
--mono       courier           Monospace font
--symbol     zapfdingbats      Symbol font
+-sans       FiraSans-Regular  Sans Serif font
+-serif      Charter-Regular   Serif font
+-mono       FiraMono-Regular  Monospace font
+-symbol     ZapfDingbats      Symbol font
 -pages      1-1000000         Pages to output (first-last)
 -pagesize   Letter            Page size (w,h) or Legal, Tabloid, A[3-5], ArchA, 4R, Index)
 -grid       0                 Draw a grid at specified % (0 for no grid)
