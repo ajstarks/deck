@@ -1,40 +1,34 @@
 # pdfdeck: render deck files to pdf
 
-```pdfdeck``` reads files in deck markup and makes pdf files.  
+```pdfdeck``` makes pdf files from ```deck``` markup.  
 
 ## command options:
 
+
 ```
-  -author string
-    	document author
-  -fontdir string
-    	directory for fonts (defaults to DECKFONTS environment variable)
-  -grid float
-    	draw a percentage grid on each slide
-  -mono string
-    	mono font (default "courier")
-  -outdir string
-    	output directory (default ".")
-  -pages string
-    	page range (first-last) (default "1-1000000")
-  -pagesize string
-    	pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen (default "Letter")
-  -sans string
-    	sans font (default "helvetica")
-  -serif string
-    	serif font (default "times")
-  -stdout
-    	output to standard output
-  -symbol string
-    	symbol font (default "zapfdingbats")
-  -title string
-    	document title
+pdfdeck [options] file...
+
+options     default           description
+...........................................................................................
+-sans       helvetica         Sans Serif font
+-serif      times             Serif font
+-mono       courier           Monospace font
+-symbol     zapfdingbats      Symbol font
+-pages      1-1000000         Pages to output (first-last)
+-pagesize   Letter            Page size (w,h) or Legal, Tabloid, A[3-5], ArchA, 4R, Index)
+-grid       0                 Draw a grid at specified % (0 for no grid)
+-fontdir    $HOME/deckfonts   Font directory
+-outdir     Current directory Output directory
+-stdout     false             Output to standard output
+-author     ""                Document author
+-title      ""                Document title
+...........................................................................................
 ```
 
 ## Fonts
 
 ```pdfdeck``` assumes a set of standard fonts (Times, Helvetica, Courier, and Zapf Dingbats) are available.
-These fonts and othe TrueType fonts (Noto, Fira, Charter, Go fonts, etc) are available in the [deckfonts](https://github.com/ajstarks/deckfonts) repository.  ```pdfdeck``` also uses the DECKFONTS environment variable to indicate where fonts are stored:
+These fonts and other TrueType fonts (Noto, Fira, Charter, Go fonts, etc) are available in the [deckfonts](https://github.com/ajstarks/deckfonts) repository.  ```pdfdeck``` also uses the DECKFONTS environment variable to indicate where fonts are stored (by default ```deckfonts``` directory in the home directory:
 
 	export DECKFONTS=$HOME/deckfonts
 	cd $HOME
