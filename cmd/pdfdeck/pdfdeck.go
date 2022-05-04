@@ -4,12 +4,17 @@ package main
 import (
 	"flag"
 	"fmt"
+	"image"
 	"os"
 	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"unicode"
+
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
 
 	"github.com/ajstarks/deck"
 	"github.com/go-pdf/fpdf"
@@ -424,6 +429,16 @@ func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) {
 			fh *= (cw / fw)
 			fw = cw
 		}
+		// scale the image to a percentage of the canvas width
+		// no need to specify image natural (w,h), canvas size independent
+		if im.Height == 0 && im.Width > 0 {
+			nw, nh := imageInfo(im.Name)
+			if nh > 0 {
+				imscale := (fw / 100) * cw
+				fw = imscale
+				fh = imscale / (float64(nw) / float64(nh))
+			}
+		}
 		midx := fw / 2
 		midy := fh / 2
 		doc.ImageOptions(im.Name, x-midx, y-midy, fw, fh, false, imgopt, 0, im.Link)
@@ -717,6 +732,19 @@ func setfontdir(s string) string {
 		return envdef
 	}
 	return path.Join(os.Getenv("HOME"), "deckfonts")
+}
+
+func imageInfo(s string) (int, int) {
+	f, err := os.Open(s)
+	defer f.Close()
+	if err != nil {
+		return 0, 0
+	}
+	im, _, err := image.DecodeConfig(f)
+	if err != nil {
+		return 0, 0
+	}
+	return im.Width, im.Height
 }
 
 var usage = `
