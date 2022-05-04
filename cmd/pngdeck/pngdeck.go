@@ -433,8 +433,22 @@ func pngslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, d
 			fmt.Fprintf(os.Stderr, "pngdeck: slide %d (%v)\n", n+1, err)
 			return
 		}
+
 		bounds := img.Bounds()
-		if iw == (bounds.Max.X-bounds.Min.X) && ih == (bounds.Max.Y-bounds.Min.Y) {
+		nw, nh := bounds.Max.X-bounds.Min.X, bounds.Max.Y-bounds.Min.Y
+		// scale the image to a percentage of the canvas width
+		if im.Height == 0 && im.Width > 0 {
+			if nh > 0 {
+				fw := float64(im.Width)
+				imscale := (fw / 100) * cw
+				fw = imscale
+				fh := imscale / (float64(nw) / float64(nh))
+				iw = int(fw)
+				ih = int(fh)
+			}
+		}
+
+		if iw == nw && ih == nh {
 			doc.DrawImageAnchored(img, int(x), int(y), 0.5, 0.5)
 		} else {
 			g := gift.New(gift.Resize(iw, ih, gift.BoxResampling))
