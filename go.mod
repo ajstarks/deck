@@ -12,7 +12,7 @@ require (
 	github.com/ajstarks/svgo v0.0.0-20210927141636-6d70534b1098
 	github.com/disintegration/gift v1.2.1
 	github.com/fogleman/gg v1.3.0
-	github.com/go-pdf/fpdf v0.5.0
+	github.com/go-pdf/fpdf v0.6.0
 )
 
 require (
