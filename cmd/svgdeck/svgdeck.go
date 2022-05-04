@@ -4,12 +4,17 @@ package main
 import (
 	"flag"
 	"fmt"
+	"image"
 	"math"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"unicode"
+
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
 
 	"github.com/ajstarks/deck"
 	svg "github.com/ajstarks/svgo/float"
@@ -458,6 +463,16 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, cw, ch, gp float64, outname, tit
 			iw = cw
 		}
 
+		// scale the image to a percentage of the canvas width
+		if im.Height == 0 && im.Width > 0 {
+			nw, nh := imageInfo(im.Name)
+			if nh > 0 {
+				imscale := (iw / 100) * cw
+				iw = imscale
+				ih = imscale / (float64(nw) / float64(nh))
+			}
+		}
+
 		midx := iw / 2
 		midy := ih / 2
 		doc.Image(x-midx, y-midy, int(iw), int(ih), im.Name)
@@ -594,6 +609,21 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, cw, ch, gp float64, outname, tit
 		doc.LinkEnd()
 	}
 	doc.End()
+}
+
+func imageInfo(s string) (int, int) {
+	f, err := os.Open(s)
+	defer f.Close()
+	if err != nil {
+		fmt.Fprint(os.Stderr, "%v\n", err)
+		return 0, 0
+	}
+	im, _, err := image.DecodeConfig(f)
+	if err != nil {
+		fmt.Fprint(os.Stderr, "%v\n", err)
+		return 0, 0
+	}
+	return im.Width, im.Height
 }
 
 // dodeck turns deck input files into SVG
