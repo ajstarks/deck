@@ -4,6 +4,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"image"
 	"image/color"
 	"os"
 	"os/signal"
@@ -11,6 +12,10 @@ import (
 	"strings"
 	"syscall"
 	"unicode"
+
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/layout"
@@ -317,6 +322,19 @@ func showslide(doc *fc.Canvas, d *deck.Deck, n int) {
 			ih = int((float64(d.Canvas.Width) / float64(iw)) * float64(ih))
 			iw = d.Canvas.Width
 		}
+
+		// scale the image to a percentage of the canvas width
+		if im.Height == 0 && im.Width > 0 {
+			nw, nh := imageInfo(im.Name)
+			if nh > 0 {
+				var fw, fh float64
+				imscale := (float64(iw) / 100) * cw
+				fw = imscale
+				fh = imscale / (float64(nw) / float64(nh))
+				iw = int(fw)
+				ih = int(fh)
+			}
+		}
 		doc.Image(im.Xp, im.Yp, iw, ih, im.Name)
 		if len(im.Caption) > 0 {
 			capsize := 1.5
@@ -508,6 +526,20 @@ func gridtoggle(c *fc.Canvas, size float64, d *deck.Deck, slidenumber int) {
 		showslide(c, d, slidenumber)
 	}
 	gridstate = !gridstate
+}
+
+// imageinfo returns the dimensions of an image
+func imageInfo(s string) (int, int) {
+	f, err := os.Open(s)
+	defer f.Close()
+	if err != nil {
+		return 0, 0
+	}
+	im, _, err := image.DecodeConfig(f)
+	if err != nil {
+		return 0, 0
+	}
+	return im.Width, im.Height
 }
 
 func main() {

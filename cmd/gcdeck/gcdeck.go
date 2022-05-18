@@ -4,6 +4,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"image"
 	"image/color"
 	"math"
 	"os"
@@ -12,6 +13,10 @@ import (
 	"strings"
 	"syscall"
 	"unicode"
+
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
 
 	"gioui.org/app"
 	"gioui.org/io/key"
@@ -321,7 +326,20 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 	}
 	// for every image on the slide...
 	for _, im := range slide.Image {
-		doc.Image(im.Name, float32(im.Xp), float32(im.Yp), im.Width, im.Height, float32(im.Scale))
+		iw, ih := im.Width, im.Height
+		// scale the image to a percentage of the canvas width
+		if im.Height == 0 && im.Width > 0 {
+			nw, nh := imageInfo(im.Name)
+			if nh > 0 {
+				var fw, fh float64
+				imscale := (float64(iw) / 100) * cw
+				fw = imscale
+				fh = imscale / (float64(nw) / float64(nh))
+				iw = int(fw)
+				ih = int(fh)
+			}
+		}
+		doc.Image(im.Name, float32(im.Xp), float32(im.Yp), iw, ih, float32(im.Scale))
 		if len(im.Caption) > 0 {
 			capsize := 1.5
 			if im.Font == "" {
@@ -450,6 +468,20 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 		dolist(doc, cw, l.Xp, l.Yp, l.Sp, l.Wp, l.Rotation, l.Lp, l.Li, l.Font, l.Type, l.Align, l.Color, l.Opacity)
 	}
 
+}
+
+// imageinfo returns the dimensions of an image
+func imageInfo(s string) (int, int) {
+	f, err := os.Open(s)
+	defer f.Close()
+	if err != nil {
+		return 0, 0
+	}
+	im, _, err := image.DecodeConfig(f)
+	if err != nil {
+		return 0, 0
+	}
+	return im.Width, im.Height
 }
 
 // hup processes the hangup (SIGHUP) signal
