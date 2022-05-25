@@ -1,4 +1,6 @@
-/*
+# deckd: a server for slide decks
+
+![deckd](deckd.png)
 
 deckd is a server program that provides an API for slide decks. Responses are encoded in JSON.
 To install:
@@ -7,11 +9,13 @@ To install:
 
 Command line options control the working directory and address:port
 
--listen Address:port (default: localhost:1958)
+	-listen Address:port (default: localhost:1958)
 
--dir working directory (default: ".")
+	-dir working directory (default: ".")
 
--maxupload maximum upload size (bytes)
+	-maxupload maximum upload size (bytes)
+
+## API
 
 GET / lists the API
 
@@ -34,5 +38,3 @@ POST /table with the content of a tab-separated list, creates a slide with a for
 POST /table/?textsize=[size] -- specify the text size of the generated table
 
 POST /media plays the media file specified in the Media: header
-*/
-package main
