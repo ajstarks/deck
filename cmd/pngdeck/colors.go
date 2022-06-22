@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math"
 	"strconv"
 	"strings"
 )
@@ -187,5 +188,65 @@ func colorlookup(s string) (int, int, int) {
 		b, _ := strconv.ParseInt(s[5:7], 16, 32)
 		return int(r), int(g), int(b)
 	}
+
+	if strings.HasPrefix(s, "hsv(") && strings.HasSuffix(s, ")") && ls > 5 {
+		v := strings.Split(s[4:ls-1], ",")
+		if len(v) == 3 {
+			hue, _ := strconv.ParseFloat(v[0], 64)
+			sat, _ := strconv.ParseFloat(v[1], 64)
+			value, _ := strconv.ParseFloat(v[2], 64)
+			red, green, blue = hsv2rgb(hue, sat, value)
+		}
+		return red, green, blue
+	}
 	return 0, 0, 0
+}
+
+// hsv2rgb converts hsv(h (0-360), s (0-100), v (0-100)) to rgb
+// reference: https://en.wikipedia.org/wiki/HSL_and_HSV#HSV_to_RGB
+func hsv2rgb(h, s, v float64) (int, int, int) {
+	s /= 100
+	v /= 100
+	if s > 1 || v > 1 {
+		return 0, 0, 0
+	}
+	h = math.Mod(h, 360)
+	c := v * s
+	section := h / 60
+	x := c * (1 - math.Abs(math.Mod(section, 2)-1))
+
+	var r, g, b float64
+	switch {
+	case section >= 0 && section <= 1:
+		r = c
+		g = x
+		b = 0
+	case section > 1 && section <= 2:
+		r = x
+		g = c
+		b = 0
+	case section > 2 && section <= 3:
+		r = 0
+		g = c
+		b = x
+	case section > 3 && section <= 4:
+		r = 0
+		g = x
+		b = c
+	case section > 4 && section <= 5:
+		r = x
+		g = 0
+		b = c
+	case section > 5 && section <= 6:
+		r = c
+		g = 0
+		b = x
+	default:
+		return 0, 0, 0
+	}
+	m := v - c
+	r += m
+	g += m
+	b += m
+	return int(r * 255), int(g * 255), int(b * 255)
 }
