@@ -32,6 +32,7 @@ within slides any number of:
 * curve: quadraticd Bezier curve
 * arc: elliptical arc
 * polygon: filled polygon
+* polyline: closed polyline
 
 ## Markup ##
 
@@ -159,7 +160,7 @@ Currently there are four clients: pdfdeck, pngdeck, svgdeck and vgdeck.
 For PDF decks, install pdfdeck:
 
 ```sh
-go get github.com/ajstarks/deck/cmd/pdfdeck
+go install github.com/ajstarks/deck/cmd/pdfdeck@latest
 ```
 
 pdfdeck produces decks in PDF corresponding to the input file:
@@ -173,7 +174,7 @@ produces deck.pdf
 For SVG decks, install svgdeck:
 
 ```sh
-go get github.com/ajstarks/deck/cmd/svgdeck
+go install github.com/ajstarks/deck/cmd/svgdeck@latest
 ```
 
 This command:
@@ -187,7 +188,7 @@ produces one slide per SVG file, with each slide linked to the next.
 For png decks, install pngdeck:
 
 ```sh
-go get github.com/ajstarks/deck/cmd/pngdeck
+go install github.com/ajstarks/deck/cmd/pngdeck@latest
 ```
 
 This command:

@@ -24,6 +24,7 @@ within slides an number of:
 	curve: Quadratic Bezier curve
 	arc: elliptical arc
 	polygon: polygon
+	polyline: polyline
 
 Markup
 
