@@ -31,22 +31,23 @@ type canvas struct {
 // <slide bg="black" fg="rgb(255,255,255)" duration="2s" note="hello, world">
 // <slide gradcolor1="black" gradcolor2="white" gp="20" duration="2s" note="wassup">
 type Slide struct {
-	Bg          string    `xml:"bg,attr"`
-	Fg          string    `xml:"fg,attr"`
-	Gradcolor1  string    `xml:"gradcolor1,attr"`
-	Gradcolor2  string    `xml:"gradcolor2,attr"`
-	GradPercent float64   `xml:"gp,attr"`
-	Duration    string    `xml:"duration,attr"`
-	Note        string    `xml:"note"`
-	List        []List    `xml:"list"`
-	Text        []Text    `xml:"text"`
-	Image       []Image   `xml:"image"`
-	Ellipse     []Ellipse `xml:"ellipse"`
-	Line        []Line    `xml:"line"`
-	Rect        []Rect    `xml:"rect"`
-	Curve       []Curve   `xml:"curve"`
-	Arc         []Arc     `xml:"arc"`
-	Polygon     []Polygon `xml:"polygon"`
+	Bg          string     `xml:"bg,attr"`
+	Fg          string     `xml:"fg,attr"`
+	Gradcolor1  string     `xml:"gradcolor1,attr"`
+	Gradcolor2  string     `xml:"gradcolor2,attr"`
+	GradPercent float64    `xml:"gp,attr"`
+	Duration    string     `xml:"duration,attr"`
+	Note        string     `xml:"note"`
+	List        []List     `xml:"list"`
+	Text        []Text     `xml:"text"`
+	Image       []Image    `xml:"image"`
+	Ellipse     []Ellipse  `xml:"ellipse"`
+	Line        []Line     `xml:"line"`
+	Rect        []Rect     `xml:"rect"`
+	Curve       []Curve    `xml:"curve"`
+	Arc         []Arc      `xml:"arc"`
+	Polygon     []Polygon  `xml:"polygon"`
+	Polyline    []Polyline `xml:polyline`
 }
 
 // CommonAttr are the common attributes for text and list
@@ -175,6 +176,17 @@ type Polygon struct {
 	Opacity float64 `xml:"opacity,attr"`
 }
 
+// Polyline defines a polyline, x and y coordinates are specified by
+// strings of space-separated percentages:
+// <polyline xc="10 20 30" yc="30 40 50"/>
+type Polyline struct {
+	XC      string  `xml:"xc,attr"`
+	YC      string  `xml:"yc,attr"`
+	Sp      float64 `xml:"sp,attr"` // line thickness
+	Color   string  `xml:"color,attr"`
+	Opacity float64 `xml:"opacity,attr"`
+}
+
 // ReadDeck reads the deck description file from a io.Reader
 func ReadDeck(r io.ReadCloser, w, h int) (Deck, error) {
 	var d Deck
@@ -273,6 +285,9 @@ func Dump(d Deck) {
 		}
 		for p, polygon := range s.Polygon {
 			fmt.Printf("\tPolygon [%d] = %+v\n", p, polygon)
+		}
+		for p, polyline := range s.Polyline {
+			fmt.Printf("\tPolyline [%d] = %+v\n", p, polyline)
 		}
 	}
 }
