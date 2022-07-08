@@ -173,7 +173,7 @@ func colorlookup(s string) (int, int, int) {
 	ls := len(s)
 	// rgb(r, g, b)
 	if strings.HasPrefix(s, "rgb(") && strings.HasSuffix(s, ")") && ls > 5 {
-		v := strings.Split(s[4:ls-1], ",")
+		v := colorNumbers(s)
 		if len(v) == 3 {
 			red, _ = strconv.Atoi(v[0])
 			green, _ = strconv.Atoi(v[1])
@@ -188,9 +188,9 @@ func colorlookup(s string) (int, int, int) {
 		b, _ := strconv.ParseInt(s[5:7], 16, 32)
 		return int(r), int(g), int(b)
 	}
-
+	// hsv(hue, saturation, value)
 	if strings.HasPrefix(s, "hsv(") && strings.HasSuffix(s, ")") && ls > 5 {
-		v := strings.Split(s[4:ls-1], ",")
+		v := colorNumbers(s)
 		if len(v) == 3 {
 			hue, _ := strconv.ParseFloat(v[0], 64)
 			sat, _ := strconv.ParseFloat(v[1], 64)
@@ -200,6 +200,12 @@ func colorlookup(s string) (int, int, int) {
 		return red, green, blue
 	}
 	return 0, 0, 0
+}
+
+// colorNumbers returns a list of numbers from a comma separated list,
+// in the form of xxx(n1, n2, n3), after removing tabs and spaces.
+func colorNumbers(s string) []string {
+	return strings.Split(strings.NewReplacer(" ", "", "\t", "").Replace(s[4:len(s)-1]), ",")
 }
 
 // hsv2rgb converts hsv(h (0-360), s (0-100), v (0-100)) to rgb
