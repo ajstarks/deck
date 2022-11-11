@@ -47,7 +47,7 @@ type Slide struct {
 	Curve       []Curve    `xml:"curve"`
 	Arc         []Arc      `xml:"arc"`
 	Polygon     []Polygon  `xml:"polygon"`
-	Polyline    []Polyline `xml:polyline`
+	Polyline    []Polyline `xml:"polyline"`
 }
 
 // CommonAttr are the common attributes for text and list
@@ -79,8 +79,10 @@ type Dimension struct {
 
 // ListItem describes a list item
 // <list xp="20" yp="70" sp="1.5">
+//
 //	<li>canvas<li>
 //	<li>slide</li>
+//
 // </list>
 type ListItem struct {
 	Color    string  `xml:"color,attr"`
