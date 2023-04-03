@@ -12,7 +12,7 @@ require (
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/disintegration/gift v1.2.1
 	github.com/fogleman/gg v1.3.0
-	github.com/go-pdf/fpdf v0.6.0
+	github.com/go-pdf/fpdf v0.7.0
 )
 
 require (
@@ -35,9 +35,9 @@ require (
 	github.com/stretchr/testify v1.7.1 // indirect
 	github.com/yuin/goldmark v1.4.13 // indirect
 	golang.org/x/exp v0.0.0-20210722180016-6781d3edade3 // indirect
-	golang.org/x/image v0.5.0 // indirect
+	golang.org/x/image v0.6.0 // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
-	golang.org/x/text v0.7.0 // indirect
+	golang.org/x/text v0.8.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
