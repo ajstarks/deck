@@ -17,6 +17,7 @@ import (
 	_ "image/png"
 
 	"github.com/ajstarks/deck"
+	"github.com/ajstarks/mdtopdf"
 	"github.com/go-pdf/fpdf"
 )
 
@@ -27,6 +28,12 @@ const (
 	fontfactor  = 1.0
 	listwrap    = 95.0
 )
+
+type TypedString struct {
+	source   string
+	datatype string
+	data     string
+}
 
 // PageDimen describes page dimensions
 // the unit field is used to convert to pt.
@@ -236,35 +243,54 @@ func dopoly(doc *fpdf.Fpdf, xc, yc, color string, cw, ch float64) {
 	doc.Polygon(poly, "F")
 }
 
-// dotext places text elements on the canvas according to type
-func dotext(doc *fpdf.Fpdf, cw, x, y, fs, wp, rotation, spacing float64, tdata, font, color, align, ttype, tlink string) {
+// docontent places text elements on the canvas according to type
+func docontent(doc *fpdf.Fpdf, cw, x, y, fs, wp, rotation, spacing float64, tdata TypedString, font, color, align, ttype, tlink string) {
 	var tw float64
-	td := strings.Split(tdata, "\n")
+
 	if rotation > 0 {
 		doc.TransformBegin()
 		doc.TransformRotate(rotation, x, y)
 	}
 	red, green, blue := colorlookup(color)
 	doc.SetTextColor(red, green, blue)
-	if ttype == "code" {
+
+	switch ttype {
+	case "code":
 		font = "mono"
+		codemap.Replace(tdata.data)
+		td := strings.Split(tdata.data, "\n")
 		ch := float64(len(td)) * spacing * fs
 		tw = deck.Pwidth(wp, cw, cw-x-20)
 		dorect(doc, x-fs, y-fs, tw, ch, "rgb(240,240,240)")
-	}
-	if ttype == "block" {
+		plaintext(doc, td, x, y, spacing, fs, font, align, tlink)
+	case "block":
 		tw = deck.Pwidth(wp, cw, cw/2)
-		textwrap(doc, x, y, tw, fs, fs*spacing, transmap[font](tdata), font, tlink)
-	} else {
-		ls := spacing * fs
-		for _, t := range td {
-			showtext(doc, x, y, t, fs, font, align, tlink)
-			y += ls
-		}
+		textwrap(doc, x, y, tw, fs, fs*spacing, transmap[font](tdata.data), font, tlink)
+	case "markdown":
+		domarkdown(doc, tdata)
+	default:
+		codemap.Replace(tdata.data)
+		td := strings.Split(tdata.data, "\n")
+		plaintext(doc, td, x, y, spacing, fs, font, align, tlink)
 	}
 	if rotation > 0 {
 		doc.TransformEnd()
 	}
+}
+
+// plaintext places lines of text
+func plaintext(doc *fpdf.Fpdf, td []string, x, y, spacing, fs float64, font, align, tlink string) {
+	ls := spacing * fs
+	for _, t := range td {
+		showtext(doc, x, y, t, fs, font, align, tlink)
+		y += ls
+	}
+}
+
+// domarkdown creates a separate PDF from markdown
+func domarkdown(doc *fpdf.Fpdf, tdata TypedString) {
+	pf := mdtopdf.NewPdfRenderer("", "", tdata.source+"+markdown.pdf", "")
+	pf.Process([]byte(tdata.data))
 }
 
 // showtext places fully attributed text at the specified location
@@ -384,6 +410,25 @@ func textwrap(doc *fpdf.Fpdf, x, y, w, fs, leading float64, s, font, link string
 	return nbreak
 }
 
+// content reads markdown data
+func content(scheme, path string) string {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return ""
+	}
+	return string(data)
+}
+
+// includefile returns the contents of a file as string
+func includefile(filetype, filename string) TypedString {
+	var ts TypedString
+	ts.source = filename
+	ts.datatype = filetype
+	ts.data = content(filetype, filename)
+	return ts
+}
+
 // pdfslide makes a slide, one slide per PDF page
 func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) {
 	if n < 0 || n > len(d.Slide)-1 || !showslide {
@@ -430,7 +475,6 @@ func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) {
 			fw = cw
 		}
 		// scale the image to a percentage of the canvas width
-		// no need to specify image natural (w,h), canvas size independent
 		if im.Height == 0 && im.Width > 0 {
 			nw, nh := imageInfo(im.Name)
 			if nh > 0 {
@@ -553,7 +597,7 @@ func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) {
 	}
 
 	// for every text element...
-	var tdata string
+	var tdata TypedString
 	for _, t := range slide.Text {
 		if t.Color == "" {
 			t.Color = slide.Fg
@@ -564,14 +608,14 @@ func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool) {
 		setopacity(doc, t.Opacity)
 		x, y, fs = dimen(cw, ch, t.Xp, t.Yp, t.Sp)
 		if t.File != "" {
-			tdata = includefile(t.File)
+			tdata = includefile(t.Type, t.File)
 		} else {
-			tdata = t.Tdata
+			tdata.data = t.Tdata
 		}
 		if t.Lp == 0 {
 			t.Lp = linespacing
 		}
-		dotext(doc, cw, x, y, fs, t.Wp, t.Rotation, t.Lp, tdata, t.Font, t.Color, t.Align, t.Type, t.Link)
+		docontent(doc, cw, x, y, fs, t.Wp, t.Rotation, t.Lp, tdata, t.Font, t.Color, t.Align, t.Type, t.Link)
 	}
 	// for every list element...
 	for _, l := range slide.List {
@@ -688,16 +732,6 @@ func dodeck(files []string, pageconfig fpdf.InitType, w, h float64, sflag bool, 
 			out.Close()
 		}
 	}
-}
-
-// includefile returns the contents of a file as string
-func includefile(filename string) string {
-	data, err := os.ReadFile(filename)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return ""
-	}
-	return codemap.Replace(string(data))
 }
 
 // setpagesize parses the page size string (wxh)
