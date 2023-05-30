@@ -17,8 +17,8 @@ import (
 	_ "image/png"
 
 	"github.com/ajstarks/deck"
-	"github.com/ajstarks/mdtopdf"
 	"github.com/go-pdf/fpdf"
+	"github.com/mandolyte/mdtopdf"
 )
 
 const (
@@ -289,7 +289,7 @@ func plaintext(doc *fpdf.Fpdf, td []string, x, y, spacing, fs float64, font, ali
 
 // domarkdown creates a separate PDF from markdown
 func domarkdown(doc *fpdf.Fpdf, tdata TypedString) {
-	pf := mdtopdf.NewPdfRenderer("", "", tdata.source+"+markdown.pdf", "")
+	pf := mdtopdf.NewPdfRenderer("", "", tdata.source+".pdf", "")
 	pf.Process([]byte(tdata.data))
 }
 
