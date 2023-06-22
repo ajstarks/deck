@@ -180,25 +180,102 @@ func includefile(filename string) string {
 	return codemap.Replace(string(data))
 }
 
+// colorNumbers returns a list of numbers from a comma separated list,
+// in the form of xxx(n1, n2, n3), after removing tabs and spaces.
+func colorNumbers(s string) []string {
+	return strings.Split(strings.NewReplacer(" ", "", "\t", "").Replace(s[4:len(s)-1]), ",")
+}
+
+// hsv2rgb converts hsv(h (0-360), s (0-100), v (0-100)) to rgb
+// reference: https://en.wikipedia.org/wiki/HSL_and_HSV#HSV_to_RGB
+func hsv2rgb(h, s, v float64) (int, int, int) {
+	s /= 100
+	v /= 100
+	if s > 1 || v > 1 {
+		return 0, 0, 0
+	}
+	h = math.Mod(h, 360)
+	c := v * s
+	section := h / 60
+	x := c * (1 - math.Abs(math.Mod(section, 2)-1))
+
+	var r, g, b float64
+	switch {
+	case section >= 0 && section <= 1:
+		r = c
+		g = x
+		b = 0
+	case section > 1 && section <= 2:
+		r = x
+		g = c
+		b = 0
+	case section > 2 && section <= 3:
+		r = 0
+		g = c
+		b = x
+	case section > 3 && section <= 4:
+		r = 0
+		g = x
+		b = c
+	case section > 4 && section <= 5:
+		r = x
+		g = 0
+		b = c
+	case section > 5 && section <= 6:
+		r = c
+		g = 0
+		b = x
+	default:
+		return 0, 0, 0
+	}
+	m := v - c
+	r += m
+	g += m
+	b += m
+	return int(r * 255), int(g * 255), int(b * 255)
+}
+
+// h2r converts hsv to rgb colors
+func h2r(s string) string {
+	var red, green, blue int
+	v := colorNumbers(s)
+	if len(v) == 3 {
+		hue, _ := strconv.ParseFloat(v[0], 64)
+		sat, _ := strconv.ParseFloat(v[1], 64)
+		value, _ := strconv.ParseFloat(v[2], 64)
+		red, green, blue = hsv2rgb(hue, sat, value)
+	}
+	return fmt.Sprintf("rgb(%d,%d,%d)", red, green, blue)
+}
+
+// svgcolor returns a color spec;
+// if hsv, convert to rgb, otherwise pass unchanged
+func svgcolor(color string) string {
+	if strings.HasPrefix(color, "hsv(") && strings.HasSuffix(color, ")") && len(color) > 5 {
+		color = h2r(color)
+	}
+	return color
+}
+
 // strokeop stroke a color at the specified opacity
 func strokeop(sw float64, color string, opacity float64) string {
-	return fmt.Sprintf(strokefmt, sw, color, setop(opacity))
+	return fmt.Sprintf(strokefmt, sw, svgcolor(color), setop(opacity))
 }
 
 // fillop fills with the specified color and opacity
 func fillop(color string, opacity float64) string {
-	return fmt.Sprintf(fillfmt, color, setop(opacity))
+	return fmt.Sprintf(fillfmt, svgcolor(color), setop(opacity))
 }
 
 // bullet draws a bullet
 func bullet(doc *svg.SVG, x, y, size float64, color string) {
 	rs := size / 2
-	doc.Circle(x-size, y-(rs*2)/3, rs/2, "fill:"+color)
+	doc.Circle(x-size, y-(rs*2)/3, rs/2, "fill:"+svgcolor(color))
 }
 
 // background places a colored rectangle
 func background(doc *svg.SVG, w, h float64, color string) {
-	dorect(doc, 0, 0, w, h, color, 0)
+	dorect(doc, 0, 0, w, h, svgcolor(color), 0)
 }
 
 // doline draws a line
@@ -305,7 +382,7 @@ func textalign(s string) string {
 
 // showtext places fully attributed text at the specified location
 func showtext(doc *svg.SVG, x, y float64, s string, fs float64, font, color, align string) {
-	doc.Text(x, y, s, `xml:space="preserve"`, fmt.Sprintf("fill:%s;font-size:%.2fpx;font-family:%s;text-anchor:%s", color, fs, fontlookup(font), textalign(align)))
+	doc.Text(x, y, s, `xml:space="preserve"`, fmt.Sprintf("fill:%s;font-size:%.2fpx;font-family:%s;text-anchor:%s", svgcolor(color), fs, fontlookup(font), textalign(align)))
 }
 
 // dolists places lists on the canvas
@@ -316,7 +393,7 @@ func dolist(doc *svg.SVG, x, y, fs, rotation, lwidth, spacing float64, tlist []d
 	//if rotation > 0 {
 	//		doc.RotateTranslate(x, y, rotation)
 	//	}
-	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%.2fpx", setop(opacity), color, fontlookup(font), fs))
+	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%.2fpx", setop(opacity), svgcolor(color), fontlookup(font), fs))
 	if ltype == "bullet" {
 		x += fs
 	}
@@ -357,7 +434,10 @@ func dolist(doc *svg.SVG, x, y, fs, rotation, lwidth, spacing float64, tlist []d
 
 // textwrap draws text at location, wrapping at the specified width
 func textwrap(doc *svg.SVG, x, y, w, fs float64, leading float64, s, font, color string, opacity float64) {
-	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%.2fpx", setop(opacity), color, fontlookup(font), fs))
+	if strings.HasPrefix(color, "hsv(") {
+		color = h2r(color)
+	}
+	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%.2fpx", setop(opacity), svgcolor(color), fontlookup(font), fs))
 	words := strings.FieldsFunc(s, whitespace)
 	xp := x
 	yp := y
