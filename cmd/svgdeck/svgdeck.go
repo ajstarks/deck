@@ -434,9 +434,6 @@ func dolist(doc *svg.SVG, x, y, fs, rotation, lwidth, spacing float64, tlist []d
 
 // textwrap draws text at location, wrapping at the specified width
 func textwrap(doc *svg.SVG, x, y, w, fs float64, leading float64, s, font, color string, opacity float64) {
-	if strings.HasPrefix(color, "hsv(") {
-		color = h2r(color)
-	}
 	doc.Gstyle(fmt.Sprintf("fill-opacity:%.2f;fill:%s;font-family:%s;font-size:%.2fpx", setop(opacity), svgcolor(color), fontlookup(font), fs))
 	words := strings.FieldsFunc(s, whitespace)
 	xp := x
