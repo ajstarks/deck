@@ -19,6 +19,7 @@ import (
 	_ "image/png"
 
 	"gioui.org/app"
+	"gioui.org/io/event"
 	"gioui.org/io/key"
 	"gioui.org/io/pointer"
 	"gioui.org/io/system"
@@ -338,6 +339,7 @@ func showslide(doc *gc.Canvas, d *deck.Deck, n int) {
 				iw = int(fw)
 				ih = int(fh)
 			}
+			//println(im.Name, im.Xp, im.Yp, iw, ih, nw, nh)
 		}
 		doc.Image(im.Name, float32(im.Xp), float32(im.Yp), iw, ih, float32(im.Scale))
 		if len(im.Caption) > 0 {
@@ -539,13 +541,13 @@ func reload(filename string, c *gc.Canvas, w, h, n int) (deck.Deck, int) {
 }
 
 // gridtoggle toggles a grid overlay
-func gridtoggle(c *gc.Canvas, size float32, d *deck.Deck, slidenumber int) {
+func gridtoggle(c *gc.Canvas, size float32, d *deck.Deck, n int) {
 	if gridstate {
-		gcolor := gc.ColorLookup(d.Slide[slidenumber].Fg)
+		gcolor := gc.ColorLookup(d.Slide[n].Fg)
 		gcolor.A = 100
 		c.Grid(0, 0, 100, 100, 0.1, size, gcolor)
 	} else {
-		showslide(c, d, slidenumber)
+		showslide(c, d, n)
 	}
 	gridstate = !gridstate
 }
@@ -573,8 +575,48 @@ func main() {
 	app.Main()
 }
 
+var pressed bool
+var slidenumber int
+
+func kbpointer(q event.Queue) {
+	for _, ev := range q.Events(pressed) {
+		if k, ok := ev.(key.Event); ok {
+			fmt.Fprintf(os.Stderr, "k=%v\n", k)
+			switch k.State {
+			case key.Press:
+				switch k.Name {
+				case "P":
+					slidenumber--
+				case "N":
+					slidenumber++
+				case key.NameRightArrow, key.NameUpArrow:
+					slidenumber++
+				case key.NameLeftArrow, key.NameDownArrow:
+					slidenumber--
+				case key.NameEscape, "Q":
+					os.Exit(0)
+				}
+			}
+		}
+		if p, ok := ev.(pointer.Event); ok {
+			switch p.Type {
+			case pointer.Press:
+				switch p.Buttons {
+				case pointer.ButtonPrimary:
+					slidenumber++
+				case pointer.ButtonSecondary:
+					slidenumber--
+				case pointer.ButtonTertiary:
+					slidenumber = 0
+				}
+				pressed = true
+			}
+		}
+	}
+
+}
+
 func slidedeck(s string, initpage int, filename, pagesize string) {
-	defer os.Exit(0)
 	width, height := pagedim(pagesize)
 	deck, err := readDeck(filename, width, height)
 	if err != nil {
@@ -586,30 +628,28 @@ func slidedeck(s string, initpage int, filename, pagesize string) {
 	if initpage > nslides+1 || initpage < 1 {
 		initpage = 1
 	}
-	slidenumber := initpage - 1
+	slidenumber = initpage - 1
 
 	gridstate = true
 	sigch := make(chan os.Signal, 1)
 	signal.Notify(sigch, syscall.SIGHUP)
-	win := app.NewWindow(app.Title(s), app.Size(unit.Dp(width), unit.Dp(height)))
-	canvas := gc.NewCanvas(width, height, system.FrameEvent{})
-	for e := range win.Events() {
-		switch e := e.(type) {
+	w := app.NewWindow(app.Title(s), app.Size(unit.Dp(width), unit.Dp(height)))
+
+	for {
+		ev := <-w.Events()
+		switch e := ev.(type) {
+		case system.DestroyEvent:
+			os.Exit(0)
 		case system.FrameEvent:
-			go hup(sigch, filename, canvas, &deck, width, height, &nslides)
-			gtx := canvas.Context
-			pointer.InputOp{Tag: win, Grab: false, Types: pointer.Press}.Add(gtx.Ops)
-			if slidenumber > nslides {
+			canvas := gc.NewCanvas(width, height, system.FrameEvent{})
+			key.InputOp{Tag: pressed}.Add(canvas.Context.Ops)
+			pointer.InputOp{Tag: pressed, Grab: false, Types: pointer.Press}.Add(canvas.Context.Ops)
+			if slidenumber > nslides || slidenumber < 0 {
 				slidenumber = 0
 			}
 			showslide(canvas, &deck, slidenumber)
-			slidenumber++
+			kbpointer(e.Queue)
 			e.Frame(canvas.Context.Ops)
-		case key.Event:
-			switch e.Name {
-			case "Q", key.NameEscape:
-				os.Exit(0)
-			}
 		}
 	}
 }
