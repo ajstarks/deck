@@ -410,14 +410,14 @@ func textwrap(doc *fpdf.Fpdf, x, y, w, fs, leading float64, s, font, link string
 	return nbreak
 }
 
-// content reads markdown data
+// content reads data from a file, returning a tab-expanded string
 func content(scheme, path string) string {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return ""
 	}
-	return string(data)
+	return codemap.Replace(string(data))
 }
 
 // includefile returns the contents of a file as string
