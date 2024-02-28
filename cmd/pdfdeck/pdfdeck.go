@@ -267,7 +267,7 @@ func docontent(doc *fpdf.Fpdf, cw, x, y, fs, wp, rotation, spacing float64, tdat
 		tw = deck.Pwidth(wp, cw, cw/2)
 		textwrap(doc, x, y, tw, fs, fs*spacing, transmap[font](tdata.data), font, tlink)
 	case "markdown":
-		domarkdown(doc, tdata)
+		domarkdown(tdata)
 	default:
 		codemap.Replace(tdata.data)
 		td := strings.Split(tdata.data, "\n")
@@ -288,7 +288,7 @@ func plaintext(doc *fpdf.Fpdf, td []string, x, y, spacing, fs float64, font, ali
 }
 
 // domarkdown creates a separate PDF from markdown
-func domarkdown(doc *fpdf.Fpdf, tdata TypedString) {
+func domarkdown(tdata TypedString) {
 	pf := mdtopdf.NewPdfRenderer("", "", tdata.source+".pdf", "")
 	pf.Process([]byte(tdata.data))
 }
@@ -702,7 +702,7 @@ func doslides(doc *fpdf.Fpdf, pc fpdf.InitType, filename, author, title string, 
 // dodeck turns deck input files into PDFs
 // if the sflag is set, all output goes to the standard output file,
 // otherwise, PDFs are written the destination directory, to filenames based on the input name.
-func dodeck(files []string, pageconfig fpdf.InitType, w, h float64, sflag bool, outdir, author, title string, gp float64, begin, end int) {
+func dodeck(files []string, pageconfig fpdf.InitType, sflag bool, outdir, author, title string, gp float64, begin, end int) {
 	pc := &pageconfig
 	if sflag { // combined output to standard output
 		doc := fpdf.NewCustom(pc)
@@ -845,5 +845,5 @@ func main() {
 	fontmap["serif"] = *serifont
 	fontmap["mono"] = *monofont
 	fontmap["symbol"] = *symbolfont
-	dodeck(flag.Args(), pageconfig, pw, ph, *stdout, *outdir, *author, *title, *gridpct, begin, end)
+	dodeck(flag.Args(), pageconfig, *stdout, *outdir, *author, *title, *gridpct, begin, end)
 }
