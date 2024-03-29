@@ -1,6 +1,6 @@
 module github.com/ajstarks/deck
 
-go 1.20
+go 1.19
 
 require (
 	fyne.io/fyne/v2 v2.3.5
