@@ -463,10 +463,9 @@ func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool, la
 
 	const defaultColor = "rgb(127,127,127)"
 	layerlist := strings.Split(layers, ":")
+	// draw elements in the order of the layer list
 	for il := 0; il < len(layerlist); il++ {
-
 		switch layerlist[il] {
-
 		case "image":
 			// for every image on the slide...
 			for _, im := range slide.Image {
