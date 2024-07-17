@@ -801,21 +801,24 @@ var usage = `
 pdfdeck [options] file...
 
 Options     Default                                            Description
-............................................................................................................................
+..................................................................................................
 -sans       helvetica                                          Sans Serif font
 -serif      times                                              Serif font
 -mono       courier                                            Monospace font
 -symbol     zapfdingbats                                       Symbol font
+
+-layers     image:rect:ellipse:curve:arc:line:poly:text:list   Drawing order
+-grid       0                                                  Draw a grid at specified %
 -pages      1-1000000                                          Pages to output (first-last)
--pagesize   Letter                                             Page size (w,h) or Legal, Tabloid, A[3-5], ArchA, 4R, Index)
--grid       0                                                  Draw a grid at specified % (0 for no grid)
+-pagesize   Letter                                             Page size (w,h) or Letter, Legal,
+                                                               Tabloid, A[3-5], ArchA, 4R, Index)
+
 -fontdir    $HOME/deckfonts                                    Font directory
 -outdir     Current directory                                  Output directory
 -stdout     false                                              Output to standard output
--layers     "image:rect:ellipse:curve:arc:line:poly:text:list" Layer order
 -author     ""                                                 Document author
 -title      ""                                                 Document title
-..............................................................................................................................`
+....................................................................................................`
 
 func cmdUsage() {
 	fmt.Fprintln(flag.CommandLine.Output(), usage)

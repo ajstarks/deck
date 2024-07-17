@@ -1,28 +1,31 @@
 # pdfdeck: render deck files to pdf
 
-```pdfdeck``` makes pdf files from ```deck``` markup.  
+```pdfdeck``` makes pdf files from ```deck``` markup.
 
 ## command options:
-
 
 ```
 pdfdeck [options] file...
 
-options     default           description
-...........................................................................................
--sans       helvetica         Sans Serif font
--serif      times             Serif font
--mono       courier           Monospace font
--symbol     zapfdingbats      Symbol font
--pages      1-1000000         Pages to output (first-last)
--pagesize   Letter            Page size (w,h) or Legal, Tabloid, A[3-5], ArchA, 4R, Index)
--grid       0                 Draw a grid at specified % (0 for no grid)
--fontdir    $HOME/deckfonts   Font directory
--outdir     Current directory Output directory
--stdout     false             Output to standard output
--author     ""                Document author
--title      ""                Document title
-...........................................................................................
+Options     Default                                            Description
+..................................................................................................
+-sans       helvetica                                          Sans Serif font
+-serif      times                                              Serif font
+-mono       courier                                            Monospace font
+-symbol     zapfdingbats                                       Symbol font
+
+-layers     image:rect:ellipse:curve:arc:line:poly:text:list   Drawing order
+-grid       0                                                  Draw a grid at specified %
+-pages      1-1000000                                          Pages to output (first-last)
+-pagesize   Letter                                             Page size (w,h) or Letter, Legal,
+                                                               Tabloid, A[3-5], ArchA, 4R, Index)
+
+-fontdir    $HOME/deckfonts                                    Font directory
+-outdir     Current directory                                  Output directory
+-stdout     false                                              Output to standard output
+-author     ""                                                 Document author
+-title      ""                                                 Document title
+....................................................................................................
 ```
 
 ## Fonts
@@ -42,7 +45,7 @@ To use other TrueType fonts, place them in the DECKFONTS directory and specify u
 	cp FancyFont.ttf $DECKFONTS
 	pdfdeck -sans FancyFont foo.xml
 
- Alternatively you can obtain fonts from the ```gofpdf``` package. To use the standard fonts (assuming the DECKFONTS variable has been set, 
+ Alternatively you can obtain fonts from the ```gofpdf``` package. To use the standard fonts (assuming the DECKFONTS variable has been set,
  and gofpdf is in GOPATH):
 
 
@@ -53,7 +56,7 @@ To use other TrueType fonts, place them in the DECKFONTS directory and specify u
 
 ## Example uses
 
-``` 
+```
 pdfdeck foo.xml                                # read deck markup in foo.xml, make foo.pdf
 pdfdeck -sans Go-Regular -mono Go-Mono foo.xml # use Go fonts
 pdfdeck -fontdir /path/to/fonts foo.xml        # use an alternative font directory
