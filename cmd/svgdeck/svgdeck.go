@@ -733,19 +733,21 @@ func dodeck(files []string, pw, ph float64, outdir, title string, gp float64, la
 var usage = `
 svgdeck [options] file...
 
-Options     Default                                          Description
-................................................................................................
--sans       helvetica                                        Sans Serif font
--serif      times                                            Serif font
--mono       courier                                          Monospace font
--layers     image:rect:ellipse:curve:arc:line:poly:text:list Drawing order
--pages      1-1000000                                        Pages to output (first-last)
--pagesize   Letter                                           Page size (w,h) or Letter, Legal,
-                                                             Tabloid, A[3-5], ArchA, 4R, Index)
--grid       0                                                Draw a grid at specified %
--outdir     Current directory                                Output directory
--title      ""                                               Document title
-................................................................................................`
+Options     Default                                            Description
+.................................................................................................
+-sans       helvetica                                          Sans Serif font
+-serif      times                                              Serif font
+-mono       courier                                            Monospace font
+
+-layers     image:rect:ellipse:curve:arc:line:poly:text:list   Drawing order
+-grid       0                                                  Draw a grid at specified %
+-pages      1-1000000                                          Pages to output (first-last)
+-pagesize   Letter                                             Page size (w,h) or Letter, Legal,
+                                                               Tabloid, A[3-5], ArchA, 4R, Index)
+
+-outdir     Current directory                                  Output directory
+-title      ""                                                 Document title
+..................................................................................................`
 
 func cmdUsage() {
 	fmt.Fprintln(flag.CommandLine.Output(), usage)
