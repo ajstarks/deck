@@ -682,20 +682,22 @@ func setfontdir(s string) string {
 var usage = `
 pngdeck [options] file...
 
-Options     Default                                          Description
-................................................................................................
--sans       FiraSans-Regular                                 Sans Serif font
--serif      Charter-Regular                                  Serif font
--mono       FiraMono-Regular                                 Monospace font
--symbol     ZapfDingbats                                     Symbol font
--layers     image:rect:ellipse:curve:arc:line:poly:text:list Drawing order
--pages      1-1000000                                        Pages to output (first-last)
--pagesize   Letter                                           Page size (w,h) or Letter, Legal,
-                                                             Tabloid, A[3-5], ArchA, 4R, Index)
--grid       0                                                Draw a grid at specified %
--fontdir    $HOME/deckfonts                                  Font directory
--outdir     Current directory                                Output directory
-................................................................................................`
+Options     Default                                            Description
+..................................................................................................
+-sans       FiraSans-Regular                                   Sans Serif font
+-serif      Charter-Regular                                    Serif font
+-mono       FiraMono-Regular                                   Monospace font
+-symbol     ZapfDingbats                                       Symbol font
+
+-layers     image:rect:ellipse:curve:arc:line:poly:text:list   Drawing order
+-grid       0                                                  Draw a grid at specified %
+-pages      1-1000000                                          Pages to output (first-last)
+-pagesize   Letter                                             Page size (w,h) or Letter, Legal,
+                                                               Tabloid, A[3-5], ArchA, 4R, Index)
+
+-fontdir    $HOME/deckfonts                                    Font directory
+-outdir     Current directory                                  Output directory
+..................................................................................................`
 
 func cmdUsage() {
 	fmt.Fprintln(flag.CommandLine.Output(), usage)
