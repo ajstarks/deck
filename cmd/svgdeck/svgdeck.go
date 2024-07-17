@@ -455,7 +455,7 @@ func textwrap(doc *svg.SVG, x, y, w, fs float64, leading float64, s, font, color
 }
 
 // doslides reads the deck file, making the SVG version
-func doslides(outname, filename, title string, width, height float64, gp float64, begin, end int) {
+func doslides(outname, filename, title string, width, height float64, gp float64, layers string, begin, end int) {
 	var d deck.Deck
 	var err error
 
@@ -474,14 +474,14 @@ func doslides(outname, filename, title string, width, height float64, gp float64
 				fmt.Fprintf(os.Stderr, "svgdeck: %v\n", err)
 				continue
 			}
-			svgslide(svg.New(out), d, i, width, height, gp, outname, title)
+			svgslide(svg.New(out), d, i, width, height, gp, layers, outname, title)
 			out.Close()
 		}
 	}
 }
 
 // svgslide makes one slide per SVG page
-func svgslide(doc *svg.SVG, d deck.Deck, n int, cw, ch, gp float64, outname, title string) {
+func svgslide(doc *svg.SVG, d deck.Deck, n int, cw, ch, gp float64, layers string, outname, title string) {
 	if n < 0 || n > len(d.Slide)-1 {
 		return
 	}
@@ -525,157 +525,173 @@ func svgslide(doc *svg.SVG, d deck.Deck, n int, cw, ch, gp float64, outname, tit
 	if slide.Fg == "" {
 		slide.Fg = "black"
 	}
-	// for every image on the slide...
-	for _, im := range slide.Image {
-		x, y, _ = dimen(cw, ch, im.Xp, im.Yp, 0)
-		iw, ih := float64(im.Width), float64(im.Height)
-
-		if im.Scale > 0 {
-			iw *= (im.Scale / 100)
-			ih *= (im.Scale / 100)
-		}
-		// scale the image to fit the canvas width
-		if im.Autoscale == "on" && iw < cw {
-			ih = (cw / iw) * ih
-			iw = cw
-		}
-
-		// scale the image to a percentage of the canvas width
-		if im.Height == 0 && im.Width > 0 {
-			nw, nh := imageInfo(im.Name)
-			if nh > 0 {
-				imscale := (iw / 100) * cw
-				iw = imscale
-				ih = imscale / (float64(nw) / float64(nh))
-			}
-		}
-
-		midx := iw / 2
-		midy := ih / 2
-		doc.Image(x-midx, y-midy, int(iw), int(ih), im.Name)
-		if len(im.Caption) > 0 {
-			capsize := deck.Pwidth(im.Sp, float64(cw), float64(pct(2.0, cw)))
-			if im.Font == "" {
-				im.Font = "sans"
-			}
-			if im.Color == "" {
-				im.Color = slide.Fg
-			}
-			if im.Align == "" {
-				im.Align = "center"
-			}
-			showtext(doc, x, y+midy+(capsize*2), im.Caption, capsize, im.Font, im.Color, im.Align)
-		}
-	}
-	// every graphic on the slide
 	const defaultColor = "rgb(127,127,127)"
-	// rect
-	for _, rect := range slide.Rect {
-		x, y, _ := dimen(cw, ch, rect.Xp, rect.Yp, 0)
-		var w, h float64
-		w = pct(rect.Wp, cw)
-		if rect.Hr == 0 {
-			h = pct(rect.Hp, ch)
-		} else {
-			h = pct(rect.Hr, w)
+	layerlist := strings.Split(layers, ":")
+	// draw elements in the order of the layer list
+	for il := 0; il < len(layerlist); il++ {
+		switch layerlist[il] {
+		case "image":
+			// for every image on the slide...
+			for _, im := range slide.Image {
+				x, y, _ = dimen(cw, ch, im.Xp, im.Yp, 0)
+				iw, ih := float64(im.Width), float64(im.Height)
+
+				if im.Scale > 0 {
+					iw *= (im.Scale / 100)
+					ih *= (im.Scale / 100)
+				}
+				// scale the image to fit the canvas width
+				if im.Autoscale == "on" && iw < cw {
+					ih = (cw / iw) * ih
+					iw = cw
+				}
+
+				// scale the image to a percentage of the canvas width
+				if im.Height == 0 && im.Width > 0 {
+					nw, nh := imageInfo(im.Name)
+					if nh > 0 {
+						imscale := (iw / 100) * cw
+						iw = imscale
+						ih = imscale / (float64(nw) / float64(nh))
+					}
+				}
+
+				midx := iw / 2
+				midy := ih / 2
+				doc.Image(x-midx, y-midy, int(iw), int(ih), im.Name)
+				if len(im.Caption) > 0 {
+					capsize := deck.Pwidth(im.Sp, float64(cw), float64(pct(2.0, cw)))
+					if im.Font == "" {
+						im.Font = "sans"
+					}
+					if im.Color == "" {
+						im.Color = slide.Fg
+					}
+					if im.Align == "" {
+						im.Align = "center"
+					}
+					showtext(doc, x, y+midy+(capsize*2), im.Caption, capsize, im.Font, im.Color, im.Align)
+				}
+			}
+		// every graphic on the slide
+		case "rect":
+			// rect
+			for _, rect := range slide.Rect {
+				x, y, _ := dimen(cw, ch, rect.Xp, rect.Yp, 0)
+				var w, h float64
+				w = pct(rect.Wp, cw)
+				if rect.Hr == 0 {
+					h = pct(rect.Hp, ch)
+				} else {
+					h = pct(rect.Hr, w)
+				}
+				if rect.Color == "" {
+					rect.Color = defaultColor
+				}
+				dorect(doc, x-(w/2), y-(h/2), w, h, rect.Color, rect.Opacity)
+			}
+		case "ellipse":
+			// ellipse
+			for _, ellipse := range slide.Ellipse {
+				x, y, _ := dimen(cw, ch, ellipse.Xp, ellipse.Yp, 0)
+				var w, h float64
+				w = pct(ellipse.Wp, cw)
+				if ellipse.Hr == 0 {
+					h = pct(ellipse.Hp, ch)
+				} else {
+					h = pct(ellipse.Hr, w)
+				}
+				if ellipse.Color == "" {
+					ellipse.Color = defaultColor
+				}
+				doellipse(doc, x, y, w/2, h/2, ellipse.Color, ellipse.Opacity)
+			}
+		case "curve":
+			// curve
+			for _, curve := range slide.Curve {
+				if curve.Color == "" {
+					curve.Color = defaultColor
+				}
+				x1, y1, sw := dimen(cw, ch, curve.Xp1, curve.Yp1, curve.Sp)
+				x2, y2, _ := dimen(cw, ch, curve.Xp2, curve.Yp2, 0)
+				x3, y3, _ := dimen(cw, ch, curve.Xp3, curve.Yp3, 0)
+				if sw == 0 {
+					sw = 2.0
+				}
+				docurve(doc, x1, y1, x2, y2, x3, y3, sw, curve.Color, curve.Opacity)
+			}
+		case "arc":
+			// arc
+			for _, arc := range slide.Arc {
+				if arc.Color == "" {
+					arc.Color = defaultColor
+				}
+				x, y, sw := dimen(cw, ch, arc.Xp, arc.Yp, arc.Sp)
+				w := pct(arc.Wp, cw)
+				h := pct(arc.Hp, cw)
+				if sw == 0 {
+					sw = 2.0
+				}
+				doarc(doc, x, y, w/2, h/2, arc.A1, arc.A2, sw, arc.Color, arc.Opacity)
+			}
+		case "line":
+			// line
+			for _, line := range slide.Line {
+				if line.Color == "" {
+					line.Color = defaultColor
+				}
+				x1, y1, sw := dimen(cw, ch, line.Xp1, line.Yp1, line.Sp)
+				x2, y2, _ := dimen(cw, ch, line.Xp2, line.Yp2, 0)
+				if sw == 0 {
+					sw = 2.0
+				}
+				doline(doc, x1, y1, x2, y2, sw, line.Color, line.Opacity)
+			}
+		case "poly":
+			// polygon
+			for _, poly := range slide.Polygon {
+				if poly.Color == "" {
+					poly.Color = defaultColor
+				}
+				dopoly(doc, poly.XC, poly.YC, cw, ch, poly.Color, poly.Opacity)
+			}
+		case "text":
+			// for every text element...
+			var tdata string
+			for _, t := range slide.Text {
+				if t.Color == "" {
+					t.Color = slide.Fg
+				}
+				if t.Font == "" {
+					t.Font = "sans"
+				}
+				if t.File != "" {
+					tdata = includefile(t.File)
+				} else {
+					tdata = t.Tdata
+				}
+				if t.Lp == 0 {
+					t.Lp = linespacing
+				}
+				x, y, fs = dimen(cw, ch, t.Xp, t.Yp, t.Sp)
+				dotext(doc, cw, x, y, fs, t.Wp, t.Rotation, t.Lp, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity)
+			}
+		case "list":
+			// for every list element...
+			for _, l := range slide.List {
+				if l.Color == "" {
+					l.Color = slide.Fg
+				}
+				if l.Lp == 0 {
+					l.Lp = listspacing
+				}
+				if l.Wp == 0 {
+					l.Wp = listwrap
+				}
+				x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
+				dolist(doc, x, y, fs, l.Wp, l.Rotation, l.Lp, l.Li, l.Font, l.Type, l.Align, l.Color, l.Opacity)
+			}
 		}
-		if rect.Color == "" {
-			rect.Color = defaultColor
-		}
-		dorect(doc, x-(w/2), y-(h/2), w, h, rect.Color, rect.Opacity)
-	}
-	// ellipse
-	for _, ellipse := range slide.Ellipse {
-		x, y, _ := dimen(cw, ch, ellipse.Xp, ellipse.Yp, 0)
-		var w, h float64
-		w = pct(ellipse.Wp, cw)
-		if ellipse.Hr == 0 {
-			h = pct(ellipse.Hp, ch)
-		} else {
-			h = pct(ellipse.Hr, w)
-		}
-		if ellipse.Color == "" {
-			ellipse.Color = defaultColor
-		}
-		doellipse(doc, x, y, w/2, h/2, ellipse.Color, ellipse.Opacity)
-	}
-	// curve
-	for _, curve := range slide.Curve {
-		if curve.Color == "" {
-			curve.Color = defaultColor
-		}
-		x1, y1, sw := dimen(cw, ch, curve.Xp1, curve.Yp1, curve.Sp)
-		x2, y2, _ := dimen(cw, ch, curve.Xp2, curve.Yp2, 0)
-		x3, y3, _ := dimen(cw, ch, curve.Xp3, curve.Yp3, 0)
-		if sw == 0 {
-			sw = 2.0
-		}
-		docurve(doc, x1, y1, x2, y2, x3, y3, sw, curve.Color, curve.Opacity)
-	}
-	// arc
-	for _, arc := range slide.Arc {
-		if arc.Color == "" {
-			arc.Color = defaultColor
-		}
-		x, y, sw := dimen(cw, ch, arc.Xp, arc.Yp, arc.Sp)
-		w := pct(arc.Wp, cw)
-		h := pct(arc.Hp, cw)
-		if sw == 0 {
-			sw = 2.0
-		}
-		doarc(doc, x, y, w/2, h/2, arc.A1, arc.A2, sw, arc.Color, arc.Opacity)
-	}
-	// line
-	for _, line := range slide.Line {
-		if line.Color == "" {
-			line.Color = defaultColor
-		}
-		x1, y1, sw := dimen(cw, ch, line.Xp1, line.Yp1, line.Sp)
-		x2, y2, _ := dimen(cw, ch, line.Xp2, line.Yp2, 0)
-		if sw == 0 {
-			sw = 2.0
-		}
-		doline(doc, x1, y1, x2, y2, sw, line.Color, line.Opacity)
-	}
-	for _, poly := range slide.Polygon {
-		if poly.Color == "" {
-			poly.Color = defaultColor
-		}
-		dopoly(doc, poly.XC, poly.YC, cw, ch, poly.Color, poly.Opacity)
-	}
-	// for every text element...
-	var tdata string
-	for _, t := range slide.Text {
-		if t.Color == "" {
-			t.Color = slide.Fg
-		}
-		if t.Font == "" {
-			t.Font = "sans"
-		}
-		if t.File != "" {
-			tdata = includefile(t.File)
-		} else {
-			tdata = t.Tdata
-		}
-		if t.Lp == 0 {
-			t.Lp = linespacing
-		}
-		x, y, fs = dimen(cw, ch, t.Xp, t.Yp, t.Sp)
-		dotext(doc, cw, x, y, fs, t.Wp, t.Rotation, t.Lp, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity)
-	}
-	// for every list element...
-	for _, l := range slide.List {
-		if l.Color == "" {
-			l.Color = slide.Fg
-		}
-		if l.Lp == 0 {
-			l.Lp = listspacing
-		}
-		if l.Wp == 0 {
-			l.Wp = listwrap
-		}
-		x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
-		dolist(doc, x, y, fs, l.Wp, l.Rotation, l.Lp, l.Li, l.Font, l.Type, l.Align, l.Color, l.Opacity)
 	}
 	// add a grid, if specified
 	if gp > 0 {
@@ -705,29 +721,31 @@ func imageInfo(s string) (int, int) {
 
 // dodeck turns deck input files into SVG
 // SVG is written the destination directory, to filenames based on the input name.
-func dodeck(files []string, pw, ph float64, outdir, title string, gp float64, begin, end int) {
+func dodeck(files []string, pw, ph float64, outdir, title string, gp float64, layers string, begin, end int) {
 	// output to individual files
 	for _, filename := range files {
 		base := strings.Split(filepath.Base(filename), ".xml")
 		outname := filepath.Join(outdir, base[0])
-		doslides(outname, filename, title, pw, ph, gp, begin, end)
+		doslides(outname, filename, title, pw, ph, gp, layers, begin, end)
 	}
 }
 
 var usage = `
 svgdeck [options] file...
 
-options     default           description
-...........................................................................................
--sans       helvetica         Sans Serif font
--serif      times             Serif font
--mono       courier           Monospace font
--pages      1-1000000         Pages to output (first-last)
--pagesize   Letter            Page size (w,h) or Legal, Tabloid, A[3-5], ArchA, 4R, Index)
--grid       0                 Draw a grid at specified % (0 for no grid)
--outdir     Current directory Output directory
--title      ""                Document title
-...........................................................................................`
+Options     Default                                          Description
+................................................................................................
+-sans       helvetica                                        Sans Serif font
+-serif      times                                            Serif font
+-mono       courier                                          Monospace font
+-layers     image:rect:ellipse:curve:arc:line:poly:text:list Drawing order
+-pages      1-1000000                                        Pages to output (first-last)
+-pagesize   Letter                                           Page size (w,h) or Letter, Legal,
+                                                             Tabloid, A[3-5], ArchA, 4R, Index)
+-grid       0                                                Draw a grid at specified %
+-outdir     Current directory                                Output directory
+-title      ""                                               Document title
+................................................................................................`
 
 func cmdUsage() {
 	fmt.Fprintln(flag.CommandLine.Output(), usage)
@@ -741,6 +759,7 @@ func main() {
 		monofont = flag.String("mono", "Courier", "mono font")
 		outdir   = flag.String("outdir", ".", "output directory")
 		pagesize = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
+		layers   = flag.String("layers", "image:rect:ellipse:curve:arc:line:poly:text:list", "Drawing order")
 		title    = flag.String("title", "", "document title")
 		gridpct  = flag.Float64("grid", 0, "place percentage grid on each slide")
 		pr       = flag.String("pages", "1-1000000", "page range (first-last)")
@@ -761,5 +780,5 @@ func main() {
 	fontmap["sans"] = *sansfont
 	fontmap["serif"] = *serifont
 	fontmap["mono"] = *monofont
-	dodeck(flag.Args(), pw, ph, *outdir, *title, *gridpct, begin, end)
+	dodeck(flag.Args(), pw, ph, *outdir, *title, *gridpct, *layers, begin, end)
 }
