@@ -471,7 +471,7 @@ func doslides(outname, filename, title string, width, height float64, gp float64
 		if i+1 >= begin && i+1 <= end {
 			out, err := os.Create(fmt.Sprintf(namefmt, outname, i+1))
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "svgdeck: %v\n", err)
+				fmt.Fprintf(os.Stderr, "svgdeck: slide %d: %v\n", i, err)
 				continue
 			}
 			svgslide(svg.New(out), d, i, width, height, gp, layers, outname, title)
