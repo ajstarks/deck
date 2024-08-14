@@ -679,7 +679,7 @@ func doslides(doc *fpdf.Fpdf, pc fpdf.InitType, filename, author, title string, 
 	}
 	d, err = deck.Read(filename, w, h)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
+		fmt.Fprintf(os.Stderr, "pdfdeck: file %q - %v\n", filename, err)
 		return
 	}
 	if pc.OrientationStr == "L" {
@@ -728,21 +728,21 @@ func dodeck(files []string, pageconfig fpdf.InitType, sflag bool, outdir, author
 		}
 		err := doc.Output(os.Stdout)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "%v\n", err)
+			fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
 		}
 	} else { // output to individual files
 		for _, filename := range files {
 			base := strings.Split(filepath.Base(filename), ".xml")
 			out, err := os.Create(filepath.Join(outdir, base[0]+".pdf"))
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
+				fmt.Fprintf(os.Stderr, "pdfdeck: file %q - %v\n", filename, err)
 				continue
 			}
 			doc := fpdf.NewCustom(pc)
 			doslides(doc, pageconfig, filename, author, title, gp, layers, begin, end)
 			err = doc.Output(out)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
+				fmt.Fprintf(os.Stderr, "pdfdeck:file %q - %v\n", filename, err)
 				continue
 			}
 			out.Close()
