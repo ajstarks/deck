@@ -394,7 +394,14 @@ func textwrap(doc *fpdf.Fpdf, x, y, w, fs, leading float64, s, font, link string
 	xp := x
 	yp := y
 	edge := x + w
+
 	for _, s := range words {
+		if s == "\\n" { // magic new line
+			xp = x
+			yp += leading
+			nbreak++
+			continue
+		}
 		tw := doc.GetStringWidth(s)
 		doc.Text(xp, yp, s)
 		xp += tw + (wordspacing * factor)

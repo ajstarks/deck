@@ -306,6 +306,12 @@ func textwrap(doc *gg.Context, x, y, w, fs, leading float64, s, font string) int
 	yp := y
 	edge := x + w
 	for _, s := range words {
+		if s == "\\n" { // magic new line
+			xp = x
+			yp += leading
+			nbreak++
+			continue
+		}
 		tw, _ := doc.MeasureString(s)
 		doc.DrawString(s, xp, yp)
 		xp += tw + (wordspacing * factor)

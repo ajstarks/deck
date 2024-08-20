@@ -441,6 +441,10 @@ func textwrap(doc *svg.SVG, x, y, w, fs float64, leading float64, s, font, color
 	//fmt.Fprintf(os.Stderr, "x=%.2f y=%.2f w=%.2f fs=%.2f leading=%.2f\n", x, y, w, fs, leading)
 	var line string
 	for _, s := range words {
+		if s == "\\n" {
+			yp += leading
+			continue
+		}
 		line += s + " "
 		if fs*float64(len(line))*0.65 > (w + x) {
 			doc.Text(xp, yp, line)
