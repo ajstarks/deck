@@ -398,7 +398,7 @@ func textwrap(doc *fpdf.Fpdf, x, y, w, fs, leading float64, s, font, link string
 	for _, s := range words {
 		if s == "\\n" { // magic new line
 			xp = x
-			yp += leading
+			yp += (leading * 1.5)
 			nbreak++
 			continue
 		}
