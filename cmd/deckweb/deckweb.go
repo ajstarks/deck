@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -156,7 +155,7 @@ func stop(url string) {
 
 // showrb prints the response body
 func showrb(r *http.Response) {
-	data, err := ioutil.ReadAll(r.Body)
+	data, err := io.ReadAll(r.Body)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return
