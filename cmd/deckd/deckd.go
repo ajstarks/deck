@@ -209,7 +209,7 @@ func upload(w http.ResponseWriter, req *http.Request) {
 			log.Printf("%s upload error: no deckpath", requester)
 			return
 		}
-		deckdata, err := ioutil.ReadAll(req.Body)
+		deckdata, err := io.ReadAll(req.Body)
 		if err != nil {
 			eresp(w, err.Error(), http.StatusInternalServerError)
 			log.Printf("%s %v", requester, err)
@@ -223,7 +223,7 @@ func upload(w http.ResponseWriter, req *http.Request) {
 			log.Printf(requester + " " + msg)
 			return
 		}
-		err = ioutil.WriteFile(deckpath, deckdata, 0644)
+		err = os.WriteFile(deckpath, deckdata, 0644)
 		if err != nil {
 			eresp(w, err.Error(), http.StatusInternalServerError)
 			log.Printf("%s %v", requester, err)
@@ -402,11 +402,12 @@ func deckinfo(w http.ResponseWriter, data []os.FileInfo, pattern string) {
 	io.WriteString(w, "]}\n")
 }
 
-// thumb: show slide thumbnail 
+// thumb: show slide thumbnail
 func thumb(w http.ResponseWriter, r *http.Request) {
 	log.Printf("thumb: %s", r.RequestURI)
-	http.ServeFile(w, r, r.RequestURI[1:]) 
+	http.ServeFile(w, r, r.RequestURI[1:])
 }
+
 // maketable creates a deck file from a tab separated list
 // that includes a specification in the first record
 func maketable(w io.Writer, r io.Reader, textsize float64) {
