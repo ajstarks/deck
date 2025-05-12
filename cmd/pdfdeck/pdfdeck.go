@@ -21,6 +21,26 @@ import (
 	"github.com/mandolyte/mdtopdf"
 )
 
+// command line options
+type options struct {
+	sansfont   string
+	serifont   string
+	monofont   string
+	symbolfont string
+	layers     string
+	pages      string
+	pagesize   string
+	fontdir    string
+	author     string
+	title      string
+	outdir     string
+	gridpct    float64
+	width      int
+	height     int
+	stdout     bool
+	strictwrap bool
+}
+
 const (
 	mm2pt       = 2.83464 // mm to pt conversion
 	linespacing = 1.4
@@ -40,6 +60,9 @@ type TypedString struct {
 type PageDimen struct {
 	width, height, unit float64
 }
+
+// opts are command line options
+var opts options
 
 // fontmap maps generic font names to specific implementation names
 var fontmap = map[string]string{}
@@ -62,6 +85,7 @@ var pagemap = map[string]PageDimen{
 	"A5":         {210, 148, mm2pt},
 }
 
+// convert tabs to spaces
 var codemap = strings.NewReplacer("\t", "    ")
 
 // pagerange returns the begin and end using a "-" string
@@ -106,6 +130,7 @@ func setopacity(doc *fpdf.Fpdf, v float64) {
 	}
 }
 
+// linesettings set the line style
 func linesettings(doc *fpdf.Fpdf) {
 	doc.SetLineCapStyle("butt")
 }
@@ -124,7 +149,8 @@ func fontlookup(s string) string {
 }
 
 // grid makes a percentage scale
-func grid(doc *fpdf.Fpdf, w, h float64, color string, percent float64) {
+func grid(doc *fpdf.Fpdf, w, h float64, color string) {
+	percent := opts.gridpct
 	pw := w * (percent / 100)
 	ph := h * (percent / 100)
 	doc.SetLineWidth(0.5)
@@ -154,12 +180,11 @@ func bullet(doc *fpdf.Fpdf, x, y, size float64, color string) {
 	r, g, b := colorlookup(color)
 	doc.SetFillColor(r, g, b)
 	doc.Circle(x-size*2, y-rs, rs, "F")
-	//dorect(doc, x-size, y-rs, rs, rs, color)
 }
 
 // background places a colored rectangle
 func background(doc *fpdf.Fpdf, w, h float64, color string) {
-	dorect(doc, 0, 0, w, h, color)
+	rectangle(doc, 0, 0, w, h, color)
 }
 
 // gradientbg  sets the background color gradient
@@ -175,46 +200,46 @@ func gradient(doc *fpdf.Fpdf, x, y, w, h float64, gc1, gc2 string, gp float64) {
 	doc.LinearGradient(x, y, w, h, r1, g1, b1, r2, g2, b2, 0, gp, 1, 1)
 }
 
-// doline draws a line
-func doline(doc *fpdf.Fpdf, xp1, yp1, xp2, yp2, sw float64, color string) {
+// line draws a line
+func line(doc *fpdf.Fpdf, xp1, yp1, xp2, yp2, sw float64, color string) {
 	r, g, b := colorlookup(color)
 	doc.SetLineWidth(sw)
 	doc.SetDrawColor(r, g, b)
 	doc.Line(xp1, yp1, xp2, yp2)
 }
 
-// doarc draws a line
-func doarc(doc *fpdf.Fpdf, x, y, w, h, a1, a2, sw float64, color string) {
+// arc draws a line
+func arc(doc *fpdf.Fpdf, x, y, w, h, a1, a2, sw float64, color string) {
 	r, g, b := colorlookup(color)
 	doc.SetLineWidth(sw)
 	doc.SetDrawColor(r, g, b)
 	doc.Arc(x, y, w, h, 0, a1, a2, "D")
 }
 
-// docurve draws a bezier curve
-func docurve(doc *fpdf.Fpdf, xp1, yp1, xp2, yp2, xp3, yp3, sw float64, color string) {
+// quadcurve draws a quadradic bezier curve
+func quadcurve(doc *fpdf.Fpdf, xp1, yp1, xp2, yp2, xp3, yp3, sw float64, color string) {
 	r, g, b := colorlookup(color)
 	doc.SetLineWidth(sw)
 	doc.SetDrawColor(r, g, b)
 	doc.Curve(xp1, yp1, xp2, yp2, xp3, yp3, "D")
 }
 
-// dorect draws a rectangle
-func dorect(doc *fpdf.Fpdf, x, y, w, h float64, color string) {
+// rectangle draws a rectangle
+func rectangle(doc *fpdf.Fpdf, x, y, w, h float64, color string) {
 	r, g, b := colorlookup(color)
 	doc.SetFillColor(r, g, b)
 	doc.Rect(x, y, w, h, "F")
 }
 
-// doellipse draws a rectangle
-func doellipse(doc *fpdf.Fpdf, x, y, w, h float64, color string) {
+// ellipse draws a rectangle
+func ellipse(doc *fpdf.Fpdf, x, y, w, h float64, color string) {
 	r, g, b := colorlookup(color)
 	doc.SetFillColor(r, g, b)
 	doc.Ellipse(x, y, w, h, 0, "F")
 }
 
-// dopoly draws a polygon
-func dopoly(doc *fpdf.Fpdf, xc, yc, color string, cw, ch float64) {
+// polygon draws a polygon
+func polygon(doc *fpdf.Fpdf, xc, yc, color string, cw, ch float64) {
 	xs := strings.Split(xc, " ")
 	ys := strings.Split(yc, " ")
 	if len(xs) != len(ys) {
@@ -243,31 +268,37 @@ func dopoly(doc *fpdf.Fpdf, xc, yc, color string, cw, ch float64) {
 	doc.Polygon(poly, "F")
 }
 
-// docontent places text elements on the canvas according to type
-func docontent(doc *fpdf.Fpdf, cw, x, y, fs, wp, rotation, spacing float64, tdata TypedString, font, color, align, ttype, tlink string) {
-	var tw float64
+// content places text elements on the canvas according to type
+func textcontent(doc *fpdf.Fpdf, cw, x, y, fs float64, tdata TypedString, t deck.Text) {
+	wp := t.Wp
+	rotation := t.Rotation
+	spacing := t.Lp
+	font := t.Font
+	align := t.Align
+	tlink := t.Link
 
 	if rotation > 0 {
 		doc.TransformBegin()
 		doc.TransformRotate(rotation, x, y)
 	}
-	red, green, blue := colorlookup(color)
+	red, green, blue := colorlookup(t.Color)
 	doc.SetTextColor(red, green, blue)
 
-	switch ttype {
+	var tw float64
+	switch t.Type {
 	case "code":
 		font = "mono"
 		codemap.Replace(tdata.data)
 		td := strings.Split(tdata.data, "\n")
 		ch := float64(len(td)) * spacing * fs
 		tw = deck.Pwidth(wp, cw, cw-x-20)
-		dorect(doc, x-fs, y-fs, tw, ch, "rgb(240,240,240)")
+		rectangle(doc, x-fs, y-fs, tw, ch, "rgb(240,240,240)")
 		plaintext(doc, td, x, y, spacing, fs, font, align, tlink)
 	case "block":
 		tw = deck.Pwidth(wp, cw, cw/2)
 		textwrap(doc, x, y, tw, fs, fs*spacing, transmap[font](tdata.data), font, tlink)
 	case "markdown":
-		domarkdown(tdata)
+		markdown(tdata)
 	default:
 		codemap.Replace(tdata.data)
 		td := strings.Split(tdata.data, "\n")
@@ -287,8 +318,8 @@ func plaintext(doc *fpdf.Fpdf, td []string, x, y, spacing, fs float64, font, ali
 	}
 }
 
-// domarkdown creates a separate PDF from markdown
-func domarkdown(tdata TypedString) {
+// markdown creates a separate PDF from markdown
+func markdown(tdata TypedString) {
 	pf := mdtopdf.NewPdfRenderer("", "", tdata.source+".pdf", "")
 	pf.Process([]byte(tdata.data))
 }
@@ -318,9 +349,14 @@ func showtext(doc *fpdf.Fpdf, x, y float64, s string, fs float64, font, align, l
 	}
 }
 
-// dolists places lists on the canvas
-// dolist(doc, cw, x, y, fs, l.Lp, l.Wp, l.Li, l.Font, l.Color, l.Type)
-func dolist(doc *fpdf.Fpdf, cw, x, y, fs, lwidth, rotation, spacing float64, list []deck.ListItem, font, color, align, ltype string) {
+// list places lists on the canvas
+func list(doc *fpdf.Fpdf, cw, x, y, fs float64, l deck.List) {
+	rotation := l.Rotation
+	font := l.Font
+	color := l.Color
+	align := l.Align
+	ltype := l.Type
+
 	if font == "" {
 		font = "sans"
 	}
@@ -329,8 +365,8 @@ func dolist(doc *fpdf.Fpdf, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 	if ltype == "bullet" {
 		x += fs * 1.2
 	}
-	ls := spacing * fs
-	tw := deck.Pwidth(lwidth, cw, cw/2)
+	ls := l.Lp * fs
+	tw := deck.Pwidth(l.Wp, cw, cw/2)
 
 	var t string
 	var yw int
@@ -340,7 +376,7 @@ func dolist(doc *fpdf.Fpdf, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 		doc.TransformRotate(rotation, x, y)
 	}
 	defont := font
-	for i, tl := range list {
+	for i, tl := range l.Li {
 		doc.SetFont(fontlookup(font), "", fs)
 		doc.SetTextColor(red, green, blue)
 		setopacity(doc, tl.Opacity)
@@ -362,7 +398,6 @@ func dolist(doc *fpdf.Fpdf, cw, x, y, fs, lwidth, rotation, spacing float64, lis
 		} else {
 			font = defont
 		}
-		//doc.Text(x, y, translate(t))
 		if align == "center" || align == "c" {
 			showtext(doc, x, y, transmap[font](t), fs, font, align, "")
 			y += ls
@@ -402,13 +437,24 @@ func textwrap(doc *fpdf.Fpdf, x, y, w, fs, leading float64, s, font, link string
 			nbreak++
 			continue
 		}
-		tw := doc.GetStringWidth(s)
-		doc.Text(xp, yp, s)
-		xp += tw + (wordspacing * factor)
-		if xp > edge {
-			xp = x
-			yp += leading
-			nbreak++
+		if opts.strictwrap {
+			tw := doc.GetStringWidth(s)
+			if xp+tw > edge {
+				xp = x
+				yp += leading
+			}
+			doc.Text(xp, yp, s)
+			xp += tw + (wordspacing * factor)
+
+		} else {
+			tw := doc.GetStringWidth(s)
+			doc.Text(xp, yp, s)
+			xp += tw + (wordspacing * factor)
+			if xp > edge {
+				xp = x
+				yp += leading
+				nbreak++
+			}
 		}
 	}
 	if len(link) > 0 {
@@ -418,7 +464,7 @@ func textwrap(doc *fpdf.Fpdf, x, y, w, fs, leading float64, s, font, link string
 }
 
 // content reads data from a file, returning a tab-expanded string
-func content(scheme, path string) string {
+func filecontent(scheme, path string) string {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
@@ -432,12 +478,12 @@ func includefile(filetype, filename string) TypedString {
 	var ts TypedString
 	ts.source = filename
 	ts.datatype = filetype
-	ts.data = content(filetype, filename)
+	ts.data = filecontent(filetype, filename)
 	return ts
 }
 
 // pdfslide makes a slide, one slide per PDF page
-func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool, layers string) {
+func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, showslide bool) {
 	if n < 0 || n > len(d.Slide)-1 || !showslide {
 		return
 	}
@@ -469,7 +515,7 @@ func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool, la
 	}
 
 	const defaultColor = "rgb(127,127,127)"
-	layerlist := strings.Split(layers, ":")
+	layerlist := strings.Split(opts.layers, ":")
 	// draw elements in the order of the layer list
 	for il := 0; il < len(layerlist); il++ {
 		switch layerlist[il] {
@@ -523,97 +569,95 @@ func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool, la
 				}
 			}
 		case "rect":
-			// every graphic on the slide
-
 			// rect
-			for _, rect := range slide.Rect {
-				x, y, _ := dimen(cw, ch, rect.Xp, rect.Yp, 0)
+			for _, r := range slide.Rect {
+				x, y, _ := dimen(cw, ch, r.Xp, r.Yp, 0)
 				var w, h float64
-				w = pct(rect.Wp, cw)
-				if rect.Hr == 0 {
-					h = pct(rect.Hp, ch)
+				w = pct(r.Wp, cw)
+				if r.Hr == 0 {
+					h = pct(r.Hp, ch)
 				} else {
-					h = pct(rect.Hr, w)
+					h = pct(r.Hr, w)
 				}
-				if rect.Color == "" {
-					rect.Color = defaultColor
+				if r.Color == "" {
+					r.Color = defaultColor
 				}
-				if len(rect.Gradcolor1) > 0 && len(rect.Gradcolor2) > 0 {
-					gradient(doc, x-(w/2), y-(h/2), w, h, rect.Gradcolor1, rect.Gradcolor2, rect.GradPercent)
+				if len(r.Gradcolor1) > 0 && len(r.Gradcolor2) > 0 {
+					gradient(doc, x-(w/2), y-(h/2), w, h, r.Gradcolor1, r.Gradcolor2, r.GradPercent)
 				} else {
-					setopacity(doc, rect.Opacity)
-					dorect(doc, x-(w/2), y-(h/2), w, h, rect.Color)
+					setopacity(doc, r.Opacity)
+					rectangle(doc, x-(w/2), y-(h/2), w, h, r.Color)
 				}
 			}
 		case "ellipse":
 			// ellipse
-			for _, ellipse := range slide.Ellipse {
-				x, y, _ := dimen(cw, ch, ellipse.Xp, ellipse.Yp, 0)
+			for _, e := range slide.Ellipse {
+				x, y, _ := dimen(cw, ch, e.Xp, e.Yp, 0)
 				var w, h float64
-				w = pct(ellipse.Wp, cw)
-				if ellipse.Hr == 0 {
-					h = pct(ellipse.Hp, ch)
+				w = pct(e.Wp, cw)
+				if e.Hr == 0 {
+					h = pct(e.Hp, ch)
 				} else {
-					h = pct(ellipse.Hr, w)
+					h = pct(e.Hr, w)
 				}
-				if ellipse.Color == "" {
-					ellipse.Color = defaultColor
+				if e.Color == "" {
+					e.Color = defaultColor
 				}
-				setopacity(doc, ellipse.Opacity)
-				doellipse(doc, x, y, w/2, h/2, ellipse.Color)
+				setopacity(doc, e.Opacity)
+				ellipse(doc, x, y, w/2, h/2, e.Color)
 			}
 		case "curve":
 			// curve
-			for _, curve := range slide.Curve {
-				if curve.Color == "" {
-					curve.Color = defaultColor
+			for _, c := range slide.Curve {
+				if c.Color == "" {
+					c.Color = defaultColor
 				}
-				setopacity(doc, curve.Opacity)
-				x1, y1, sw := dimen(cw, ch, curve.Xp1, curve.Yp1, curve.Sp)
-				x2, y2, _ := dimen(cw, ch, curve.Xp2, curve.Yp2, 0)
-				x3, y3, _ := dimen(cw, ch, curve.Xp3, curve.Yp3, 0)
+				setopacity(doc, c.Opacity)
+				x1, y1, sw := dimen(cw, ch, c.Xp1, c.Yp1, c.Sp)
+				x2, y2, _ := dimen(cw, ch, c.Xp2, c.Yp2, 0)
+				x3, y3, _ := dimen(cw, ch, c.Xp3, c.Yp3, 0)
 				if sw == 0 {
 					sw = 2.0
 				}
-				docurve(doc, x1, y1, x2, y2, x3, y3, sw, curve.Color)
+				quadcurve(doc, x1, y1, x2, y2, x3, y3, sw, c.Color)
 			}
 		case "arc":
 			// arc
-			for _, arc := range slide.Arc {
-				if arc.Color == "" {
-					arc.Color = defaultColor
+			for _, a := range slide.Arc {
+				if a.Color == "" {
+					a.Color = defaultColor
 				}
-				setopacity(doc, arc.Opacity)
-				x, y, sw := dimen(cw, ch, arc.Xp, arc.Yp, arc.Sp)
-				w := pct(arc.Wp, cw)
-				h := pct(arc.Hp, cw)
+				setopacity(doc, a.Opacity)
+				x, y, sw := dimen(cw, ch, a.Xp, a.Yp, a.Sp)
+				w := pct(a.Wp, cw)
+				h := pct(a.Hp, cw)
 				if sw == 0 {
 					sw = 2.0
 				}
-				doarc(doc, x, y, w/2, h/2, arc.A1, arc.A2, sw, arc.Color)
+				arc(doc, x, y, w/2, h/2, a.A1, a.A2, sw, a.Color)
 			}
 		case "line":
 			// line
-			for _, line := range slide.Line {
-				if line.Color == "" {
-					line.Color = defaultColor
+			for _, l := range slide.Line {
+				if l.Color == "" {
+					l.Color = defaultColor
 				}
-				setopacity(doc, line.Opacity)
-				x1, y1, sw := dimen(cw, ch, line.Xp1, line.Yp1, line.Sp)
-				x2, y2, _ := dimen(cw, ch, line.Xp2, line.Yp2, 0)
+				setopacity(doc, l.Opacity)
+				x1, y1, sw := dimen(cw, ch, l.Xp1, l.Yp1, l.Sp)
+				x2, y2, _ := dimen(cw, ch, l.Xp2, l.Yp2, 0)
 				if sw == 0 {
 					sw = 2.0
 				}
-				doline(doc, x1, y1, x2, y2, sw, line.Color)
+				line(doc, x1, y1, x2, y2, sw, l.Color)
 			}
 		case "poly":
 			// polygon
-			for _, poly := range slide.Polygon {
-				if poly.Color == "" {
-					poly.Color = defaultColor
+			for _, p := range slide.Polygon {
+				if p.Color == "" {
+					p.Color = defaultColor
 				}
-				setopacity(doc, poly.Opacity)
-				dopoly(doc, poly.XC, poly.YC, poly.Color, cw, ch)
+				setopacity(doc, p.Opacity)
+				polygon(doc, p.XC, p.YC, p.Color, cw, ch)
 			}
 		case "text":
 			// for every text element...
@@ -635,7 +679,7 @@ func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool, la
 				if t.Lp == 0 {
 					t.Lp = linespacing
 				}
-				docontent(doc, cw, x, y, fs, t.Wp, t.Rotation, t.Lp, tdata, t.Font, t.Color, t.Align, t.Type, t.Link)
+				textcontent(doc, cw, x, y, fs, tdata, t)
 			}
 		case "list":
 			// for every list element...
@@ -651,13 +695,13 @@ func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, gp float64, showslide bool, la
 				}
 				setopacity(doc, l.Opacity)
 				x, y, fs = dimen(cw, ch, l.Xp, l.Yp, l.Sp)
-				dolist(doc, cw, x, y, fs, l.Wp, l.Rotation, l.Lp, l.Li, l.Font, l.Color, l.Align, l.Type)
+				list(doc, cw, x, y, fs, l)
 			}
 		}
 	}
 	// add a grid, if specified
-	if gp > 0 {
-		grid(doc, cw, ch, slide.Fg, gp)
+	if opts.gridpct > 0 {
+		grid(doc, cw, ch, slide.Fg)
 	}
 }
 
@@ -666,8 +710,8 @@ func nulltrans(s string) string {
 	return s
 }
 
-// doslides reads the deck file, making the PDF version
-func doslides(doc *fpdf.Fpdf, pc fpdf.InitType, filename, author, title string, gp float64, layers string, begin, end int) {
+// slides reads the deck file, making the PDF version
+func slides(doc *fpdf.Fpdf, pc fpdf.InitType, filename string, begin, end int) {
 	var d deck.Deck
 	var err error
 
@@ -698,62 +742,61 @@ func doslides(doc *fpdf.Fpdf, pc fpdf.InitType, filename, author, title string, 
 	doc.SetCreator("pdfdeck", true)
 
 	// Document-supplied overrides command-line specified metadata
+	author := opts.author
+	title := opts.title
 	if len(d.Creator) > 0 {
 		author = d.Creator
 	}
-
 	if len(d.Title) > 0 {
 		title = d.Title
 	}
-
 	if len(title) > 0 {
 		doc.SetTitle(title, true)
 	}
-
 	if len(author) > 0 {
 		doc.SetAuthor(author, true)
 	}
-
 	if len(d.Subject) > 0 {
 		doc.SetSubject(d.Subject, true)
 	}
 	for i := 0; i < len(d.Slide); i++ {
-		pdfslide(doc, d, i, gp, (i+1 >= begin && i+1 <= end), layers)
+		pdfslide(doc, d, i, (i+1 >= begin && i+1 <= end))
 	}
 }
 
-// dodeck turns deck input files into PDFs
+// pdfdeck turns deck input files into PDFs
 // if the sflag is set, all output goes to the standard output file,
 // otherwise, PDFs are written the destination directory, to filenames based on the input name.
-func dodeck(files []string, pageconfig fpdf.InitType, sflag bool, outdir, author, title string, gp float64, layers string, begin, end int) {
+func pdfdeck(files []string, pageconfig fpdf.InitType, begin, end int) {
 	pc := &pageconfig
-	if sflag { // combined output to standard output
+	if opts.stdout { // combined output to standard output
 		doc := fpdf.NewCustom(pc)
 		linesettings(doc)
 		for _, filename := range files {
-			doslides(doc, pageconfig, filename, author, title, gp, layers, begin, end)
+			slides(doc, pageconfig, filename, begin, end)
 		}
 		err := doc.Output(os.Stdout)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "pdfdeck: %v\n", err)
 		}
-	} else { // output to individual files
-		for _, filename := range files {
-			base := strings.Split(filepath.Base(filename), ".xml")
-			out, err := os.Create(filepath.Join(outdir, base[0]+".pdf"))
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "pdfdeck: file %q - %v\n", filename, err)
-				continue
-			}
-			doc := fpdf.NewCustom(pc)
-			doslides(doc, pageconfig, filename, author, title, gp, layers, begin, end)
-			err = doc.Output(out)
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "pdfdeck:file %q - %v\n", filename, err)
-				continue
-			}
-			out.Close()
+		return
+	}
+	// output to individual files
+	for _, filename := range files {
+		base := strings.Split(filepath.Base(filename), ".xml")
+		out, err := os.Create(filepath.Join(opts.outdir, base[0]+".pdf"))
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "pdfdeck: file %q - %v\n", filename, err)
+			continue
 		}
+		doc := fpdf.NewCustom(pc)
+		slides(doc, pageconfig, filename, begin, end)
+		err = doc.Output(out)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "pdfdeck: file %q - %v\n", filename, err)
+			continue
+		}
+		out.Close()
 	}
 }
 
@@ -791,6 +834,7 @@ func setfontdir(s string) string {
 	return path.Join(os.Getenv("HOME"), "deckfonts")
 }
 
+// imageInfo returns the dimensions of an image
 func imageInfo(s string) (int, int) {
 	f, err := os.Open(s)
 	defer f.Close()
@@ -823,6 +867,7 @@ Options     Default                                            Description
 -fontdir    $HOME/deckfonts                                    Font directory
 -outdir     Current directory                                  Output directory
 -stdout     false                                              Output to standard output
+-sw         false                                              Use strict text wrapping
 -author     ""                                                 Document author
 -title      ""                                                 Document title
 ....................................................................................................`
@@ -833,60 +878,48 @@ func cmdUsage() {
 
 // for every file, make a deck
 func main() {
-	var (
-		sansfont   = flag.String("sans", "helvetica", "sans font")
-		serifont   = flag.String("serif", "times", "serif font")
-		monofont   = flag.String("mono", "courier", "mono font")
-		symbolfont = flag.String("symbol", "zapfdingbats", "symbol font")
-		pagesize   = flag.String("pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
-		fontdir    = flag.String("fontdir", setfontdir(""), "directory for fonts")
-		outdir     = flag.String("outdir", ".", "output directory")
-		title      = flag.String("title", "", "document title")
-		author     = flag.String("author", "", "document author")
-		layers     = flag.String("layers", "image:rect:ellipse:curve:arc:line:poly:text:list", "Layer order")
-		gridpct    = flag.Float64("grid", 0, "draw a percentage grid on each slide")
-		stdout     = flag.Bool("stdout", false, "output to standard output")
-		pr         = flag.String("pages", "1-1000000", "page range (first-last)")
-	)
-
-	/*
-		pf, err := os.Create("default.pgo")
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "could not create CPU profile: ", err)
-			os.Exit(1)
-		}
-		defer pf.Close() // error handling omitted for example
-		if err := pprof.StartCPUProfile(pf); err != nil {
-			fmt.Fprintf(os.Stderr, "could not start CPU profile: ", err)
-			os.Exit(1)
-		}
-		defer pprof.StopCPUProfile()
-	*/
+	// process command line
+	flag.StringVar(&opts.sansfont, "sans", "helvetica", "sans font")
+	flag.StringVar(&opts.serifont, "serif", "times", "serif font")
+	flag.StringVar(&opts.monofont, "mono", "courier", "mono font")
+	flag.StringVar(&opts.symbolfont, "symbol", "zapfdingbats", "symbol font")
+	flag.StringVar(&opts.pagesize, "pagesize", "Letter", "pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen")
+	flag.StringVar(&opts.fontdir, "fontdir", setfontdir(""), "directory for fonts")
+	flag.StringVar(&opts.outdir, "outdir", ".", "output directory")
+	flag.StringVar(&opts.title, "title", "", "document title")
+	flag.StringVar(&opts.author, "author", "", "document author")
+	flag.StringVar(&opts.layers, "layers", "image:rect:ellipse:curve:arc:line:poly:text:list", "Layer order")
+	flag.Float64Var(&opts.gridpct, "grid", 0, "draw a percentage grid on each slide")
+	flag.StringVar(&opts.pages, "pages", "1-1000000", "page range (first-last)")
+	flag.BoolVar(&opts.stdout, "stdout", false, "output to standard output")
+	flag.BoolVar(&opts.strictwrap, "sw", false, "strict text wrap")
 	flag.Usage = cmdUsage
 	flag.Parse()
 
-	pw, ph := setpagesize(*pagesize)
-	begin, end := pagerange(*pr)
-
+	// set page dimensions
+	pw, ph := setpagesize(opts.pagesize)
 	if pw == 0 && ph == 0 {
-		p, ok := pagemap[*pagesize]
+		p, ok := pagemap[opts.pagesize]
 		if !ok {
 			p = pagemap["Letter"]
 		}
 		pw = p.width * p.unit
 		ph = p.height * p.unit
 	}
-
 	pageconfig := fpdf.InitType{
 		UnitStr:    "pt",
-		SizeStr:    *pagesize,
+		SizeStr:    opts.pagesize,
 		Size:       fpdf.SizeType{Wd: pw, Ht: ph},
-		FontDirStr: setfontdir(*fontdir),
+		FontDirStr: setfontdir(opts.fontdir),
 	}
-	fontmap["sans"] = *sansfont
-	fontmap["serif"] = *serifont
-	fontmap["mono"] = *monofont
-	fontmap["symbol"] = *symbolfont
-	dodeck(flag.Args(), pageconfig, *stdout, *outdir, *author, *title, *gridpct, *layers, begin, end)
 
+	// set default fonts
+	fontmap["sans"] = opts.sansfont
+	fontmap["serif"] = opts.serifont
+	fontmap["mono"] = opts.monofont
+	fontmap["symbol"] = opts.symbolfont
+
+	// make slides
+	begin, end := pagerange(opts.pages)
+	pdfdeck(flag.Args(), pageconfig, begin, end)
 }
