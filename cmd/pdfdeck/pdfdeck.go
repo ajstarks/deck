@@ -249,7 +249,7 @@ func polygon(doc *fpdf.Fpdf, xc, yc, color string, cw, ch float64) {
 		return
 	}
 	poly := make([]fpdf.PointType, len(xs))
-	for i := 0; i < len(xs); i++ {
+	for i := range xs {
 		x, err := strconv.ParseFloat(xs[i], 64)
 		if err != nil {
 			poly[i].X = 0
@@ -517,7 +517,7 @@ func pdfslide(doc *fpdf.Fpdf, d deck.Deck, n int, showslide bool) {
 	const defaultColor = "rgb(127,127,127)"
 	layerlist := strings.Split(opts.layers, ":")
 	// draw elements in the order of the layer list
-	for il := 0; il < len(layerlist); il++ {
+	for il := range layerlist {
 		switch layerlist[il] {
 		case "image":
 			// for every image on the slide...
@@ -759,7 +759,7 @@ func slides(doc *fpdf.Fpdf, pc fpdf.InitType, filename string, begin, end int) {
 	if len(d.Subject) > 0 {
 		doc.SetSubject(d.Subject, true)
 	}
-	for i := 0; i < len(d.Slide); i++ {
+	for i := range d.Slide {
 		pdfslide(doc, d, i, (i+1 >= begin && i+1 <= end))
 	}
 }
