@@ -790,6 +790,7 @@ func pdfdeck(files []string, pageconfig fpdf.InitType, begin, end int) {
 			continue
 		}
 		doc := fpdf.NewCustom(pc)
+		linesettings(doc)
 		slides(doc, pageconfig, filename, begin, end)
 		err = doc.Output(out)
 		if err != nil {
