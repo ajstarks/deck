@@ -5,6 +5,7 @@ go 1.23.0
 toolchain go1.24.3
 
 require (
+	codeberg.org/go-pdf/fpdf v0.11.1
 	fyne.io/fyne/v2 v2.5.3
 	github.com/ajstarks/deck/generate v0.0.0-20230623153652-ebe7b794a4b1
 	github.com/ajstarks/fc v0.0.0-20230606144319-ef5d5cb73a3d

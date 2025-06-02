@@ -16,8 +16,8 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 
+	"codeberg.org/go-pdf/fpdf" //"github.com/go-pdf/fpdf"
 	"github.com/ajstarks/deck"
-	"github.com/go-pdf/fpdf"
 	"github.com/mandolyte/mdtopdf"
 )
 
