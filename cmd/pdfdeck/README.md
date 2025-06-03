@@ -23,6 +23,7 @@ Options     Default                                            Description
 -fontdir    $HOME/deckfonts                                    Font directory
 -outdir     Current directory                                  Output directory
 -stdout     false                                              Output to standard output
+-sw         false                                              Use strict text wrapping
 -author     ""                                                 Document author
 -title      ""                                                 Document title
 ....................................................................................................
@@ -39,19 +40,6 @@ These fonts and other TrueType fonts (Noto, Fira, Charter, Go fonts, etc) are av
 	...
 	pdfdeck foo.xml # (use helvetica as the default)
 	pdfdeck -sans NotoSans-Regular -serif NotoSerif-Regular -mono NotoMono-Regular foo.xml
-
-To use other TrueType fonts, place them in the DECKFONTS directory and specify using the command options:
-
-	cp FancyFont.ttf $DECKFONTS
-	pdfdeck -sans FancyFont foo.xml
-
- Alternatively you can obtain fonts from the ```gofpdf``` package. To use the standard fonts (assuming the DECKFONTS variable has been set,
- and gofpdf is in GOPATH):
-
-
-	cp $GOPATH/src/github.com/jung-kurt/gofpdf/font/*.json $DECKFONTS
-	cp $GOPATH/src/github.com/jung-kurt/gofpdf/font/*.ttf $DECKFONTS
-
 
 
 ## Example uses
