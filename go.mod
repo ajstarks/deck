@@ -13,7 +13,6 @@ require (
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/disintegration/gift v1.2.1
 	github.com/fogleman/gg v1.3.0
-	github.com/go-pdf/fpdf v0.9.0
 	github.com/mandolyte/mdtopdf v1.3.2
 )
 
