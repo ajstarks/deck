@@ -3,34 +3,31 @@ pdfdeck: render deck files to pdf
 
 ```pdfdeck``` reads files in deck markup and makes pdf files.
 
-command options:
+pdfdeck [options] file...
 
-	-author string
-	  	document author
-	-fontdir string
-	  	directory for fonts (defaults to DECKFONTS environment variable)
-	-grid float
-	  	draw a percentage grid on each slide
-	-mono string
-	  	mono font (default "courier")
-	-outdir string
-	  	output directory (default ".")
-	-pages string
-	  	page range (first-last) (default "1-1000000")
-	-pagesize string
-	  	pagesize: w,h, or one of: Letter, Legal, Tabloid, A3, A4, A5, ArchA, 4R, Index, Widescreen (default "Letter")
-	-sans string
-	  	sans font (default "helvetica")
-	-serif string
-	  	serif font (default "times")
-	-stdout
-	  	output to standard output
-	-symbol string
-	  	symbol font (default "zapfdingbats")
-	-title string
-	  	document title
+Options     Default                                            Description
+..................................................................................................
+-sans       helvetica                                          Sans Serif font
+-serif      times                                              Serif font
+-mono       courier                                            Monospace font
+-symbol     zapfdingbats                                       Symbol font
 
-Fonts
+-layers     image:rect:ellipse:curve:arc:line:poly:text:list   Drawing order
+-grid       0                                                  Draw a grid at specified %
+-pages      1-1000000                                          Pages to output (first-last)
+-pagesize   Letter                                             Page size (w,h) or Letter, Legal,
+
+	Tabloid, A[3-5], ArchA, 4R, Index)
+
+-fontdir    $HOME/deckfonts                                    Font directory
+-outdir     Current directory                                  Output directory
+-stdout     false                                              Output to standard output
+-sw         false                                              Use strict text wrapping
+-author     ""                                                 Document author
+-title      ""                                                 Document title
+....................................................................................................
+
+# Fonts
 
 ```pdfdeck``` assumes a set of standard fonts (Times, Helvetica, Courier, and Zapf Dingbats) are available.
 These fonts and othe TrueType fonts (Noto, Fira, Charter, Go fonts, etc) are available in the [deckfonts](https://github.com/ajstarks/deckfonts) repository.  ```pdfdeck``` also uses the DECKFONTS environment variable to indicate where fonts are stored:
@@ -47,16 +44,7 @@ To use other TrueType fonts, place them in the DECKFONTS directory and specify u
 	cp FancyFont.ttf $DECKFONTS
 	pdfdeck -sans FancyFont foo.xml
 
- Alternatively you can obtain fonts from the ```gofpdf``` package. To use the standard fonts (assuming the DECKFONTS variable has been set,
- and gofpdf is in GOPATH):
-
-
-	cp $GOPATH/src/github.com/jung-kurt/gofpdf/font/*.json $DECKFONTS
-	cp $GOPATH/src/github.com/jung-kurt/gofpdf/font/*.ttf $DECKFONTS
-
-
-
-Example uses
+# Example uses
 
 ```
 pdfdeck foo.xml                                # read deck markup in foo.xml, make foo.pdf
