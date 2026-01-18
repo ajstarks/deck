@@ -838,10 +838,10 @@ func setfontdir(s string) string {
 // imageInfo returns the dimensions of an image
 func imageInfo(s string) (int, int) {
 	f, err := os.Open(s)
-	defer f.Close()
 	if err != nil {
 		return 0, 0
 	}
+	defer f.Close()
 	im, _, err := image.DecodeConfig(f)
 	if err != nil {
 		return 0, 0
