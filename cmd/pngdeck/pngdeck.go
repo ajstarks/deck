@@ -246,7 +246,7 @@ func dopoly(doc *gg.Context, xc, yc string, cw, ch float64, color string, opacit
 }
 
 // dotext places text elements on the canvas according to type
-func dotext(doc *gg.Context, cw, x, y, fs, wp, rotation, spacing float64, tdata, font, align, ttype, color string, opacity float64) {
+func dotext(doc *gg.Context, cw, x, y, fs, wp, rotation, spacing float64, tdata, font, align, ttype, color string, opacity float64, strict bool) {
 	var tw float64
 
 	td := strings.Split(tdata, "\n")
@@ -264,7 +264,7 @@ func dotext(doc *gg.Context, cw, x, y, fs, wp, rotation, spacing float64, tdata,
 	doc.SetRGBA255(red, green, blue, setop(opacity))
 	if ttype == "block" {
 		tw = deck.Pwidth(wp, cw, cw/2)
-		textwrap(doc, x, y, tw, fs, fs*spacing, tdata, font)
+		textwrap(doc, x, y, tw, fs, fs*spacing, tdata, font, strict)
 	} else {
 		ls := spacing * fs
 		for _, t := range td {
@@ -293,7 +293,7 @@ func loadfont(doc *gg.Context, s string, size float64) {
 }
 
 // textwrap draws text at location, wrapping at the specified width
-func textwrap(doc *gg.Context, x, y, w, fs, leading float64, s, font string) int {
+func textwrap(doc *gg.Context, x, y, w, fs, leading float64, s, font string, strict bool) int {
 	var factor = 0.3
 	if font == "mono" {
 		factor = 1.0
@@ -308,17 +308,28 @@ func textwrap(doc *gg.Context, x, y, w, fs, leading float64, s, font string) int
 	for _, s := range words {
 		if s == "\\n" { // magic new line
 			xp = x
-			yp += leading
+			yp += (leading * 1.5)
 			nbreak++
 			continue
 		}
-		tw, _ := doc.MeasureString(s)
-		doc.DrawString(s, xp, yp)
-		xp += tw + (wordspacing * factor)
-		if xp > edge {
-			xp = x
-			yp += leading
-			nbreak++
+		if strict {
+			tw, _ := doc.MeasureString(s)
+			if xp+tw > edge {
+				xp = x
+				yp += leading
+				nbreak++
+			}
+			doc.DrawString(s, xp, yp)
+			xp += tw + (wordspacing * factor)
+		} else {
+			tw, _ := doc.MeasureString(s)
+			doc.DrawString(s, xp, yp)
+			xp += tw + (wordspacing * factor)
+			if xp > edge {
+				xp = x
+				yp += leading
+				nbreak++
+			}
 		}
 	}
 	return nbreak
@@ -379,7 +390,7 @@ func dolist(doc *gg.Context, cw, x, y, fs, lwidth, rotation, spacing float64, li
 			showtext(doc, x, y, t, fs, font, align)
 			y += ls
 		} else {
-			yw := textwrap(doc, x, y, tw, fs, ls, t, font)
+			yw := textwrap(doc, x, y, tw, fs, ls, t, font, false)
 			y += ls
 			if yw >= 1 {
 				y += ls * float64(yw)
@@ -392,7 +403,7 @@ func dolist(doc *gg.Context, cw, x, y, fs, lwidth, rotation, spacing float64, li
 }
 
 // pngslide makes a slide, one slide per generated PNG
-func pngslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, layers string, dest string) {
+func pngslide(doc *gg.Context, d deck.Deck, n int, gp float64, strict bool, showslide bool, layers string, dest string) {
 	if n < 0 || n > len(d.Slide)-1 || !showslide {
 		return
 	}
@@ -598,7 +609,7 @@ func pngslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, l
 				if t.Lp == 0 {
 					t.Lp = linespacing
 				}
-				dotext(doc, cw, x, y, fs, t.Wp, t.Rotation, t.Lp, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity)
+				dotext(doc, cw, x, y, fs, t.Wp, t.Rotation, t.Lp, tdata, t.Font, t.Align, t.Type, t.Color, t.Opacity, strict)
 			}
 		case "list":
 			// for every list element...
@@ -625,7 +636,7 @@ func pngslide(doc *gg.Context, d deck.Deck, n int, gp float64, showslide bool, l
 }
 
 // doslides reads the deck file, making a series of PNGs
-func doslides(outname, filename string, w, h int, gp float64, layers string, begin, end int) {
+func doslides(outname, filename string, w, h int, gp float64, layers string, strict bool, begin, end int) {
 	var d deck.Deck
 	var err error
 	d, err = deck.Read(filename, w, h)
@@ -637,17 +648,17 @@ func doslides(outname, filename string, w, h int, gp float64, layers string, beg
 	d.Canvas.Height = h
 
 	for i := 0; i < len(d.Slide); i++ {
-		pngslide(gg.NewContext(w, h), d, i, gp, (i+1 >= begin && i+1 <= end), layers, outname)
+		pngslide(gg.NewContext(w, h), d, i, gp, strict, (i+1 >= begin && i+1 <= end), layers, outname)
 	}
 }
 
 // dodeck turns deck input files into PNG files
 // PNGs are written to the destination directory, to filenames based on the input name.
-func dodeck(files []string, w, h float64, outdir string, gp float64, layers string, begin, end int) {
+func dodeck(files []string, w, h float64, outdir string, gp float64, layers string, strict bool, begin, end int) {
 	for _, filename := range files {
 		base := strings.Split(filepath.Base(filename), ".xml")
 		outname := filepath.Join(outdir, base[0])
-		doslides(outname, filename, int(w), int(h), gp, layers, begin, end)
+		doslides(outname, filename, int(w), int(h), gp, layers, strict, begin, end)
 	}
 }
 
@@ -703,6 +714,7 @@ Options     Default                                            Description
 
 -fontdir    $HOME/deckfonts                                    Font directory
 -outdir     Current directory                                  Output directory
+-sw         false                                              Use strict text wrapping
 ..................................................................................................`
 
 func cmdUsage() {
@@ -722,6 +734,7 @@ func main() {
 		outdir     = flag.String("outdir", ".", "output directory")
 		gridpct    = flag.Float64("grid", 0, "draw a percentage grid on each slide")
 		pr         = flag.String("pages", "1-1000000", "page range (first-last)")
+		strict     = flag.Bool("sw", false, "Use strict text wrap")
 	)
 	flag.Usage = cmdUsage
 	flag.Parse()
@@ -742,5 +755,5 @@ func main() {
 	fontmap["serif"] = filepath.Join(fd, *serifont+".ttf")
 	fontmap["mono"] = filepath.Join(fd, *monofont+".ttf")
 	fontmap["symbol"] = filepath.Join(fd, *symbolfont+".ttf")
-	dodeck(flag.Args(), pw, ph, *outdir, *gridpct, *layers, begin, end)
+	dodeck(flag.Args(), pw, ph, *outdir, *gridpct, *layers, *strict, begin, end)
 }
